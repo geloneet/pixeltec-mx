@@ -1,5 +1,5 @@
 /**
- * Registro central de módulos del dashboard de PixelTEC OS
+ * Registro central de módulos del dashboard de Pixeltec.mx
  * (WO-2026-00088 · ADR-0054 propuesta).
  *
  * ÚNICA fuente de verdad de qué módulos están activos, protegidos, ocultos o

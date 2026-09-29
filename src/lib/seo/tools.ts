@@ -9,11 +9,11 @@
  *
  *   1. **Prompts locales.** Encino pide el prompt maestro a la central
  *      (`api.pixeltec.mx/seo/master-prompt`) y cae al prompt local si no
- *      responde. En PixelTEC OS ese host está vetado por el `egress-guard`, así
+ *      responde. En Pixeltec.mx ese host está vetado por el `egress-guard`, así
  *      que aquí el prompt local ES la fuente — no un respaldo. Sin llamada de
  *      red extra y sin tocar la política de egress.
  *   2. **Anthropic, no Gemini.** Encino genera con `gemini-2.5-flash`.
- *      PixelTEC OS usa el cliente Anthropic ya existente, sin dependencias ni
+ *      Pixeltec.mx usa el cliente Anthropic ya existente, sin dependencias ni
  *      variables de entorno nuevas (coherente con D-C-bis, aprobada por Miguel).
  *
  * Alcance: un solo sitio, pixeltec.mx (decisión de Miguel, 2026-08-26).

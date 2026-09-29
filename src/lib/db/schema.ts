@@ -1,7 +1,7 @@
 /**
  * Schema Drizzle — nuevo stack destino (Postgres 16 + Drizzle ORM).
  *
- * Migración de pixeltec-os desde Firestore. Ver
+ * Migración de pixeltec-mx desde Firestore. Ver
  * docs/superpowers/plans/2026-07-07-firebase-to-postgres-drizzle-nextauth-migration.md
  * para el contexto completo (6 fases) y el plan de ejecución de Fase 0+1 en
  * /home/ubuntu/.claude/plans/mellow-moseying-newell.md.

@@ -5,7 +5,7 @@ import { resolveAuthority } from "@/lib/auth/authority";
 /**
  * Resolución de identidad de sesión.
  *
- * La identidad canónica de PixelTEC OS es `users.id` (uuid de Postgres): es lo
+ * La identidad canónica de Pixeltec.mx es `users.id` (uuid de Postgres): es lo
  * que referencian por clave foránea los `owner_id` de todas las tablas de
  * negocio. `firebaseUid` es un alias heredado de la migración a Postgres y no
  * participa en la resolución.

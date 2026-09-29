@@ -80,7 +80,7 @@ type Tx = Parameters<Parameters<DB["transaction"]>[0]>[0];
  * confía en un `number` que venga del payload.
  *
  * Folio COMPANY-GLOBAL por año (decisión de Miguel, ratificada 2026-08-06):
- * para la instancia actual de PixelTEC OS hay un solo emisor, así que la
+ * para la instancia actual de Pixeltec.mx hay un solo emisor, así que la
  * secuencia es de toda la empresa, no por owner/usuario que la generó. Si
  * en el futuro existe tenancy/organizations comercial real, esto debe
  * reevaluarse y escoparse al issuer/organization — registrado en NeuroPIXEL,
@@ -98,7 +98,7 @@ type Tx = Parameters<Parameters<DB["transaction"]>[0]>[0];
  * emitido a otro documento fiscal — MAX+1 nunca retrocede.
  */
 async function assignInvoiceNumber(tx: Tx, year: number): Promise<string> {
-  await tx.execute(sql`select pg_advisory_xact_lock(hashtext('pixeltec_os_invoice_folio'), ${year})`);
+  await tx.execute(sql`select pg_advisory_xact_lock(hashtext('pixeltec_mx_invoice_folio'), ${year})`);
 
   const existing = await tx
     .select({ number: invoices.number })

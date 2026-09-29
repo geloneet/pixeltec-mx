@@ -131,11 +131,11 @@ muerto ni imports rotos").
 ## 8. Estado de madurez (Foundation, §11)
 
 **Candidato, NO promovido a Foundation todavía.** Usado en producción en 1
-proyecto (PixelTEC OS) — Foundation exige ≥3 proyectos antes de una
+proyecto (Pixeltec.mx) — Foundation exige ≥3 proyectos antes de una
 promoción real (ver `08_REFERENCIA/foundation/arquitectura-v1.md` §10-11).
 Este manifiesto existe para que, cuando Miguel pida "mete el módulo blog al
 proyecto X", la extracción sea mecánica y verificable — no para saltarse el
 criterio de promoción a Foundation.
 
 ---
-Última verificación de este inventario: 2026-08-07, contra `main` de `pixeltec-os`.
+Última verificación de este inventario: 2026-08-07, contra `main` de `pixeltec-mx`.

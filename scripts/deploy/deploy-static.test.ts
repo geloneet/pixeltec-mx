@@ -25,7 +25,7 @@ import { describe, expect, test } from "vitest";
 
 const ROOT = resolve(__dirname, "../..");
 const ENGINE = join(ROOT, "scripts/deploy/production-deploy.sh");
-const WRAPPER = join(ROOT, "scripts/deploy/deploy-pixeltec-os-wrapper.sh");
+const WRAPPER = join(ROOT, "scripts/deploy/deploy-pixeltec-mx-wrapper.sh");
 const SHIM = join(ROOT, "deploy.sh");
 const WORKFLOWS = join(ROOT, ".github/workflows");
 
@@ -79,7 +79,7 @@ describe("motor production-deploy.sh", () => {
 
   test("release inmutable con git archive, sin symlink ni copia del contrato E0", () => {
     expect(engine).toMatch(/git -C "\$APP_DIR" archive "\$SHA"/);
-    expect(engine).toMatch(/pixeltec-os-releases/);
+    expect(engine).toMatch(/pixeltec-mx-releases/);
     expect(engine).not.toMatch(/ln -s/);
     expect(engine).toMatch(/config --quiet/);
     // Guard: la release rechaza cualquier .env* salvo las DOS plantillas
@@ -90,9 +90,9 @@ describe("motor production-deploy.sh", () => {
   });
 
   test("la ruta canónica del entorno la fija el motor y llega a config/build/up/rollback", () => {
-    expect(engine).toMatch(/PIXELTEC_OS_ENV_FILE="\$APP_DIR\/\.env\.production"/);
-    expect(engine).toMatch(/env "PIXELTEC_OS_ENV_FILE=\$PIXELTEC_OS_ENV_FILE"/);
-    expect(engine).toMatch(/--env-file "\$PIXELTEC_OS_ENV_FILE"/);
+    expect(engine).toMatch(/PIXELTEC_MX_ENV_FILE="\$APP_DIR\/\.env\.production"/);
+    expect(engine).toMatch(/env "PIXELTEC_MX_ENV_FILE=\$PIXELTEC_MX_ENV_FILE"/);
+    expect(engine).toMatch(/--env-file "\$PIXELTEC_MX_ENV_FILE"/);
     // Toda invocación compose pasa por el array COMPOSE (config/build/up/rollback).
     const composeCalls = engine.match(/"\$\{COMPOSE\[@\]\}"/g) ?? [];
     expect(composeCalls.length).toBeGreaterThanOrEqual(4);
@@ -109,7 +109,7 @@ describe("motor production-deploy.sh", () => {
 
   test("compose fija project name literal y solo recrea app (--no-deps, --no-build)", () => {
     expect(engine).toMatch(/-p "\$PROJECT"/);
-    expect(engine).toMatch(/PROJECT=pixeltec-os/);
+    expect(engine).toMatch(/PROJECT=pixeltec-mx/);
     const ups = engine.match(/up -d [^\n]*/g) ?? [];
     expect(ups.length).toBeGreaterThan(0);
     for (const up of ups) {
@@ -141,7 +141,7 @@ describe("motor production-deploy.sh", () => {
   });
 });
 
-describe("wrapper deploy-pixeltec-os", () => {
+describe("wrapper deploy-pixeltec-mx", () => {
   test("pasa bash -n", () => {
     expect(() => execFileSync("bash", ["-n", WRAPPER])).not.toThrow();
   });
@@ -244,20 +244,20 @@ describe("aislamiento de .env.production del build context (M1A ITERATE)", () =>
 
   test("compose declara el build secret solo para app y su fuente parametrizada", () => {
     expect(compose).toMatch(/build:\n\s+context: \.\n\s+dockerfile: Dockerfile\n(\s+#[^\n]*\n)*\s+secrets:\n\s+- env_production/);
-    expect(compose).toMatch(/secrets:\n\s+env_production:\n\s+file: \$\{PIXELTEC_OS_ENV_FILE:-\.env\.production\}/);
+    expect(compose).toMatch(/secrets:\n\s+env_production:\n\s+file: \$\{PIXELTEC_MX_ENV_FILE:-\.env\.production\}/);
     // El secreto jamás como variable de entorno del build.
     expect(compose).not.toMatch(/args:[^\n]*env/i);
   });
 
-  test("compose usa PIXELTEC_OS_ENV_FILE en TODOS los env_file (app, qa-runner, migrator, seed)", () => {
-    const refs = compose.match(/env_file:(\n\s+- |\s)\$\{PIXELTEC_OS_ENV_FILE:-\.env\.production\}/g) ?? [];
+  test("compose usa PIXELTEC_MX_ENV_FILE en TODOS los env_file (app, qa-runner, migrator, seed)", () => {
+    const refs = compose.match(/env_file:(\n\s+- |\s)\$\{PIXELTEC_MX_ENV_FILE:-\.env\.production\}/g) ?? [];
     expect(refs.length).toBe(4);
     // Cero referencias env_file sin parametrizar.
     expect(compose).not.toMatch(/env_file:(\n\s+- |\s)\.env\.production/);
   });
 
   test("el wrapper no permite sobrescribir la ruta del entorno por argumentos", () => {
-    expect(wrapper).not.toMatch(/PIXELTEC_OS_ENV_FILE/);
+    expect(wrapper).not.toMatch(/PIXELTEC_MX_ENV_FILE/);
     const r = spawnSync(
       "bash",
       [WRAPPER, "--sha", FAKE_SHA, "--env-file", "/tmp/x"],
@@ -345,7 +345,7 @@ describe("shim deploy.sh", () => {
     const r = spawnSync("bash", [SHIM]);
     expect(r.status).toBe(1);
     expect(String(r.stderr)).toMatch(/deshabilitado/);
-    expect(String(r.stderr)).toMatch(/deploy-pixeltec-os/);
+    expect(String(r.stderr)).toMatch(/deploy-pixeltec-mx/);
   });
 
   test("cero Git, Docker o red dentro del shim", () => {

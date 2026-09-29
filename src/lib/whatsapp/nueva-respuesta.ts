@@ -3,11 +3,11 @@
  * (WO-2026-00019, D-21a).
  *
  * PixelBot es el propietario del webhook de estados de WhatsApp (sent /
- * delivered / read / failed). PixelTEC OS NO lo duplica: solo deja constancia
+ * delivered / read / failed). Pixeltec.mx NO lo duplica: solo deja constancia
  * de SU envío —message_id de Meta, plantilla, destinatario enmascarado,
  * timestamp y resultado inmediato— en el mecanismo persistente existente
  * (`system_alerts` vía `logSystemAlert`, consultable con psql / drizzle
- * studio; sin dashboards). El reflejo de statuses PixelBot → PixelTEC OS es
+ * studio; sin dashboards). El reflejo de statuses PixelBot → Pixeltec.mx es
  * una capacidad posterior, fuera de este WO.
  *
  * Nunca lanza: el aviso es best-effort y jamás debe costar una respuesta ya

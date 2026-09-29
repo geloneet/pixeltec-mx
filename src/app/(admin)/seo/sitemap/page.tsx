@@ -5,7 +5,7 @@ import { SETTING_SITEMAP_ENABLED } from "@/lib/seo/keys";
 import { SEO_SITE } from "@/lib/seo/tools";
 
 export default async function SeoSitemapPage() {
-  // Ausente ⇒ encendido: el sitemap completo es lo que ya servía PixelTEC OS
+  // Ausente ⇒ encendido: el sitemap completo es lo que ya servía Pixeltec.mx
   // antes de este módulo. Portarlo no puede apagarle el SEO al sitio.
   const enabled = await getFlag(SETTING_SITEMAP_ENABLED, true);
   return (

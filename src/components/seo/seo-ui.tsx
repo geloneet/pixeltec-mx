@@ -1,6 +1,6 @@
 /**
  * Piezas compartidas del módulo SEO (WO-2026-00095) — paridad con
- * `seo-ui.tsx` de Muebles Encino, con los tokens de PixelTEC OS.
+ * `seo-ui.tsx` de Muebles Encino, con los tokens de Pixeltec.mx.
  */
 import type { ReactNode } from "react";
 

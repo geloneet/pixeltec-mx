@@ -1,5 +1,5 @@
 # ==================================================================
-# PixelTEC OS (CRM) — docker-compose.yml
+# Pixeltec.mx (CRM) — docker-compose.yml
 # ==================================================================
 # Este compose gestiona la app Next.js del CRM + su base de datos Postgres
 # (migración en curso hacia Postgres+Drizzle+NextAuth — ver
@@ -7,7 +7,7 @@
 # Nginx y Certbot viven en pixeltec-infra/docker-compose.yml.
 #
 # `app` habla con nginx/otros containers por `web-network` (external) y con
-# `db` por la red interna dedicada `pixeltec-os-internal` (NO expuesta a
+# `db` por la red interna dedicada `pixeltec-mx-internal` (NO expuesta a
 # web-network — ningún otro container del VPS puede alcanzar la DB).
 #
 # Operaciones:
@@ -28,15 +28,15 @@ services:
       secrets:
         - env_production
     # Imagen etiquetada por commit (E0g-3): el pipeline exporta
-    # PIXELTEC_OS_IMAGE_TAG=<sha> para build/up; sin exportar cae a `latest`,
+    # PIXELTEC_MX_IMAGE_TAG=<sha> para build/up; sin exportar cae a `latest`,
     # que solo se mueve tras health OK. Permite rollback real sin rebuild.
-    image: pixeltec-os-app:${PIXELTEC_OS_IMAGE_TAG:-latest}
-    container_name: pixeltec-os
+    image: pixeltec-mx-app:${PIXELTEC_MX_IMAGE_TAG:-latest}
+    container_name: pixeltec-mx
     restart: unless-stopped
-    # PIXELTEC_OS_ENV_FILE: ruta canónica absoluta que fija el motor de deploy
+    # PIXELTEC_MX_ENV_FILE: ruta canónica absoluta que fija el motor de deploy
     # (release inmutable, M1A); sin definirla cae al relativo de siempre (dev).
     env_file:
-      - ${PIXELTEC_OS_ENV_FILE:-.env.production}
+      - ${PIXELTEC_MX_ENV_FILE:-.env.production}
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
@@ -44,29 +44,29 @@ services:
         condition: service_healthy
     networks:
       - web-network
-      - pixeltec-os-internal
+      - pixeltec-mx-internal
 
   db:
-    container_name: pixeltec-os-db
+    container_name: pixeltec-mx-db
     image: postgres:16-alpine
     restart: unless-stopped
     environment:
-      POSTGRES_USER: pixeltec_os
+      POSTGRES_USER: pixeltec_mx
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: pixeltec_os
+      POSTGRES_DB: pixeltec_mx
     volumes:
-      - pixeltec-os-db-data:/var/lib/postgresql/data
+      - pixeltec-mx-db-data:/var/lib/postgresql/data
     # Solo 127.0.0.1 (regla de seguridad de puertos del VPS, ver
     # pixeltec-infra/runbooks/docker-port-hardening.md): permite que
     # `npm run dev` en el host (dev.pixeltec.mx) alcance la DB sin exponerla
     # a la red pública — Docker bypasea ufw vía PREROUTING DNAT si el bind
     # fuera 0.0.0.0.
     ports:
-      - "127.0.0.1:5437:5432"
+      - "127.0.0.1:${PIXELTEC_MX_DB_PORT:-5437}:5432"
     networks:
-      - pixeltec-os-internal
+      - pixeltec-mx-internal
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U pixeltec_os"]
+      test: ["CMD-SHELL", "pg_isready -U pixeltec_mx"]
       interval: 5s
       timeout: 5s
       retries: 10
@@ -93,7 +93,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: qa-runner
-    container_name: pixeltec-os-qa-runner
+    container_name: pixeltec-mx-qa-runner
     restart: unless-stopped
     init: true
     user: pwuser
@@ -115,12 +115,12 @@ services:
       retries: 3
       start_period: 30s
     env_file:
-      - ${PIXELTEC_OS_ENV_FILE:-.env.production}
+      - ${PIXELTEC_MX_ENV_FILE:-.env.production}
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - pixeltec-os-internal
+      - pixeltec-mx-internal
 
   # ── Tools (bajo demanda: docker compose --profile tools run --rm <servicio>) ──
   migrator:
@@ -129,12 +129,12 @@ services:
       dockerfile: Dockerfile
       target: tools
     command: ["npx", "drizzle-kit", "migrate"]
-    env_file: ${PIXELTEC_OS_ENV_FILE:-.env.production}
+    env_file: ${PIXELTEC_MX_ENV_FILE:-.env.production}
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - pixeltec-os-internal
+      - pixeltec-mx-internal
     profiles:
       - tools
 
@@ -144,12 +144,12 @@ services:
       dockerfile: Dockerfile
       target: tools
     command: ["npx", "tsx", "scripts/seed.ts"]
-    env_file: ${PIXELTEC_OS_ENV_FILE:-.env.production}
+    env_file: ${PIXELTEC_MX_ENV_FILE:-.env.production}
     depends_on:
       db:
         condition: service_healthy
     networks:
-      - pixeltec-os-internal
+      - pixeltec-mx-internal
     profiles:
       - tools
 
@@ -157,13 +157,13 @@ services:
 # fija el motor de deploy; en dev cae al archivo relativo si existiera.
 secrets:
   env_production:
-    file: ${PIXELTEC_OS_ENV_FILE:-.env.production}
+    file: ${PIXELTEC_MX_ENV_FILE:-.env.production}
 
 networks:
   web-network:
     external: true
-  pixeltec-os-internal:
+  pixeltec-mx-internal:
     driver: bridge
 
 volumes:
-  pixeltec-os-db-data:
+  pixeltec-mx-db-data:

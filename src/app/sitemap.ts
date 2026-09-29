@@ -69,7 +69,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Interruptor del módulo SEO (WO-2026-00095, paridad Encino): apagado ⇒ solo
-  // la portada. Ausente ⇒ ENCENDIDO, que es lo que PixelTEC OS ya servía antes
+  // la portada. Ausente ⇒ ENCENDIDO, que es lo que Pixeltec.mx ya servía antes
   // de existir el módulo: portarlo no puede apagarle el sitemap al sitio.
   const enabled = await getFlag(SETTING_SITEMAP_ENABLED, true).catch(() => true);
   if (!enabled) return [staticRoutes[0]];

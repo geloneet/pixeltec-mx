@@ -4,7 +4,7 @@
  * La URL canónica aprobada en la plantilla de WhatsApp es
  * `https://pixeltec.mx/respuestas/{id}`: una sola URL pública, genérica, que
  * NO está atada conceptualmente a un cliente. Cada tipo de respuesta que
- * exista en PixelTEC OS registra aquí cómo reconocer su id y a qué vista de
+ * exista en Pixeltec.mx registra aquí cómo reconocer su id y a qué vista de
  * detalle redirigir. Añadir Encino u otro formulario = añadir un resolver a
  * la lista; ni la URL pública ni la plantilla de Meta cambian.
  *

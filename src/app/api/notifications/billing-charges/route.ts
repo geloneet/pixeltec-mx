@@ -10,7 +10,7 @@ import { toRouteFailure } from "@/lib/errors/route-failure";
 /**
  * C6 (ADR-0040) — scheduler real de `billing_items`. El cron legado en
  * `notifications/charges/route.ts` itera `recurring_charges` (CRM legacy) y
- * no conoce nada de lo que pasa por Contrato→Cobro (ver [[PixelTEC OS]] en
+ * no conoce nada de lo que pasa por Contrato→Cobro (ver [[Pixeltec.mx]] en
  * NeuroPIXEL, sección Ola 0/Ola 1) — este endpoint es independiente, no lo
  * reemplaza.
  *

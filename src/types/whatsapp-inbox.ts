@@ -78,7 +78,7 @@ export interface ContactNote { id: string; text: string; createdBy: string; crea
 
 // ── Memoria del bot por contacto (PixelBot Fase A) ──────────────────────────
 // Shape espejo de agent/conversation_memory.py::list_memory_raw. Read-only
-// desde PixelTEC OS — el bot es la única fuente de verdad de lo que recuerda.
+// desde Pixeltec.mx — el bot es la única fuente de verdad de lo que recuerda.
 export type BotMemoryKey =
   | 'name' | 'company' | 'service' | 'budget' | 'target_date'
   | 'lead_state' | 'last_intent' | 'asked_fields' | 'requested_human' | 'summary';

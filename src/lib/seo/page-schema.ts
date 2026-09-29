@@ -15,7 +15,7 @@ export const SETTING_PAGE_SCHEMA = 'seo_page_schema';
 export type PageSchemaMap = Record<string, string[]>;
 
 export interface SitePage {
-  /** Ruta pública, sin slash final (como las sirve PixelTEC OS). */
+  /** Ruta pública, sin slash final (como las sirve Pixeltec.mx). */
   path: string;
   label: string;
   /**

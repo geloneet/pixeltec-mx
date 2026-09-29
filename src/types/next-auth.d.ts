@@ -3,7 +3,7 @@ import type { DefaultSession } from "next-auth";
 /**
  * Contrato de identidad de la sesión (Gate B6 — Firebase Exit).
  *
- * La identidad canónica de PixelTEC OS es `users.id` (uuid de Postgres) — es
+ * La identidad canónica de Pixeltec.mx es `users.id` (uuid de Postgres) — es
  * lo que referencian los `owner_id` de todas las tablas de negocio vía clave
  * foránea. El alias heredado de Firebase ya NO viaja en el JWT ni en la
  * sesión: la única compatibilidad restante (paths de storage de avatares

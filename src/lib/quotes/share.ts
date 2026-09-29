@@ -1,7 +1,7 @@
 /**
  * Envío de la cotización por WhatsApp (WO-2026-00101).
  *
- * NO usa la API de Meta. El módulo WhatsApp de PixelTEC OS está congelado por
+ * NO usa la API de Meta. El módulo WhatsApp de Pixeltec.mx está congelado por
  * la revisión de Meta, su emisor solo admite una plantilla fija y nunca se ha
  * hecho un envío real; mandar un PDF por ahí exigiría una plantilla nueva
  * aprobada por Meta y tocar código congelado.

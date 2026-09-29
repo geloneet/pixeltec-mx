@@ -1,7 +1,7 @@
 # Pixeltec.mx — Documento de referencia
 
-**Producción:** https://pixeltec.mx  
-**Repositorio local:** `/home/ubuntu/pixeltec-os`  
+**Producción:** https://pixeltec.mx
+**Repositorio local:** `/home/ubuntu/pixeltec-mx`
 **Rama principal:** `main` (= producción directa)
 
 ---
@@ -229,11 +229,11 @@ Plantillas Resend:
 OVH VPS
 ├── pixeltec-infra/         — Nginx (reverse proxy) + Certbot
 │   └── docker-compose.yml  — red: web-network (external)
-└── pixeltec-os/            — Esta app
-    └── docker-compose.yml  — container: pixeltec-os, sin port binding (interno por web-network)
+└── pixeltec-mx/            — Esta app
+    └── docker-compose.yml  — container: pixeltec-mx, sin port binding (interno por web-network)
 ```
 
-- `pixeltec.mx → Nginx → web-network → pixeltec-os:3000`
+- `pixeltec.mx → Nginx → web-network → pixeltec-mx:3000`
 - Build args de Firebase inyectados como Docker ARG (variables `NEXT_PUBLIC_*`)
 - Runtime vars en `.env.production` (nunca en el repo)
 - `restart: unless-stopped`

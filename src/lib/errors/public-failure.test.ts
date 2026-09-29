@@ -32,7 +32,7 @@ const RAW_SQL = "SELECT * FROM growth_posts WHERE owner_id = $1";
 const CLIENTE_CONFIDENCIAL = "Clínica Smile More — +5213221234567";
 const TOKEN_PRIVADO = "EAAG9ZBx0kZCZBsBO1ZC7tokenprivadodemeta";
 const ENV_SECRET_NAME = "DATABASE_URL";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/db/index.ts:42:11)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/db/index.ts:42:11)";
 const PROVIDER_BODY =
   '{"error":{"type":"invalid_request_error","message":"prompt: Eres un experto..."}}';
 

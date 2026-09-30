@@ -22,7 +22,6 @@ export const HOME_SEO = {
 } as const;
 
 export const HOME_HERO = {
-  badge: 'Desde Puerto Vallarta para todo México',
   title1: 'Desarrollo Web, Apps y Software',
   title2: 'Automatización para empresas',
   subtitle:

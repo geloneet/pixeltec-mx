@@ -3,7 +3,6 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
-import { Circle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ShinyButton } from "@/components/ui/shiny-button";
 import { useDiagnosticModal } from "@/components/diagnostico/diagnostic-modal-provider";
@@ -82,12 +81,10 @@ function ElegantShape({
 }
 
 function HeroGeometric({
-    badge = "Agencia de Innovación Tecnológica",
     title1 = "Diseñamos el Futuro",
     title2 = "Digital de tu Empresa",
     subtitle = "Automatizamos procesos manuales y construimos ecosistemas digitales de alto rendimiento para empresas que buscan el futuro hoy.",
 }: {
-    badge?: string;
     title1?: string;
     title2?: string;
     /** Párrafo bajo el H1. Sale del servidor (REN-01); la portada lo pasa desde HOME_HERO. */
@@ -96,7 +93,7 @@ function HeroGeometric({
     const diagnostic = useDiagnosticModal();
     const reduceMotion = useReducedMotion();
     // REN-01 (WO-2026-00268): el hero es la primera pantalla y su contenido no
-    // puede salir del servidor con opacity: 0. Antes, el badge, el párrafo y el
+    // puede salir del servidor con opacity: 0. Antes, el párrafo y el
     // CTA quedaban invisibles hasta que hidrataba framer-motion y terminaba una
     // animación de 1 s con hasta 1.1 s de delay: sin JS no aparecían nunca, y
     // con JS lento el LCP medía el hueco. Ahora sólo se anima `transform`
@@ -166,19 +163,6 @@ function HeroGeometric({
 
             <div className="relative z-10 container mx-auto px-4 md:px-6">
                 <div className="max-w-3xl mx-auto text-center py-16">
-                    <motion.div
-                        custom={0}
-                        variants={fadeUpVariants}
-                        initial={fadeUpInitial}
-                        animate="visible"
-                        className="inline-flex items-center gap-3 mb-8 md:mb-12"
-                    >
-                        <Circle className="h-2 w-2 text-primary fill-primary dark:text-cyan-400 dark:fill-cyan-400 animate-pulse motion-reduce:animate-none" />
-                        <span className="text-xs text-muted-foreground tracking-[0.2em]">
-                            {badge}
-                        </span>
-                    </motion.div>
-
                     <motion.div
                         custom={1}
                         variants={fadeUpVariants}

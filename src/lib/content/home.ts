@@ -29,10 +29,11 @@ export const HOME_HERO = {
 } as const;
 
 export const HOME_ABOUT = {
-  headingLead: 'Arquitectos de tu transformación digital',
-  headingAccent: 'desde Puerto Vallarta',
+  eyebrow: 'PIXELTEC · PUERTO VALLARTA, JALISCO',
+  headingLead: 'Construimos tecnología',
+  headingAccent: 'que mueve empresas',
   paragraph:
-    'No somos una agencia tradicional de desarrollo web. En PixelTEC la tecnología es un medio, no el fin: combinamos consultoría TI, inteligencia artificial y desarrollo de software a la medida para que pymes y empresas de Puerto Vallarta, Guadalajara y todo México operen y escalen sin fricción.',
+    'No somos solo una agencia de desarrollo. Diseñamos software, automatizaciones e integraciones alrededor de cómo realmente opera cada empresa.',
 } as const;
 
 /** Párrafo bajo el H2 de Servicios; solo se aplica si no hay conflicto con el PR #136. */

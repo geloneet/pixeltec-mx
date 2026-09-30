@@ -16,6 +16,9 @@ export function AboutWaveSection() {
 
         {/* Left Side - Large Headline */}
         <div className="md:col-span-7 text-center md:text-left">
+          <p className="mb-5 text-xs font-medium uppercase tracking-[0.2em] text-muted-foreground dark:text-white/50">
+            {HOME_ABOUT.eyebrow}
+          </p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-semibold text-foreground leading-[1.1] tracking-tight">
             {HOME_ABOUT.headingLead} <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand to-cyan-700 dark:from-cyan-500 dark:to-blue-500">
@@ -32,7 +35,7 @@ export function AboutWaveSection() {
           {/* `href` evita el anidamiento inválido <Link><button>: ShinyButton
               renderiza un <a> cuando recibe destino. */}
           <ShinyButton href="/about" className="text-sm tracking-widest uppercase w-full sm:w-auto">
-            Más Sobre Nosotros
+            Conoce PixelTEC
           </ShinyButton>
         </div>
 

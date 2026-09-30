@@ -2,6 +2,7 @@
 import { and, desc, eq, inArray, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { blogPosts, blogPostViewCounts, postRedirects } from '@/lib/db/schema';
+import { formatEditorialDate } from '../format-date';
 import {
   EMPTY_EDITORIAL,
   EMPTY_SEO,
@@ -71,6 +72,17 @@ export async function getPublishedPosts(): Promise<BlogPostSerialized[]> {
     .from(blogPosts)
     .where(and(eq(blogPosts.status, 'published'), noindexFalse))
     .orderBy(desc(blogPosts.publishedAt));
+  return rows.map(serializePost);
+}
+
+/** Portada: solo los artículos recientes necesarios para las tres tarjetas. */
+export async function getRecentPublishedPosts(limit = 3): Promise<BlogPostSerialized[]> {
+  const rows = await db
+    .select()
+    .from(blogPosts)
+    .where(and(eq(blogPosts.status, 'published'), noindexFalse))
+    .orderBy(desc(blogPosts.publishedAt))
+    .limit(limit);
   return rows.map(serializePost);
 }
 
@@ -147,11 +159,16 @@ export async function getRelatedPosts(slug: string, category: string, limit = 3)
 export async function getBlogSidebarData(
   excludeSlug?: string,
   recentLimit = 5,
-): Promise<{ recentPosts: { slug: string; title: string }[]; categories: string[]; tags: string[] }> {
+): Promise<{ recentPosts: { slug: string; title: string; imageUrl: string; date: string }[]; categories: string[]; tags: string[] }> {
   const all = await getPublishedPosts();
   const pool = excludeSlug ? all.filter((p) => p.slug !== excludeSlug) : all;
   return {
-    recentPosts: pool.slice(0, recentLimit).map((p) => ({ slug: p.slug, title: p.title })),
+    recentPosts: pool.slice(0, recentLimit).map((p) => ({
+      slug: p.slug,
+      title: p.title,
+      imageUrl: p.coverImage ?? '/og-image.png',
+      date: formatEditorialDate(p.publishedAt),
+    })),
     categories: Array.from(new Set(all.map((p) => p.category).filter(Boolean))).sort(),
     tags: Array.from(new Set(all.flatMap((p) => p.tags).filter(Boolean))).slice(0, 20),
   };

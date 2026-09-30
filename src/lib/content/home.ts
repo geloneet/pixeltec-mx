@@ -23,10 +23,10 @@ export const HOME_SEO = {
 
 export const HOME_HERO = {
   badge: 'Desde Puerto Vallarta para todo México',
-  title1: 'Desarrollo Web y Apps',
-  title2: 'Automatización con IA',
+  title1: 'Desarrollo Web, Apps y Software',
+  title2: 'Automatización para empresas',
   subtitle:
-    'Construimos páginas web, apps y software a la medida, y automatizamos tu operación con IA y WhatsApp. Desde Puerto Vallarta, para pymes y empresas de Bahía de Banderas, Guadalajara y todo México.',
+    'Creamos páginas web, aplicaciones y software a la medida. Automatizamos procesos con IA, WhatsApp e integraciones para que tu empresa opere mejor y pierda menos tiempo en tareas repetitivas.',
 } as const;
 
 export const HOME_ABOUT = {

@@ -228,7 +228,7 @@ function HeroGeometric({
                     >
                          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
                             <ShinyButton type="button" onClick={() => diagnostic?.openDiagnostic()}>
-                               Iniciar diagnóstico
+                               Cuéntanos tu proyecto
                             </ShinyButton>
                             {/* El formulario de contacto ya no vive en la home:
                                 el CTA humano lleva a la página /contact. */}

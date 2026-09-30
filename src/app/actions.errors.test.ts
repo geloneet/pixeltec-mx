@@ -84,7 +84,7 @@ const RAW_SQL = "INSERT INTO newsletter_subscribers (email) VALUES ($1)";
 const CLIENTE_CONFIDENCIAL = "Clínica Smile More — +5213221234567";
 const TOKEN_PRIVADO = "re_tokenprivadoderesend";
 const ENV_SECRET_NAME = "RESEND_API_KEY";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/db/index.ts:42:11)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/db/index.ts:42:11)";
 const PROVIDER_BODY = '{"error":{"message":"domain not verified"}}';
 
 const MARCADORES = [

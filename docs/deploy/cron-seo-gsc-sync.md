@@ -1,12 +1,13 @@
 # Registro de cron — `api/cron/seo-gsc-sync`
 
-> **Estado (actualizado 2026-09-14, WO-2026-00345 L5) `[Documentado en NeuroPIXEL]`:** las
+> **Estado (actualizado 2026-09-29):** las
 > credenciales de Search Console YA están cargadas en producción; el backfill de 16 meses
 > terminó el 2026-08-31 (`hasMore: false`) y `/seo/contenido` mostró datos reales el
 > 2026-09-04 (`01_CONTEXT/infraestructura.md`, `09_SEGUIMIENTO/Pixeltec.mx.md`). El cron
-> diario de las 06:00 está registrado en el crontab del VPS. Las secciones «pendiente de
-> Miguel» de abajo describen la configuración inicial y se conservan como referencia para
-> un entorno nuevo; no son tareas abiertas. Lectura semanal de esos datos:
+> diario sigue registrado con las rutas anteriores en el VPS; el comando nuevo de abajo
+> es el destino para aplicar durante el corte ADR-0070, no evidencia de que ya se migró.
+> Las secciones «pendiente de Miguel» describen la configuración inicial y se conservan
+> como referencia para un entorno nuevo; no son tareas abiertas. Lectura semanal de esos datos:
 > `scripts/seo/gsc-weekly-report.ts` (`docs/seo/gsc-weekly/README.md`).
 
 **Qué hace:** sincroniza los snapshots diarios de Google Search Console en `gsc_page_daily` y `gsc_query_daily`, y registra cada corrida en `seo_sync_runs`. Alimenta la pantalla `/seo/contenido` del módulo SEO & Contenido (WO-2026-00214). Independiente de los demás cron del repo: cada uno itera su propia fuente de datos.
@@ -46,12 +47,12 @@ base64 -i ruta/a/service-account.json | tr -d '\n'
 
 La cuenta de servicio necesita permiso de **lectura** sobre la propiedad en Search Console: Configuración → Usuarios y permisos → añadir su `client_email`. Y hay que habilitar la Search Console API en el proyecto de Google Cloud.
 
-## Crontab del VPS (registrado; se conserva el comando como referencia)
+## Crontab del VPS (comando objetivo para el corte ADR-0070; aún no aplicado)
 
 ```bash
 # crontab de `ubuntu`, mismo patrón que billing-charges / recurring-charges:
-0 6 * * * curl -s -H "Authorization: Bearer $(grep CRON_SECRET /home/ubuntu/pixeltec-os/.env.production | cut -d= -f2)" \
-  https://pixeltec.mx/api/cron/seo-gsc-sync >> /home/ubuntu/pixeltec-os-cron.log 2>&1
+0 6 * * * curl -s -H "Authorization: Bearer $(grep CRON_SECRET /home/ubuntu/pixeltec-mx/.env.production | cut -d= -f2)" \
+  https://pixeltec.mx/api/cron/seo-gsc-sync >> /home/ubuntu/pixeltec-mx-cron.log 2>&1
 ```
 
 Diaria a las 06:00 (sugerido): los datos de Search Console no cambian dentro del día, así que más frecuencia sólo gastaría cuota. `CRON_SECRET` ya existe en `.env.production` (compartido con los demás crons, contrato E0 `CRON_EXECUTION_MODE=enabled`); no hace falta secreto nuevo.
@@ -66,7 +67,7 @@ La migración `drizzle/0051_seo_contenido.sql` debe estar aplicada (lo está en 
 curl -s -H "Authorization: Bearer $CRON_SECRET" https://pixeltec.mx/api/cron/seo-gsc-sync | jq
 # → {"success":true,"mode":"backfill","start":"…","end":"…","days":45,"rows":N,"hasMore":true}
 
-docker exec -i pixeltec-os-db psql -U pixeltec_os -d pixeltec_os \
+docker exec -i pixeltec-mx-db psql -U pixeltec_mx -d pixeltec_mx \
   -c "SELECT status, window_start, window_end, rows, error FROM seo_sync_runs ORDER BY started_at DESC LIMIT 5;"
 ```
 

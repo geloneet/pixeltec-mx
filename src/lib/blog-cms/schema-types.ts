@@ -4,7 +4,7 @@
  * Paridad con Muebles Encino (`src/lib/seo-schema.ts`): mismo catálogo y misma
  * semántica de saneado. La diferencia es DÓNDE se guarda: Encino los persiste
  * en un ajuste global del SEO Control Center (`seo_page_schema`, mapa ruta →
- * tipos); PixelTEC OS no tiene ese módulo, así que viven en `blog_posts.seo`
+ * tipos); Pixeltec.mx no tiene ese módulo, así que viven en `blog_posts.seo`
  * (jsonb) como campo aditivo — mismo precedente que `coverAttribution` y
  * `nofollow`, sin migración.
  *

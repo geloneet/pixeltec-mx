@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1.7
 # ============================================
-# PixelTEC OS — Production Dockerfile
+# Pixeltec.mx — Production Dockerfile
 # Next.js 15 Standalone + Alpine
 # ============================================
 # Secretos (M1A): .env.production NUNCA entra al build context (.dockerignore);

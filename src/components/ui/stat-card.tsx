@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
  *
  * Promovida desde `src/app/(admin)/vps/components/server-stats-header.tsx`
  * (StatCard local, no exportada) al rediseñar la distribución de `/hoy`
- * (excepción al freeze de v1.0 — ver PixelTEC OS.md en NeuroPIXEL). El
+ * (excepción al freeze de v1.0 — ver Pixeltec.mx.md en NeuroPIXEL). El
  * original de VPS se deja intacto para no tocar ese módulo, fuera de alcance
  * de este cambio; la deduplicación completa (VPS consumiendo esta versión)
  * queda como follow-up.

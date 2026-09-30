@@ -29,7 +29,7 @@ const TABLE_SECRET = "pixelforge_qa_runs.error";
 const ENV_SECRET_NAME = "VPS_API_SECRET";
 const CLIENTE_CONFIDENCIAL = "Clínica Smile More — +5213221234567";
 const TOKEN_PRIVADO = "EAAG9ZBx0kZCZBsBO1ZC7tokenprivadodemeta";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/db/index.ts:42:11)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/db/index.ts:42:11)";
 
 const MARCADORES = [
   RAW_SQL,

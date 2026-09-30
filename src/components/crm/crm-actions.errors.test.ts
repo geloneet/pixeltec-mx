@@ -28,7 +28,7 @@ import { syncCrmDataAction } from "./crm-actions";
 
 const RAW_SQL = "SELECT * FROM crm_clients WHERE owner_id = $1";
 const CLIENTE_CONFIDENCIAL = "Clínica Smile More — +5213221234567";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/db/index.ts:42:11)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/db/index.ts:42:11)";
 const MARCADORES = [RAW_SQL, CLIENTE_CONFIDENCIAL, STACK_INTERNO];
 
 const MESSAGE_ENVENENADO = [RAW_SQL, CLIENTE_CONFIDENCIAL, STACK_INTERNO].join(" | ");

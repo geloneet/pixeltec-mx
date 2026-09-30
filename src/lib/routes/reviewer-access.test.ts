@@ -151,7 +151,7 @@ describe("API routes", () => {
     }
   });
 
-  test("cualquier otra API de PixelTEC OS: denegada", () => {
+  test("cualquier otra API de Pixeltec.mx: denegada", () => {
     for (const p of [
       "/api/growth/brands",
       "/api/pixelforge/runs/1",

@@ -2,7 +2,7 @@
 
 /**
  * Editor del Blog (WO-2026-00088, paridad Encino `blog-editor.tsx`) adaptado a
- * PixelTEC OS: cuerpo en Markdown con el editor Tiptap existente, portada e
+ * Pixeltec.mx: cuerpo en Markdown con el editor Tiptap existente, portada e
  * imágenes a R2, guardado por intención (autosave 2.5 s / borrador / publicar /
  * programar), inspector de 4 pestañas (Publicar · Contenido · SEO · Snippets).
  *

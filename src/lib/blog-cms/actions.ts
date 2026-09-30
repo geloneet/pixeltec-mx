@@ -2,7 +2,7 @@
 
 /**
  * Server Actions del Blog (WO-2026-00088, paridad Encino `src/app/actions/blog.ts`)
- * adaptadas a PixelTEC OS: NextAuth (`requireUserSession` para leer/crear/
+ * adaptadas a Pixeltec.mx: NextAuth (`requireUserSession` para leer/crear/
  * editar; `requireAdmin` para publicar/programar/archivar/eliminar/categorías —
  * política vigente del blog: lo que cambia visibilidad pública exige admin),
  * Drizzle sobre las MISMAS tablas del blog legacy, revisiones en

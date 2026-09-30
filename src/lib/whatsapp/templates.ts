@@ -22,7 +22,7 @@ const MAX_PARAM_LENGTH = 1024;
 /**
  * Plantilla aprobada en Meta para avisar al equipo de una nueva respuesta de
  * cuestionario. Cuerpo: «Se recibió una nueva respuesta del cuestionario {{1}}
- * para {{2}}. / Referencia: {{3}} / Puedes revisar los detalles en PixelTEC OS.»
+ * para {{2}}. / Referencia: {{3}} / Puedes revisar los detalles en Pixeltec.mx.»
  * Botón 0 «Ver respuesta»: URL dinámica `https://pixeltec.mx/respuestas/{{1}}`.
  */
 export const NUEVA_RESPUESTA_TEMPLATE = {

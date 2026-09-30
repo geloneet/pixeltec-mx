@@ -11,7 +11,7 @@
 
 ### 1. Editar `.env.production` en el VPS (NO está en Git)
 
-    nano /home/ubuntu/pixeltec-os/.env.production
+    nano /home/ubuntu/pixeltec-mx/.env.production
 
 Agregar al final (si no existe):
 
@@ -21,7 +21,7 @@ Guardar. NO cambies CRON_SECRET.
 
 ### 2. Merge de la rama a main
 
-    cd /home/ubuntu/pixeltec-os
+    cd /home/ubuntu/pixeltec-mx
     git checkout main
     git merge feat/vps-api-migration-v3
     git log --oneline -3   # verificar que el commit feat(vps-api) está arriba
@@ -32,7 +32,7 @@ Guardar. NO cambies CRON_SECRET.
     docker compose up -d app
 
     # Observar arranque
-    docker logs -f pixeltec-os
+    docker logs -f pixeltec-mx
 
 Esperar hasta ver `Ready in X ms` o similar. Ctrl+C después.
 
@@ -51,7 +51,7 @@ Esperado: líneas tipo `GET /status ip=198.100.155.231 status=200`.
 
 Opción A — revertir el commit y rebuild:
 
-    cd /home/ubuntu/pixeltec-os
+    cd /home/ubuntu/pixeltec-mx
     git revert HEAD --no-edit
     docker compose build --no-cache app
     docker compose up -d app

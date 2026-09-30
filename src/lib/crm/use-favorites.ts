@@ -2,7 +2,8 @@
 
 import { useCallback, useEffect, useState } from "react";
 
-const KEY = "pixeltec-os:favorites";
+const KEY = "pixeltec-mx:favorites";
+const LEGACY_KEY = "pixeltec-os:favorites";
 
 export function useFavorites() {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
@@ -10,8 +11,13 @@ export function useFavorites() {
   // Leer del localStorage solo en el cliente (evita mismatch de hidratación).
   useEffect(() => {
     try {
-      const raw = localStorage.getItem(KEY);
-      if (raw) setFavorites(new Set(JSON.parse(raw) as string[]));
+      const raw = localStorage.getItem(KEY) ?? localStorage.getItem(LEGACY_KEY);
+      if (raw) {
+        const migrated = JSON.parse(raw) as string[];
+        setFavorites(new Set(migrated));
+        localStorage.setItem(KEY, JSON.stringify(migrated));
+        localStorage.removeItem(LEGACY_KEY);
+      }
     } catch {
       /* localStorage no disponible — ignorar */
     }

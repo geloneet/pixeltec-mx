@@ -31,7 +31,7 @@ npm run seo:gsc-weekly -- --csv ~/Downloads/Consultas.csv --out docs/seo/gsc-wee
 npm run seo:gsc-weekly -- --csv actual.csv --prev anterior.csv --out docs/seo/gsc-weekly/2026-W38.md
 
 # B) En el VPS, contra la base de datos (misma NODE_OPTIONS que `npm test`):
-cd /home/ubuntu/pixeltec-os && docker compose exec -T app npm run seo:gsc-weekly -- --from-db --out /tmp/2026-W38.md
+cd /home/ubuntu/pixeltec-mx && docker compose exec -T app npm run seo:gsc-weekly -- --from-db --out /tmp/2026-W38.md
 #    Si la imagen no incluye scripts/ o tsx: exporta a CSV con psql y usa --csv:
 #    \copy (select date, page, query, clicks, impressions, ctr, position from gsc_query_daily
 #           where site_id='pixeltec.mx' and date >= current_date - 60) to '/tmp/gsc.csv' csv header

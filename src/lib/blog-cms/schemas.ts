@@ -3,7 +3,7 @@ import { AI_ARTICLE_TONES } from './ai-params';
 
 /**
  * Validación en frontera del Blog (WO-2026-00088), espejo del `saveSchema` de
- * Encino (`src/app/actions/blog.ts:46-73`) adaptado al modelo de PixelTEC OS:
+ * Encino (`src/app/actions/blog.ts:46-73`) adaptado al modelo de Pixeltec.mx:
  * el cuerpo es MARKDOWN (`body`), no HTML; la «meta description» alimenta
  * `excerpt` + `seo.metaDescription`; el alt de portada vive en
  * `seo.ogImageAlt`.

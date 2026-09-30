@@ -1,6 +1,6 @@
 # Pixeltec.mx
 
-Sistema operativo interno de PixelTEC — CRM, gestión de proyectos, DevOps, inteligencia crypto y portal de clientes, todo en una sola aplicación.
+CRM y plataforma de operación de PixelTEC para gestionar clientes, proyectos y servicios desde una sola aplicación.
 
 **Producción:** https://pixeltec.mx
 
@@ -159,8 +159,8 @@ VPS_API_KEY
 OVH VPS
 ├── pixeltec-infra/         — Nginx + Certbot (red: web-network)
 │   └── docker-compose.yml
-└── pixeltec-os/            — Esta app
-    └── docker-compose.yml  — container: pixeltec-os, puerto interno 3000
+└── pixeltec-mx/            — Esta app
+    └── docker-compose.yml  — container: pixeltec-mx, puerto interno 3000
 ```
 
 Nginx hace proxy de `pixeltec.mx → app:3000` por la red Docker `web-network`.
@@ -175,14 +175,14 @@ Nginx hace proxy de `pixeltec.mx → app:3000` por la red Docker `web-network`.
 > Actions — GitHub queda solo como `origin`, fuente del SHA aprobado, respaldo
 > y CI no productivo futuro). El ÚNICO camino autorizado es el comando
 > instalado en el VPS (plantilla versionada:
-> `scripts/deploy/deploy-pixeltec-os-wrapper.sh`, instalada como
-> `/usr/local/sbin/deploy-pixeltec-os`, root:root 0755, ejecutada como
+> `scripts/deploy/deploy-pixeltec-mx-wrapper.sh`, instalada como
+> `/usr/local/sbin/deploy-pixeltec-mx`, root:root 0755, ejecutada como
 > `ubuntu`):
 >
 > ```bash
 > # SIEMPRE dentro de tmux (el build tarda >30 min y no debe morir con el SSH)
 > tmux new -s deploy-pixeltec
-> deploy-pixeltec-os --sha <40-hex> [--require-r2-delete] \
+> deploy-pixeltec-mx --sha <40-hex> [--require-r2-delete] \
 >   [--require-meta-credential-read] [--require-meta-publish] [--check-only]
 > ```
 >
@@ -191,10 +191,10 @@ Nginx hace proxy de `pixeltec.mx → app:3000` por la red Docker `web-network`.
 > build ni activación. El motor (`scripts/deploy/production-deploy.sh`, se
 > extrae DEL SHA aprobado) valida el contrato E0 ANTES de construir;
 > capabilities solo explícitas (mínimo privilegio). Construye desde una
-> **release inmutable** (`git archive` → `/home/ubuntu/pixeltec-os-releases/<sha>`):
+> **release inmutable** (`git archive` → `/home/ubuntu/pixeltec-mx-releases/<sha>`):
 > el checkout canónico **NUNCA se muta** — sin `git pull` y sin
-> `git checkout/switch/reset` sobre `/home/ubuntu/pixeltec-os`. Imágenes
-> etiquetadas por SHA (`pixeltec-os-app:<sha>`); `latest` se mueve tras health
+> `git checkout/switch/reset` sobre `/home/ubuntu/pixeltec-mx`. Imágenes
+> etiquetadas por SHA (`pixeltec-mx-app:<sha>`); `latest` se mueve tras health
 > OK; rollback automático a la versión previa (`.deploy-active-sha`) ante
 > health FAIL; la imagen fallida se conserva para diagnóstico. Sin `docker
 > image prune` ni `docker system prune` automáticos en el flujo (la limpieza

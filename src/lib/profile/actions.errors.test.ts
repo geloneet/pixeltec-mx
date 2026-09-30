@@ -49,7 +49,7 @@ vi.mock("sharp", () => ({
 import { uploadAvatar, deleteAvatar, updateProfile } from "./actions";
 
 const TOKEN_PRIVADO = "EAAG9ZBx0kZCZBsBO1ZC7tokenprivadodemeta";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/r2/upload.ts:88:9)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/r2/upload.ts:88:9)";
 const BUCKET_INTERNO = "pixeltec-perfil-prod";
 const RAW_SQL = "UPDATE users SET image = $1 WHERE id = $2";
 

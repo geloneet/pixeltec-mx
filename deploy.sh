@@ -10,6 +10,6 @@ set -euo pipefail
 echo "ERROR: deploy.sh legacy está deshabilitado (E0g-3, ADR-0028; M1A)." >&2
 echo "GitHub Actions YA NO despliega producción (el workflow fue eliminado)." >&2
 echo "El ÚNICO camino autorizado es el comando manual gobernado en el VPS:" >&2
-echo "  /usr/local/sbin/deploy-pixeltec-os --sha <40-hex> [--require-*] [--check-only]" >&2
+echo "  /usr/local/sbin/deploy-pixeltec-mx --sha <40-hex> [--require-*] [--check-only]" >&2
 echo "Motor versionado: scripts/deploy/production-deploy.sh. Detalle: README, 'Operaciones comunes'." >&2
 exit 1

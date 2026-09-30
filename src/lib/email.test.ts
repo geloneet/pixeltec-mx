@@ -58,7 +58,7 @@ import { sendEmail, sendPasswordResetEmail, sendContactNotification } from "./em
 
 const RESEND_RAW_BODY = '{"statusCode":403,"name":"validation_error","message":"The pixeltec.mx domain is not verified"}';
 const TOKEN_PRIVADO = "re_tokenprivadoderesend";
-const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-os/src/lib/email.ts:64:31)";
+const STACK_INTERNO = "at Object.<anonymous> (/Users/pixeltec/pixeltec-mx/src/lib/email.ts:64:31)";
 const CLIENTE_CONFIDENCIAL = "Clínica Smile More — +5213221234567";
 const MARCADORES = [RESEND_RAW_BODY, TOKEN_PRIVADO, STACK_INTERNO, CLIENTE_CONFIDENCIAL];
 

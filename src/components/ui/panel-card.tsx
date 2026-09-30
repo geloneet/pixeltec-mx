@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
  * Extraído del shell duplicado literal en
  * `src/components/hoy/active-projects-panel.tsx` y
  * `src/components/hoy/recent-clients-panel.tsx` al rediseñar la distribución
- * de `/hoy` (excepción al freeze de v1.0 — ver PixelTEC OS.md en NeuroPIXEL).
+ * de `/hoy` (excepción al freeze de v1.0 — ver Pixeltec.mx.md en NeuroPIXEL).
  */
 export function PanelCard({
   icon: Icon,

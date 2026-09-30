@@ -58,7 +58,7 @@ const AREA_ICONS: Record<NavArea, LucideIcon> = {
  * TopNavigation + SecondaryNavigation sin cambios (ver Shell en layout.tsx).
  *
  * Fuente de navegación: el mismo catálogo de nav-config.ts (ADR-0030) — cero
- * taxonomía nueva. Excepción al freeze de v1.0 (ver PixelTEC OS.md).
+ * taxonomía nueva. Excepción al freeze de v1.0 (ver Pixeltec.mx.md).
  */
 export function AppSidebar({
   activeArea,

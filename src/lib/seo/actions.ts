@@ -2,7 +2,7 @@
 
 /**
  * Server Actions del módulo SEO (WO-2026-00095, paridad Muebles Encino
- * `src/app/actions/seo*.ts`) adaptadas a PixelTEC OS.
+ * `src/app/actions/seo*.ts`) adaptadas a Pixeltec.mx.
  *
  * Permisos: TODA escritura exige rol administrador. Estas herramientas cambian
  * lo que ven Google y los buscadores en pixeltec.mx — misma política que

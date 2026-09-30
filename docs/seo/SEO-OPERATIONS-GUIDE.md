@@ -93,7 +93,7 @@ Lunes, después del cron diario de las 06:00 (`api/cron/seo-gsc-sync`, datos ya 
 
 1. Generar el informe con `scripts/seo/gsc-weekly-report.ts` (detalle en
    `docs/seo/gsc-weekly/README.md`):
-   - **Con SSH (VPS):** `cd /home/ubuntu/pixeltec-os && docker compose exec -T app npm run seo:gsc-weekly -- --from-db --out /tmp/<YYYY-Www>.md`.
+   - **Con SSH (VPS):** `cd /home/ubuntu/pixeltec-mx && docker compose exec -T app npm run seo:gsc-weekly -- --from-db --out /tmp/<YYYY-Www>.md`.
      Si la imagen no trae `scripts/`/`tsx`, exportar `gsc_query_daily` a CSV con `psql`
      (consulta en el README) y correr `--csv` en local.
    - **Sin SSH (esta terminal, hard_deny):** Miguel exporta el CSV de Search Console

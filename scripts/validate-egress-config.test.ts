@@ -36,6 +36,7 @@ function prodSintetica(): Record<string, string> {
     EGRESS_INTERNAL_TARGET_ALLOWLIST: "pixelbot:127.0.0.1:3011",
     CRON_EXECUTION_MODE: "enabled",
     CRON_SECRET: SECRETO_SINTETICO,
+    PIXELTEC_TEAM_EMAIL: "team@example.test",
   };
 }
 

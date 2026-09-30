@@ -1,5 +1,5 @@
 /**
- * Shared Framer Motion animation variants for PixelTEC OS.
+ * Shared Framer Motion animation variants for Pixeltec.mx.
  * Single source of truth — import these instead of redefining locally.
  */
 

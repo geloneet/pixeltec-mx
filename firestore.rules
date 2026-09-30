@@ -173,7 +173,7 @@ service cloud.firestore {
     // vía /api/whatsapp-inbox/* → API interna de pixelbot (SQLite = source
     // of truth). Cerrado a cal/agua: nadie debe leer ni escribir aquí.
     // ⚠️ GATE DE DEPLOY: esta regla y el código de Fase A (pixelbot) +
-    // Fase B (pixeltec-os) deben desplegarse JUNTOS. Si esta regla se
+    // Fase B (pixeltec-mx) deben desplegarse JUNTOS. Si esta regla se
     // despliega ANTES que ese código, se rompe el inbox de WhatsApp en
     // producción (el dashboard viejo todavía lee tenants/** por onSnapshot).
     // ═══════════════════════════════════════════════════════════════
@@ -190,7 +190,7 @@ service cloud.firestore {
     // tags, notas) migrado a Postgres — el dashboard lee/escribe todo vía
     // /api/whatsapp-inbox/contacts* (ver src/lib/db/repos/whatsapp-contacts.ts).
     // Cerrado a cal/agua: nadie debe leer ni escribir aquí.
-    // ⚠️ GATE DE DEPLOY: esta regla y el código de Fase B (pixeltec-os)
+    // ⚠️ GATE DE DEPLOY: esta regla y el código de Fase B (pixeltec-mx)
     // deben desplegarse JUNTOS. Si esta regla se despliega ANTES que ese
     // código, se rompe la ficha de contacto del inbox en producción (el
     // dashboard viejo todavía lee/escribe whatsappContacts/** vía

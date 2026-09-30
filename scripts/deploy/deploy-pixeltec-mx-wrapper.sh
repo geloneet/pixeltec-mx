@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Wrapper canónico del deploy manual de PixelTEC OS (M1A).
+# Wrapper canónico del deploy manual de Pixeltec.mx (M1A).
 #
 # PLANTILLA VERSIONADA Y AUDITADA. En el VPS se instala (gate M1B, comando
 # explícito) como:
-#   /usr/local/sbin/deploy-pixeltec-os        (root:root, modo 0755)
+#   /usr/local/sbin/deploy-pixeltec-mx        (root:root, modo 0755)
 # root POSEE el archivo (integridad: ubuntu no puede modificarlo en silencio);
 # se EJECUTA como ubuntu, sin sudo — mínimo privilegio: el motor no se eleva.
 #
 # Uso:
-#   deploy-pixeltec-os --sha <40-hex> \
+#   deploy-pixeltec-mx --sha <40-hex> \
 #     [--require-r2-delete] [--require-meta-credential-read] \
 #     [--require-meta-publish] [--check-only]
 #
@@ -23,9 +23,9 @@
 set -euo pipefail
 
 EXPECTED_USER="${DEPLOY_EXPECTED_USER:-ubuntu}"
-APP_DIR="${DEPLOY_APP_DIR:-/home/ubuntu/pixeltec-os}"
+APP_DIR="${DEPLOY_APP_DIR:-/home/ubuntu/pixeltec-mx}"
 LOG_DIR="${DEPLOY_LOG_DIR:-/home/ubuntu/deploy-logs}"
-LOCK_FILE="${DEPLOY_LOCK_FILE:-/home/ubuntu/.pixeltec-os-deploy.lock}"
+LOCK_FILE="${DEPLOY_LOCK_FILE:-/home/ubuntu/.pixeltec-mx-deploy.lock}"
 
 fail() { echo "DEPLOY-WRAPPER FAIL: $1" >&2; exit 1; }
 
@@ -64,7 +64,7 @@ umask 077
 mkdir -p "$LOG_DIR"
 MODE=deploy
 [ "$CHECK_ONLY" = 1 ] && MODE=check
-LOG_FILE="$LOG_DIR/pixeltec-os-$(date -u +%Y%m%dT%H%M%SZ)-${SHA:0:12}-$MODE.log"
+LOG_FILE="$LOG_DIR/pixeltec-mx-$(date -u +%Y%m%dT%H%M%SZ)-${SHA:0:12}-$MODE.log"
 
 # El motor se extrae DEL SHA aprobado — nunca del checkout mutable.
 ENGINE="$(mktemp)"
@@ -75,7 +75,7 @@ bash -n "$ENGINE" || fail "el motor extraído del SHA no pasa bash -n"
 
 set +e
 {
-  echo "== deploy-pixeltec-os sha=$SHA mode=$MODE caps=${ARGS[*]:-ninguna} user=$(id -un) utc=$(date -u +%FT%TZ) =="
+  echo "== deploy-pixeltec-mx sha=$SHA mode=$MODE caps=${ARGS[*]:-ninguna} user=$(id -un) utc=$(date -u +%FT%TZ) =="
   bash "$ENGINE" "$SHA" ${ARGS[@]:+"${ARGS[@]}"}
 } 2>&1 | tee "$LOG_FILE"
 RC=$?

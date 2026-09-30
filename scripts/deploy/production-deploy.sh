@@ -18,7 +18,10 @@
 #     tras health OK. Sin prune: se conservan como mínimo la imagen activa y la
 #     anterior; la imagen fallida se conserva para diagnóstico.
 #   - Recrea EXCLUSIVAMENTE el servicio `app` (`--no-deps`: db y qa-runner
-#     intactos); rollback automático ante health FAIL usando .deploy-active-sha.
+#     intactos); verifica el contenedor nuevo directamente, además de Nginx.
+#     El rollback automático usa .deploy-active-sha cuando ya existe una
+#     versión previa bajo este nombre. En el primer corte, el rollback del
+#     upstream antiguo se ejecuta según el runbook de migración.
 #   - `--check-only`: ejecuta TODAS las validaciones (SHA, rollback disponible,
 #     release, compose config, contrato E0) sin build, sin up, sin reload, sin
 #     mover imágenes y sin escribir .deploy-active-sha.
@@ -140,16 +143,39 @@ PIXELTEC_MX_IMAGE_TAG="$SHA" "${COMPOSE[@]}" up -d --no-build --no-deps app
 docker exec pixeltec-nginx nginx -s reload || true
 
 echo "==> [8/9] Health"
+direct_health_check() {
+  docker exec pixeltec-mx node -e '
+    const paths = ["/", "/login", "/api/health"];
+    Promise.all(paths.map(async (path) => {
+      const response = await fetch(`http://127.0.0.1:3000${path}`, {
+        redirect: "manual",
+        headers: { host: "pixeltec.mx" },
+        signal: AbortSignal.timeout(10000),
+      });
+      console.log(`direct-health ${path}=${response.status}`);
+      if (response.status < 200 || response.status >= 400) {
+        throw new Error(`direct-health inválido: ${path}`);
+      }
+    })).catch((error) => {
+      console.error(error.message);
+      process.exitCode = 1;
+    });
+  '
+}
+
 health_check() {
   sleep 8
   local status code login restarts restarts2
   status="$(docker inspect pixeltec-mx --format '{{.State.Status}}' 2>/dev/null || echo missing)"
   [ "$status" = "running" ] || { echo "health: contenedor $status"; return 1; }
   restarts="$(docker inspect pixeltec-mx --format '{{.RestartCount}}')"
+  docker exec pixeltec-mx-db psql -U pixeltec_mx -d pixeltec_mx -Atqc 'select 1' >/dev/null \
+    || { echo "health: base de datos nueva no disponible"; return 1; }
+  direct_health_check || return 1
   # Host explícito: el default_server de nginx descarta (444) hosts no configurados.
   code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 -H "Host: $HOST_HEADER" http://localhost)"
   login="$(curl -s -o /dev/null -w '%{http_code}' --max-time 10 -H "Host: $HOST_HEADER" http://localhost/login)"
-  echo "health: sitio=$code login=$login"
+  echo "health: nginx-actual sitio=$code login=$login"
   [ "$code" -ge 200 ] && [ "$code" -lt 400 ] || return 1
   [ "$login" -ge 200 ] && [ "$login" -lt 400 ] || return 1
   # DB y política: sin errores de conexión ni bloqueos inesperados al arrancar.
@@ -168,13 +194,14 @@ if health_check; then
   echo "$SHA" > "$ACTIVE_SHA_FILE"
   echo "DEPLOY OK sha=$SHA imageId=$(docker image inspect -f '{{.Id}}' "$IMAGE:$SHA") utc=$(date -u +%FT%TZ) rollback=no"
 else
-  echo "HEALTH FAIL — rollback automático a ${PREV_SHA:-N/A}" >&2
+  echo "HEALTH FAIL — rollback a ${PREV_SHA:-N/A}" >&2
   if [ -n "${PREV_SHA:-}" ]; then
     PIXELTEC_MX_IMAGE_TAG="$PREV_SHA" "${COMPOSE[@]}" up -d --no-build --no-deps app
     docker exec pixeltec-nginx nginx -s reload || true
     sleep 8
+    direct_health_check || true
     curl -s -o /dev/null -w "rollback health: %{http_code}\n" --max-time 10 -H "Host: $HOST_HEADER" http://localhost || true
   fi
   echo "DEPLOY FAILED sha=$SHA utc=$(date -u +%FT%TZ) rollback=${PREV_SHA:-none} — imagen fallida $IMAGE:$SHA conservada para diagnóstico" >&2
-  fail "el health del deploy falló; se restauró la versión anterior"
+  fail "el health del deploy falló; revisar el resultado de rollback indicado arriba"
 fi

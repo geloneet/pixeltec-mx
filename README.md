@@ -208,11 +208,14 @@ Nginx hace proxy de `pixeltec.mx → app:3000` por la red Docker `web-network`.
 > `VPS_DEPLOY_SSH_KEY` quedan programados para eliminación tras validar el
 > deploy manual (gate M1B).
 >
-> **qa-runner:** el deploy normal reconstruye ÚNICAMENTE `app`. `qa-runner` es
-> una imagen separada (mismo Dockerfile, target propio), **sin bind mount del
-> checkout** (rootfs read-only + tmpfs): no se recrea ni se modifica en un
-> deploy (`--no-deps`). Cambios futuros a qa-runner requieren su propio gate y
-> comando explícito. B7 no lo toca.
+> **qa-runner (RETIRADO, WO-2026-00485/00487):** era el QA de navegador
+> (Playwright) de PixelForge. PixelForge y `scripts/qa-runner/` se eliminaron
+> en `53212ced` (WO-2026-00132), así que el servicio y su stage del
+> `Dockerfile` quedaron huérfanos y producían una imagen rota; se quitaron de
+> `docker-compose.yml` y del `Dockerfile` (decisión D-27: no resucitar
+> PixelForge). El deploy normal reconstruye ÚNICAMENTE `app` y no borra el
+> contenedor viejo `pixeltec-mx-qa-runner`: su retirada en el VPS es un gate
+> aparte, ver `docs/deploy/retiro-qa-runner.md`.
 
 ```bash
 # Ver logs en vivo

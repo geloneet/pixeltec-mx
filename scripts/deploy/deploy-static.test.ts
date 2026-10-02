@@ -249,9 +249,24 @@ describe("aislamiento de .env.production del build context (M1A ITERATE)", () =>
     expect(compose).not.toMatch(/args:[^\n]*env/i);
   });
 
-  test("compose usa PIXELTEC_MX_ENV_FILE en TODOS los env_file (app, qa-runner, migrator, seed)", () => {
-    const refs = compose.match(/env_file:(\n\s+- |\s)\$\{PIXELTEC_MX_ENV_FILE:-\.env\.production\}/g) ?? [];
-    expect(refs.length).toBe(4);
+  test("compose usa PIXELTEC_MX_ENV_FILE en los env_file de exactamente app, migrator y seed", () => {
+    // Bloques de servicio de primer nivel bajo `services:` (indentación de 2
+    // espacios) hasta la siguiente clave top-level. Sin parser YAML: el
+    // contrato es el texto del compose.
+    const servicesSection = compose.slice(compose.indexOf("\nservices:\n")).split(/\n(?=\S)/)[1] ?? "";
+    const blocks = servicesSection.split(/\n(?=  [a-z][\w-]*:\n)/).slice(1);
+    const parametrized = /env_file:(\n\s+- |\s)\$\{PIXELTEC_MX_ENV_FILE:-\.env\.production\}/;
+    const withEnvFile = blocks
+      .filter((b) => /\n\s+env_file:/.test(b))
+      .map((b) => b.trim().split(":")[0]);
+    // Añadir o quitar un consumidor del entorno de producción obliga a revisar
+    // esta expectativa (qa-runner se retiró en WO-2026-00485/00487).
+    expect(withEnvFile.sort()).toEqual(["app", "migrator", "seed"]);
+    for (const b of blocks.filter((x) => /\n\s+env_file:/.test(x))) {
+      expect(b, `${b.trim().split(":")[0]} debe usar PIXELTEC_MX_ENV_FILE`).toMatch(parametrized);
+    }
+    const refs = compose.match(new RegExp(parametrized.source, "g")) ?? [];
+    expect(refs.length).toBe(3);
     // Cero referencias env_file sin parametrizar.
     expect(compose).not.toMatch(/env_file:(\n\s+- |\s)\.env\.production/);
   });

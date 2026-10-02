@@ -17,8 +17,8 @@
 #   - Imagen etiquetada por SHA (pixeltec-mx-app:<sha>); `latest` solo se mueve
 #     tras health OK. Sin prune: se conservan como mínimo la imagen activa y la
 #     anterior; la imagen fallida se conserva para diagnóstico.
-#   - Recrea EXCLUSIVAMENTE el servicio `app` (`--no-deps`: db y qa-runner
-#     intactos); verifica el contenedor nuevo directamente, además de Nginx.
+#   - Recrea EXCLUSIVAMENTE el servicio `app` (`--no-deps`: db intacta);
+#     verifica el contenedor nuevo directamente, además de Nginx.
 #     El rollback automático usa .deploy-active-sha cuando ya existe una
 #     versión previa bajo este nombre. En el primer corte, el rollback del
 #     upstream antiguo se ejecuta según el runbook de migración.
@@ -136,7 +136,7 @@ fi
 echo "==> [6/9] Build versionado $IMAGE:$SHA (producción intacta durante el build)"
 PIXELTEC_MX_IMAGE_TAG="$SHA" "${COMPOSE[@]}" build app
 
-echo "==> [7/9] Recreando exclusivamente el servicio app (db y qa-runner intactos)"
+echo "==> [7/9] Recreando exclusivamente el servicio app (db intacta)"
 PIXELTEC_MX_IMAGE_TAG="$SHA" "${COMPOSE[@]}" up -d --no-build --no-deps app
 # El contenedor recreado puede tomar otra IP en web-network; sin reload nginx
 # sigue apuntando a la vieja -> 502/504.

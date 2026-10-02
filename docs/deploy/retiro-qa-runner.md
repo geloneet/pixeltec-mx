@@ -17,6 +17,12 @@ Decisión: D-27 (Miguel, 2026-10-02): no resucitar PixelForge; retirar el qa-run
 - La configuración resuelta de `docker compose config` (con el perfil `tools`) es idéntica antes y después para `app`, `db`, `migrator`, `seed`, `networks`, `volumes` y `secrets`.
 - El motor de deploy (`scripts/deploy/production-deploy.sh`) solo hace `build app` y `up -d --no-build --no-deps app`, sin `--remove-orphans`. Por eso, después del merge, un deploy normal **no** borra el contenedor viejo: Compose solo avisará `Found orphan containers ([pixeltec-mx-qa-runner])`. La retirada efectiva es explícita y se hace en un paso aparte (abajo).
 
+## Deuda residual inventariada (fuera de alcance, WO-2026-00487)
+
+- `.env.production.example` (líneas 9-24): `QA_PREVIEW_TOKEN_SECRET` y `QA_INTERNAL_APP_URL` con sus comentarios. Ninguna se usa en `src/` ni en `scripts/`.
+- `tsconfig.json`: `exclude` de `scripts/qa-runner`, que ya no existe. Es inocuo.
+- `package.json`: devDependency `playwright` (1.61.1). Hay que comprobar que no la usa ningún otro flujo antes de quitarla.
+
 ## Plan de retirada efectiva en el VPS (para el gate; no ejecutado)
 
 Requisitos previos: este PR fusionado en `main` y desplegado por el wrapper gobernado, y GO explícito de Miguel para este gate. Solo afecta a `pixeltec-mx-qa-runner` y a su imagen. **Prohibido** `docker system prune`, `docker image prune` o cualquier limpieza global: el VPS aloja otros proyectos.

@@ -18,7 +18,7 @@ El servidor escucha solo en localhost. `dist/` también funciona servido por un 
 
 72 páginas navegables. Las 60 URLs observadas en el sitemap público de Pixeltec.mx tienen representación visual, con plantillas compartidas para servicios, industria, landings locales, guías y artículos. Se agregan catálogo/casos de proyectos y superficies públicas de metodología, acceso, recuperación y mapa. `docs/routes.json` inventaría cada ruta. No se trabaja sobre CRM, portal privado, tokens de propuestas/contratos ni cuestionarios de clientes.
 
-Se conserva el inicio, su cubo, física, tipografía y composición. El build conecta su navegación a las páginas interiores y añade enlaces de exploración al pie. `public/support.js` y `public/cubo.js` son los recursos originales del usuario. Los interiores adoptan la cabecera crema, CTA azul, logo, negro/blanco, Bricolage Grotesque, geometría y numeración del inicio. Las ilustraciones nuevas son esquemas CSS, no capturas de sistemas reales.
+Se conserva el inicio, su cubo, física, tipografía y composición. El build conecta su navegación a las páginas interiores y añade enlaces de exploración al pie y hooks de movimiento a la copia generada. `public/support.js` y `public/cubo.js` son los recursos originales del usuario. Los interiores adoptan la cabecera crema, CTA azul, logo, negro/blanco, Bricolage Grotesque, geometría y numeración del inicio. Las ilustraciones nuevas son esquemas CSS, no capturas de sistemas reales.
 
 - `src/templates.ts`: componentes de cabecera, pie, arte y plantillas.
 - `src/catalog.ts`: rutas y contenido provisional tipado.
@@ -31,9 +31,17 @@ El contenido es provisional. No se valida aquí la veracidad del copy comercial 
 
 ## Validación
 
-`npm run verify`: TypeScript strict sin errores, 73 archivos HTML (72 rutas más fallback 404), 3,637 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 72 rutas, registro en `docs/verification.json`.
+`npm run verify`: TypeScript strict sin errores, 73 archivos HTML (72 rutas más fallback 404), 3,711 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 72 rutas, registro en `docs/verification.json`.
 
 Navegador real: portada y cubo renderizados; navegación a servicios; abrir/cerrar menú; filtro de proyectos; búsqueda y estado vacío de blog; formulario de contacto con confirmación de simulación; diagnóstico hasta resumen sin envío. Consola consultada sin errores. Sin desbordamiento horizontal en 8 plantillas a 320, 768 y 1440 px (`docs/responsive-checks.json`) y 12 rutas representativas a 390 px tras corregir diagnóstico. Capturas manuales de portada, interiores y móvil revisadas. No equivale a una auditoría de producción o certificación de accesibilidad completa.
+
+## Movimiento suave · 2026-10-02
+
+`src/motion.ts` y `public/motion.css` comparten los efectos sin dependencias adicionales. Las entradas usan 18 px / 640 ms con escalonamiento máximo de 165 ms; se reproducen una vez al entrar al viewport. Botones, flechas, subrayados e ilustraciones responden suavemente; los efectos de hover se limitan a ratón/puntero fino. El menú interior abre en 420 ms y cierra en 180 ms, manteniendo Escape y retorno del foco. Filtros solo animan tarjetas que vuelven a aparecer; el diagnóstico anima el paso visible y su progreso.
+
+El contenido es visible por defecto: si falla JavaScript o no existe IntersectionObserver, sigue accesible. La preferencia `prefers-reduced-motion` desactiva los efectos nuevos y los bucles CSS; si cambia durante la sesión se cancelan las animaciones nuevas activas. La navegación por teclado revela inmediatamente su objetivo. En el inicio se espera al montaje del runtime heredado sin intervenir en cubo, física, marquesinas ni sus transforms. Los comportamientos heredados JavaScript conservan sus propias reglas de movimiento.
+
+Verificación adicional: TypeScript/build y enlaces PASS; menú por Escape con retorno de foco, abrir/cerrar en móvil, filtros y avance/retroceso del diagnóstico comprobados; sin overflow en servicios, proyectos y diagnóstico a 390 px. `docs/motion-checks.json` registra alcance y límites. Movimiento reducido revisado en código; la herramienta de navegador no permite emular esa preferencia, por lo que no se declara prueba visual con ella activada.
 
 ## Límites y siguiente etapa
 

@@ -1,0 +1,30 @@
+/* Shared, restrained motion. Independent of the original homepage's layout. */
+:root{--motion-ease:cubic-bezier(.22,1,.36,1);--motion-quick:220ms;--motion-gentle:600ms}
+@media(prefers-reduced-motion:no-preference){
+  :where(.button,.talk,.text-link,.round-link,.filters button,.choice-chips span,.wizard-options span){transition:color var(--motion-quick),background var(--motion-quick),border-color var(--motion-quick),box-shadow 350ms var(--motion-ease),translate 350ms var(--motion-ease)}
+  :where(.button,.text-link,.talk) > span,.card-arrow,.menu-toggle span,summary b{transition:translate 350ms var(--motion-ease),rotate 350ms var(--motion-ease),transform 350ms var(--motion-ease),background var(--motion-quick),color var(--motion-quick)}
+  .visual-link .art{transition:transform 800ms var(--motion-ease)}
+  .art :where(.mock-browser,.phone,.tile-grid,.core){transition:translate 800ms var(--motion-ease),scale 800ms var(--motion-ease)}
+  .progress-track i{transition:width 600ms var(--motion-ease)}
+  .menu-dialog[open]::backdrop{animation:pixel-backdrop 420ms ease both}
+  @keyframes pixel-backdrop{from{opacity:0}to{opacity:1}}
+  .site-header nav a,[data-pixel-home] header nav a{position:relative}
+  .site-header nav a:after,[data-pixel-home] header nav a:after{content:'';position:absolute;left:0;right:0;bottom:-5px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 350ms var(--motion-ease)}
+  .site-header nav a:is(:hover,:focus-visible):after,[data-pixel-home] header nav a:is(:hover,:focus-visible):after{transform:scaleX(1)}
+  [data-pixel-home] :where(a,button){transition:color 250ms,background-color 250ms,border-color 250ms,box-shadow 350ms var(--motion-ease)}
+  @media(hover:hover) and (pointer:fine){
+    .button:hover{translate:0 -2px;box-shadow:0 8px 24px #1466ff1a}
+    :where(.button,.text-link,.talk):hover > span{translate:3px -2px}
+    .round-link:hover{rotate:8deg}
+    .visual-link:hover .art{transform:scale(1.018)}
+    .visual-link:hover .card-arrow{translate:2px -2px;background:var(--blue);color:white}
+    .service-art:hover :where(.mock-browser,.phone,.tile-grid,.core){translate:0 -5px;scale:1.025}
+    .menu-toggle:hover span:nth-child(2){translate:-5px 0}
+    .wizard-options label:hover span{border-color:var(--blue)}
+  }
+}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .visual-link:hover .art{transform:none}
+}

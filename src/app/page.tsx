@@ -7,6 +7,7 @@ import { AboutWaveSection } from '@/components/ui/about-wave-section';
 import { DiagnosticModalProvider } from '@/components/diagnostico/diagnostic-modal-provider';
 import { HomeStructuredData } from '@/components/seo/home-structured-data';
 import { LocalLandingsSection } from '@/components/sections/local-landings';
+import { HomeBlogSection } from '@/components/sections/home-blog-section';
 import { HOME_HERO, HOME_SEO } from '@/lib/content/home';
 
 const LandingAccordionItem = dynamic(() =>
@@ -59,6 +60,7 @@ export default function Home() {
           <IndustriesStrip />
           {/* Enlazado interno a las 12 landings ciudad×servicio + 6 guías (WO-2026-00343). */}
           <LocalLandingsSection />
+          <HomeBlogSection />
         </main>
       </DiagnosticModalProvider>
       <Footer />

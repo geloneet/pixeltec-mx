@@ -22,18 +22,18 @@ export const HOME_SEO = {
 } as const;
 
 export const HOME_HERO = {
-  badge: 'Desde Puerto Vallarta para todo México',
-  title1: 'Desarrollo Web y Apps',
-  title2: 'Automatización con IA',
+  title1: 'Desarrollo Web, Apps y Software',
+  title2: 'Automatización para empresas',
   subtitle:
-    'Construimos páginas web, apps y software a la medida, y automatizamos tu operación con IA y WhatsApp. Desde Puerto Vallarta, para pymes y empresas de Bahía de Banderas, Guadalajara y todo México.',
+    'Creamos páginas web, aplicaciones y software a la medida. Automatizamos procesos con IA, WhatsApp e integraciones para que tu empresa opere mejor y pierda menos tiempo en tareas repetitivas.',
 } as const;
 
 export const HOME_ABOUT = {
-  headingLead: 'Arquitectos de tu transformación digital',
-  headingAccent: 'desde Puerto Vallarta',
+  eyebrow: 'PIXELTEC · PUERTO VALLARTA, JALISCO',
+  headingLead: 'Construimos tecnología',
+  headingAccent: 'que mueve empresas',
   paragraph:
-    'No somos una agencia tradicional de desarrollo web. En PixelTEC la tecnología es un medio, no el fin: combinamos consultoría TI, inteligencia artificial y desarrollo de software a la medida para que pymes y empresas de Puerto Vallarta, Guadalajara y todo México operen y escalen sin fricción.',
+    'No somos solo una agencia de desarrollo. Diseñamos software, automatizaciones e integraciones alrededor de cómo realmente opera cada empresa.',
 } as const;
 
 /** Párrafo bajo el H2 de Servicios; solo se aplica si no hay conflicto con el PR #136. */

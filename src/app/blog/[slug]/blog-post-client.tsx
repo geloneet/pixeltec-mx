@@ -8,7 +8,7 @@ import { formatEditorialDate } from '@/lib/blog/format-date';
 import type { PublicBlogPost } from '@/lib/blog/public-post';
 import type { HeadingEntry } from '@/lib/blog/heading-utils';
 import { ViewBeacon } from '@/components/blog/view-beacon';
-import { BlogSidebar } from '@/components/blog/blog-sidebar';
+import { BlogSidebar, type BlogSidebarData } from '@/components/blog/blog-sidebar';
 import { relatedResourcesFor } from '@/lib/blog/cluster-map';
 import { GoogleBusinessCard } from '@/components/site/google-business-card';
 
@@ -25,12 +25,6 @@ interface RelatedCard {
   category: string;
 }
 
-interface SidebarData {
-  recentPosts: { slug: string; title: string }[];
-  categories: string[];
-  tags: string[];
-}
-
 export default function BlogPostClient({
   post,
   related,
@@ -40,7 +34,7 @@ export default function BlogPostClient({
   post: PublicBlogPost;
   related: RelatedCard[];
   headings: HeadingEntry[];
-  sidebar: SidebarData;
+  sidebar: BlogSidebarData;
 }) {
   const coverImage = post.coverImage ?? DEFAULT_COVER;
   const coverAlt = post.coverAlt || post.title;
@@ -62,50 +56,42 @@ export default function BlogPostClient({
       : relatedResourcesFor(post.category, post.tags, post.internalLinks).map((r) => ({ targetUrl: r.href, anchor: r.anchor }));
 
   return (
-    <main className="min-h-screen bg-background dark:bg-[#030303] text-foreground dark:text-white pt-32 sm:pt-40 pb-16 sm:pb-24">
+    <main className="min-h-screen bg-[#f5f7fa] text-slate-950 dark:bg-[#080d16] dark:text-white pt-32 sm:pt-40 pb-20 sm:pb-28">
       <ViewBeacon slug={post.slug} />
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-8 md:mb-10">
+      <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-8">
           <Link
             href="/blog"
-            className="group inline-flex items-center font-medium text-muted-foreground dark:text-zinc-400 transition-colors hover:text-foreground dark:hover:text-white"
+            className="group inline-flex items-center text-sm font-medium text-slate-600 transition-colors hover:text-sky-700 dark:text-slate-300 dark:hover:text-sky-300"
           >
-            <ArrowLeft className="mr-2 h-5 w-5 transition-transform group-hover:-translate-x-1" />
+            <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
             Volver al Blog
           </Link>
         </div>
 
-        <div className="lg:grid lg:grid-cols-[1fr_280px] lg:items-start lg:gap-12">
-        <div className="min-w-0">
-        <header className="relative mb-12 h-64 sm:h-80 md:h-96 w-full overflow-hidden rounded-2xl md:rounded-3xl shadow-[0_12px_40px_-20px_rgba(12,17,29,0.25)] dark:shadow-[0_0_30px_rgba(0,240,255,0.05)]">
-          {/* L4 (WO-2026-00345): la columna del artículo no supera ~768 px en
-              desktop; `sizes=100vw` pedía una imagen del ancho de la pantalla.
-              `priority` se mantiene (es el LCP del artículo). */}
-          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 768px" priority />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 lg:p-12">
-            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-              {post.category && (
-                <span className="rounded-full bg-primary/5 dark:bg-cyan-950/50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-brand">
-                  {post.category}
-                </span>
-              )}
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/85 dark:text-zinc-300">
-                <CalendarDays className="h-4 w-4" aria-hidden />
-                {publishedStr} • {readTime}
-              </span>
-              {updatedStr && (
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground dark:text-zinc-400">
-                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
-                  Actualizado el {updatedStr}
-                </span>
-              )}
-            </div>
-            <h1 className="text-3xl font-extrabold leading-tight text-foreground dark:text-white md:text-4xl lg:text-5xl">
-              {post.title}
-            </h1>
+        <header className="mx-auto mb-10 max-w-4xl text-center md:mb-12">
+          {post.category && (
+            <span className="inline-flex rounded-full bg-sky-100 px-4 py-2 text-xs font-semibold text-sky-900 dark:bg-sky-400/15 dark:text-sky-200">
+              {post.category}
+            </span>
+          )}
+          <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-slate-950 dark:text-white sm:text-5xl lg:text-6xl">
+            {post.title}
+          </h1>
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-sm text-slate-600 dark:text-slate-300">
+            <span className="font-medium text-slate-900 dark:text-white">{post.authorName}</span>
+            <span className="inline-flex items-center gap-1.5"><CalendarDays className="h-4 w-4" aria-hidden />{publishedStr}</span>
+            <span>{readTime}</span>
+            {updatedStr && <span className="inline-flex items-center gap-1.5"><RefreshCw className="h-3.5 w-3.5" aria-hidden />Actualizado el {updatedStr}</span>}
           </div>
         </header>
+
+        <div className="relative mb-12 aspect-[16/9] max-h-[620px] w-full overflow-hidden rounded-[1.75rem] bg-slate-200 dark:bg-white/10 md:mb-16">
+          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1280px) 100vw, 1200px" priority />
+        </div>
+
+        <div className="lg:grid lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start lg:gap-12">
+        <div className="min-w-0 max-w-3xl">
 
         {headings.length >= 3 && (
           <nav
@@ -125,7 +111,7 @@ export default function BlogPostClient({
           </nav>
         )}
 
-        <article className="prose dark:prose-invert prose-lg max-w-none text-foreground/85 dark:text-zinc-300">
+        <article className="prose max-w-none text-slate-700 dark:prose-invert dark:text-slate-300 prose-p:leading-8 prose-li:leading-8 prose-headings:font-semibold">
           <MarkdownRenderer content={post.body} />
         </article>
 

@@ -36,23 +36,23 @@ describe('HOME_SEO — metadata de la portada', () => {
 });
 
 describe('HOME_HERO / HOME_ABOUT / HOME_SERVICES_INTRO — copy del servidor', () => {
-  it('el H1 cabe en dos líneas cortas y nombra el servicio', () => {
-    expect(HOME_HERO.title1.length).toBeLessThanOrEqual(24);
-    expect(HOME_HERO.title2.length).toBeLessThanOrEqual(24);
+  it('el H1 nombra desarrollo y presenta automatización como capacidad', () => {
     expect(fold(`${HOME_HERO.title1} ${HOME_HERO.title2}`)).toMatch(/desarrollo web|software/);
+    expect(fold(HOME_HERO.title2)).toBe('automatizacion para empresas');
   });
 
-  it('badge y subtítulo llevan la geo; subtítulo y Nosotros las keywords secundarias', () => {
-    expect(fold(HOME_HERO.badge)).toContain('puerto vallarta');
+  it('el Hero describe capacidades y Nosotros presenta el origen', () => {
     const s = fold(HOME_HERO.subtitle);
     expect(s).toContain('paginas web');
     expect(s).toContain('software a la medida');
     expect(s).toContain('whatsapp');
-    expect(s).toContain('guadalajara');
+    expect(s).toContain('ia');
+    expect(fold(HOME_ABOUT.eyebrow)).toContain('puerto vallarta');
+    expect(fold(HOME_ABOUT.headingLead)).toContain('construimos tecnologia');
     const a = fold(HOME_ABOUT.paragraph);
-    expect(a).toContain('desarrollo web');
-    expect(a).toContain('consultoria ti');
-    expect(a).toContain('pymes');
+    expect(a).toContain('software');
+    expect(a).toContain('automatizaciones');
+    expect(a).toContain('integraciones');
     expect(fold(HOME_SERVICES_INTRO)).toContain('pagina web');
   });
 

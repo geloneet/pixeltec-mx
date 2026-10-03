@@ -1,53 +1,73 @@
 import { optimizeAssets, optimizeHome, compressOutput } from './optimize.mjs';
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
-import * as t from './.build/templates.js';
-import {services,projects,posts,industries} from './.build/catalog.js';
-const pages=[];
-const add=(path,title,family,body)=>pages.push({path,title,family,body});
-add('/services/','Servicios','Servicios',t.serviceIndex());
-for(const s of services)add(s.href,s.title,'Servicios',t.serviceDetail(s.title,s.visual));
-add('/about/','Nosotros','Empresa',t.about());
-add('/equipo/','Equipo','Empresa',t.team());
-add('/metodologia/','Metodología','Empresa',t.methodology());
-add('/proyectos/','Proyectos','Proyectos',t.projectIndex());
-for(const p of projects)add(p.href,p.title,'Proyectos',t.projectDetail(p));
-add('/industrias/','Industrias','Industrias',t.industryIndex());
-for(const i of industries.slice(0,2))add(i.href,i.title,'Industrias',t.serviceDetail(i.title,i.visual,'INDUSTRIAS'));
-add('/blog/','Blog','Editorial',t.blogIndex());
-for(const p of posts)add(p.href,p.title,'Editorial',t.article(p));
-add('/contact/','Contacto','Contacto y acceso',t.contact());
-add('/diagnostico/','Diagnóstico','Contacto y acceso',t.diagnostic());
-add('/login/','Acceso de clientes','Contacto y acceso',t.auth());
-add('/reset-password/','Recuperar acceso','Contacto y acceso',t.auth(true));
-for(const [path,title] of [['aviso-de-privacidad','Aviso de privacidad'],['terminos-de-servicio','Términos de servicio'],['data-deletion','Eliminación de datos']])add('/'+path+'/',title,'Información',t.legal(title));
+import {renderer,logo,canonicalPath} from './.build/templates.js';
+import {homeContent} from './.build/home-content.js';
+import {serviceContent,caseStudies,industryContent,editorial} from './.build/content.js';
+import {guideContent} from './.build/guides.js';
+import {languages,localPath} from './.build/i18n.js';
+import {escapeHTML,services,projects,posts} from './.build/catalog.js';
+import {loadSources,articleHtml} from './source-content.mjs';
+const sources=await loadSources();
 const xml=await readFile('docs/sitemap-observed.xml','utf8');
 const livePaths=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>new URL(m[1]).pathname.replace(/\/$/,'')+'/');
-const cityNames={'puerto-vallarta':'Puerto Vallarta','bahia-de-banderas':'Bahía de Banderas','guadalajara':'Guadalajara','zapopan':'Zapopan'};
-const local=[];
-for(const path of livePaths){
- if(path==='/'||pages.some(p=>p.path===path))continue;
- const slug=path.slice(1,-1);
- let title=slug.replaceAll('-',' ');title=title.charAt(0).toUpperCase()+title.slice(1);
- let city='';for(const [s,n] of Object.entries(cityNames))if(slug.endsWith(s)){city=n;title=title.slice(0,-s.length)+'en '+n;}
- const family=/^(desarrollo-web|automatizacion|consultoria)-/.test(slug)&&city?'Presencia local':'Guías y soluciones';
- if(slug.startsWith('desarrollo-web-'))title='Desarrollo web en '+city;
- if(slug.startsWith('automatizacion-')&&!slug.includes('mensajes'))title='Automatización en '+city;
- if(slug.startsWith('consultoria-'))title='Consultoría en '+city;
- const visual=/whatsapp/.test(slug)?'chat':/automatiza/.test(slug)?'orbit':/consultoria/.test(slug)?'grid':'web';
- add(path,title,family,t.serviceDetail(title,visual,city?'PRESENCIA LOCAL / '+city:'GUÍAS Y SOLUCIONES'));
- local.push(pages.at(-1));
+const allPages=[];const entries=[];
+for(const locale of languages){
+ const t=renderer(locale);const x=(es,en)=>locale==='es'?es:en;const pages=[];
+ const add=(path,title,family,body,description)=>pages.push({path,title,family,body,description});
+ add('/services/',x('Servicios','Services'),x('Servicios','Services'),t.serviceIndex());
+ for(const s of serviceContent)add(s.path,s.title[locale],x('Servicios','Services'),t.serviceDetail(s),s.description[locale]);
+ add('/about/',x('Nosotros','About'),x('Empresa','Company'),t.about());
+ add('/equipo/',x('Equipo','Team'),x('Empresa','Company'),t.team());
+ add('/metodologia/',x('Metodología','Our process'),x('Empresa','Company'),t.methodology());
+ add('/proyectos/',x('Proyectos','Work'),x('Proyectos','Work'),t.projectIndex());
+ for(const p of caseStudies)add(p.path,p.name,x('Proyectos','Work'),t.projectDetail(p),p.description[locale]);
+ add('/industrias/',x('Industrias','Industries'),x('Industrias','Industries'),t.industryIndex());
+ for(const i of industryContent.slice(0,2))add(i.path,i.title[locale],x('Industrias','Industries'),t.serviceDetail(i,x('INDUSTRIAS','INDUSTRIES')),i.description[locale]);
+ add('/blog/',x('Blog','Journal'),x('Editorial','Journal'),t.blogIndex());
+ for(const p of editorial){
+  let body=t.article(p);
+  const source=sources.get(p.path);
+  if(locale==='es'&&source?.article){
+   const start=body.indexOf('<article class="article-copy">');const end=body.indexOf('</article>',start);
+   body=body.slice(0,start)+'<article class="article-copy"><p class="source-note">'+p.author+' · '+p.date+'</p>'+articleHtml(source.article,new Set(livePaths))+'<p class="source-note">Contenido publicado en PixelTEC. Las herramientas interactivas del artículo pueden consultarse en la publicación original.</p><a class="text-link" href="'+source.url+'">Ver publicación original ↗</a>'+body.slice(end);
+   // The imported article has its own headings; remove the overview-only fragment links.
+   body=body.replace(/<a href="#idea-[0-9]+">.*?<\/a>/g,'');
+  }
+  add(p.path,p.title[locale],x('Editorial','Journal'),body,p.description[locale]);
+ }
+ add('/contact/',x('Contacto','Contact'),x('Contacto y acceso','Contact & access'),t.contact());
+ add('/diagnostico/',x('Diagnóstico','Assessment'),x('Contacto y acceso','Contact & access'),t.diagnostic());
+ add('/login/',x('Acceso de clientes','Client access'),x('Contacto y acceso','Contact & access'),t.auth());
+ add('/reset-password/',x('Recuperar acceso','Recover access'),x('Contacto y acceso','Contact & access'),t.auth(true));
+ for(const [path,es,en] of [['aviso-de-privacidad','Aviso de privacidad','Privacy notice'],['terminos-de-servicio','Términos de servicio','Terms of service'],['data-deletion','Eliminación de datos','Data deletion']])add('/'+path+'/',x(es,en),x('Información','Information'),t.legal(x(es,en),'/'+path+'/'));
+ const local=[];
+ for(const path of livePaths){
+  if(path==='/'||pages.some(p=>p.path===path))continue;
+  const source=sources.get(path);if(!source)throw new Error('Missing approved source '+path);
+  const intro=source.blocks?.find(b=>b.tag==='P'&&b.text.length>100)?.text;
+  const title=source.blocks?.find(b=>b.tag==='H1')?.text;
+  if(!intro||!title)throw new Error('Missing approved guide text '+path);
+  const item=guideContent(path,title,intro);
+  const blocks=(source.blocks??[]).filter(b=>b.tag!=='H1'&&b.text!==intro&&b.text.trim());
+  add(path,item.title[locale],item.category[locale],t.guide(item,blocks),item.description[locale]);local.push(pages.at(-1));
+ }
+ add('/guias-transformacion/',x('Guías y presencia local','Guides & local presence'),x('Empresa','Company'),t.directory(local));
+ add('/404/',x('Página no encontrada','Page not found'),x('Sistema','System'),t.notFound());
+ const mapEntries=[{path:'/',title:x('Inicio','Home'),family:x('Inicio','Home')},...pages.map(({path,title,family})=>({path,title,family}))];
+ add('/mapa/',x('Mapa del sitio','Sitemap'),x('Sistema','System'),t.directory(mapEntries,true));
+ for(const page of pages){
+  const seo=sources.get(page.path)?.seo;
+  if(locale==='es'&&seo){page.title=seo.title.replace(/ \| PixelTEC$/,'');page.description=seo.description;}
+  allPages.push({...page,locale,html:t.document(page)});
+ }
+ entries.push(...[{path:'/',title:x('Inicio','Home'),family:x('Inicio','Home')},...pages].map(({path,title,family})=>({path:localPath(path,locale),title,family,locale})));
 }
-add('/guias-transformacion/','Guías y presencia local','Empresa',t.directory(local));
-add('/404/','Página no encontrada','Sistema',t.notFound());
-const entries=[{path:'/',title:'Inicio · diseño original de Miguel',family:'Inicio'},...pages.map(({path,title,family})=>({path,title,family}))];
-add('/mapa/','Mapa del diseño','Sistema',t.directory(entries,true));
 await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true});await cp('public','dist',{recursive:true});
-await cp('.build/client.js','dist/client.js');
-await cp('.build/motion.js','dist/motion.js');
+await cp('.build/client.js','dist/client.js');await cp('.build/motion.js','dist/motion.js');
 await optimizeAssets();
-await writeFile('dist/favicon.svg',t.logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
-for(const page of pages){const dir='dist'+page.path;await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',t.document(page));}
-await writeFile('dist/404.html',t.document(pages.find(p=>p.path==='/404/')));
+await writeFile('dist/favicon.svg',logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
+for(const page of allPages){const dir='dist'+localPath(page.path,page.locale);await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',page.html);}
+await writeFile('dist/404.html',allPages.find(p=>p.path==='/404/'&&p.locale==='es').html);
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
 await writeFile('dist/routes.json',JSON.stringify(entries,null,2));
 let home=await readFile('src/home.dc.html','utf8');
@@ -90,7 +110,10 @@ home=home.replaceAll('<div style="display:grid;grid-template-columns:{{ svcCols 
 home=home.replaceAll('<a href="{{ p.href }}"', '<a data-motion href="{{ p.href }}"');
 // Keep the supplied home layout, styles and interactive visuals intact.
 home=home.replace('</footer>','<div style="padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><a href="/mapa/">Explorar todas las páginas ↗</a><a href="/equipo/">Equipo</a><a href="/metodologia/">Metodología</a><a href="/guias-transformacion/">Guías y presencia local</a><a href="/login/">Acceso de clientes</a><a href="/terminos-de-servicio/">Términos</a></div></footer>');
-await writeFile('dist/index.html',await optimizeHome(home));
+
+for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale);if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',await optimizeHome(output));}
 await compressOutput();
 await writeFile('docs/routes.json',JSON.stringify(entries,null,2));
-console.log(`Generadas ${pages.length+1} páginas. Cobertura sitemap: ${livePaths.length}/${livePaths.length}.`);
+const migration=livePaths.map(path=>({existing:sources.get(path)?.seo.canonical??'https://pixeltec.mx'+canonicalPath(path),spanish:path,english:localPath(path,'en'),action:'preserve-slug',redirectRequired:false}));
+await writeFile('docs/seo-route-map.json',JSON.stringify({date:'2026-10-03',preview:'noindex,nofollow; robots Disallow /',production:'Not deployed. Keep existing Spanish URLs; canonicalize slash aliases with one permanent redirect in the production router only.',routes:migration},null,2));
+console.log(`Generated ${entries.length} routes across es/en. Preserved ${livePaths.length} published Spanish slugs.`);

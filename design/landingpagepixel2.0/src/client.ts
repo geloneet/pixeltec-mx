@@ -1,4 +1,7 @@
 import { enter, panelMotion } from './motion.js';
+const english=document.documentElement.lang==='en';
+const labelText=(es:string,en:string):string=>english?en:es;
+const allFilter=labelText('Todos','All');
 const menu = document.querySelector<HTMLDialogElement>('#site-menu');
 const toggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
 let closingMenu = false;
@@ -22,20 +25,20 @@ menu?.addEventListener('click',event=>{
   const r=menu.getBoundingClientRect();
   if(event.clientX<r.left||event.clientX>r.right||event.clientY<r.top||event.clientY>r.bottom)closeMenu();
 });
-let activeFilter='Todos';
+let activeFilter=allFilter;
 const search=document.querySelector<HTMLInputElement>('[data-search-input]');
 function filterCards():void {
   let visible=0;
-  const query=(search?.value??'').trim().toLocaleLowerCase('es');
+  const query=(search?.value??'').trim().toLocaleLowerCase(english?'en':'es');
   document.querySelectorAll<HTMLElement>('.work-card').forEach(card=>{
     const wasHidden=card.hidden;
-    card.hidden=(activeFilter!=='Todos'&&card.dataset.category!==activeFilter)||!(card.dataset.search??'').includes(query);
+    card.hidden=(activeFilter!==allFilter&&card.dataset.category!==activeFilter)||!(card.dataset.search??'').includes(query);
     if(!card.hidden){visible++;if(wasHidden)enter(card, Math.min((visible-1)*45,135));}
   });
   const empty=document.querySelector<HTMLElement>('.empty-state');if(empty)empty.hidden=visible>0;
 }
 document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(button=>button.addEventListener('click',()=>{
-  activeFilter=button.dataset.filter??'Todos';
+  activeFilter=button.dataset.filter??allFilter;
   document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b===button)));
   filterCards();
 }));
@@ -44,7 +47,7 @@ document.querySelectorAll<HTMLFormElement>('[data-preview-form]').forEach(form=>
   e.preventDefault();
   if(!form.reportValidity())return;
   const status=form.querySelector<HTMLElement>('.form-message');
-  if(status){status.textContent='Vista previa completada. No se enviaron ni guardaron datos.';status.setAttribute('tabindex','-1');status.focus();}
+  if(status){status.textContent=labelText('Vista previa completada. No se enviaron ni guardaron datos.','Preview completed. No data was sent or saved.');status.setAttribute('tabindex','-1');status.focus();}
 }));
 const wizard=document.querySelector<HTMLFormElement>('#diagnostic-form');
 if(wizard){
@@ -58,20 +61,22 @@ if(wizard){
   const summary=document.querySelector<HTMLElement>('[data-summary]');
   const update=():void=>{
     fields.forEach((f,i)=>f.hidden=i!==step);
-    if(label)label.textContent=`PASO ${String(step+1).padStart(2,'0')} / 04`;
+    if(label)label.textContent=`${labelText('PASO','STEP')} ${String(step+1).padStart(2,'0')} / 04`;
     if(progress)progress.style.width=`${(step+1)*25}%`;
     if(prev)prev.hidden=step===0;
-    if(next)next.textContent=step===3?'Ver mi recorrido ↗':'Continuar →';
+    if(next)next.textContent=step===3?labelText('Ver mi resumen ↗','View my summary ↗'):labelText('Continuar →','Continue →');
     if(error)error.textContent='';
     const legend=fields[step]?.querySelector('legend');if(legend){legend.tabIndex=-1;legend.focus();}enter(fields[step]);
   };
   const advance=():void=>{
-    if(!fields[step]?.querySelector('input:checked')){if(error)error.textContent='Selecciona una opción para continuar.';return;}
+    if(!fields[step]?.querySelector('input:checked')){if(error)error.textContent=labelText('Selecciona una opción para continuar.','Choose an option to continue.');return;}
     if(step<3){step++;update();return;}
     wizard.hidden=true;if(summary)summary.hidden=false;
     const list=document.querySelector('[data-summary-list]');
     if(list){list.replaceChildren();fields.forEach(f=>{const dt=document.createElement('dt');dt.textContent=f.querySelector('legend')?.textContent??'';const dd=document.createElement('dd');dd.textContent=f.querySelector<HTMLInputElement>('input:checked')?.value??'';list.append(dt,dd);});}
-    if(label)label.textContent='RECORRIDO COMPLETADO';
+    const share=document.querySelector<HTMLAnchorElement>('[data-share-summary]');
+    if(share){const answers=fields.map(f=>(f.querySelector('legend')?.textContent??'')+': '+(f.querySelector<HTMLInputElement>('input:checked')?.value??''));share.href='https://api.whatsapp.com/send?phone=523221378336&text='+encodeURIComponent(labelText('Hola PixelTEC. Este es el punto de partida de mi negocio:','Hello PixelTEC. Here is the starting point for my business:')+'\n\n'+answers.join('\n'));}
+    if(label)label.textContent=labelText('DIAGNÓSTICO COMPLETADO','ASSESSMENT COMPLETED');
     const heading=summary?.querySelector('h2');if(heading){heading.tabIndex=-1;heading.focus();}enter(summary);
   };
   next?.addEventListener('click',advance);

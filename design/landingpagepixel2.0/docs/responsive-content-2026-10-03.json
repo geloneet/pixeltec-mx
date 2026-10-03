@@ -1,0 +1,122 @@
+[
+  {
+    "path": "/",
+    "width": 320,
+    "h1": "SOLUCIONES\nTECNOLÓGICAS",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/",
+    "width": 320,
+    "h1": "TECHNOLOGY\nTHAT WORKS",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/about/",
+    "width": 320,
+    "h1": "UN ALIADO.\nDE VERDAD.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/about/",
+    "width": 320,
+    "h1": "A PARTNER.\nTHROUGH AND THROUGH.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/services/",
+    "width": 320,
+    "h1": "TECHNOLOGY THAT\nWORKS WITH YOU.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/proyectos/villa-nogal/",
+    "width": 320,
+    "h1": "VILLA NOGAL",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/blog/",
+    "width": 320,
+    "h1": "PRACTICAL TECHNOLOGY.\nBETTER DECISIONS.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+    "width": 320,
+    "h1": "CÓMO AUTOMATIZAR PROCESOS MANUALES EN MI NEGOCIO: GUÍA REAL",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/contact/",
+    "width": 320,
+    "h1": "YOUR NEXT STEP\nSTARTS HERE.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/en/diagnostico/",
+    "width": 320,
+    "h1": "UNDERSTAND TODAY.\nDECIDE BETTER.",
+    "scrollWidth": 320
+  },
+  {
+    "path": "/",
+    "width": 390,
+    "h1": "SOLUCIONES\nTECNOLÓGICAS",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/",
+    "width": 390,
+    "h1": "TECHNOLOGY\nTHAT WORKS",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/about/",
+    "width": 390,
+    "h1": "UN ALIADO.\nDE VERDAD.",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/about/",
+    "width": 390,
+    "h1": "A PARTNER.\nTHROUGH AND THROUGH.",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/services/",
+    "width": 390,
+    "h1": "TECHNOLOGY THAT\nWORKS WITH YOU.",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/proyectos/villa-nogal/",
+    "width": 390,
+    "h1": "VILLA NOGAL",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/blog/",
+    "width": 390,
+    "h1": "PRACTICAL TECHNOLOGY.\nBETTER DECISIONS.",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+    "width": 390,
+    "h1": "CÓMO AUTOMATIZAR PROCESOS MANUALES EN MI NEGOCIO: GUÍA REAL",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/contact/",
+    "width": 390,
+    "h1": "YOUR NEXT STEP\nSTARTS HERE.",
+    "scrollWidth": 390
+  },
+  {
+    "path": "/en/diagnostico/",
+    "width": 390,
+    "h1": "UNDERSTAND TODAY.\nDECIDE BETTER.",
+    "scrollWidth": 390
+  }
+]

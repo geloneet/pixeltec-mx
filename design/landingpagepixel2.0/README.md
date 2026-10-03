@@ -1,6 +1,6 @@
 # Armazón visual de Pixeltec.mx
 
-Prototipo local de diseño, 2026-10-02. La fuente visual principal es el inicio entregado por Miguel (`src/home.dc.html`, preservado byte a byte). Befox es una referencia secundaria para la estructura de interiores; no se ha importado su código, imágenes o plantilla.
+Prototipo local de diseño y contenido, actualizado 2026-10-03. La fuente visual principal es el inicio entregado por Miguel (`src/home.dc.html`, preservado byte a byte). Befox es una referencia secundaria para la estructura de interiores; no se ha importado su código, imágenes o plantilla.
 
 ## Abrir y continuar
 
@@ -16,24 +16,27 @@ El servidor escucha solo en localhost. `dist/` también funciona servido por un 
 
 ## Alcance
 
-72 páginas navegables. Las 60 URLs observadas en el sitemap público de Pixeltec.mx tienen representación visual, con plantillas compartidas para servicios, industria, landings locales, guías y artículos. Se agregan catálogo/casos de proyectos y superficies públicas de metodología, acceso, recuperación y mapa. `docs/routes.json` inventaría cada ruta. No se trabaja sobre CRM, portal privado, tokens de propuestas/contratos ni cuestionarios de clientes.
+144 páginas navegables: 72 en español y 72 en inglés. Las 60 URLs observadas en el sitemap público de Pixeltec.mx tienen representación visual, con plantillas compartidas para servicios, industria, landings locales, guías y artículos. Se agregan catálogo/casos de proyectos y superficies públicas de metodología, acceso, recuperación y mapa. `docs/routes.json` inventaría cada ruta. No se trabaja sobre CRM, portal privado, tokens de propuestas/contratos ni cuestionarios de clientes.
 
 Se conserva el inicio, su cubo, física, tipografía y composición. El build conecta su navegación a las páginas interiores y añade enlaces de exploración al pie y hooks de movimiento a la copia generada. `public/support.js` conserva el runtime original; `public/cubo.js` es su versión optimizada, con el mismo diseño. Los archivos originales del Desktop permanecen intactos. Los interiores adoptan la cabecera crema, CTA azul, logo, negro/blanco, Bricolage Grotesque, geometría y numeración del inicio. Las ilustraciones nuevas son esquemas CSS, no capturas de sistemas reales.
 
 - `src/templates.ts`: componentes de cabecera, pie, arte y plantillas.
-- `src/catalog.ts`: rutas y contenido provisional tipado.
+- `src/content.ts`, `src/guides.ts`, `src/i18n.ts`: contenido comercial bilingüe y rutas.
+- `src/home-content.ts`: adapta contenido en la copia generada del inicio, sin cambiar su fuente.
+- `source-content.mjs`: valida con Zod el snapshot público antes de renderizar texto seguro.
+- `src/art.ts`: ilustraciones conceptuales compartidas.
 - `src/client.ts`: menú accesible, filtros, búsqueda y diagnóstico de cuatro pasos.
 - `public/shell.css`: tokens, retícula y responsive de interiores.
 - `build.mjs`: render estático y conexión no destructiva de la portada.
 - `verify.mjs`: cobertura sitemap, referencias internas, assets, anclas y noindex.
 
-El contenido es provisional. No se valida aquí la veracidad del copy comercial del inicio. Los formularios y el acceso son exclusivamente demostrativos: no hay autenticación, API, persistencia ni envío; los estados lo indican explícitamente. El diagnóstico permite avanzar, volver, resumir y reiniciar. Las rutas y el contenido de la web real no se modificaron.
+El contenido comercial procede de las 60 páginas públicas consultadas el 2026-10-03, que Miguel señaló como aprobadas. Las traducciones y adaptación editorial nuevas esperan su revisión. Contacto ofrece WhatsApp/correo reales y acceso enlaza al portal vigente. El diagnóstico conserva selecciones en memoria y genera un enlace para compartir manualmente; no envía datos automáticamente. No hay autenticación ni persistencia en el prototipo. Alcance por idioma, fuentes y límites: [contenido y continuidad SEO](docs/contenido-idiomas-seo-2026-10-03.md).
 
 ## Validación
 
-`npm run verify`: TypeScript strict sin errores, 73 archivos HTML (72 rutas más fallback 404), 3,714 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 72 rutas, registro en `docs/verification.json`.
+`npm run verify`: TypeScript strict sin errores, 145 archivos HTML (144 rutas más fallback 404), 7,457 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 144 rutas, registro en `docs/verification.json`.
 
-Navegador real: portada y cubo renderizados; navegación a servicios; abrir/cerrar menú; filtro de proyectos; búsqueda y estado vacío de blog; formulario de contacto con confirmación de simulación; diagnóstico hasta resumen sin envío. Consola consultada sin errores. Sin desbordamiento horizontal en 8 plantillas a 320, 768 y 1440 px (`docs/responsive-checks.json`) y 12 rutas representativas a 390 px tras corregir diagnóstico. Capturas manuales de portada, interiores y móvil revisadas. No equivale a una auditoría de producción o certificación de accesibilidad completa.
+Navegador real: portada y cubo renderizados; navegación a servicios; abrir/cerrar menú; filtro de proyectos; búsqueda y estado vacío de blog; contacto directo sin formulario simulado; diagnóstico hasta resumen sin envío. Consola consultada sin errores. Sin desbordamiento horizontal en 8 plantillas a 320, 768 y 1440 px (`docs/responsive-checks.json`) y 12 rutas representativas a 390 px tras corregir diagnóstico. Capturas manuales de portada, interiores y móvil revisadas. No equivale a una auditoría de producción o certificación de accesibilidad completa.
 
 ## Movimiento suave · 2026-10-02
 
@@ -61,10 +64,16 @@ Resultados comparativos, método y límites en [optimización medida](docs/optim
 
 ## Límites y siguiente etapa
 
-- El inicio conserva el runtime DC, ahora con React/Matter/Lenis/Three locales, versiones fijadas y fuentes WOFF2 locales. Babel no se descarga en el recorrido normal. Las variantes de cubo alternativas del editor heredado (no expuestas en la navegación) aún tienen imports CDN en la fuente original. Los interiores conservan Google Fonts. Migrar el runtime DC a componentes del producto sigue siendo deuda declarada de esta fase.
-- Contenido, imágenes finales, copy legal, datos de proyectos, SEO productivo y backend quedan pendientes por alcance explícito.
+- El inicio conserva el runtime DC, ahora con React/Matter/Lenis/Three locales, versiones fijadas y fuentes WOFF2 locales. Babel no se descarga en el recorrido normal. Las variantes de cubo alternativas del editor heredado (no expuestas en la navegación) aún tienen imports CDN en la fuente original. Los interiores usan también fuentes locales. Migrar el runtime DC a componentes del producto sigue siendo deuda declarada de esta fase.
+- Pendientes: revisión editorial de Miguel, traducción integral de guías/artículos, fotografías/capturas finales de casos, integración legal y SEO productivo, backend. Las ilustraciones de casos son conceptuales; los datos comerciales sí proceden del sitio vigente.
 - El HTML está en `noindex,nofollow`; no desplegar como reemplazo del sitio productivo.
 - La integración futura a Next.js requiere migrar componentes conservando contratos y funcionalidad del sitio existente. Este prototipo no decide cambiar el stack del producto.
 - La propuesta visual espera revisión de Miguel; solo se versiona en rama de diseño.
 
 Fuentes: inicio local de Miguel; https://pixeltec.mx/sitemap.xml consultado el 2026-10-02 (copia en docs); https://befox.preoit.com/ y sus interiores (estructura/CSS; el preloader impidió revisión visual completa en navegador); ficha y seguimiento canónicos de Pixeltec.mx en NeuroPIXEL. El MCP devolvió `Continuidad obsoleta: 09_SEGUIMIENTO/workorders/WO-2026-00221.md` para context_package/source_status; se usaron lecturas directas y no se alteró ese expediente.
+
+## Contenido e inglés · 2026-10-03
+
+Selector ES/EN conserva la página equivalente. Español mantiene los 60 slugs, títulos, descripciones y canonical observados; inglés añade `/en/` sin renombrar los slugs. Todas las páginas tienen canonical propio y hreflang recíproco. `seo-localization.test.mjs` comprueba esos contratos, HTTP de las 144 rutas y render seguro. `npm run verify` incluye estas regresiones. El prototipo sigue noindex y no se ha desplegado. No reutilizar robots/noindex en producción: seguir el control de integración documentado.
+
+Verificación del contenido: 20 vistas móviles actuales y pruebas funcionales EN en el reporte de contenido. Lighthouse actual: 100 desktop ES; confirmaciones móviles 86 ES/88 EN, con alta variación registrada y control previo 87 bajo carga actual. No reutilizar el 94 de la serie anterior como medición del HTML nuevo.

@@ -7,12 +7,13 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && node build.mjs",
     "preview": "node serve.mjs",
-    "verify": "npm run build && node verify.mjs && node --test server.test.mjs && node performance-budget.mjs"
+    "verify": "npm run build && node verify.mjs && node --test server.test.mjs seo-localization.test.mjs && node performance-budget.mjs"
   },
   "devDependencies": {
     "esbuild": "0.28.2",
     "sharp": "0.35.5",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "zod": "4.6.5"
   },
   "dependencies": {
     "lenis": "1.1.13",

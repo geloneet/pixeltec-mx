@@ -26,7 +26,7 @@ export async function optimizeHome(home) {
   const fontCSS=await readFile('public/fonts.css','utf8');
   const motionCSS=await readFile('public/motion.css','utf8');
   const homeCSS=await readFile('public/home.css','utf8');
-  home=home.replace('<html lang="es">','<html lang="es" data-dc-static>');
+  home=home.replace(/<html lang="(es|en)">/,'<html lang="$1" data-dc-static>');
   home=home.replace('<script src="./support.js"></script>',`<link rel="preload" href="/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/jetbrains.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="/fonts/outfit.woff2" as="font" type="font/woff2" crossorigin>

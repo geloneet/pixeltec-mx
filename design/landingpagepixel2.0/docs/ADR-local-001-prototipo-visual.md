@@ -15,3 +15,7 @@ Validación y operación: [README](../README.md). Inventario de rutas: [routes.j
 ## Extensión autorizada · 2026-10-03
 
 Miguel pidió optimización tras revisar la auditoría. Se permite añadir bundling y conversión de recursos en build, autohospedar las mismas versiones y adaptar el renderizador manteniendo el diseño. `src/home.dc.html` continúa idéntico; los cambios se aplican en la salida. Esbuild y Sharp son herramientas del prototipo, no una decisión de migración del stack productivo. El servidor de preview representa compresión/caché verificables; hay que reproducirlas al integrar en el hosting definitivo. No se ocultan efectos ni se detecta Lighthouse para mejorar artificialmente la medición.
+
+## Contenido bilingüe autorizado · 2026-10-03
+
+Miguel solicitó incorporar el contenido aprobado de pixeltec.mx, añadir inglés y preservar los slugs por SEO. El snapshot público validado con Zod alimenta el prototipo; datos comerciales y traducciones viven separados de las plantillas. ES conserva URLs y metadatos; EN usa `/en/` con el mismo sufijo, para evitar cambios a URLs existentes. El cambio de idioma conserva contexto. Se sustituyen formularios ficticios por contactos reales y acceso al portal vigente; diagnóstico local con compartir manual. Las guías/artículos EN son resúmenes identificados, y el texto legal oficial sigue en español. No se declara migración SEO concluida, traducción integral ni aprobación de nuevo copy. [Alcance y pruebas](contenido-idiomas-seo-2026-10-03.md).

@@ -1,357 +1,866 @@
 [
   {
     "path": "/",
-    "title": "Inicio · diseño original de Miguel",
-    "family": "Inicio"
+    "title": "Inicio",
+    "family": "Inicio",
+    "locale": "es"
   },
   {
     "path": "/services/",
-    "title": "Servicios",
-    "family": "Servicios"
+    "title": "Servicios de desarrollo web, IA y consultoría",
+    "family": "Servicios",
+    "locale": "es"
   },
   {
     "path": "/services/automatizacion/",
-    "title": "Automatización con IA",
-    "family": "Servicios"
+    "title": "Automatización de Procesos con IA y WhatsApp",
+    "family": "Servicios",
+    "locale": "es"
   },
   {
     "path": "/services/ecosistemas-web/",
-    "title": "Desarrollo Web & Apps",
-    "family": "Servicios"
+    "title": "Desarrollo Web y Apps a la Medida",
+    "family": "Servicios",
+    "locale": "es"
   },
   {
     "path": "/pixelbot/",
-    "title": "WhatsApp IA",
-    "family": "Servicios"
+    "title": "WhatsAgent | Agente de IA para WhatsApp desde $490/mes",
+    "family": "Servicios",
+    "locale": "es"
   },
   {
     "path": "/services/consultoria/",
-    "title": "Consultoría & Soporte TI",
-    "family": "Servicios"
+    "title": "Consultoría Tecnológica para PyMEs",
+    "family": "Servicios",
+    "locale": "es"
   },
   {
     "path": "/about/",
-    "title": "Nosotros",
-    "family": "Empresa"
+    "title": "Quiénes somos · Software en Puerto Vallarta",
+    "family": "Empresa",
+    "locale": "es"
   },
   {
     "path": "/equipo/",
-    "title": "Equipo",
-    "family": "Empresa"
+    "title": "Equipo · Fundador y red de especialistas",
+    "family": "Empresa",
+    "locale": "es"
   },
   {
     "path": "/metodologia/",
     "title": "Metodología",
-    "family": "Empresa"
+    "family": "Empresa",
+    "locale": "es"
   },
   {
     "path": "/proyectos/",
     "title": "Proyectos",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/proyectos/villa-nogal/",
     "title": "Villa Nogal",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/proyectos/pipas-tondoroque/",
     "title": "Pipas Tondoroque",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/proyectos/barro-stock/",
     "title": "Barro Stock",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/proyectos/smile-more/",
     "title": "Smile More",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/proyectos/materiales-de-barro/",
     "title": "Materiales de Barro",
-    "family": "Proyectos"
+    "family": "Proyectos",
+    "locale": "es"
   },
   {
     "path": "/industrias/",
-    "title": "Industrias",
-    "family": "Industrias"
+    "title": "Software para clínicas, hoteles, logística y más",
+    "family": "Industrias",
+    "locale": "es"
   },
   {
     "path": "/industrias/clinicas-dentales/",
-    "title": "Salud dental",
-    "family": "Industrias"
+    "title": "Software para Clínicas Dentales a la Medida",
+    "family": "Industrias",
+    "locale": "es"
   },
   {
     "path": "/industrias/hoteles/",
-    "title": "Hotelería",
-    "family": "Industrias"
+    "title": "Sistema de Reservas y CRM para Hoteles a Medida",
+    "family": "Industrias",
+    "locale": "es"
   },
   {
     "path": "/blog/",
-    "title": "Blog",
-    "family": "Editorial"
+    "title": "Blog: IA, software y automatización para pymes",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",
-    "title": "Sistemas que le devuelven tiempo a tu equipo.",
-    "family": "Editorial"
+    "title": "Sistema administrativo para eficientar tu PyME en México",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
-    "title": "De procesos manuales a una operación conectada.",
-    "family": "Editorial"
+    "title": "Cómo automatizar procesos manuales en mi negocio: guía real",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa/",
-    "title": "El criterio humano detrás de la inteligencia artificial.",
-    "family": "Editorial"
+    "title": "Qué datos no debes compartir con una IA en tu empresa",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/blog/agente-de-ia-en-whatsapp-para-mi-negocio/",
-    "title": "Conversaciones que se convierten en oportunidades.",
-    "family": "Editorial"
+    "title": "Agente de IA en WhatsApp: atención a clientes 24/7 para tu PyME",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero/",
-    "title": "Un punto de partida para transformar tu negocio.",
-    "family": "Editorial"
+    "title": "IA para PyMEs en México: guía honesta para empezar sin quemar dinero",
+    "family": "Editorial",
+    "locale": "es"
   },
   {
     "path": "/contact/",
-    "title": "Contacto",
-    "family": "Contacto y acceso"
+    "title": "Contacto · Hablemos de tu proyecto",
+    "family": "Contacto y acceso",
+    "locale": "es"
   },
   {
     "path": "/diagnostico/",
-    "title": "Diagnóstico",
-    "family": "Contacto y acceso"
+    "title": "Diagnóstico Inteligente · Evalúa la madurez digital de tu empresa",
+    "family": "Contacto y acceso",
+    "locale": "es"
   },
   {
     "path": "/login/",
     "title": "Acceso de clientes",
-    "family": "Contacto y acceso"
+    "family": "Contacto y acceso",
+    "locale": "es"
   },
   {
     "path": "/reset-password/",
     "title": "Recuperar acceso",
-    "family": "Contacto y acceso"
+    "family": "Contacto y acceso",
+    "locale": "es"
   },
   {
     "path": "/aviso-de-privacidad/",
-    "title": "Aviso de privacidad",
-    "family": "Información"
+    "title": "Aviso de Privacidad · Tratamiento de tus datos",
+    "family": "Información",
+    "locale": "es"
   },
   {
     "path": "/terminos-de-servicio/",
-    "title": "Términos de servicio",
-    "family": "Información"
+    "title": "Términos de Servicio · Condiciones de nuestros proyectos",
+    "family": "Información",
+    "locale": "es"
   },
   {
     "path": "/data-deletion/",
-    "title": "Eliminación de datos",
-    "family": "Información"
+    "title": "Eliminación de Datos · Solicita la remoción de tu información",
+    "family": "Información",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-guadalajara/",
-    "title": "Automatización en Guadalajara",
-    "family": "Presencia local"
+    "title": "Automatización de Procesos con IA en Guadalajara",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-zapopan/",
-    "title": "Automatización en Zapopan",
-    "family": "Presencia local"
+    "title": "Automatización de Procesos con IA en Zapopan",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-puerto-vallarta/",
-    "title": "Automatización en Puerto Vallarta",
-    "family": "Presencia local"
+    "title": "Automatización de Procesos con IA en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-bahia-de-banderas/",
-    "title": "Automatización en Bahía de Banderas",
-    "family": "Presencia local"
+    "title": "Automatización de Procesos con IA en Bahía de Banderas",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-web-guadalajara/",
-    "title": "Desarrollo web en Guadalajara",
-    "family": "Presencia local"
+    "title": "Desarrollo Web y Ecosistemas Digitales en Guadalajara",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-web-zapopan/",
-    "title": "Desarrollo web en Zapopan",
-    "family": "Presencia local"
+    "title": "Desarrollo Web y Ecosistemas Digitales en Zapopan",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-web-puerto-vallarta/",
-    "title": "Desarrollo web en Puerto Vallarta",
-    "family": "Presencia local"
+    "title": "Desarrollo Web y Ecosistemas Digitales en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-web-bahia-de-banderas/",
-    "title": "Desarrollo web en Bahía de Banderas",
-    "family": "Presencia local"
+    "title": "Desarrollo Web y Ecosistemas Digitales en Bahía de Banderas",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/consultoria-guadalajara/",
-    "title": "Consultoría en Guadalajara",
-    "family": "Presencia local"
+    "title": "Consultoría Tecnológica Estratégica en Guadalajara",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/consultoria-zapopan/",
-    "title": "Consultoría en Zapopan",
-    "family": "Presencia local"
+    "title": "Consultoría Tecnológica Estratégica en Zapopan",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/consultoria-puerto-vallarta/",
-    "title": "Consultoría en Puerto Vallarta",
-    "family": "Presencia local"
+    "title": "Consultoría Tecnológica Estratégica en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/consultoria-bahia-de-banderas/",
-    "title": "Consultoría en Bahía de Banderas",
-    "family": "Presencia local"
+    "title": "Consultoría Tecnológica Estratégica en Bahía de Banderas",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/empresas-de-desarrollo-de-software/",
-    "title": "Empresas de desarrollo de software",
-    "family": "Guías y soluciones"
+    "title": "Empresas de desarrollo de software: cómo elegir",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/empresas-de-desarrollo-de-software-puerto-vallarta/",
     "title": "Empresas de desarrollo de software en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/programador-de-software/",
-    "title": "Programador de software",
-    "family": "Guías y soluciones"
+    "title": "Programador de software: cómo contratar y evaluar",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/programador-de-software-puerto-vallarta/",
     "title": "Programador de software en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/sistemas-a-medida/",
-    "title": "Sistemas a medida",
-    "family": "Guías y soluciones"
+    "title": "Sistemas a medida: cuándo convienen frente a un SaaS",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/sistemas-a-medida-puerto-vallarta/",
     "title": "Sistemas a medida en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/software-a-medida-para-empresas/",
-    "title": "Software a medida para empresas",
-    "family": "Guías y soluciones"
+    "title": "Software a medida para empresas: retorno y proceso",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/software-a-medida-para-empresas-puerto-vallarta/",
     "title": "Software a medida para empresas en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/sistema-personalizado-para-empresas/",
-    "title": "Sistema personalizado para empresas",
-    "family": "Guías y soluciones"
+    "title": "Sistema personalizado para empresas: casos de uso",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/sistema-personalizado-para-empresas-puerto-vallarta/",
     "title": "Sistema personalizado para empresas en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatiza-tu-negocio/",
-    "title": "Automatiza tu negocio",
-    "family": "Guías y soluciones"
+    "title": "Automatiza tu negocio: guía por áreas",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/automatiza-tu-negocio-puerto-vallarta/",
     "title": "Automatiza tu negocio en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizar-mensajes-de-whatsapp/",
-    "title": "Automatizar mensajes de whatsapp",
-    "family": "Guías y soluciones"
+    "title": "Automatizar mensajes de WhatsApp: cómo funciona",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/automatizar-mensajes-de-whatsapp-puerto-vallarta/",
-    "title": "Automatizar mensajes de whatsapp en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "title": "Automatizar mensajes de WhatsApp en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizar-whatsapp-business/",
-    "title": "Automatizar whatsapp business",
-    "family": "Guías y soluciones"
+    "title": "Automatizar WhatsApp Business: app vs. API",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/automatizar-whatsapp-business-puerto-vallarta/",
-    "title": "Automatizar whatsapp business en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "title": "Automatizar WhatsApp Business en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-de-mensajes-en-whatsapp/",
-    "title": "Automatizacion de mensajes en whatsapp",
-    "family": "Guías y soluciones"
+    "title": "Automatización de mensajes en WhatsApp: casos",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta/",
-    "title": "Automatizacion de mensajes en whatsapp en Puerto Vallarta",
-    "family": "Presencia local"
+    "title": "Automatización de mensajes en WhatsApp en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrolladores-de-app/",
-    "title": "Desarrolladores de app",
-    "family": "Guías y soluciones"
+    "title": "Desarrolladores de app: el equipo detrás del proyecto",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/desarrolladores-de-app-puerto-vallarta/",
     "title": "Desarrolladores de app en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-de-app/",
-    "title": "Desarrollo de app",
-    "family": "Guías y soluciones"
+    "title": "Desarrollo de app: el proceso completo, fase por fase",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-de-app-puerto-vallarta/",
     "title": "Desarrollo de app en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrolladores-de-apps/",
-    "title": "Desarrolladores de apps",
-    "family": "Guías y soluciones"
+    "title": "Desarrolladores de apps: web app, PWA o móvil",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/desarrolladores-de-apps-puerto-vallarta/",
     "title": "Desarrolladores de apps en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-de-aplicaciones-moviles/",
-    "title": "Desarrollo de aplicaciones moviles",
-    "family": "Guías y soluciones"
+    "title": "Desarrollo de aplicaciones móviles: iOS, Android y PWA",
+    "family": "Guías para decidir",
+    "locale": "es"
   },
   {
     "path": "/desarrollo-de-aplicaciones-moviles-puerto-vallarta/",
-    "title": "Desarrollo de aplicaciones moviles en Puerto Vallarta",
-    "family": "Guías y soluciones"
+    "title": "Desarrollo de aplicaciones móviles en Puerto Vallarta",
+    "family": "Presencia local",
+    "locale": "es"
   },
   {
     "path": "/guias-transformacion/",
     "title": "Guías y presencia local",
-    "family": "Empresa"
+    "family": "Empresa",
+    "locale": "es"
   },
   {
     "path": "/404/",
     "title": "Página no encontrada",
-    "family": "Sistema"
+    "family": "Sistema",
+    "locale": "es"
+  },
+  {
+    "path": "/mapa/",
+    "title": "Mapa del sitio",
+    "family": "Sistema",
+    "locale": "es"
+  },
+  {
+    "path": "/en/",
+    "title": "Home",
+    "family": "Home",
+    "locale": "en"
+  },
+  {
+    "path": "/en/services/",
+    "title": "Services",
+    "family": "Services",
+    "locale": "en"
+  },
+  {
+    "path": "/en/services/automatizacion/",
+    "title": "AI automation",
+    "family": "Services",
+    "locale": "en"
+  },
+  {
+    "path": "/en/services/ecosistemas-web/",
+    "title": "Web & app development",
+    "family": "Services",
+    "locale": "en"
+  },
+  {
+    "path": "/en/pixelbot/",
+    "title": "WhatsAgent · WhatsApp AI",
+    "family": "Services",
+    "locale": "en"
+  },
+  {
+    "path": "/en/services/consultoria/",
+    "title": "IT consulting & support",
+    "family": "Services",
+    "locale": "en"
+  },
+  {
+    "path": "/en/about/",
+    "title": "About",
+    "family": "Company",
+    "locale": "en"
+  },
+  {
+    "path": "/en/equipo/",
+    "title": "Team",
+    "family": "Company",
+    "locale": "en"
+  },
+  {
+    "path": "/en/metodologia/",
+    "title": "Our process",
+    "family": "Company",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/",
+    "title": "Work",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/villa-nogal/",
+    "title": "Villa Nogal",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/pipas-tondoroque/",
+    "title": "Pipas Tondoroque",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/barro-stock/",
+    "title": "Barro Stock",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/smile-more/",
+    "title": "Smile More",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/materiales-de-barro/",
+    "title": "Materiales de Barro",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/industrias/",
+    "title": "Industries",
+    "family": "Industries",
+    "locale": "en"
+  },
+  {
+    "path": "/en/industrias/clinicas-dentales/",
+    "title": "Dental care",
+    "family": "Industries",
+    "locale": "en"
+  },
+  {
+    "path": "/en/industrias/hoteles/",
+    "title": "Hospitality",
+    "family": "Industries",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/",
+    "title": "Journal",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",
+    "title": "Business management software for SMEs in Mexico",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+    "title": "How to automate manual business processes: a practical guide",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa/",
+    "title": "What business data should you avoid sharing with public AI tools?",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/agente-de-ia-en-whatsapp-para-mi-negocio/",
+    "title": "A WhatsApp AI agent for your business",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero/",
+    "title": "AI for SMEs in Mexico: an honest guide to getting started",
+    "family": "Journal",
+    "locale": "en"
+  },
+  {
+    "path": "/en/contact/",
+    "title": "Contact",
+    "family": "Contact & access",
+    "locale": "en"
+  },
+  {
+    "path": "/en/diagnostico/",
+    "title": "Assessment",
+    "family": "Contact & access",
+    "locale": "en"
+  },
+  {
+    "path": "/en/login/",
+    "title": "Client access",
+    "family": "Contact & access",
+    "locale": "en"
+  },
+  {
+    "path": "/en/reset-password/",
+    "title": "Recover access",
+    "family": "Contact & access",
+    "locale": "en"
+  },
+  {
+    "path": "/en/aviso-de-privacidad/",
+    "title": "Privacy notice",
+    "family": "Information",
+    "locale": "en"
+  },
+  {
+    "path": "/en/terminos-de-servicio/",
+    "title": "Terms of service",
+    "family": "Information",
+    "locale": "en"
+  },
+  {
+    "path": "/en/data-deletion/",
+    "title": "Data deletion",
+    "family": "Information",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-guadalajara/",
+    "title": "AI process automation in Guadalajara",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-zapopan/",
+    "title": "AI process automation in Zapopan",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-puerto-vallarta/",
+    "title": "AI process automation in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-bahia-de-banderas/",
+    "title": "AI process automation in Bahía de Banderas",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-web-guadalajara/",
+    "title": "Web development & digital ecosystems in Guadalajara",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-web-zapopan/",
+    "title": "Web development & digital ecosystems in Zapopan",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-web-puerto-vallarta/",
+    "title": "Web development & digital ecosystems in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-web-bahia-de-banderas/",
+    "title": "Web development & digital ecosystems in Bahía de Banderas",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/consultoria-guadalajara/",
+    "title": "Strategic IT consulting in Guadalajara",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/consultoria-zapopan/",
+    "title": "Strategic IT consulting in Zapopan",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/consultoria-puerto-vallarta/",
+    "title": "Strategic IT consulting in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/consultoria-bahia-de-banderas/",
+    "title": "Strategic IT consulting in Bahía de Banderas",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/empresas-de-desarrollo-de-software/",
+    "title": "Choosing a software development company",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/empresas-de-desarrollo-de-software-puerto-vallarta/",
+    "title": "Choosing a software development company in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/programador-de-software/",
+    "title": "Hiring a software developer or a team",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/programador-de-software-puerto-vallarta/",
+    "title": "Hiring a software developer or a team in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/sistemas-a-medida/",
+    "title": "Custom systems or SaaS: when each makes sense",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/sistemas-a-medida-puerto-vallarta/",
+    "title": "Custom systems or SaaS: when each makes sense in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/software-a-medida-para-empresas/",
+    "title": "Custom business software: return, process and cost",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/software-a-medida-para-empresas-puerto-vallarta/",
+    "title": "Custom business software: return, process and cost in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/sistema-personalizado-para-empresas/",
+    "title": "Custom business systems: what gets built",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/sistema-personalizado-para-empresas-puerto-vallarta/",
+    "title": "Custom business systems: what gets built in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatiza-tu-negocio/",
+    "title": "Automate your business: where to begin",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatiza-tu-negocio-puerto-vallarta/",
+    "title": "Automate your business: where to begin in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizar-mensajes-de-whatsapp/",
+    "title": "Automating WhatsApp messages: how it works",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizar-mensajes-de-whatsapp-puerto-vallarta/",
+    "title": "Automating WhatsApp messages: how it works in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizar-whatsapp-business/",
+    "title": "WhatsApp Business automation: app or API?",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizar-whatsapp-business-puerto-vallarta/",
+    "title": "WhatsApp Business automation: app or API? in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-de-mensajes-en-whatsapp/",
+    "title": "WhatsApp message automation: cases and metrics",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta/",
+    "title": "WhatsApp message automation: cases and metrics in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrolladores-de-app/",
+    "title": "App developers: the team behind the project",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrolladores-de-app-puerto-vallarta/",
+    "title": "App developers: the team behind the project in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-de-app/",
+    "title": "App development: the process, stage by stage",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-de-app-puerto-vallarta/",
+    "title": "App development: the process, stage by stage in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrolladores-de-apps/",
+    "title": "Web app, PWA or mobile app?",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrolladores-de-apps-puerto-vallarta/",
+    "title": "Web app, PWA or mobile app? in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-de-aplicaciones-moviles/",
+    "title": "Mobile app development: iOS, Android and PWA",
+    "family": "Decision guides",
+    "locale": "en"
+  },
+  {
+    "path": "/en/desarrollo-de-aplicaciones-moviles-puerto-vallarta/",
+    "title": "Mobile app development: iOS, Android and PWA in Puerto Vallarta",
+    "family": "Local presence",
+    "locale": "en"
+  },
+  {
+    "path": "/en/guias-transformacion/",
+    "title": "Guides & local presence",
+    "family": "Company",
+    "locale": "en"
+  },
+  {
+    "path": "/en/404/",
+    "title": "Page not found",
+    "family": "System",
+    "locale": "en"
+  },
+  {
+    "path": "/en/mapa/",
+    "title": "Sitemap",
+    "family": "System",
+    "locale": "en"
   }
 ]

@@ -1,6 +1,6 @@
 {
   "pages": 144,
-  "internal_references_checked": 7457,
+  "internal_references_checked": 8178,
   "errors": [],
   "http_statuses": {
     "/": 200,
@@ -170,5 +170,29 @@
     "all_pages_noindex": "PASS",
     "original_home_unchanged": "PASS",
     "english_editorial_scope": "Commercial translation; long guides/articles are identified summaries linked to Spanish original"
+  },
+  "menu_visual_checks": {
+    "date": "2026-10-03",
+    "views": 36,
+    "actual_widths": [
+      320,
+      390,
+      768,
+      1024,
+      1280,
+      1840
+    ],
+    "horizontal_overflow": false,
+    "whole_about_illustration": true,
+    "public_navigation_order": [
+      "Inicio",
+      "Nosotros",
+      "Servicios",
+      "Industrias",
+      "Blog",
+      "Contacto"
+    ],
+    "interior_header_outer_background": "rgb(255, 255, 255)",
+    "console_errors_observed": []
   }
 }

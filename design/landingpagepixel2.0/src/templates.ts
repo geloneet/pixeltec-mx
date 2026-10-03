@@ -4,7 +4,8 @@ import {art as draw} from './art.js';
 import {bi,localPath,langSwitch,type Locale,type Bilingual} from './i18n.js';
 import {company,serviceContent,caseStudies,industryContent,editorial,method,faqContent,type ContentItem,type CaseStudy,type Post,type Feature} from './content.js';
 export interface Page {path:string;title:string;family:string;body:string;description?:string;}
-export const logo='<svg viewBox="0 0 40 44" aria-hidden="true"><path fill="#5c9bff" d="M20 2 38 12 20 22 2 12Z"/><path fill="#1466ff" d="M2 12 20 22 20 42 2 32Z"/><path fill="#0a4fd6" d="M20 22 38 12 38 32 20 42Z"/></svg>';
+import {logo} from './brand.js';
+export {logo} from './brand.js';
 export const canonicalPath=(path:string):string=>path==='/'?'/':path.replace(/\/$/,'');
 export function renderer(locale:Locale){
  const x=(es:string,en:string):string=>locale==='es'?es:en;

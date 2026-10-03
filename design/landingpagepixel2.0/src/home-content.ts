@@ -1,3 +1,4 @@
+import {brandMark} from './brand.js';
 import {homeNavigation} from './navigation.js';
 import {company,serviceContent,caseStudies,industryContent,editorial,method} from './content.js';
 import {langSwitch,localPath,type Locale} from './i18n.js';
@@ -84,6 +85,8 @@ export function homeContent(home:string,locale:Locale):string {
  home=home.replace('<header style=', '<header class="home-header" style=');
  home=home.replace(/(<header[^>]*>\s*)<nav[\s\S]*?<\/nav>/,`$1<nav class="site-primary-nav" aria-label="${x('Navegación principal','Main navigation')}">${homeNavigation(locale)}</nav>`);
  home=home.replace(/<sc-if value="\{\{ isMobile \}\}" hint-placeholder-val="\{\{ false \}\}">\s*<nav[\s\S]*?<\/nav>\s*<\/sc-if>/,`<nav class="home-drawer-nav" aria-label="${x('Todas las páginas','All pages')}">${homeNavigation(locale,true)}</nav>`);
+ // Reuse the same brand geometry without changing the supplied source or SVG sizing.
+ home=home.replace(/(<svg viewBox="0 0 40 44"[^>]*>)[\s\S]*?<\/svg>/g,(_,open:string)=>open+brandMark+'</svg>');
  const title=locale==='es'?'Desarrollo Web, Apps y Automatización con IA en Puerto Vallarta':'Web & App Development and AI Automation | PixelTEC';
  home=home.replace(/<title>[^<]+<\/title>/,`<title>${title}</title>`);
  const canonical=locale==='es'?'https://pixeltec.mx':'https://pixeltec.mx/en';

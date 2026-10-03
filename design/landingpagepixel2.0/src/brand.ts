@@ -1,0 +1,3 @@
+// Cube linework from Miguel’s original homepage, shared by generated pages.
+export const brandMark='<polygon points="20,2 38,12 20,22 2,12" fill="#5c9bff"></polygon><polygon points="2,12 20,22 20,42 2,32" fill="#1466ff"></polygon><polygon points="20,22 38,12 38,32 20,42" fill="#0a4fd6"></polygon><g stroke="#0b0b0a" stroke-width="1.2" fill="none" opacity=".55"><path d="M11,7 29,17 M29,7 11,17"></path><path d="M8,15.3 8,35.3 M14,18.7 14,38.7 M2,18.7 20,28.7 M2,25.3 20,35.3"></path><path d="M26,18.7 26,38.7 M32,15.3 32,35.3 M20,28.7 38,18.7 M20,35.3 38,25.3"></path></g>';
+export const logo='<svg viewBox="0 0 40 44" aria-hidden="true">'+brandMark+'</svg>';

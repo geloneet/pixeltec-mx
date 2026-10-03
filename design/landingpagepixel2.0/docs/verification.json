@@ -206,5 +206,31 @@
     "first_paint": "ES/EN content and real links before runtime; removed after header + h1 mount",
     "browser": "Native transition completed both directions home/interior, language, history, drawer Escape/focus; home width 320 no overflow; one h1",
     "limitations": "Progressive multipage transitions, not SPA; no new Lighthouse/cross-engine certification"
+  },
+  "historicalEvidenceNote": "Earlier sections describe their named stages; current SEO state is in seo_execution and ejecucion-seo-2026-10-03.md.",
+  "seo_execution": {
+    "date": "2026-10-03",
+    "prototypeTests": 9,
+    "rootSeoTests": 72,
+    "rootTestFiles": 5,
+    "strictTypescript": "PASS in prototype and Next application",
+    "nextProductionBuild": "PASS; ignoreBuildErrors disabled",
+    "htmlFiles": 145,
+    "routes": 144,
+    "http200": 142,
+    "http404": [
+      "/404/",
+      "/en/404/"
+    ],
+    "unknownRouteStatus": 404,
+    "localReferences": 8170,
+    "preservedPublishedMetadataSets": 60,
+    "structuredGraphPages": 144,
+    "sourceH1PerPage": 1,
+    "englishAlternates": "Only eligible equivalent candidates; incomplete translations excluded",
+    "sourceSemantics": "Lists retained for 38 ES guide/local pages and three ES legal pages; article semantic import remains",
+    "previewRobots": "noindex,nofollow; localhost only",
+    "productionReady": false,
+    "remaining": "Full English, complete home server render, Next design integration, CMS/business parity, final release and authorization"
   }
 }

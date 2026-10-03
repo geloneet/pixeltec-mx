@@ -3,7 +3,7 @@ import { readFile, stat } from 'node:fs/promises';
 import { resolve, extname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.svg':'image/svg+xml','.json':'application/json','.txt':'text/plain; charset=utf-8'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.webp':'image/webp','.woff2':'font/woff2','.svg':'image/svg+xml','.json':'application/json','.txt':'text/plain; charset=utf-8','.xml':'application/xml; charset=utf-8'};
 function encodings(header='') {
   const values=new Map(header.split(',').map(part=>{
     const [name,...params]=part.trim().toLowerCase().split(';');
@@ -30,7 +30,7 @@ export function createPreviewServer(directory='dist') {
       const headers={'Content-Type':mime[extname(path)]??'application/octet-stream','Cache-Control':'public, max-age=0, must-revalidate','ETag':etag,'Vary':'Accept-Encoding','X-Content-Type-Options':'nosniff'};
       if(encoding)headers['Content-Encoding']=encoding;
       if(req.headers['if-none-match']?.split(',').map(t=>t.trim()).includes(etag)){res.writeHead(304,headers).end();return;}
-      res.writeHead(200,{...headers,'Content-Length':data.length}).end(req.method==='HEAD'?undefined:data);
+      res.writeHead(/^\/(?:en\/)?404\/?$/.test(new URL(req.url??'/','http://localhost').pathname)?404:200,{...headers,'Content-Length':data.length}).end(req.method==='HEAD'?undefined:data);
     }catch(error){
       const status=error instanceof URIError?400:404;
       const data=await readFile(root+'/404.html');

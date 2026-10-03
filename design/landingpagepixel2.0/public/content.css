@@ -59,7 +59,7 @@
 .menu-grid nav a{padding:14px 0;font-size:18px;font-weight:700;line-height:1.4;letter-spacing:0;text-transform:uppercase;border-color:#3a3833}
 .menu-grid nav small,.menu-grid nav a>span{display:none}
 .menu-grid nav a:hover{color:#80b0ff}
-.menu-grid h2{font-size:30px;line-height:1.15;margin:18px 0 24px}
+.menu-grid .menu-heading{font-size:30px;line-height:1.15;margin:18px 0 24px}
 .menu-grid .button{width:100%;gap:18px}
 .menu-extra{gap:16px;margin:32px 0;font-size:14px;grid-template-columns:minmax(0,1fr)}
 .menu-dialog .language-link{margin-bottom:16px}
@@ -82,6 +82,19 @@
  .menu-top .brand{font-size:25px;gap:7px}
  .menu-top .brand svg{width:28px}
  .menu-top{gap:10px}
- .menu-grid h2{font-size:28px}
+ .menu-grid .menu-heading{font-size:28px}
  .contact-layout>.contact-options>h2{font-size:34px}
 }
+/* Imported approved copy keeps semantic lists and tables within the design grid. */
+.source-copy{min-width:0;overflow-wrap:anywhere}
+.source-copy>div+div{margin-top:32px}
+.source-copy :where(ul,ol){padding-left:1.4em;margin:20px 0}
+.source-copy li{margin:10px 0;line-height:1.75}
+.source-copy table{display:block;max-width:100%;overflow-x:auto;border-collapse:collapse;margin:28px 0;font-size:15px}
+.source-copy :where(th,td){padding:14px 18px;border:1px solid var(--line,#dedbd4);text-align:left;min-width:150px;vertical-align:top}
+.source-copy th{background:#f2efe8;color:#0b0b0a}
+.source-copy code{font-size:.88em;overflow-wrap:anywhere}
+.source-copy pre{white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%}
+
+.menu-grid .menu-heading{font-weight:700;letter-spacing:-.04em}
+.footer-grid .footer-heading{color:#fff;font-weight:700;line-height:1.2}

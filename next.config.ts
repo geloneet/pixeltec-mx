@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   allowedDevOrigins: ['198.100.155.231', 'dev.pixeltec.mx'],
   // grammy y ws NO deben ser bundleados por webpack. @react-pdf/renderer

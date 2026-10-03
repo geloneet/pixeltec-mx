@@ -2,12 +2,14 @@ import { optimizeAssets, optimizeHome, compressOutput } from './optimize.mjs';
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import {renderer,logo,canonicalPath} from './.build/templates.js';
 import {homeContent} from './.build/home-content.js';
-import {serviceContent,caseStudies,industryContent,editorial} from './.build/content.js';
+import {company,serviceContent,caseStudies,industryContent,editorial} from './.build/content.js';
 import {guideContent} from './.build/guides.js';
 import {languages,localPath} from './.build/i18n.js';
 import {escapeHTML,services,projects,posts} from './.build/catalog.js';
-import {loadSources,articleHtml} from './source-content.mjs';
+import {addStructuredData,writeInventory,siteContactEmail} from './seo-build.mjs';
+import {loadSources,loadRichSources,articleHtml,legalHtml} from './source-content.mjs';
 const sources=await loadSources();
+const richSources=await loadRichSources();
 const xml=await readFile('docs/sitemap-observed.xml','utf8');
 const livePaths=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>new URL(m[1]).pathname.replace(/\/$/,'')+'/');
 const allPages=[];const entries=[];
@@ -39,7 +41,11 @@ for(const locale of languages){
  add('/diagnostico/',x('Diagnóstico','Assessment'),x('Contacto y acceso','Contact & access'),t.diagnostic());
  add('/login/',x('Acceso de clientes','Client access'),x('Contacto y acceso','Contact & access'),t.auth());
  add('/reset-password/',x('Recuperar acceso','Recover access'),x('Contacto y acceso','Contact & access'),t.auth(true));
- for(const [path,es,en] of [['aviso-de-privacidad','Aviso de privacidad','Privacy notice'],['terminos-de-servicio','Términos de servicio','Terms of service'],['data-deletion','Eliminación de datos','Data deletion']])add('/'+path+'/',x(es,en),x('Información','Information'),t.legal(x(es,en),'/'+path+'/'));
+ for(const [path,es,en] of [['aviso-de-privacidad','Aviso de privacidad','Privacy notice'],['terminos-de-servicio','Términos de servicio','Terms of service'],['data-deletion','Eliminación de datos','Data deletion']]){
+  let body=t.legal(x(es,en),'/'+path+'/');
+  if(locale==='es')body=body.replace(/<article class="article-copy">[\s\S]*?<\/article>/,'<article class="article-copy source-copy">'+legalHtml(richSources.get('/'+path+'/').nodes,new Set(livePaths),siteContactEmail)+'</article>');
+  add('/'+path+'/',x(es,en),x('Información','Information'),body);
+ }
  const local=[];
  for(const path of livePaths){
   if(path==='/'||pages.some(p=>p.path===path))continue;
@@ -49,7 +55,9 @@ for(const locale of languages){
   if(!intro||!title)throw new Error('Missing approved guide text '+path);
   const item=guideContent(path,title,intro);
   const blocks=(source.blocks??[]).filter(b=>b.tag!=='H1'&&b.text!==intro&&b.text.trim());
-  add(path,item.title[locale],item.category[locale],t.guide(item,blocks),item.description[locale]);local.push(pages.at(-1));
+  let body=t.guide(item,blocks);
+  if(locale==='es')body=body.replace(/<article class="article-copy">[\s\S]*?<\/article>/,'<article class="article-copy source-copy">'+articleHtml(richSources.get(path).nodes,new Set(livePaths))+'</article>');
+  add(path,item.title[locale],item.category[locale],body,item.description[locale]);local.push(pages.at(-1));
  }
  add('/guias-transformacion/',x('Guías y presencia local','Guides & local presence'),x('Empresa','Company'),t.directory(local));
  add('/404/',x('Página no encontrada','Page not found'),x('Sistema','System'),t.notFound());
@@ -58,7 +66,7 @@ for(const locale of languages){
  for(const page of pages){
   const seo=sources.get(page.path)?.seo;
   if(locale==='es'&&seo){page.title=seo.title.replace(/ \| PixelTEC$/,'');page.description=seo.description;}
-  allPages.push({...page,locale,html:t.document(page)});
+  allPages.push({...page,locale,html:addStructuredData(t.document(page),{...page,locale})});
  }
  entries.push(...[{path:'/',title:x('Inicio','Home'),family:x('Inicio','Home')},...pages].map(({path,title,family})=>({path:localPath(path,locale),title,family,locale})));
 }
@@ -112,9 +120,11 @@ home=home.replaceAll('<a href="{{ p.href }}"', '<a data-motion href="{{ p.href }
 // Keep the supplied home layout, styles and interactive visuals intact.
 home=home.replace('</footer>','<div style="padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><a href="/mapa/">Explorar todas las páginas ↗</a><a href="/equipo/">Equipo</a><a href="/metodologia/">Metodología</a><a href="/guias-transformacion/">Guías y presencia local</a><a href="/login/">Acceso de clientes</a><a href="/terminos-de-servicio/">Términos</a></div></footer>');
 
-for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale);if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',await optimizeHome(output));}
+for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale);if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',addStructuredData(await optimizeHome(output),{path:'/',locale,title:locale==='es'?'Inicio':'Home'}));}
 await compressOutput();
 await writeFile('docs/routes.json',JSON.stringify(entries,null,2));
 const migration=livePaths.map(path=>({existing:sources.get(path)?.seo.canonical??'https://pixeltec.mx'+canonicalPath(path),spanish:path,english:localPath(path,'en'),action:'preserve-slug',redirectRequired:false}));
 await writeFile('docs/seo-route-map.json',JSON.stringify({date:'2026-10-03',preview:'noindex,nofollow; robots Disallow /',production:'Not deployed. Keep existing Spanish URLs; canonicalize slash aliases with one permanent redirect in the production router only.',routes:migration},null,2));
 console.log(`Generated ${entries.length} routes across es/en. Preserved ${livePaths.length} published Spanish slugs.`);
+
+await writeInventory(entries,sources,richSources);

@@ -1,3 +1,4 @@
+import {languageAlternates,socialMetadata} from './seo-policy.js';
 import {brandMark} from './brand.js';
 import {homeNavigation} from './navigation.js';
 import {company,serviceContent,caseStudies,industryContent,editorial,method} from './content.js';
@@ -31,6 +32,8 @@ const en:Record<string,string>={
 };
 export function homeContent(home:string,locale:Locale):string {
  const x=(a:string,b:string):string=>locale==='es'?a:b;
+ home=home.replace(/<p([^>]*)>(<span[^>]*>Somos arquitectos[\s\S]*?<\/span>)<\/p>/,'<h2$1>$2</h2>');
+
  const replaceArray=(key:string,items:unknown[],next:string):void=>{
   const start=home.indexOf('      '+key+': [');const end=home.indexOf('      '+next+':',start);
   if(start<0||end<0)throw new Error('Home content anchor missing: '+key);
@@ -90,6 +93,6 @@ export function homeContent(home:string,locale:Locale):string {
  const title=locale==='es'?'Desarrollo Web, Apps y Automatización con IA en Puerto Vallarta':'Web & App Development and AI Automation | PixelTEC';
  home=home.replace(/<title>[^<]+<\/title>/,`<title>${title}</title>`);
  const canonical=locale==='es'?'https://pixeltec.mx':'https://pixeltec.mx/en';
- home=home.replace('</head>',`<meta name="description" content="${esc(company.description[locale])}"><link rel="canonical" href="${canonical}"><link rel="alternate" hreflang="es-MX" href="https://pixeltec.mx"><link rel="alternate" hreflang="en" href="https://pixeltec.mx/en"><link rel="alternate" hreflang="x-default" href="https://pixeltec.mx"><link rel="stylesheet" href="/content.css"></head>`);
+ home=home.replace('</head>',`<meta name="description" content="${esc(company.description[locale])}"><link rel="canonical" href="${canonical}">${languageAlternates("/")}${socialMetadata(title,company.description[locale],locale==='es'?'/':'/en/',locale)}<link rel="stylesheet" href="/content.css"></head>`);
  return home;
 }

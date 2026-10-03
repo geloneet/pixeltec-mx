@@ -1,0 +1,154 @@
+{
+  "date": "2026-10-03",
+  "scope": "Local prototype homepage ES; Lighthouse 13.5.0, Chrome headless, cold loads, sequential by profile. Not production or field CWV.",
+  "url": "http://127.0.0.1:4317/",
+  "homepageSha256": "6d03e41c7c47a16542921f6ba22438a580de2d472ce949f325ae351fad629efb",
+  "profiles": {
+    "mobile": {
+      "runs": [
+        {
+          "timestamp": "2026-10-03T21:47:39.391Z",
+          "score": 97,
+          "LCP_ms": 2403.3409,
+          "TBT_ms": 78,
+          "CLS": 0,
+          "FCP_ms": 1053.3409,
+          "reportSha256": "8963247f82eef5dd5418895dcddc210a1b209c7e34e93ab35f73b704c7d165f7"
+        },
+        {
+          "timestamp": "2026-10-03T21:47:51.881Z",
+          "score": 97,
+          "LCP_ms": 2403.2036,
+          "TBT_ms": 82.5,
+          "CLS": 0,
+          "FCP_ms": 1053.2036,
+          "reportSha256": "aff8313fd1bf6f64c61e12d0de22ee07e764db644865b2c5a550b6d7757d4dcc"
+        },
+        {
+          "timestamp": "2026-10-03T21:48:04.130Z",
+          "score": 92,
+          "LCP_ms": 2405.4771,
+          "TBT_ms": 286.5,
+          "CLS": 0,
+          "FCP_ms": 1055.4771,
+          "reportSha256": "1a5b4461586ba45fea7b290b075b7a80f77b58163aaa3e9ff2f87e9869d6dca4"
+        }
+      ],
+      "summary": {
+        "score": {
+          "median": 97,
+          "min": 92,
+          "max": 97
+        },
+        "LCP_ms": {
+          "median": 2403.3409,
+          "min": 2403.2036,
+          "max": 2405.4771
+        },
+        "TBT_ms": {
+          "median": 82.5,
+          "min": 78,
+          "max": 286.5
+        },
+        "CLS": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "FCP_ms": {
+          "median": 1053.3409,
+          "min": 1053.2036,
+          "max": 1055.4771
+        }
+      },
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+        "benchmarkIndex": 2987,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "throttlingMethod": "simulate"
+    },
+    "desktop": {
+      "runs": [
+        {
+          "timestamp": "2026-10-03T21:50:14.449Z",
+          "score": 100,
+          "LCP_ms": 646.2092,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 294.1046,
+          "reportSha256": "310752a543710373c795176139d732e325f82b28096c411833f27ebd0c67c16e"
+        },
+        {
+          "timestamp": "2026-10-03T21:50:26.012Z",
+          "score": 100,
+          "LCP_ms": 608.1654000000001,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 284.0827,
+          "reportSha256": "b6a8877fde1a2f2f6c1252303338e889d1c32c9faa5c89a31630c7c318565b66"
+        },
+        {
+          "timestamp": "2026-10-03T21:50:37.347Z",
+          "score": 100,
+          "LCP_ms": 646.3716,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 283.1858,
+          "reportSha256": "0adb9cee56c440ea378c31a4299a473d7fda17aa0fb7cc290e7ba950d0c775d2"
+        }
+      ],
+      "summary": {
+        "score": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "LCP_ms": {
+          "median": 646.2092,
+          "min": 608.1654000000001,
+          "max": 646.3716
+        },
+        "TBT_ms": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "CLS": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "FCP_ms": {
+          "median": 284.0827,
+          "min": 283.1858,
+          "max": 294.1046
+        }
+      },
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+        "benchmarkIndex": 4013.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "throttlingMethod": "simulate"
+    }
+  }
+}

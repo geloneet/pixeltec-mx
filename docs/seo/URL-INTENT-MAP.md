@@ -98,3 +98,9 @@ entrada al registro la publica.
   decisión técnica móvil (iOS/Android/PWA, tiendas y costo de mantener). Las
   cuatro se enlazan entre sí y con el clúster A por el hub `ecosistemas-web`;
   vigilar desde la primera lectura de GSC y consolidar con 301 solo con datos.
+
+## Evidencia del rediseño — 2026-10-03
+
+Este mapa sigue siendo la fuente de intención. El [inventario técnico del candidato](../../design/landingpagepixel2.0/docs/seo-inventory.json) lo complementa con 144 rutas ES/EN, fuentes, status, indexabilidad y redirects; no altera los estados productivos de la matriz anterior. [Lectura GSC y validación](../../design/landingpagepixel2.0/docs/ejecucion-seo-2026-10-03.md): filtro de host canónico, 107 clics/1,515 impresiones en tres meses; inicio 99 clics, Nosotros 2 y varias páginas con 1. Priorizar protección de inicio y revisión de Nosotros/Servicios/Equipo/Contacto y artículo de privacidad IA, sin concluir canibalización o causalidad por ese dato.
+
+Preservar la exclusión productiva de `/metodologia` y `/guias-transformacion`, y las privadas. Las guías/artículos/legales EN incompletos no son equivalentes indexables todavía. Se mantiene el redirect existente del demo `escalabilidad-en-la-nube-con-nextjs-y-firebase` a `/blog`, observado también en GSC. **Encino queda fuera:** Miguel confirmó que ese proyecto fue retirado y migró a otro dominio (destino no proporcionado). Sus 404 históricos no se convierten en pendientes de la landing PixelTEC.

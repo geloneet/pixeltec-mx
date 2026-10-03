@@ -1,0 +1,1257 @@
+{
+  "captured": "2026-10-03",
+  "source": "Authenticated Google Search Console UI CSV exports, supplied session",
+  "property": "sc-domain:pixeltec.mx",
+  "aggregationNote": "Page-filter aggregation; do not subtract from unfiltered property impressions. Query rows may omit anonymized traffic. Raw exports remain local, not in Git.",
+  "reports": [
+    {
+      "window": "3months",
+      "dateRange": [
+        "2026-06-30",
+        "2026-09-29"
+      ],
+      "filters": [
+        {
+          "Filtrar": "Tipo de búsqueda",
+          "Valor": "Web"
+        },
+        {
+          "Filtrar": "Fecha",
+          "Valor": "Últimos 3 meses"
+        },
+        {
+          "Filtrar": "Página",
+          "Valor": "+https://pixeltec.mx/"
+        }
+      ],
+      "clicks": 107,
+      "impressions": 1515,
+      "ctr": 0.07062706270627063,
+      "pages": [
+        {
+          "Páginas principales": "https://pixeltec.mx/",
+          "Clics": "99",
+          "Impresiones": "226",
+          "CTR": "43.81%",
+          "Posición": "5.42"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/about",
+          "Clics": "2",
+          "Impresiones": "309",
+          "CTR": "0.65%",
+          "Posición": "7.22"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+          "Clics": "1",
+          "Impresiones": "125",
+          "CTR": "0.8%",
+          "Posición": "6.88"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/contact",
+          "Clics": "1",
+          "Impresiones": "103",
+          "CTR": "0.97%",
+          "Posición": "2.59"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "19",
+          "CTR": "5.26%",
+          "Posición": "2.42"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-guadalajara",
+          "Clics": "1",
+          "Impresiones": "12",
+          "CTR": "8.33%",
+          "Posición": "17"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "7",
+          "CTR": "14.29%",
+          "Posición": "3.86"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistema-personalizado-para-empresas-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "1",
+          "CTR": "100%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/equipo",
+          "Clics": "0",
+          "Impresiones": "151",
+          "CTR": "0%",
+          "Posición": "3.6"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services",
+          "Clics": "0",
+          "Impresiones": "131",
+          "CTR": "0%",
+          "Posición": "2.15"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+          "Clics": "0",
+          "Impresiones": "93",
+          "CTR": "0%",
+          "Posición": "82.22"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias",
+          "Clics": "0",
+          "Impresiones": "84",
+          "CTR": "0%",
+          "Posición": "1.74"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services/ecosistemas-web",
+          "Clics": "0",
+          "Impresiones": "54",
+          "CTR": "0%",
+          "Posición": "3.11"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog",
+          "Clics": "0",
+          "Impresiones": "36",
+          "CTR": "0%",
+          "Posición": "41.28"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-guadalajara",
+          "Clics": "0",
+          "Impresiones": "23",
+          "CTR": "0%",
+          "Posición": "48.3"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-zapopan",
+          "Clics": "0",
+          "Impresiones": "20",
+          "CTR": "0%",
+          "Posición": "14.35"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+          "Clics": "0",
+          "Impresiones": "13",
+          "CTR": "0%",
+          "Posición": "5.92"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-apps-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "12",
+          "CTR": "0%",
+          "Posición": "8.17"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias/hoteles",
+          "Clics": "0",
+          "Impresiones": "10",
+          "CTR": "0%",
+          "Posición": "8.2"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-whatsapp-business",
+          "Clics": "0",
+          "Impresiones": "9",
+          "CTR": "0%",
+          "Posición": "17.22"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-app",
+          "Clics": "0",
+          "Impresiones": "8",
+          "CTR": "0%",
+          "Posición": "23.25"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/terminos-de-servicio",
+          "Clics": "0",
+          "Impresiones": "6",
+          "CTR": "0%",
+          "Posición": "2.5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-bahia-de-banderas",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "7"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/programador-de-software",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "11.4"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-app-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "1.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services/automatizacion",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "1.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/diagnostico",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistemas-a-medida",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "21.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatiza-tu-negocio",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "51.25"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistemas-a-medida-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "4"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-whatsapp-business-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "9.33"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-bahia-de-banderas",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "17.33"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-zapopan",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "17.67"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "49.67"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/software-a-medida-para-empresas",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "9"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/empresas-de-desarrollo-de-software-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "9"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatiza-tu-negocio-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "19"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/escalabilidad-en-la-nube-con-nextjs-y-firebase",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-app-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias/clinicas-dentales",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "3"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-app",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "6"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/programador-de-software-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "10"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-apps",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "11"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "44"
+        }
+      ],
+      "devices": [
+        {
+          "Dispositivo": "Ordenador",
+          "Clics": "49",
+          "Impresiones": "589",
+          "CTR": "8.32%",
+          "Posición": "19.47"
+        },
+        {
+          "Dispositivo": "Tablet",
+          "Clics": "4",
+          "Impresiones": "28",
+          "CTR": "14.29%",
+          "Posición": "2"
+        },
+        {
+          "Dispositivo": "Móviles",
+          "Clics": "2",
+          "Impresiones": "89",
+          "CTR": "2.25%",
+          "Posición": "16.01"
+        }
+      ],
+      "countries": [
+        {
+          "País": "México",
+          "Clics": "55",
+          "Impresiones": "608",
+          "CTR": "9.05%",
+          "Posición": "17.18"
+        },
+        {
+          "País": "España",
+          "Clics": "0",
+          "Impresiones": "13",
+          "CTR": "0%",
+          "Posición": "12.23"
+        },
+        {
+          "País": "Estados Unidos",
+          "Clics": "0",
+          "Impresiones": "13",
+          "CTR": "0%",
+          "Posición": "55.15"
+        },
+        {
+          "País": "Perú",
+          "Clics": "0",
+          "Impresiones": "12",
+          "CTR": "0%",
+          "Posición": "6"
+        },
+        {
+          "País": "Alemania",
+          "Clics": "0",
+          "Impresiones": "8",
+          "CTR": "0%",
+          "Posición": "31"
+        },
+        {
+          "País": "Argentina",
+          "Clics": "0",
+          "Impresiones": "6",
+          "CTR": "0%",
+          "Posición": "18"
+        },
+        {
+          "País": "Rusia",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "34.4"
+        },
+        {
+          "País": "Ucrania",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "32.75"
+        },
+        {
+          "País": "Chile",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "País": "Guatemala",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "6.33"
+        },
+        {
+          "País": "Polonia",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "26.67"
+        },
+        {
+          "País": "Suiza",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "País": "Austria",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "5.5"
+        },
+        {
+          "País": "Colombia",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "5.5"
+        },
+        {
+          "País": "Panamá",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "6"
+        },
+        {
+          "País": "Canadá",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "6.5"
+        },
+        {
+          "País": "Indonesia",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "13.5"
+        },
+        {
+          "País": "Australia",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "37.5"
+        },
+        {
+          "País": "Filipinas",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "47"
+        },
+        {
+          "País": "Emiratos Árabes Unidos",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "51.5"
+        },
+        {
+          "País": "Ruanda",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "2"
+        },
+        {
+          "País": "Azerbaiyán",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "País": "Bangladés",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "País": "Brasil",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "10"
+        },
+        {
+          "País": "Marruecos",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "36"
+        },
+        {
+          "País": "Vietnam",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "60"
+        },
+        {
+          "País": "Francia",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "68"
+        },
+        {
+          "País": "Reino Unido",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "71"
+        },
+        {
+          "País": "Portugal",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "71"
+        },
+        {
+          "País": "Países Bajos",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "88"
+        }
+      ],
+      "queryRows": 68,
+      "queriesWithClicks": [
+        {
+          "Consultas principales": "pixeltec",
+          "Clics": "28",
+          "Impresiones": "298",
+          "CTR": "9.4%",
+          "Posición": "1.9"
+        },
+        {
+          "Consultas principales": "pixeltec studio",
+          "Clics": "17",
+          "Impresiones": "134",
+          "CTR": "12.69%",
+          "Posición": "1.04"
+        },
+        {
+          "Consultas principales": "pixel tec",
+          "Clics": "10",
+          "Impresiones": "49",
+          "CTR": "20.41%",
+          "Posición": "3.76"
+        }
+      ],
+      "exportSha256": "d4bd88dc69d4649e65e765c547ca130a9e6de499c27ad36913d3531e88f87e9e",
+      "uiAveragePosition": 11.9
+    },
+    {
+      "window": "28days",
+      "dateRange": [
+        "2026-09-02",
+        "2026-09-29"
+      ],
+      "filters": [
+        {
+          "Filtrar": "Tipo de búsqueda",
+          "Valor": "Web"
+        },
+        {
+          "Filtrar": "Fecha",
+          "Valor": "Últimos 28 días"
+        },
+        {
+          "Filtrar": "Página",
+          "Valor": "+https://pixeltec.mx/"
+        }
+      ],
+      "clicks": 105,
+      "impressions": 1208,
+      "ctr": 0.0869205298013245,
+      "pages": [
+        {
+          "Páginas principales": "https://pixeltec.mx/",
+          "Clics": "99",
+          "Impresiones": "216",
+          "CTR": "45.83%",
+          "Posición": "5.19"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/about",
+          "Clics": "1",
+          "Impresiones": "184",
+          "CTR": "0.54%",
+          "Posición": "2.65"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+          "Clics": "1",
+          "Impresiones": "125",
+          "CTR": "0.8%",
+          "Posición": "6.88"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "19",
+          "CTR": "5.26%",
+          "Posición": "2.42"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-guadalajara",
+          "Clics": "1",
+          "Impresiones": "12",
+          "CTR": "8.33%",
+          "Posición": "17"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "7",
+          "CTR": "14.29%",
+          "Posición": "3.86"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistema-personalizado-para-empresas-puerto-vallarta",
+          "Clics": "1",
+          "Impresiones": "1",
+          "CTR": "100%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/equipo",
+          "Clics": "0",
+          "Impresiones": "133",
+          "CTR": "0%",
+          "Posición": "2.77"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services",
+          "Clics": "0",
+          "Impresiones": "122",
+          "CTR": "0%",
+          "Posición": "2.02"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/contact",
+          "Clics": "0",
+          "Impresiones": "86",
+          "CTR": "0%",
+          "Posición": "1.35"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias",
+          "Clics": "0",
+          "Impresiones": "73",
+          "CTR": "0%",
+          "Posición": "1.38"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services/ecosistemas-web",
+          "Clics": "0",
+          "Impresiones": "54",
+          "CTR": "0%",
+          "Posición": "3.11"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-guadalajara",
+          "Clics": "0",
+          "Impresiones": "23",
+          "CTR": "0%",
+          "Posición": "48.3"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-zapopan",
+          "Clics": "0",
+          "Impresiones": "20",
+          "CTR": "0%",
+          "Posición": "14.35"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog",
+          "Clics": "0",
+          "Impresiones": "15",
+          "CTR": "0%",
+          "Posición": "20.6"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-apps-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "12",
+          "CTR": "0%",
+          "Posición": "8.17"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias/hoteles",
+          "Clics": "0",
+          "Impresiones": "10",
+          "CTR": "0%",
+          "Posición": "8.2"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-whatsapp-business",
+          "Clics": "0",
+          "Impresiones": "9",
+          "CTR": "0%",
+          "Posición": "17.22"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-app",
+          "Clics": "0",
+          "Impresiones": "8",
+          "CTR": "0%",
+          "Posición": "23.25"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/terminos-de-servicio",
+          "Clics": "0",
+          "Impresiones": "6",
+          "CTR": "0%",
+          "Posición": "2.5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+          "Clics": "0",
+          "Impresiones": "6",
+          "CTR": "0%",
+          "Posición": "6"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "6.4"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-bahia-de-banderas",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "7"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/programador-de-software",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "11.4"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-app-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "1.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/services/automatizacion",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "1.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/diagnostico",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistemas-a-medida",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "21.75"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatiza-tu-negocio",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "51.25"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/sistemas-a-medida-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "4"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-whatsapp-business-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "9.33"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-bahia-de-banderas",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "17.33"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-web-zapopan",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "17.67"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "3",
+          "CTR": "0%",
+          "Posición": "49.67"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/software-a-medida-para-empresas",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "9"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/empresas-de-desarrollo-de-software-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "9"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatiza-tu-negocio-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "19"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-app-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "1"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/industrias/clinicas-dentales",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "3"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-app",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "6"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/programador-de-software-puerto-vallarta",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "10"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrolladores-de-apps",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "11"
+        },
+        {
+          "Páginas principales": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "44"
+        }
+      ],
+      "devices": [
+        {
+          "Dispositivo": "Ordenador",
+          "Clics": "49",
+          "Impresiones": "457",
+          "CTR": "10.72%",
+          "Posición": "5.34"
+        },
+        {
+          "Dispositivo": "Tablet",
+          "Clics": "4",
+          "Impresiones": "28",
+          "CTR": "14.29%",
+          "Posición": "2"
+        },
+        {
+          "Dispositivo": "Móviles",
+          "Clics": "2",
+          "Impresiones": "57",
+          "CTR": "3.51%",
+          "Posición": "21.32"
+        }
+      ],
+      "countries": [
+        {
+          "País": "México",
+          "Clics": "55",
+          "Impresiones": "473",
+          "CTR": "11.63%",
+          "Posición": "4.12"
+        },
+        {
+          "País": "Estados Unidos",
+          "Clics": "0",
+          "Impresiones": "13",
+          "CTR": "0%",
+          "Posición": "55.15"
+        },
+        {
+          "País": "España",
+          "Clics": "0",
+          "Impresiones": "8",
+          "CTR": "0%",
+          "Posición": "13.75"
+        },
+        {
+          "País": "Perú",
+          "Clics": "0",
+          "Impresiones": "7",
+          "CTR": "0%",
+          "Posición": "4.43"
+        },
+        {
+          "País": "Alemania",
+          "Clics": "0",
+          "Impresiones": "6",
+          "CTR": "0%",
+          "Posición": "23.5"
+        },
+        {
+          "País": "Rusia",
+          "Clics": "0",
+          "Impresiones": "5",
+          "CTR": "0%",
+          "Posición": "34.4"
+        },
+        {
+          "País": "Argentina",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "23"
+        },
+        {
+          "País": "Ucrania",
+          "Clics": "0",
+          "Impresiones": "4",
+          "CTR": "0%",
+          "Posición": "32.75"
+        },
+        {
+          "País": "Chile",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "3.5"
+        },
+        {
+          "País": "Suiza",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "5"
+        },
+        {
+          "País": "Austria",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "5.5"
+        },
+        {
+          "País": "Canadá",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "6.5"
+        },
+        {
+          "País": "Guatemala",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "6.5"
+        },
+        {
+          "País": "Australia",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "37.5"
+        },
+        {
+          "País": "Emiratos Árabes Unidos",
+          "Clics": "0",
+          "Impresiones": "2",
+          "CTR": "0%",
+          "Posición": "51.5"
+        },
+        {
+          "País": "Ruanda",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "2"
+        },
+        {
+          "País": "Azerbaiyán",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "País": "Bangladés",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "País": "Colombia",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "8"
+        },
+        {
+          "País": "Indonesia",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "9"
+        },
+        {
+          "País": "Brasil",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "10"
+        },
+        {
+          "País": "Polonia",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "24"
+        },
+        {
+          "País": "Francia",
+          "Clics": "0",
+          "Impresiones": "1",
+          "CTR": "0%",
+          "Posición": "68"
+        }
+      ],
+      "queryRows": 40,
+      "queriesWithClicks": [
+        {
+          "Consultas principales": "pixeltec",
+          "Clics": "28",
+          "Impresiones": "269",
+          "CTR": "10.41%",
+          "Posición": "1.54"
+        },
+        {
+          "Consultas principales": "pixeltec studio",
+          "Clics": "17",
+          "Impresiones": "134",
+          "CTR": "12.69%",
+          "Posición": "1.04"
+        },
+        {
+          "Consultas principales": "pixel tec",
+          "Clics": "10",
+          "Impresiones": "45",
+          "CTR": "22.22%",
+          "Posición": "3.58"
+        }
+      ],
+      "exportSha256": "6fa86a0195a2efe24dee52013fe1cd1dc0f766767b6d7c6733df95515d1b7c24",
+      "uiAveragePosition": 5.7
+    }
+  ],
+  "reportLimitations": [
+    "Canonical-host page filter excludes www and encino; domain-level indexation totals include them.",
+    "Exported device buckets total 55 clicks in each window; they do not reconcile with displayed page-filter totals. No device-share inference.",
+    "Search Console does not establish leads or conversions; none were measured.",
+    "Only 3 months and 28 days were captured; 16-month trend and backlink sources remain unreviewed."
+  ],
+  "manualActions": {
+    "observed": "2026-10-03",
+    "result": "No se ha detectado ningún problema",
+    "scope": "Manual actions report only; not proof of absence of algorithmic ranking changes"
+  },
+  "coreWebVitals": {
+    "mobile": "Sin datos",
+    "desktop": "Sin datos",
+    "scope": "Search Console overview; no field certification"
+  },
+  "sitemap": {
+    "url": "https://pixeltec.mx/sitemap.xml",
+    "submitted": "2026-09-14",
+    "lastRead": "2026-09-30",
+    "status": "Correcto",
+    "discoveredPages": 60,
+    "directFetchStatus": 403,
+    "interpretation": "The direct-request 403 does not establish a Googlebot block; GSC reports a successful read."
+  },
+  "indexation": {
+    "reportUpdated": "2026-09-20",
+    "scope": "Domain property, all known pages, includes subdomains",
+    "indexed": 75,
+    "notIndexed": 204,
+    "reasons": {
+      "redirect": 62,
+      "alternateCanonical": 39,
+      "notFound": 15,
+      "noindex": 5,
+      "crawledNotIndexed": 67,
+      "discoveredNotIndexed": 16
+    },
+    "notFoundBreakdown": {
+      "encino": 8,
+      "other": 7
+    },
+    "otherNotFoundURLs": [
+      "https://www.pixeltec.mx/cdn-cgi/l/email-protection",
+      "https://pixeltec.mx/wp-*.php",
+      "http://pixeltec.mx/tag/windows/",
+      "https://pixeltec.mx/$",
+      "https://pixeltec.mx/seo-services/",
+      "https://pixeltec.mx/wp-includes/js/wp-emoji-release.min.js?ver=6.9",
+      "http://pixeltec.mx/tag/windows/feed/"
+    ]
+  },
+  "retiredProject": {
+    "host": "encino.pixeltec.mx",
+    "authority": "Miguel, user message 2026-10-03",
+    "statement": "Retired project migrated to another domain",
+    "newDomain": null,
+    "decision": "Exclude from this landing remediation. Do not restore, redirect or change infrastructure without its own scope."
+  }
+}

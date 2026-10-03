@@ -1,0 +1,216 @@
+{
+  "source": "pixeltec-mx application: generated public SEO export",
+  "files": {
+    "src/lib/seo/site-graph.ts": "b4efe1554e1b347c2b80cf22e156dc8f2833e795b441cbe2cec004529bb33e3b",
+    "src/lib/site-config.ts": "732b2421ae5e9e3ca58a382cfa4aebeb9df518c0573cd79a921942ca75cbb4b5",
+    "src/lib/content/services-catalog.ts": "72e40d06e071f9bde94e761842dfbe315524d5691fce243980a26a7023049736",
+    "next.config.ts": "e31f6c0eaba74f3d44a0602ecbe56078a3c9605e5ef34eb83e99bbbae960332c"
+  },
+  "siteGraph": {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@id": "https://pixeltec.mx/#organization",
+        "@type": [
+          "Organization",
+          "ProfessionalService"
+        ],
+        "name": "PixelTEC",
+        "url": "https://pixeltec.mx",
+        "logo": "https://pixeltec.mx/ptlogox.png",
+        "image": "https://pixeltec.mx/og-image.png",
+        "description": "Estudio de desarrollo de software en Puerto Vallarta, Jalisco: desarrollo web y apps, software a la medida y automatización con IA y WhatsApp para pymes y empresas de Bahía de Banderas, Guadalajara y todo México.",
+        "telephone": "+52-322-137-8336",
+        "email": "contacto@pixeltec.mx",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Puerto Vallarta",
+          "addressRegion": "Jalisco",
+          "addressCountry": "MX"
+        },
+        "areaServed": [
+          {
+            "@type": "City",
+            "name": "Puerto Vallarta"
+          },
+          {
+            "@type": "City",
+            "name": "Bahía de Banderas"
+          },
+          {
+            "@type": "City",
+            "name": "Guadalajara"
+          },
+          {
+            "@type": "City",
+            "name": "Zapopan"
+          },
+          {
+            "@type": "Country",
+            "name": "Mexico"
+          }
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+52-322-137-8336",
+          "email": "contacto@pixeltec.mx",
+          "contactType": "sales",
+          "areaServed": "MX",
+          "availableLanguage": [
+            "es"
+          ]
+        },
+        "founder": {
+          "@type": "Person",
+          "name": "Miguel Robles Sánchez",
+          "url": "https://pixeltec.mx/equipo"
+        },
+        "sameAs": [
+          "https://www.facebook.com/profile.php?id=61556300117500",
+          "https://instagram.com/pixeltecmx"
+        ],
+        "hasMap": "https://maps.app.goo.gl/fAiYRnLg53tx6VRF7"
+      },
+      {
+        "@id": "https://pixeltec.mx/#website",
+        "@type": "WebSite",
+        "name": "PixelTEC",
+        "url": "https://pixeltec.mx",
+        "inLanguage": "es-MX",
+        "publisher": {
+          "@id": "https://pixeltec.mx/#organization"
+        }
+      }
+    ]
+  },
+  "ORG_ID": "https://pixeltec.mx/#organization",
+  "WEBSITE_ID": "https://pixeltec.mx/#website",
+  "redirects": [
+    {
+      "source": "/crm",
+      "destination": "/hoy",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/crm/:path*",
+      "destination": "/hoy",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/nosotros",
+      "destination": "/about",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/contacto",
+      "destination": "/contact",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/servicios",
+      "destination": "/services",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/de-excel-a-saas",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/escalabilidad-en-la-nube-con-nextjs-y-firebase",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/automatizacion-de-procesos-logisticos-con-python-y-apis",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/agentes-ia-soporte-b2b",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/de-excel-a-saas-roi",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/optimizacion-extrema-nextjs",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/blog/arquitecturas-multi-tenant",
+      "destination": "/blog",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/dashboard",
+      "destination": "/hoy",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/dashboard/:path*",
+      "destination": "/hoy",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/asistente",
+      "destination": "/hoy",
+      "permanent": false,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/asistente/:path*",
+      "destination": "/hoy",
+      "permanent": false,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/whatsappbot",
+      "destination": "/pixelbot",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/whatsapp-bot",
+      "destination": "/pixelbot",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/bot-whatsapp",
+      "destination": "/pixelbot",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/chatbot-whatsapp",
+      "destination": "/pixelbot",
+      "permanent": true,
+      "origin": "next.config.ts"
+    },
+    {
+      "source": "/agente-whatsapp",
+      "destination": "/pixelbot",
+      "permanent": true,
+      "origin": "next.config.ts"
+    }
+  ]
+}

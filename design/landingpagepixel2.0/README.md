@@ -2,6 +2,10 @@
 
 Prototipo local de diseño y contenido, actualizado 2026-10-03. La fuente visual principal es el inicio entregado por Miguel (`src/home.dc.html`, preservado byte a byte). Befox es una referencia secundaria para la estructura de interiores; no se ha importado su código, imágenes o plantilla.
 
+## Estado vigente del trabajo SEO — 2026-10-03
+
+Primer lote implementado: [cambios, GSC, evidencia y pendientes](docs/ejecucion-seo-2026-10-03.md). Las secciones fechadas inferiores conservan la historia de cada etapa; prevalece este corte para retomar. 9 pruebas locales + 72 pruebas SEO de la aplicación, compilación estricta y 60 slugs/metadatos conservados. Legales/guías ES con estructura completa; idiomas incompletos fuera de alternates/sitemap candidato. Medianas Lighthouse locales del inicio: 97 móvil / 100 escritorio, tres cargas por perfil. **Todavía no es un reemplazo publicable de Next.js/CMS/portal ni una certificación de SEO al 100%.**
+
 ## Abrir y continuar
 
 ```sh
@@ -11,6 +15,8 @@ npm run preview
 ```
 
 Inicio: http://127.0.0.1:4317/ · Mapa: http://127.0.0.1:4317/mapa/
+
+En el repo, identidad y redirects se derivan del código canónico de la aplicación. La copia autónoma del Desktop usa `docs/application-seo.generated.json`, exportación pública generada con hashes de procedencia; no se edita a mano y se refresca desde el repo antes de un release.
 
 El servidor escucha solo en localhost. `dist/` también funciona servido por un servidor HTTP estático con soporte de directorios; no abrir por `file://` porque el cubo usa módulos. El servidor incluido responde con la plantilla 404 y status 404 a rutas desconocidas.
 

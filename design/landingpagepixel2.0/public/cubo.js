@@ -167,7 +167,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     const align = slot.side === 'left' ? 'right' : slot.side === 'right' ? 'left' : 'center';
     const label = document.createElement('div');
     label.style.cssText = `position:absolute;z-index:5;left:0;top:0;width:150px;box-sizing:border-box;padding:10px 12px;border-radius:8px;background:rgba(11,11,10,.92);box-shadow:0 0 0 1px rgba(242,239,232,.08);pointer-events:none;opacity:0;color:${ink};text-align:${align};will-change:transform,opacity`;
-    label.innerHTML = `<h3 style="margin:0;font-size:11px;line-height:1.3;letter-spacing:.14em;text-transform:uppercase;font-weight:600">${services[i].title}</h3><p style="margin:6px 0 0;font-size:12px;line-height:1.45;color:${inkSoft}">${services[i].caption}</p>`;
+    label.innerHTML = `<p style="margin:0;font-size:11px;line-height:1.3;letter-spacing:.14em;text-transform:uppercase;font-weight:600">${services[i].title}</p><p style="margin:6px 0 0;font-size:12px;line-height:1.45;color:${inkSoft}">${services[i].caption}</p>`;
     stage.appendChild(label);
     const rest = slot.pos.clone().multiplyScalar(1 + gap);
     return { ...slot, obj, label, rest, opened: rest.clone().add(slot.out), lift: 0, turn: 0, oi: 0 };

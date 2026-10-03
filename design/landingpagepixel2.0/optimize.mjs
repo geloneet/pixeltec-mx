@@ -6,7 +6,7 @@ import { brotliCompressSync, gzipSync, constants } from 'node:zlib';
 export async function optimizeAssets() {
   const vendors = ['react/umd/react.production.min.js','react-dom/umd/react-dom.production.min.js','matter-js/build/matter.min.js','lenis/dist/lenis.min.js'];
   const sources = await Promise.all(vendors.map(p => readFile('node_modules/'+p,'utf8')));
-  const runtime = (await readFile('public/support.js','utf8')).replace('if (!window.__resources) {','if (!window.__resources && !doc.documentElement.hasAttribute("data-dc-static")) {');
+  const runtime = (await readFile('public/support.js','utf8')).replaceAll('doc.querySelector(\"x-dc\")','doc.querySelector(\"script[data-dc-template]\") ?? doc.querySelector(\"x-dc\")').replace('template: dc.innerHTML,','template: dc.matches(\"script[data-dc-template]\") ? JSON.parse(dc.textContent).html : dc.innerHTML,').replace('if (!window.__resources) {','if (!window.__resources && !doc.documentElement.hasAttribute("data-dc-static")) {');
   const bundled = await transform([...sources.slice(0,2),runtime].join('\n;\n'),{minify:true,target:'es2022',legalComments:'inline'});
   await writeFile('dist/home-runtime.js',bundled.code);
   const enhancements=await transform(sources.slice(2).join('\n;\n'),{minify:true,target:'es2022',legalComments:'inline'});
@@ -62,6 +62,8 @@ export async function optimizeHome(home) {
   home=home.replace('<body data-pixel-home>','<body data-pixel-home><div id="home-first-paint">'+firstPaint+'</div>');
   const navigationCSS=await readFile('public/navigation.css','utf8');
   home=home.replace('</head>','<style>'+navigationCSS+'</style><script defer src="/app-navigation.js"></script></head>');
+  // Keep the runtime template inert in the initial document: one real H1, no duplicate outline.
+  home=home.replace(/<x-dc>([\s\S]*?)<\/x-dc>/,(_,html)=>'<script type="application/json" data-dc-template>'+JSON.stringify({html}).replaceAll('<','\\u003c')+'</script>');
   return home;
 }
 

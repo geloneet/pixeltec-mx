@@ -5,7 +5,9 @@ async function walk(dir){const entries=await readdir(dir,{withFileTypes:true});c
 const files=(await walk(root)).filter(f=>f.endsWith('.html'));
 const documents=new Map(await Promise.all(files.map(async f=>[f,await readFile(f,'utf8')])));
 const errors=[];let refs=0;
-for(const [file,html] of documents){
+for(const [file,raw] of documents){
+ const encoded=raw.match(/<script type="application\/json" data-dc-template>([\s\S]*?)<\/script>/)?.[1];
+ const html=raw+(encoded?JSON.parse(encoded).html:"");
  for(const [,value] of html.matchAll(/(?:href|src)="([^"]+)"/g)){
   if(value.includes('{{')||/^(https?:|mailto:|tel:|data:)/.test(value))continue;
   const [path,fragment]=value.split('#');

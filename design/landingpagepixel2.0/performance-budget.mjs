@@ -7,7 +7,8 @@ for(const path of ['index.html','en/index.html']){
 const home=await readFile('dist/'+path,'utf8');
 assert.ok(!/<script\b[^>]*src="https?:/.test(home),'Home must not fetch third-party startup scripts');
 assert.ok(!/<link\b(?=[^>]*rel="(?:stylesheet|preload|preconnect)")[^>]*href="https?:/.test(home),'Home must not depend on remote font CSS');
-assert.match(home,/loading="lazy"/);
+const template=JSON.parse(home.match(/<script type="application\/json" data-dc-template>([\s\S]*?)<\/script>/)[1]).html;
+assert.match(template,/loading="lazy"/);
 assert.match(home,/<html[^>]*data-dc-static/);
 }
 const original=await readFile('src/home.dc.html');

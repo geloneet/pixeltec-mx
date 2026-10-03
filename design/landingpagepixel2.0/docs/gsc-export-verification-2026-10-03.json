@@ -1,0 +1,23 @@
+{
+  "scope": "Local original CSV exports versus curated baseline. No new GSC observation; device discrepancy remains unresolved.",
+  "checks": [
+    {
+      "export": "gsc-pixeltec-3months-2026-10-03.zip",
+      "sha256": "d4bd88dc69d4649e65e765c547ca130a9e6de499c27ad36913d3531e88f87e9e",
+      "pagesMatch": true,
+      "filtersMatch": true,
+      "graphClicks": 107,
+      "graphImpressions": 1515,
+      "totalsMatch": true
+    },
+    {
+      "export": "gsc-pixeltec-28days-2026-10-03.zip",
+      "sha256": "6fa86a0195a2efe24dee52013fe1cd1dc0f766767b6d7c6733df95515d1b7c24",
+      "pagesMatch": true,
+      "filtersMatch": true,
+      "graphClicks": 105,
+      "graphImpressions": 1208,
+      "totalsMatch": true
+    }
+  ]
+}

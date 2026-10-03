@@ -1251,7 +1251,13 @@
     "host": "encino.pixeltec.mx",
     "authority": "Miguel, user message 2026-10-03",
     "statement": "Retired project migrated to another domain",
-    "newDomain": null,
-    "decision": "Exclude from this landing remediation. Do not restore, redirect or change infrastructure without its own scope."
+    "newDomain": "https://www.mueblesencino.com",
+    "decision": "Exclude from this landing remediation. Do not restore, redirect or change infrastructure without its own scope.",
+    "domainEvidence": [
+      "https://github.com/geloneet/neuropixel/blob/06b7ed4343fa5ff80fd536217423b3bf2bfdc964/09_SEGUIMIENTO/workorders/WO-2026-00166.md",
+      "https://github.com/geloneet/neuropixel/blob/06b7ed4343fa5ff80fd536217423b3bf2bfdc964/09_SEGUIMIENTO/workorders/WO-2026-00210.md"
+    ],
+    "historicalRedirect": "WO-2026-00210 records a 301 from encino.pixeltec.mx to www.mueblesencino.com on 2026-09-03; current response not verified in this correction.",
+    "causality": "No causal attribution of the eight historical GSC 404s to a current network failure."
   }
 }

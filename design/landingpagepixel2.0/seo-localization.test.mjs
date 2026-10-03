@@ -5,10 +5,43 @@ import {loadSources,articleHtml} from './source-content.mjs';
 import {createPreviewServer} from './serve.mjs';
 import {englishComplete,indexPolicy} from './.build/seo-policy.js';
 import {escapeHTML} from './.build/catalog.js';
+import {renderer} from './.build/templates.js';
+import {robotsMeta} from './.build/seo-policy.js';
+import {inspectHome,inspectRelease,assertReleaseReady} from './release-check.mjs';
+import {spawnSync} from 'node:child_process';
 const routes=JSON.parse(await readFile('docs/routes.json','utf8'));
 const sources=await loadSources();
 const html=path=>readFile('dist'+path+'index.html','utf8');
 const canonical=path=>'https://pixeltec.mx'+path.replace(/\/$/,'');
+test('public HTML excludes incomplete English and utility pages; preview remains excluded',async()=>{
+ const inventory=JSON.parse(await readFile('docs/seo-inventory.json','utf8'));
+ let incomplete=0;let eligible=0;
+ for(const route of inventory.routes){
+  const path=route.locale==='en'?route.path.slice(3):route.path;
+  const page={path,title:route.title,family:route.family,body:'<h1>Policy fixture</h1>'};
+  const output=renderer(route.locale,'public').document(page);
+  const expected=route.candidateIndexable?'index,follow':'noindex,nofollow';
+  assert.match(output,new RegExp('name="robots" content="'+expected+'"'),route.path);
+  assert.match(renderer(route.locale).document(page),/name="robots" content="noindex,nofollow"/);
+  assert.equal((output.match(/name="robots"/g)??[]).length,1);
+  if(path==='/')assert.ok(output.includes(robotsMeta('/',route.locale,'public')));
+  if(route.candidateIndexable)eligible++;
+  if(route.contentStatus==='translation-incomplete'){incomplete++;assert.equal(expected,'noindex,nofollow');}
+ }
+ assert.equal(incomplete,52);assert.equal(eligible,86);
+});
+test('release gate rejects client-only home even with a decorative H2 and preserves preview on public build',async()=>{
+ const before=await html('/');
+ const report=await inspectRelease();
+ assert.equal(report.homes.length,2);
+ for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,0);assert.equal(home.status,'FAIL');}
+ assert.throws(()=>assertReleaseReady(report),/RELEASE BLOCKED.*HOME_INITIAL_CONTENT/);
+ assert.equal(inspectHome(before.replace('</body>','<h2>Decorative</h2></body>')).status,'FAIL');
+ assert.equal(inspectHome('<main><h1>Title</h1><h2>Service</h2><p>Approved service content</p></main>').status,'PASS');
+ const attempt=spawnSync(process.execPath,['build.mjs'],{encoding:'utf8',env:{...process.env,SEO_ENV:'public'}});
+ assert.notEqual(attempt.status,0);assert.match(attempt.stderr,/RELEASE BLOCKED/);
+ assert.equal(await html('/'),before,'blocked build must not replace preview');
+});
 test('all published Spanish URLs retain title, description and canonical',async()=>{
  assert.equal(sources.size,60);
  for(const [path,source] of sources){

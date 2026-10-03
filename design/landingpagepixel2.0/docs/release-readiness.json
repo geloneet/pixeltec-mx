@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "productionReady": false,
+  "status": "BLOCKED",
+  "homes": [
+    {
+      "path": "index.html",
+      "sha256": "e61ab4c78f97e23f36a1738e6abef8ee12aafa821a4a9e0071b8c481d0407009",
+      "h1": 1,
+      "h2": 0,
+      "clientOnlyTemplate": true,
+      "status": "FAIL",
+      "requirement": "Serve the complete approved home content initially. Adding decorative headings does not resolve the client-only template."
+    },
+    {
+      "path": "en/index.html",
+      "sha256": "e552ac427cfd22797fed146443d4e097929955c33d8f1df70c2ed2500714afdd",
+      "h1": 1,
+      "h2": 0,
+      "clientOnlyTemplate": true,
+      "status": "FAIL",
+      "requirement": "Serve the complete approved home content initially. Adding decorative headings does not resolve the client-only template."
+    }
+  ],
+  "blockers": [
+    "HOME_INITIAL_CONTENT: index.html",
+    "HOME_INITIAL_CONTENT: en/index.html",
+    "NEXT_INTEGRATION: CMS, business flows, content parity and final candidate approval remain unverified"
+  ],
+  "scope": "Technical preflight only. No deployment, GSC change or publication permission."
+}

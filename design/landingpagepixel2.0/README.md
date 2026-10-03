@@ -110,3 +110,9 @@ Validación final: `npm run verify` PASS (6 pruebas, 144 rutas HTTP 200, 7,906 r
 ### Plan maestro SEO — 2026-10-03
 
 [Plan de ejecución y criterios de salida](docs/plan-maestro-seo-2026-10-03.md): continuidad de URLs, información ES/EN, integración con SEO/CMS existentes, conversión, rendimiento y publicación verificable. Investigación oficial de Google y revisión del estado del prototipo; esta entrega solo documenta, sin implementar ni desplegar. No confundir preparación técnica completa con garantía de ranking o indexación. Aprendizajes reutilizables publicados en NeuroPIXEL; pendientes y evidencia permanecen separados de las mediciones históricas.
+
+### Corrección tras revisión — WO-2026-00504
+
+`npm run verify` valida el prototipo y genera `docs/release-readiness.json`; no concede aprobación para publicar. `npm run release:check` termina con código 1 mientras existan bloqueos. `SEO_ENV=public npm run build` también se detiene antes de reemplazar `dist`. La política compartida emite meta robots por entorno/página; preview sigue completamente noindex y las 52 EN incompletas conservan exclusión individual en modo público.
+
+[Informe de cambios y conciliación histórica](docs/correcciones-revision-seo-2026-10-03.md). El inicio completo servido inicialmente y la integración Next/CMS/conversión son bloqueos explícitos; esta entrega no es un release productivo.

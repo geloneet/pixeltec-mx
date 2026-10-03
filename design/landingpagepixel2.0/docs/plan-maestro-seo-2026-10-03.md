@@ -11,6 +11,14 @@ Conservar el patrimonio de URLs y contenido aprobado, completar español e ingl�
 - **Resultado medido:** después de publicar se comprueba rastreo, indexación, experiencia real y conversiones. Sin suficientes datos de campo se informa «pendiente de evidencia», no «Core Web Vitals aprobados».
 - No significa obtener posición 1, indexar cada URL ni alcanzar una puntuación arbitraria. Google no garantiza esos resultados: [guía SEO para principiantes](https://developers.google.com/search/docs/fundamentals/seo-starter-guide).
 
+### Continuidad con el SEO anterior — conciliación WO-2026-00504
+
+Este plan es el backlog del rediseño, no sustituye el mapa URL × intención ni vuelve a dar por pendientes mejoras ya entregadas. Antecedentes: PR #139 / `e429858` (home), evidencia `88ec501`, PR #141 / `72ee8a5` (SEO integral), presentes en el historial del repo. Reutilizar metadata, grafo, clústeres y pruebas de esos incrementos; volver a verificar paridad al integrar el diseño.
+
+La WO-345 **histórica** de SEO sí existe en [NeuroPIXEL @80d8d964](https://github.com/geloneet/neuropixel/blob/80d8d96498219b737281004bfac1c0d1e409756a/09_SEGUIMIENTO/workorders/WO-2026-00345.md), junto al [plan integral de septiembre](https://github.com/geloneet/neuropixel/blob/80d8d96498219b737281004bfac1c0d1e409756a/04_PRODUCTOS/Pixeltec.mx/plan-seo-integral-2026-09-14.md). El archivo homónimo en la publicación actual corresponde a Hermes: citar versión + entidad, no el número aislado. No se reescribe ningún acta ni se resuelve aquí esa discrepancia histórica del registro.
+
+`plan-seo-home-2026-09-14.md` aparece citado en seguimiento, pero no fue localizado ni como archivo vigente ni en el historial Git disponible de esa ruta. No se reconstruye de memoria. Los baselines `docs/seo/home-*2026-09-14.*` y los commits anteriores son la evidencia recuperable. La matriz y las responsabilidades vigentes de este plan permanecen; esta conciliación es documental de Ingeniería, sin nuevas decisiones de Marketing.
+
 ## 2. Línea base y límites de la evidencia
 
 Corte del prototipo: commit `e5e01e52d867b1fdb4a69fc409d75b07bbd3a5ba`. Evidencia versionada: [verificación](https://github.com/geloneet/pixeltec-mx/blob/e5e01e52d867b1fdb4a69fc409d75b07bbd3a5ba/design/landingpagepixel2.0/docs/verification.json), [alcance del contenido](https://github.com/geloneet/pixeltec-mx/blob/e5e01e52d867b1fdb4a69fc409d75b07bbd3a5ba/design/landingpagepixel2.0/docs/contenido-idiomas-seo-2026-10-03.md) y [mediciones anteriores](https://github.com/geloneet/pixeltec-mx/blob/e5e01e52d867b1fdb4a69fc409d75b07bbd3a5ba/design/landingpagepixel2.0/docs/performance-content-2026-10-03.json).
@@ -136,7 +144,7 @@ Orden práctico: R01–R03; después R04–R10 por plantilla; R11 cuando todo lo
 | Respuesta HTTP | Páginas esperadas 200; desconocidas 404; redirects intencionales sin ciclos |
 | Indexación | Públicos elegibles rastreables; privados/borradores excluidos; meta y headers coherentes |
 | Canonical/sitemap | URLs, protocolo/host/barra y mapa coherentes; sitemap dinámico sin privadas/noindex |
-| Render | Texto, metadatos y navegación coherentes en HTML/DOM móvil y escritorio |
+| Render — **FAIL / P0 bloqueante actual** | Portadas ES/EN con 1 H1, 0 H2 y cuerpo dependiente de plantilla cliente. `npm run release:check` debe fallar; cerrar con contenido principal completo inicial y paridad HTML/DOM, no con H2 decorativos |
 | Schema | Grafo fiel al contenido visible y validación según tipo; no exigir rich result inexistente |
 | Calidad | TypeScript strict, build y pruebas críticas pasan; sin regresiones de flujo o diseño |
 | Rendimiento | Medición controlada del candidato y presupuestos acordados cumplidos; campo separado |

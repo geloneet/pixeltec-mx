@@ -1,3 +1,6 @@
+import {z} from 'zod';
+import {robotsMeta} from './.build/seo-policy.js';
+import {assertReleaseReady,inspectRelease} from './release-check.mjs';
 import { optimizeAssets, optimizeHome, compressOutput } from './optimize.mjs';
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import {renderer,logo,canonicalPath} from './.build/templates.js';
@@ -8,13 +11,15 @@ import {languages,localPath} from './.build/i18n.js';
 import {escapeHTML,services,projects,posts} from './.build/catalog.js';
 import {addStructuredData,writeInventory,siteContactEmail} from './seo-build.mjs';
 import {loadSources,loadRichSources,articleHtml,legalHtml} from './source-content.mjs';
+const environment=z.enum(['preview','public']).default('preview').parse(process.env.SEO_ENV);
+if(environment==='public')assertReleaseReady(await inspectRelease());
 const sources=await loadSources();
 const richSources=await loadRichSources();
 const xml=await readFile('docs/sitemap-observed.xml','utf8');
 const livePaths=[...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m=>new URL(m[1]).pathname.replace(/\/$/,'')+'/');
 const allPages=[];const entries=[];
 for(const locale of languages){
- const t=renderer(locale);const x=(es,en)=>locale==='es'?es:en;const pages=[];
+ const t=renderer(locale,environment);const x=(es,en)=>locale==='es'?es:en;const pages=[];
  const add=(path,title,family,body,description)=>pages.push({path,title,family,body,description});
  add('/services/',x('Servicios','Services'),x('Servicios','Services'),t.serviceIndex());
  for(const s of serviceContent)add(s.path,s.title[locale],x('Servicios','Services'),t.serviceDetail(s),s.description[locale]);
@@ -80,7 +85,7 @@ await writeFile('dist/404.html',allPages.find(p=>p.path==='/404/'&&p.locale==='e
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
 await writeFile('dist/routes.json',JSON.stringify(entries,null,2));
 let home=await readFile('src/home.dc.html','utf8');
-home=home.replace('<html>','<html lang="es">').replace('<head>','<head>\n<title>PixelTEC · Inicio</title>\n<meta name="robots" content="noindex,nofollow"><link rel="icon" href="/favicon.svg">');
+home=home.replace('<html>','<html lang="es">').replace('<head>','<head>\n<title>PixelTEC · Inicio</title>\n__PAGE_ROBOTS__<link rel="icon" href="/favicon.svg">');
 home=home.replace(/<a\b[^>]*>[\s\S]*?<\/a>/g,a=>{
  const text=a.replace(/<[^>]*>/g,'').trim();
  let href=null;
@@ -120,7 +125,7 @@ home=home.replaceAll('<a href="{{ p.href }}"', '<a data-motion href="{{ p.href }
 // Keep the supplied home layout, styles and interactive visuals intact.
 home=home.replace('</footer>','<div style="padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><a href="/mapa/">Explorar todas las páginas ↗</a><a href="/equipo/">Equipo</a><a href="/metodologia/">Metodología</a><a href="/guias-transformacion/">Guías y presencia local</a><a href="/login/">Acceso de clientes</a><a href="/terminos-de-servicio/">Términos</a></div></footer>');
 
-for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale);if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',addStructuredData(await optimizeHome(output),{path:'/',locale,title:locale==='es'?'Inicio':'Home'}));}
+for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale).replace('__PAGE_ROBOTS__',robotsMeta('/',locale,environment));if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',addStructuredData(await optimizeHome(output),{path:'/',locale,title:locale==='es'?'Inicio':'Home'}));}
 await compressOutput();
 await writeFile('docs/routes.json',JSON.stringify(entries,null,2));
 const migration=livePaths.map(path=>({existing:sources.get(path)?.seo.canonical??'https://pixeltec.mx'+canonicalPath(path),spanish:path,english:localPath(path,'en'),action:'preserve-slug',redirectRequired:false}));

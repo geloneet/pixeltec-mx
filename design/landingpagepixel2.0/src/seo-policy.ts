@@ -11,6 +11,12 @@ export function indexPolicy(path:string,locale:Locale):{eligible:boolean;reason:
  if(locale==='en'&&!englishComplete(path))return {eligible:false,reason:'Full English translation pending'};
  return {eligible:true,reason:'SEO candidate; release requires content and functional gates'};
 }
+export type SEOEnvironment='preview'|'public';
+// An indexable candidate still needs the separate release gate before publication.
+export function robotsMeta(path:string,locale:Locale,environment:SEOEnvironment='preview'):string {
+ const robots=environment==='public'&&indexPolicy(path,locale).eligible?'index,follow':'noindex,nofollow';
+ return `<meta name="robots" content="${robots}">`;
+}
 export function languageAlternates(path:string):string {
  if(!indexPolicy(path,'es').eligible||!indexPolicy(path,'en').eligible)return '';
  return [['es-MX',path],['en',localPath(path,'en')],['x-default',path]].map(([lang,p])=>`<link rel="alternate" hreflang="${lang}" href="${canonicalURL(p!)}">`).join('');

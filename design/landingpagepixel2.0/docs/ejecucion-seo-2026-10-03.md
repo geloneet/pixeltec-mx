@@ -2,6 +2,8 @@
 
 Primer lote técnico implementado y validado en la rama de diseño. Conserva el inicio de Miguel, 60 slugs y sus metadatos publicados; completa contenido semántico ES en guías/legales y establece una política explícita de idioma. **No es un release listo para producción ni el cierre del plan maestro.**
 
+**Corrección posterior — WO-2026-00504:** el lote original se ejecutó sin WO y con check-in desactualizado (evaluación base 13/18, parcial). Esta corrección tiene check-in prospectivo; no legitima retroactivamente el lote. [Cambios, fuentes conciliadas y límites](correcciones-revision-seo-2026-10-03.md). Las pruebas y métricas del primer lote que siguen son evidencia histórica.
+
 ## Qué cambió y por qué
 
 - Las 144 rutas tienen un H1 en el HTML inicial y un grafo JSON-LD por página. El inicio guarda su plantilla de runtime en JSON inerte para evitar encabezados duplicados; conserva primera vista visible y cubo. La introducción de Nosotros es H2; etiquetas de cubo/menú/pie ya no contaminan el outline.
@@ -27,7 +29,7 @@ Prioridad respaldada por las páginas de tres meses: inicio (99 clics/226 impres
 - **Acciones manuales:** «No se ha detectado ningún problema». Solo acredita ese informe; no diagnostica cambios algorítmicos.
 - **Sitemap:** Correcto, 60 páginas descubiertas, última lectura 2026-09-30. Una petición directa del capturador recibió 403; esto no demuestra bloqueo a Googlebot ante la lectura correcta que muestra GSC.
 - **Indexación, corte 2026-09-20, dominio completo:** 75 indexadas y 204 no indexadas: 62 redirecciones, 39 alternativas con canonical, 15 no encontradas, 5 noindex, 67 rastreadas y 16 descubiertas sin indexar. No todas son defectos; incluye subdominios y exclusiones deliberadas.
-- **Encino:** 8 de las 15 URLs 404 corresponden a ese proyecto. Miguel confirmó que fue retirado y cambió de dominio. Se excluye de este rediseño; el dominio nuevo no se indicó y no se inventa. Sin cambios en su infraestructura.
+- **Encino:** 8 de las 15 URLs 404 corresponden a ese proyecto. Miguel confirmó que fue retirado y cambió de dominio. El destino documentado es **https://www.mueblesencino.com** (NeuroPIXEL, WO-2026-00166); WO-2026-00210 registra un 301 desde encino.pixeltec.mx el 2026-09-03. Es evidencia histórica, no verificación de su respuesta actual ni explicación causal de las ocho 404 de GSC. Fuera del alcance de este rediseño; sin cambios en Encino.
 - Las otras siete 404 mezclan rutas antiguas, recursos y probes. `/seo-services/` requiere confirmar intención/equivalencia histórica antes de decidir; no se creó una redirección masiva a inicio.
 - **Core Web Vitals:** Sin datos en móvil y escritorio. No hay certificación de experiencia real.
 
@@ -66,7 +68,7 @@ Reproducir: `npx --yes lighthouse@13.5.0 http://127.0.0.1:4317/ --only-categorie
 El [plan maestro](plan-maestro-seo-2026-10-03.md) continúa vigente. No marcar sus doce entregables completos por estas pruebas locales.
 
 1. Completar traducción integral y revisión editorial EN (incluye artículos, guías y legales); distinguir traducción de aprobación de condiciones.
-2. Integrar diseño en Next.js con contenido principal completo servido inicialmente. El hero inicial actual no equivale a render completo del inicio; las demás secciones aún dependen del runtime DC.
+2. **BLOQUEO P0 de release:** integrar diseño en Next.js con contenido principal completo servido inicialmente. `npm run release:check` falla mientras falte; el HTML inicial ES/EN tiene 1 H1 y 0 H2. El hero inicial actual no equivale a render completo del inicio; las demás secciones aún dependen del runtime DC.
 3. Conservar CMS/publicación dinámica, herramientas interactivas de artículos, contacto/diagnóstico reales, consentimiento y portal/autenticación/RBAC. El prototipo no es sustituto de esos flujos; los enlaces «publicación original» no resuelven paridad una vez reemplazado el sitio.
 4. Revisar muestras de las 67/16 URLs sin indexar, histórico largo, backlinks, canonical elegido y conversiones; no reparar exclusiones masivamente. Revisar la señal de 16 alertas remotas de dependencias antes del release; aquí no se analizó aplicabilidad ni se declararon resueltas.
 5. Validar candidato integrado, seguridad afectada, accesibilidad/multimotor y rendimiento por plantilla. Preparar rollback/configuración y aprobación humana del release. Después, medición por cohortes día 7/14/28.

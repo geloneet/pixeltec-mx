@@ -1,0 +1,357 @@
+[
+  {
+    "path": "/",
+    "title": "Inicio · diseño original de Miguel",
+    "family": "Inicio"
+  },
+  {
+    "path": "/services/",
+    "title": "Servicios",
+    "family": "Servicios"
+  },
+  {
+    "path": "/services/automatizacion/",
+    "title": "Automatización con IA",
+    "family": "Servicios"
+  },
+  {
+    "path": "/services/ecosistemas-web/",
+    "title": "Desarrollo Web & Apps",
+    "family": "Servicios"
+  },
+  {
+    "path": "/pixelbot/",
+    "title": "WhatsApp IA",
+    "family": "Servicios"
+  },
+  {
+    "path": "/services/consultoria/",
+    "title": "Consultoría & Soporte TI",
+    "family": "Servicios"
+  },
+  {
+    "path": "/about/",
+    "title": "Nosotros",
+    "family": "Empresa"
+  },
+  {
+    "path": "/equipo/",
+    "title": "Equipo",
+    "family": "Empresa"
+  },
+  {
+    "path": "/metodologia/",
+    "title": "Metodología",
+    "family": "Empresa"
+  },
+  {
+    "path": "/proyectos/",
+    "title": "Proyectos",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/proyectos/villa-nogal/",
+    "title": "Villa Nogal",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/proyectos/pipas-tondoroque/",
+    "title": "Pipas Tondoroque",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/proyectos/barro-stock/",
+    "title": "Barro Stock",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/proyectos/smile-more/",
+    "title": "Smile More",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/proyectos/materiales-de-barro/",
+    "title": "Materiales de Barro",
+    "family": "Proyectos"
+  },
+  {
+    "path": "/industrias/",
+    "title": "Industrias",
+    "family": "Industrias"
+  },
+  {
+    "path": "/industrias/clinicas-dentales/",
+    "title": "Salud dental",
+    "family": "Industrias"
+  },
+  {
+    "path": "/industrias/hoteles/",
+    "title": "Hotelería",
+    "family": "Industrias"
+  },
+  {
+    "path": "/blog/",
+    "title": "Blog",
+    "family": "Editorial"
+  },
+  {
+    "path": "/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",
+    "title": "Sistemas que le devuelven tiempo a tu equipo.",
+    "family": "Editorial"
+  },
+  {
+    "path": "/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+    "title": "De procesos manuales a una operación conectada.",
+    "family": "Editorial"
+  },
+  {
+    "path": "/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa/",
+    "title": "El criterio humano detrás de la inteligencia artificial.",
+    "family": "Editorial"
+  },
+  {
+    "path": "/blog/agente-de-ia-en-whatsapp-para-mi-negocio/",
+    "title": "Conversaciones que se convierten en oportunidades.",
+    "family": "Editorial"
+  },
+  {
+    "path": "/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero/",
+    "title": "Un punto de partida para transformar tu negocio.",
+    "family": "Editorial"
+  },
+  {
+    "path": "/contact/",
+    "title": "Contacto",
+    "family": "Contacto y acceso"
+  },
+  {
+    "path": "/diagnostico/",
+    "title": "Diagnóstico",
+    "family": "Contacto y acceso"
+  },
+  {
+    "path": "/login/",
+    "title": "Acceso de clientes",
+    "family": "Contacto y acceso"
+  },
+  {
+    "path": "/reset-password/",
+    "title": "Recuperar acceso",
+    "family": "Contacto y acceso"
+  },
+  {
+    "path": "/aviso-de-privacidad/",
+    "title": "Aviso de privacidad",
+    "family": "Información"
+  },
+  {
+    "path": "/terminos-de-servicio/",
+    "title": "Términos de servicio",
+    "family": "Información"
+  },
+  {
+    "path": "/data-deletion/",
+    "title": "Eliminación de datos",
+    "family": "Información"
+  },
+  {
+    "path": "/automatizacion-guadalajara/",
+    "title": "Automatización en Guadalajara",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/automatizacion-zapopan/",
+    "title": "Automatización en Zapopan",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/automatizacion-puerto-vallarta/",
+    "title": "Automatización en Puerto Vallarta",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/automatizacion-bahia-de-banderas/",
+    "title": "Automatización en Bahía de Banderas",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/desarrollo-web-guadalajara/",
+    "title": "Desarrollo web en Guadalajara",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/desarrollo-web-zapopan/",
+    "title": "Desarrollo web en Zapopan",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/desarrollo-web-puerto-vallarta/",
+    "title": "Desarrollo web en Puerto Vallarta",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/desarrollo-web-bahia-de-banderas/",
+    "title": "Desarrollo web en Bahía de Banderas",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/consultoria-guadalajara/",
+    "title": "Consultoría en Guadalajara",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/consultoria-zapopan/",
+    "title": "Consultoría en Zapopan",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/consultoria-puerto-vallarta/",
+    "title": "Consultoría en Puerto Vallarta",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/consultoria-bahia-de-banderas/",
+    "title": "Consultoría en Bahía de Banderas",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/empresas-de-desarrollo-de-software/",
+    "title": "Empresas de desarrollo de software",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/empresas-de-desarrollo-de-software-puerto-vallarta/",
+    "title": "Empresas de desarrollo de software en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/programador-de-software/",
+    "title": "Programador de software",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/programador-de-software-puerto-vallarta/",
+    "title": "Programador de software en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/sistemas-a-medida/",
+    "title": "Sistemas a medida",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/sistemas-a-medida-puerto-vallarta/",
+    "title": "Sistemas a medida en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/software-a-medida-para-empresas/",
+    "title": "Software a medida para empresas",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/software-a-medida-para-empresas-puerto-vallarta/",
+    "title": "Software a medida para empresas en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/sistema-personalizado-para-empresas/",
+    "title": "Sistema personalizado para empresas",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/sistema-personalizado-para-empresas-puerto-vallarta/",
+    "title": "Sistema personalizado para empresas en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatiza-tu-negocio/",
+    "title": "Automatiza tu negocio",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatiza-tu-negocio-puerto-vallarta/",
+    "title": "Automatiza tu negocio en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizar-mensajes-de-whatsapp/",
+    "title": "Automatizar mensajes de whatsapp",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizar-mensajes-de-whatsapp-puerto-vallarta/",
+    "title": "Automatizar mensajes de whatsapp en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizar-whatsapp-business/",
+    "title": "Automatizar whatsapp business",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizar-whatsapp-business-puerto-vallarta/",
+    "title": "Automatizar whatsapp business en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizacion-de-mensajes-en-whatsapp/",
+    "title": "Automatizacion de mensajes en whatsapp",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta/",
+    "title": "Automatizacion de mensajes en whatsapp en Puerto Vallarta",
+    "family": "Presencia local"
+  },
+  {
+    "path": "/desarrolladores-de-app/",
+    "title": "Desarrolladores de app",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrolladores-de-app-puerto-vallarta/",
+    "title": "Desarrolladores de app en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrollo-de-app/",
+    "title": "Desarrollo de app",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrollo-de-app-puerto-vallarta/",
+    "title": "Desarrollo de app en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrolladores-de-apps/",
+    "title": "Desarrolladores de apps",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrolladores-de-apps-puerto-vallarta/",
+    "title": "Desarrolladores de apps en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrollo-de-aplicaciones-moviles/",
+    "title": "Desarrollo de aplicaciones moviles",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/desarrollo-de-aplicaciones-moviles-puerto-vallarta/",
+    "title": "Desarrollo de aplicaciones moviles en Puerto Vallarta",
+    "family": "Guías y soluciones"
+  },
+  {
+    "path": "/guias-transformacion/",
+    "title": "Guías y presencia local",
+    "family": "Empresa"
+  },
+  {
+    "path": "/404/",
+    "title": "Página no encontrada",
+    "family": "Sistema"
+  }
+]

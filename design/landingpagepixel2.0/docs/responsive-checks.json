@@ -1,0 +1,122 @@
+[
+  {
+    "path": "/services/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/about/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/proyectos/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/blog/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/contact/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/diagnostico/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/login/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/mapa/",
+    "scroll": 320,
+    "width": 320
+  },
+  {
+    "path": "/services/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/about/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/proyectos/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/blog/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/contact/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/diagnostico/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/login/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/mapa/",
+    "scroll": 768,
+    "width": 768
+  },
+  {
+    "path": "/services/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/about/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/proyectos/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/blog/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/contact/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/diagnostico/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/login/",
+    "scroll": 1440,
+    "width": 1440
+  },
+  {
+    "path": "/mapa/",
+    "scroll": 1440,
+    "width": 1440
+  }
+]

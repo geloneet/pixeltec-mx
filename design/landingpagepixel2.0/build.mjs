@@ -1,3 +1,4 @@
+import { optimizeAssets, optimizeHome, compressOutput } from './optimize.mjs';
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
 import * as t from './.build/templates.js';
 import {services,projects,posts,industries} from './.build/catalog.js';
@@ -43,6 +44,7 @@ add('/mapa/','Mapa del diseño','Sistema',t.directory(entries,true));
 await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true});await cp('public','dist',{recursive:true});
 await cp('.build/client.js','dist/client.js');
 await cp('.build/motion.js','dist/motion.js');
+await optimizeAssets();
 await writeFile('dist/favicon.svg',t.logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
 for(const page of pages){const dir='dist'+page.path;await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',t.document(page));}
 await writeFile('dist/404.html',t.document(pages.find(p=>p.path==='/404/')));
@@ -88,6 +90,7 @@ home=home.replaceAll('<div style="display:grid;grid-template-columns:{{ svcCols 
 home=home.replaceAll('<a href="{{ p.href }}"', '<a data-motion href="{{ p.href }}"');
 // Keep the supplied home layout, styles and interactive visuals intact.
 home=home.replace('</footer>','<div style="padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><a href="/mapa/">Explorar todas las páginas ↗</a><a href="/equipo/">Equipo</a><a href="/metodologia/">Metodología</a><a href="/guias-transformacion/">Guías y presencia local</a><a href="/login/">Acceso de clientes</a><a href="/terminos-de-servicio/">Términos</a></div></footer>');
-await writeFile('dist/index.html',home);
+await writeFile('dist/index.html',await optimizeHome(home));
+await compressOutput();
 await writeFile('docs/routes.json',JSON.stringify(entries,null,2));
 console.log(`Generadas ${pages.length+1} páginas. Cobertura sitemap: ${livePaths.length}/${livePaths.length}.`);

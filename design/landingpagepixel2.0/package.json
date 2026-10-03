@@ -7,9 +7,18 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && node build.mjs",
     "preview": "node serve.mjs",
-    "verify": "npm run build && node verify.mjs"
+    "verify": "npm run build && node verify.mjs && node --test server.test.mjs && node performance-budget.mjs"
   },
   "devDependencies": {
+    "esbuild": "0.28.2",
+    "sharp": "0.35.5",
     "typescript": "5.9.3"
+  },
+  "dependencies": {
+    "lenis": "1.1.13",
+    "matter-js": "0.19.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.184.0"
   }
 }

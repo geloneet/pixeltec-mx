@@ -18,7 +18,7 @@ El servidor escucha solo en localhost. `dist/` también funciona servido por un 
 
 72 páginas navegables. Las 60 URLs observadas en el sitemap público de Pixeltec.mx tienen representación visual, con plantillas compartidas para servicios, industria, landings locales, guías y artículos. Se agregan catálogo/casos de proyectos y superficies públicas de metodología, acceso, recuperación y mapa. `docs/routes.json` inventaría cada ruta. No se trabaja sobre CRM, portal privado, tokens de propuestas/contratos ni cuestionarios de clientes.
 
-Se conserva el inicio, su cubo, física, tipografía y composición. El build conecta su navegación a las páginas interiores y añade enlaces de exploración al pie y hooks de movimiento a la copia generada. `public/support.js` y `public/cubo.js` son los recursos originales del usuario. Los interiores adoptan la cabecera crema, CTA azul, logo, negro/blanco, Bricolage Grotesque, geometría y numeración del inicio. Las ilustraciones nuevas son esquemas CSS, no capturas de sistemas reales.
+Se conserva el inicio, su cubo, física, tipografía y composición. El build conecta su navegación a las páginas interiores y añade enlaces de exploración al pie y hooks de movimiento a la copia generada. `public/support.js` conserva el runtime original; `public/cubo.js` es su versión optimizada, con el mismo diseño. Los archivos originales del Desktop permanecen intactos. Los interiores adoptan la cabecera crema, CTA azul, logo, negro/blanco, Bricolage Grotesque, geometría y numeración del inicio. Las ilustraciones nuevas son esquemas CSS, no capturas de sistemas reales.
 
 - `src/templates.ts`: componentes de cabecera, pie, arte y plantillas.
 - `src/catalog.ts`: rutas y contenido provisional tipado.
@@ -31,7 +31,7 @@ El contenido es provisional. No se valida aquí la veracidad del copy comercial 
 
 ## Validación
 
-`npm run verify`: TypeScript strict sin errores, 73 archivos HTML (72 rutas más fallback 404), 3,711 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 72 rutas, registro en `docs/verification.json`.
+`npm run verify`: TypeScript strict sin errores, 73 archivos HTML (72 rutas más fallback 404), 3,714 referencias locales sin destinos o anclas faltantes y 60/60 URLs del sitemap cubiertas. HTTP 200 en las 72 rutas, registro en `docs/verification.json`.
 
 Navegador real: portada y cubo renderizados; navegación a servicios; abrir/cerrar menú; filtro de proyectos; búsqueda y estado vacío de blog; formulario de contacto con confirmación de simulación; diagnóstico hasta resumen sin envío. Consola consultada sin errores. Sin desbordamiento horizontal en 8 plantillas a 320, 768 y 1440 px (`docs/responsive-checks.json`) y 12 rutas representativas a 390 px tras corregir diagnóstico. Capturas manuales de portada, interiores y móvil revisadas. No equivale a una auditoría de producción o certificación de accesibilidad completa.
 
@@ -47,9 +47,21 @@ Verificación adicional: TypeScript/build y enlaces PASS; menú por Escape con r
 
 Inicio auditado sin modificar diseño: mediana Lighthouse 91/100 escritorio y 60/100 móvil (tres ejecuciones por perfil). LCP móvil 7.96 s y TBT 404 ms; rango de puntuación móvil 37–64. Los efectos nuevos no aparecen como cuello de botella principal. Hallazgos, variación, pruebas de atribución, prioridades y reproducción: [rendimiento del inicio](docs/rendimiento-inicio-2026-10-03.md). Datos estructurados en `docs/performance-2026-10-03.json`. Esta medición local no certifica producción ni un teléfono real.
 
+## Optimización del inicio · 2026-10-03
+
+`optimize.mjs` procesa solo la copia generada: crea dos bundles locales (React/runtime y física/scroll), elimina la segunda descarga del HTML, incorpora CSS crítico y precarga las tres tipografías visibles del inicio. Esbuild empaqueta Three con eliminación de código no usado. El cubo espera a que el navegador tenga oportunidad de pintar el contenido y a la cercanía del viewport; conserva interacción, materiales, iluminación, física y efectos. La geometría redondeada baja de 20 a 12 subdivisiones por eje y deja de preservar el buffer WebGL. No hay ramas por Lighthouse o agente de usuario, ni se retira el cubo para medir.
+
+Sharp genera WebP transparentes de 360/720 px desde el PNG original, con srcset/sizes, dimensiones reservadas, decoding async y loading lazy. Las fuentes locales conservan sus licencias en `public/fonts/`; los paquetes en `dist/licenses/`. `public/home.css` corrige el espacio del logo en móvil sin cambiar la cabecera de escritorio.
+
+El build emite archivos `.br` y `.gz`. El servidor incluido negocia Brotli/gzip, maneja HEAD, ETag/304 y revalida para evitar que un rebuild muestre assets antiguos. Al usar otro hosting hay que configurar compresión, MIME y caché equivalentes: copiar `.br` por sí solo no activa la compresión. No se ha cambiado el servidor de pixeltec.mx.
+
+`npm ci && npm run verify` reproduce el build offline una vez instalados los paquetes: TypeScript strict, rutas/referencias, pruebas reales HTTP de compresión/caché/límites de archivos y presupuestos de peso. `performance-budget.mjs` protege también el SHA del inicio entregado. El runtime original se mantiene por el alcance visual; Lenis 1.1.13 permanece fijado por compatibilidad (npm avisa que su dependencia transitoria tempus fue renombrada; no se carga ese paquete en navegador). El estado de auditoría de npm corresponde al lock, no garantiza vulnerabilidades futuras.
+
+Resultados comparativos, método y límites en [optimización medida](docs/optimizacion-inicio-2026-10-03.md). Las métricas del apartado anterior son la línea base, no el estado optimizado.
+
 ## Límites y siguiente etapa
 
-- El runtime heredado del inicio depende de React/Babel/Matter/Lenis/Three y fuentes desde CDNs; los interiores solo necesitan su CSS/JS y fuentes. Conservarlo evita reconstruir el trabajo del usuario en esta fase.
+- El inicio conserva el runtime DC, ahora con React/Matter/Lenis/Three locales, versiones fijadas y fuentes WOFF2 locales. Babel no se descarga en el recorrido normal. Las variantes de cubo alternativas del editor heredado (no expuestas en la navegación) aún tienen imports CDN en la fuente original. Los interiores conservan Google Fonts. Migrar el runtime DC a componentes del producto sigue siendo deuda declarada de esta fase.
 - Contenido, imágenes finales, copy legal, datos de proyectos, SEO productivo y backend quedan pendientes por alcance explícito.
 - El HTML está en `noindex,nofollow`; no desplegar como reemplazo del sitio productivo.
 - La integración futura a Next.js requiere migrar componentes conservando contratos y funcionalidad del sitio existente. Este prototipo no decide cambiar el stack del producto.

@@ -1,0 +1,16 @@
+/* Same inset cream header as the supplied home, with enough room for its logo on mobile. */
+@media(max-width:900px){
+  [data-pixel-home] header{grid-template-columns:1fr auto!important;height:80px!important}
+  [data-pixel-home] header>nav{display:none!important}
+  [data-pixel-home] header>a{padding:0 12px!important;font-size:24px!important;gap:7px!important}
+  [data-pixel-home] header>a svg{width:28px!important}
+  [data-pixel-home] header>div>div{display:none!important}
+  [data-pixel-home] header>div>a{padding:0 16px!important;font-size:14px!important}
+  [data-pixel-home] header button{width:53px!important;padding-right:15px!important}
+}
+@media(max-width:360px){
+  [data-pixel-home] header>a{padding:0 10px!important;font-size:22px!important;gap:6px!important}
+  [data-pixel-home] header>a svg{width:24px!important}
+  [data-pixel-home] header>div>a{padding:0 12px!important;font-size:13px!important}
+  [data-pixel-home] header button{width:48px!important;padding-right:12px!important}
+}

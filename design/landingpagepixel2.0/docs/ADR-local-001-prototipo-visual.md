@@ -11,3 +11,7 @@ La desviación temporal respecto al stack Next.js de ADR-0001 y a la implementac
 No se agrega backend de demostración. Contacto, newsletter y acceso muestran confirmación de vista previa; el diagnóstico conserva selecciones solo en memoria de la página. El usuario autorizó contenido provisional: no se inventan nuevas métricas comerciales ni perfiles reales de equipo.
 
 Validación y operación: [README](../README.md). Inventario de rutas: [routes.json](routes.json).
+
+## Extensión autorizada · 2026-10-03
+
+Miguel pidió optimización tras revisar la auditoría. Se permite añadir bundling y conversión de recursos en build, autohospedar las mismas versiones y adaptar el renderizador manteniendo el diseño. `src/home.dc.html` continúa idéntico; los cambios se aplican en la salida. Esbuild y Sharp son herramientas del prototipo, no una decisión de migración del stack productivo. El servidor de preview representa compresión/caché verificables; hay que reproducirlas al integrar en el hosting definitivo. No se ocultan efectos ni se detecta Lighthouse para mejorar artificialmente la medición.

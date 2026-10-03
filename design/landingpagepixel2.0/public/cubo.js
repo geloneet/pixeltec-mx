@@ -1,4 +1,4 @@
-import * as THREE from 'https://unpkg.com/three@0.184.0/build/three.module.js';
+import * as THREE from 'three';
 
 const clamp = THREE.MathUtils.clamp;
 const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
@@ -62,7 +62,7 @@ function iconTex(path, color, aniso) {
   t.colorSpace = THREE.SRGBColorSpace; return t;
 }
 
-export function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0x0a0d1a, half = 2.9, gap = 0.12, ink = '#eef2ff', inkSoft = '#aab4cc', concept = null }) {
+export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0x0a0d1a, half = 2.9, gap = 0.12, ink = '#eef2ff', inkSoft = '#aab4cc', concept = null }) {
   // Conceptos: 'hover' (A) tocar un cubo lo eleva y adelanta su etiqueta · 'parallax' (B) capas por profundidad que siguen al mouse
   // 'focus' (C) los servicios giran para mirarte y los decorativos se apartan · 'cascade' (D) apertura en cascada, uno tras otro
   concept = concept || { A: 'hover', B: 'parallax', C: 'focus', D: 'cascade' }[variant];
@@ -71,7 +71,7 @@ export function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0
   canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
   stage.appendChild(canvas);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: true });
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: false });
   renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
   renderer.shadowMap.enabled = false; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.3;
@@ -95,6 +95,7 @@ export function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0
   panel(0x7fa3ff, 2, 8, 4, [7, 1, -3]);
   panel(0x2f5bd9, 2.5, 6, 3, [-5, -3, -5]);
   panel(0x1e3fb0, 3, 4, 4, [5, -4, 4]);
+  await new Promise(resolve => requestAnimationFrame(resolve));
   const pm = new THREE.PMREMGenerator(renderer);
   scene.environment = pm.fromScene(env, 0.04).texture; pm.dispose();
 
@@ -115,7 +116,7 @@ export function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0
   const slatMats = ['#3a56a8', '#1b2a5e', '#3a56a8', '#1b2a5e'].map(solid);
 
   const S = 0.98, R = 0.045;
-  const cubeGeo = roundedBox(S, S, S, 0.06, 20, 20, 20);
+  const cubeGeo = roundedBox(S, S, S, 0.06, 12, 12, 12);
   const coreGeo = roundedBox(0.64, 0.64, 0.64, 0.05, 4, 4, 4);
   const slatGeo = roundedBox(S / 4 - 0.025, S, S, 0.03, 2, 8, 8);
   const navy = new THREE.MeshPhysicalMaterial({ color: 0x2f66f0, roughness: 0.2, metalness: 0.5, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 1.6 });

@@ -1,6 +1,6 @@
 {
   "pages": 72,
-  "internal_references_checked": 3711,
+  "internal_references_checked": 3714,
   "errors": [],
   "http_statuses": {
     "/": 200,
@@ -75,5 +75,11 @@
     "/guias-transformacion/": 200,
     "/404/": 200,
     "/mapa/": 200
+  },
+  "optimization_checks": {
+    "typescript": "PASS",
+    "server": "Brotli/gzip, raw-byte decoding, ETag/304, HEAD, q=0, MIME, 404, traversal, malformed URL, methods PASS",
+    "asset_budgets": "PASS",
+    "original_source_sha256": "b49e6c58fbe039b35e6ac5ad8685939ca8023d49d3d4d0b07657e9fb44df6e02"
   }
 }

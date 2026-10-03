@@ -19,5 +19,12 @@
       "graphImpressions": 1208,
       "totalsMatch": true
     }
+  ],
+  "additionalExports": [
+    {
+      "export": "gsc-404-2026-10-03.zip",
+      "sha256": "a5b3e01618d7a497d07687c26afc5b92a9722769da405f2f8ab20742ea02bf95",
+      "verification": "SHA-256 computed from the local original ZIP. Archive identity only; rows were not reconciled again in WO-505."
+    }
   ]
 }

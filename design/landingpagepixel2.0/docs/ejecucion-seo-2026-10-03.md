@@ -56,10 +56,10 @@ Lighthouse 13.5.0, Chrome headless, tres cargas frías secuenciales por perfil s
 
 | Perfil | Score mediana (rango) | LCP mediana | TBT mediana (peor) | CLS |
 |---|---:|---:|---:|---:|
-| Móvil simulado | 97 (92–97) | 2.40 s | 82.5 ms (286.5 ms) | 0 |
+| Móvil simulado | 98 (97–98) | 2.40 s | 51 ms (65.5 ms) | 0 |
 | Escritorio | 100 (100–100) | 0.65 s | 0 ms | 0 |
 
-Reproducir: `npx --yes lighthouse@13.5.0 http://127.0.0.1:4317/ --only-categories=performance --output=json --output=html --output-path=/ruta/local/reporte --chrome-flags=--headless --quiet`; añadir `--preset=desktop` para escritorio. No ejecutar compilaciones simultáneas al medir. Son datos locales de este HTML, no una comparación causal controlada con las series previas, ni INP real, ni auditoría de todas las plantillas/idiomas.
+Reproducir: `npx --yes lighthouse@13.5.0 http://127.0.0.1:4317/ --only-categories=performance --output=json --output=html --output-path=/ruta/local/reporte --chrome-flags=--headless --quiet`; añadir `--preset=desktop` para escritorio. No ejecutar compilaciones simultáneas al medir. La serie se repitió tras el empaquetado final; el JSON conserva también el resumen/hash de la serie preparatoria. Son datos locales de este HTML, no una comparación causal controlada con las series previas, ni INP real, ni auditoría de todas las plantillas/idiomas.
 
 ## Deuda abierta y siguiente lote
 

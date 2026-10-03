@@ -4,7 +4,7 @@ Prototipo local de diseño y contenido, actualizado 2026-10-03. La fuente visual
 
 ## Estado vigente del trabajo SEO — 2026-10-03
 
-Primer lote implementado: [cambios, GSC, evidencia y pendientes](docs/ejecucion-seo-2026-10-03.md). Las secciones fechadas inferiores conservan la historia de cada etapa; prevalece este corte para retomar. 9 pruebas locales + 72 pruebas SEO de la aplicación, compilación estricta y 60 slugs/metadatos conservados. Legales/guías ES con estructura completa; idiomas incompletos fuera de alternates/sitemap candidato. Medianas Lighthouse locales del inicio: 97 móvil / 100 escritorio, tres cargas por perfil. **Todavía no es un reemplazo publicable de Next.js/CMS/portal ni una certificación de SEO al 100%.**
+Primer lote implementado: [cambios, GSC, evidencia y pendientes](docs/ejecucion-seo-2026-10-03.md). Las secciones fechadas inferiores conservan la historia de cada etapa; prevalece este corte para retomar. 9 pruebas locales + 72 pruebas SEO de la aplicación, compilación estricta y 60 slugs/metadatos conservados. Legales/guías ES con estructura completa; idiomas incompletos fuera de alternates/sitemap candidato. Medianas Lighthouse locales del inicio: 98 móvil / 100 escritorio, tres cargas por perfil. **Todavía no es un reemplazo publicable de Next.js/CMS/portal ni una certificación de SEO al 100%.**
 
 ## Abrir y continuar
 

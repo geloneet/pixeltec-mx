@@ -2,39 +2,159 @@
   "date": "2026-10-03",
   "scope": "Local prototype homepage ES; Lighthouse 13.5.0, Chrome headless, cold loads, sequential by profile. Not production or field CWV.",
   "url": "http://127.0.0.1:4317/",
-  "homepageSha256": "6d03e41c7c47a16542921f6ba22438a580de2d472ce949f325ae351fad629efb",
+  "homepageSha256": "e61ab4c78f97e23f36a1738e6abef8ee12aafa821a4a9e0071b8c481d0407009",
   "profiles": {
     "mobile": {
       "runs": [
         {
-          "timestamp": "2026-10-03T21:47:39.391Z",
+          "timestamp": "2026-10-03T22:05:12.343Z",
           "score": 97,
-          "LCP_ms": 2403.3409,
-          "TBT_ms": 78,
+          "LCP_ms": 2405.3435,
+          "TBT_ms": 65.5,
           "CLS": 0,
-          "FCP_ms": 1053.3409,
-          "reportSha256": "8963247f82eef5dd5418895dcddc210a1b209c7e34e93ab35f73b704c7d165f7"
+          "FCP_ms": 1055.3435,
+          "reportSha256": "0b67243bfaf5bcf49b9b18dda921df54df85c02b898e0d98835af5e821d73b0b"
         },
         {
-          "timestamp": "2026-10-03T21:47:51.881Z",
-          "score": 97,
-          "LCP_ms": 2403.2036,
-          "TBT_ms": 82.5,
+          "timestamp": "2026-10-03T22:05:23.032Z",
+          "score": 98,
+          "LCP_ms": 2403.6305999999995,
+          "TBT_ms": 20,
           "CLS": 0,
-          "FCP_ms": 1053.2036,
-          "reportSha256": "aff8313fd1bf6f64c61e12d0de22ee07e764db644865b2c5a550b6d7757d4dcc"
+          "FCP_ms": 1053.6306,
+          "reportSha256": "769e4dd09017dee4a0b6ca025f9321de80b2f0143e4982e4d9c3cced75e6d52f"
         },
         {
-          "timestamp": "2026-10-03T21:48:04.130Z",
-          "score": 92,
-          "LCP_ms": 2405.4771,
-          "TBT_ms": 286.5,
+          "timestamp": "2026-10-03T22:05:33.916Z",
+          "score": 98,
+          "LCP_ms": 2405.5167,
+          "TBT_ms": 51,
           "CLS": 0,
-          "FCP_ms": 1055.4771,
-          "reportSha256": "1a5b4461586ba45fea7b290b075b7a80f77b58163aaa3e9ff2f87e9869d6dca4"
+          "FCP_ms": 1055.5167,
+          "reportSha256": "a43cfe1e0018aac876f3462438feafcc61094d797b8d4e76d604a13baf75927a"
         }
       ],
       "summary": {
+        "score": {
+          "median": 98,
+          "min": 97,
+          "max": 98
+        },
+        "LCP_ms": {
+          "median": 2405.3435,
+          "min": 2403.6305999999995,
+          "max": 2405.5167
+        },
+        "TBT_ms": {
+          "median": 51,
+          "min": 20,
+          "max": 65.5
+        },
+        "CLS": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "FCP_ms": {
+          "median": 1055.3435,
+          "min": 1053.6306,
+          "max": 1055.5167
+        }
+      },
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+        "benchmarkIndex": 3981,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 150,
+        "throughputKbps": 1638.4,
+        "requestLatencyMs": 562.5,
+        "downloadThroughputKbps": 1474.5600000000002,
+        "uploadThroughputKbps": 675,
+        "cpuSlowdownMultiplier": 4
+      },
+      "throttlingMethod": "simulate"
+    },
+    "desktop": {
+      "runs": [
+        {
+          "timestamp": "2026-10-03T22:05:44.421Z",
+          "score": 100,
+          "LCP_ms": 646.529,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 283.2645,
+          "reportSha256": "b5d2eaf34c20f9d9e5dc12d8a2e3eda83d36bd5f58187098bbb64359ce264c40"
+        },
+        {
+          "timestamp": "2026-10-03T22:05:57.247Z",
+          "score": 100,
+          "LCP_ms": 611.5472,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 285.7736,
+          "reportSha256": "04745b28558664bcdf4ba54a2c70ac9544b3a9c04283402fc941de027f97ed20"
+        },
+        {
+          "timestamp": "2026-10-03T22:06:09.081Z",
+          "score": 100,
+          "LCP_ms": 648.6628000000001,
+          "TBT_ms": 0,
+          "CLS": 0,
+          "FCP_ms": 284.3314,
+          "reportSha256": "277811118830dcad9fe1c726943f67c0a4029d6e1c97a63a3179593bb9ed0e93"
+        }
+      ],
+      "summary": {
+        "score": {
+          "median": 100,
+          "min": 100,
+          "max": 100
+        },
+        "LCP_ms": {
+          "median": 646.529,
+          "min": 611.5472,
+          "max": 648.6628000000001
+        },
+        "TBT_ms": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "CLS": {
+          "median": 0,
+          "min": 0,
+          "max": 0
+        },
+        "FCP_ms": {
+          "median": 284.3314,
+          "min": 283.2645,
+          "max": 285.7736
+        }
+      },
+      "environment": {
+        "networkUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
+        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
+        "benchmarkIndex": 3925.5,
+        "credits": {}
+      },
+      "throttling": {
+        "rttMs": 40,
+        "throughputKbps": 10240,
+        "requestLatencyMs": 0,
+        "downloadThroughputKbps": 0,
+        "uploadThroughputKbps": 0,
+        "cpuSlowdownMultiplier": 1
+      },
+      "throttlingMethod": "simulate"
+    }
+  },
+  "previousBuildMeasurement": {
+    "homepageSha256": "6d03e41c7c47a16542921f6ba22438a580de2d472ce949f325ae351fad629efb",
+    "profiles": {
+      "mobile": {
         "score": {
           "median": 97,
           "min": 92,
@@ -61,53 +181,7 @@
           "max": 1055.4771
         }
       },
-      "environment": {
-        "networkUserAgent": "Mozilla/5.0 (Linux; Android 11; moto g power (2022)) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36",
-        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
-        "benchmarkIndex": 2987,
-        "credits": {}
-      },
-      "throttling": {
-        "rttMs": 150,
-        "throughputKbps": 1638.4,
-        "requestLatencyMs": 562.5,
-        "downloadThroughputKbps": 1474.5600000000002,
-        "uploadThroughputKbps": 675,
-        "cpuSlowdownMultiplier": 4
-      },
-      "throttlingMethod": "simulate"
-    },
-    "desktop": {
-      "runs": [
-        {
-          "timestamp": "2026-10-03T21:50:14.449Z",
-          "score": 100,
-          "LCP_ms": 646.2092,
-          "TBT_ms": 0,
-          "CLS": 0,
-          "FCP_ms": 294.1046,
-          "reportSha256": "310752a543710373c795176139d732e325f82b28096c411833f27ebd0c67c16e"
-        },
-        {
-          "timestamp": "2026-10-03T21:50:26.012Z",
-          "score": 100,
-          "LCP_ms": 608.1654000000001,
-          "TBT_ms": 0,
-          "CLS": 0,
-          "FCP_ms": 284.0827,
-          "reportSha256": "b6a8877fde1a2f2f6c1252303338e889d1c32c9faa5c89a31630c7c318565b66"
-        },
-        {
-          "timestamp": "2026-10-03T21:50:37.347Z",
-          "score": 100,
-          "LCP_ms": 646.3716,
-          "TBT_ms": 0,
-          "CLS": 0,
-          "FCP_ms": 283.1858,
-          "reportSha256": "0adb9cee56c440ea378c31a4299a473d7fda17aa0fb7cc290e7ba950d0c775d2"
-        }
-      ],
-      "summary": {
+      "desktop": {
         "score": {
           "median": 100,
           "min": 100,
@@ -133,22 +207,8 @@
           "min": 283.1858,
           "max": 294.1046
         }
-      },
-      "environment": {
-        "networkUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Safari/537.36",
-        "hostUserAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/154.0.0.0 Safari/537.36",
-        "benchmarkIndex": 4013.5,
-        "credits": {}
-      },
-      "throttling": {
-        "rttMs": 40,
-        "throughputKbps": 10240,
-        "requestLatencyMs": 0,
-        "downloadThroughputKbps": 0,
-        "uploadThroughputKbps": 0,
-        "cpuSlowdownMultiplier": 1
-      },
-      "throttlingMethod": "simulate"
-    }
+      }
+    },
+    "reasonRepeated": "Canonical graph export changed JSON key serialization in generated HTML; measurements repeated against the final artifact."
   }
 }

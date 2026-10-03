@@ -81,3 +81,5 @@ Verificación del contenido: 20 vistas móviles actuales y pruebas funcionales E
 ## Menú original y correcciones visuales · 2026-10-03
 
 Los seis elementos de pixeltec.mx comparten `src/navigation.ts`: Inicio, Nosotros, Servicios, Industrias, Blog y Contacto. Se aplican a inicio/interiores y ES/EN; las páginas Proyectos siguen disponibles como navegación secundaria. Corregidos los laterales negros de la cabecera interior, la ilustración recortada de Nosotros y el contraste del idioma en el menú oscuro. [Cambios, fuente, operación y validación en 36 vistas](docs/menu-original-correcciones-2026-10-03.md). Verificación vigente: 145 HTML, 8,178 referencias, 144 rutas HTTP 200, 60 slugs conservados. Las métricas anteriores corresponden a su etapa histórica.
+
+Ajuste posterior de Miguel, 2026-10-03: quitar Inicio y Blog **solo del menú**. Cabecera/desplegable muestran Nosotros, Servicios, Industrias y Contacto, con equivalentes EN. Páginas, slugs, logo hacia inicio y enlaces del pie permanecen. `primaryNavigation` filtra la lista pública; `footerNavigationItems` conserva sus seis entradas.

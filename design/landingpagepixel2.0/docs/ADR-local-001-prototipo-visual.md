@@ -19,3 +19,8 @@ Miguel pidió optimización tras revisar la auditoría. Se permite añadir bundl
 ## Contenido bilingüe autorizado · 2026-10-03
 
 Miguel solicitó incorporar el contenido aprobado de pixeltec.mx, añadir inglés y preservar los slugs por SEO. El snapshot público validado con Zod alimenta el prototipo; datos comerciales y traducciones viven separados de las plantillas. ES conserva URLs y metadatos; EN usa `/en/` con el mismo sufijo, para evitar cambios a URLs existentes. El cambio de idioma conserva contexto. Se sustituyen formularios ficticios por contactos reales y acceso al portal vigente; diagnóstico local con compartir manual. Las guías/artículos EN son resúmenes identificados, y el texto legal oficial sigue en español. No se declara migración SEO concluida, traducción integral ni aprobación de nuevo copy. [Alcance y pruebas](contenido-idiomas-seo-2026-10-03.md).
+
+
+## Continuidad de navegación autorizada · 2026-10-03
+
+Miguel pidió una sensación de app al cargar. Se conserva la arquitectura de documentos estáticos de este prototipo y sus URLs: mejora progresiva con [View Transitions entre documentos](https://developer.chrome.com/docs/web-platform/view-transitions/cross-document), identidad compartida de cabecera y anticipación limitada de navegación. No se introduce un segundo router que deba desmontar/reiniciar el runtime DC, canvas y listeners en cada cambio. La primera vista de la portada se deriva de su plantilla localizada para evitar una segunda fuente de copy/diseño. Límite: sigue siendo navegación multipágina, y motores sin soporte conservan navegación nativa; integración definitiva en Next.js pendiente. Operación y evidencia en [README](../README.md).

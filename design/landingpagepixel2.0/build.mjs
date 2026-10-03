@@ -63,6 +63,7 @@ for(const locale of languages){
  entries.push(...[{path:'/',title:x('Inicio','Home'),family:x('Inicio','Home')},...pages].map(({path,title,family})=>({path:localPath(path,locale),title,family,locale})));
 }
 await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true});await cp('public','dist',{recursive:true});
+await writeFile('dist/app-navigation.js',(await readFile('.build/app-navigation.js','utf8')).replace('export {};',''));
 await cp('.build/client.js','dist/client.js');await cp('.build/motion.js','dist/motion.js');
 await optimizeAssets();
 await writeFile('dist/favicon.svg',logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));

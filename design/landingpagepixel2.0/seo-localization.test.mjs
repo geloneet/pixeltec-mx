@@ -41,3 +41,18 @@ test('source rendering escapes text and disallows unsafe link protocols',()=>{
  const out=articleHtml([{tag:'p',children:[{tag:'text',text:'<script>alert(1)</script>'}]},{tag:'a',href:'javascript:alert(1)',children:[{tag:'text',text:'unsafe'}]},{tag:'a',href:'https://pixeltec.mx/about',children:[{tag:'text',text:'About'}]}],new Set(['/about/']));
  assert.ok(!out.includes('<script>'));assert.ok(!out.includes('javascript:'));assert.ok(out.includes('href="/about/"'));
 });
+
+test('home first paint contains localized content and working links before runtime startup',async()=>{
+ for(const path of ['/','/en/']){
+  const page=await html(path);
+  const first=page.match(/id="home-first-paint">([\s\S]*?)<x-dc>/)?.[1];
+  assert.ok(first,path+' first paint missing');
+  assert.doesNotMatch(first,/\{\{|\bonClick=|\bref=/);
+  const title=first.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1];
+  const template=page.slice(page.indexOf('<x-dc>'));
+  assert.equal(title,template.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1],path+' duplicate content drift');
+  const prefix=path==='/en/'?'/en':'';
+  for(const target of ['/services/','/about/','/contact/','/diagnostico/'])assert.ok(first.includes('href="'+prefix+target+'"'),path+' '+target);
+  assert.match(page,/src="\/app-navigation.js"/);
+ }
+});

@@ -47,6 +47,8 @@ function discover(): void {
     // Never animate a second nested reveal, or the original cube/physics surfaces.
     if (element.closest('x-dc') || seen.has(element) || element.parentElement?.closest(selector)) return;
     seen.add(element);
+    // The document transition already reveals the first viewport; avoid a second fade from empty.
+    if(document.documentElement.dataset.routeArrival&&element.getBoundingClientRect().top<innerHeight) return;
     if (!reduced.matches) observer?.observe(element);
   });
 }

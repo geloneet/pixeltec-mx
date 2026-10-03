@@ -1,6 +1,6 @@
 {
   "pages": 144,
-  "internal_references_checked": 7598,
+  "internal_references_checked": 7906,
   "errors": [],
   "http_statuses": {
     "/": 200,
@@ -197,5 +197,14 @@
     "scope": "Header and drawer ES/EN only; footer, home/blog pages and slugs preserved",
     "verify": "PASS",
     "local_references": 7598
+  },
+  "navigation_continuity": {
+    "date": "2026-10-03",
+    "verify": "PASS",
+    "tests": 6,
+    "routes": 144,
+    "first_paint": "ES/EN content and real links before runtime; removed after header + h1 mount",
+    "browser": "Native transition completed both directions home/interior, language, history, drawer Escape/focus; home width 320 no overflow; one h1",
+    "limitations": "Progressive multipage transitions, not SPA; no new Lighthouse/cross-engine certification"
   }
 }

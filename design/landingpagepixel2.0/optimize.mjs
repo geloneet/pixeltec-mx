@@ -52,6 +52,16 @@ export async function optimizeHome(home) {
   home=home.replace('const c = mod.mountCube(host,','const c = await mod.mountCube(host,');
   home=home.replace('this._cubeCleanup = () => c.destroy();','if (this._cubeDead) { c.destroy(); return; }\n    this._cubeCleanup = () => c.destroy();');
   home=home.replace('componentWillUnmount() {', 'componentWillUnmount() { this._cubeHostObserver?.disconnect();');
+  // First paint is derived from the final localized template, never a second copy of its content.
+  const helmetEnd=home.indexOf('</helmet>');
+  const heroEnd=home.indexOf('</section>',helmetEnd)+10;
+  if(helmetEnd<0||heroEnd<10)throw new Error('Home first-paint anchors missing');
+  let firstPaint=home.slice(helmetEnd+9,heroEnd)+'</div>';
+  firstPaint=firstPaint.replace(/\s(?:ref|onClick|style-hover)="[^"]*"/g,'').replace(/\{\{[^}]+\}\}/g,'flex');
+  firstPaint=firstPaint.replace(/<button aria-label="(?:Menú|Menu)"([^>]*)>([\s\S]*?)<\/button>/, '<a aria-label="'+(home.includes('lang="en"')?'All pages':'Todas las páginas')+'" href="'+(home.includes('lang="en"')?'/en/mapa/':'/mapa/')+'"$1>$2</a>');
+  home=home.replace('<body data-pixel-home>','<body data-pixel-home><div id="home-first-paint">'+firstPaint+'</div>');
+  const navigationCSS=await readFile('public/navigation.css','utf8');
+  home=home.replace('</head>','<style>'+navigationCSS+'</style><script defer src="/app-navigation.js"></script></head>');
   return home;
 }
 

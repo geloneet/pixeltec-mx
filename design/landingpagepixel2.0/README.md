@@ -43,6 +43,10 @@ El contenido es visible por defecto: si falla JavaScript o no existe Intersectio
 
 Verificación adicional: TypeScript/build y enlaces PASS; menú por Escape con retorno de foco, abrir/cerrar en móvil, filtros y avance/retroceso del diagnóstico comprobados; sin overflow en servicios, proyectos y diagnóstico a 390 px. `docs/motion-checks.json` registra alcance y límites. Movimiento reducido revisado en código; la herramienta de navegador no permite emular esa preferencia, por lo que no se declara prueba visual con ella activada.
 
+## Auditoría de rendimiento · 2026-10-03
+
+Inicio auditado sin modificar diseño: mediana Lighthouse 91/100 escritorio y 60/100 móvil (tres ejecuciones por perfil). LCP móvil 7.96 s y TBT 404 ms; rango de puntuación móvil 37–64. Los efectos nuevos no aparecen como cuello de botella principal. Hallazgos, variación, pruebas de atribución, prioridades y reproducción: [rendimiento del inicio](docs/rendimiento-inicio-2026-10-03.md). Datos estructurados en `docs/performance-2026-10-03.json`. Esta medición local no certifica producción ni un teléfono real.
+
 ## Límites y siguiente etapa
 
 - El runtime heredado del inicio depende de React/Babel/Matter/Lenis/Three y fuentes desde CDNs; los interiores solo necesitan su CSS/JS y fuentes. Conservarlo evita reconstruir el trabajo del usuario en esta fase.

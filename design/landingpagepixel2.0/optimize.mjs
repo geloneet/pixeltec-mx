@@ -1,4 +1,5 @@
 import { build, transform } from 'esbuild';
+import {renderHome,runtimeSource} from './home-ssr.mjs';
 import sharp from 'sharp';
 import { readFile, writeFile, readdir, mkdir, cp } from 'node:fs/promises';
 import { brotliCompressSync, gzipSync, constants } from 'node:zlib';
@@ -6,7 +7,10 @@ import { brotliCompressSync, gzipSync, constants } from 'node:zlib';
 export async function optimizeAssets() {
   const vendors = ['react/umd/react.production.min.js','react-dom/umd/react-dom.production.min.js','matter-js/build/matter.min.js','lenis/dist/lenis.min.js'];
   const sources = await Promise.all(vendors.map(p => readFile('node_modules/'+p,'utf8')));
-  const runtime = (await readFile('public/support.js','utf8')).replaceAll('doc.querySelector(\"x-dc\")','doc.querySelector(\"script[data-dc-template]\") ?? doc.querySelector(\"x-dc\")').replace('template: dc.innerHTML,','template: dc.matches(\"script[data-dc-template]\") ? JSON.parse(dc.textContent).html : dc.innerHTML,').replace('if (!window.__resources) {','if (!window.__resources && !doc.documentElement.hasAttribute("data-dc-static")) {');
+  let runtime = (await runtimeSource()).replaceAll('doc.querySelector(\"x-dc\")','doc.querySelector(\"script[data-dc-template]\") ?? doc.querySelector(\"x-dc\")').replace('template: dc.innerHTML,','template: dc.matches(\"script[data-dc-template]\") ? JSON.parse(dc.textContent).html : dc.innerHTML,').replace('if (!window.__resources) {','if (!window.__resources && !doc.documentElement.hasAttribute("data-dc-static")) {');
+  runtime=runtime.replace('const hostEl = doc.createElement("div");','const existing = doc.getElementById("dc-root"); const hostEl = existing || doc.createElement("div");')
+    .replace('dc.replaceWith(hostEl);','if (existing) dc.remove(); else dc.replaceWith(hostEl);')
+    .replace('if (ReactDOM.createRoot)','if (existing && ReactDOM.hydrateRoot) ReactDOM.hydrateRoot(hostEl, h(StandaloneRoot)); else if (ReactDOM.createRoot)');
   const bundled = await transform([...sources.slice(0,2),runtime].join('\n;\n'),{minify:true,target:'es2022',legalComments:'inline'});
   await writeFile('dist/home-runtime.js',bundled.code);
   const enhancements=await transform(sources.slice(2).join('\n;\n'),{minify:true,target:'es2022',legalComments:'inline'});
@@ -52,14 +56,44 @@ export async function optimizeHome(home) {
   home=home.replace('const c = mod.mountCube(host,','const c = await mod.mountCube(host,');
   home=home.replace('this._cubeCleanup = () => c.destroy();','if (this._cubeDead) { c.destroy(); return; }\n    this._cubeCleanup = () => c.destroy();');
   home=home.replace('componentWillUnmount() {', 'componentWillUnmount() { this._cubeHostObserver?.disconnect();');
-  // First paint is derived from the final localized template, never a second copy of its content.
-  const helmetEnd=home.indexOf('</helmet>');
-  const heroEnd=home.indexOf('</section>',helmetEnd)+10;
-  if(helmetEnd<0||heroEnd<10)throw new Error('Home first-paint anchors missing');
-  let firstPaint=home.slice(helmetEnd+9,heroEnd)+'</div>';
-  firstPaint=firstPaint.replace(/\s(?:ref|onClick|style-hover)="[^"]*"/g,'').replace(/\{\{[^}]+\}\}/g,'flex');
-  firstPaint=firstPaint.replace(/<button aria-label="(?:Menú|Menu)"([^>]*)>([\s\S]*?)<\/button>/, '<a aria-label="'+(home.includes('lang="en"')?'All pages':'Todas las páginas')+'" href="'+(home.includes('lang="en"')?'/en/mapa/':'/mapa/')+'"$1>$2</a>');
-  home=home.replace('<body data-pixel-home>','<body data-pixel-home><div id="home-first-paint">'+firstPaint+'</div>');
+  // One deterministic initial state in both environments; CSS owns responsive layout.
+  home=home.replace('w: typeof window !== "undefined" ? window.innerWidth : 1440','w: 1440');
+  home=home.replace("    window.addEventListener('resize', this._onResize);", "    window.addEventListener('resize', this._onResize); this.setState({w: window.innerWidth});");
+  // Breakpoint-sensitive layout must work before hydration and with JS disabled.
+  for(const key of ['aboutCols','navDisplay','socialDisplay','svcCols','svcImgCol','whyCols','whyPhotoSpan','whyPhotoRow','footCols','projTopCols','projBottomCols','blogCols','tBasis']){
+    const name=key.replace(/[A-Z]/g,c=>'-'+c.toLowerCase());
+    home=home.replaceAll('{{ '+key+' }}','var(--home-'+name+')');
+  }
+  home=home.replace('ref="{{ pillsRef }}"','class="home-pills" ref="{{ pillsRef }}"')
+    .replace('position:relative;margin-top:clamp(48px,7vw,110px)','position:relative;margin-top:clamp(32px,7vw,110px)')
+    .replace('<div style="flex:1 1 380px','<div class="home-intro" style="flex:1 1 380px')
+    .replace('background-color:#dedbd4','background-color:#676761')
+    .replace('background-size:0% 100%','background-size:100% 100%');
+  // Keep a visible static pill composition; physics starts from it without a blank drop-in.
+  home=home.replace("const drop = !this._dropped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;",'const drop = false;');
+  home=home.replace("    const { Engine, Bodies, Composite, Body } = Matter;", "    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches || window.innerWidth < 640) return;\n    const { Engine, Bodies, Composite, Body } = Matter;");
+  home=home.replace('<aside aria-label=', '<aside id="home-menu" role="dialog" aria-modal="true" aria-hidden="{{ menuHidden }}" aria-label=')
+    .replace('transform:{{ drawerTransform }}','visibility:{{ menuVisibility }};transform:{{ drawerTransform }}')
+    .replace('onClick="{{ openMenu }}"','aria-controls="home-menu" aria-expanded="{{ menuExpanded }}" onClick="{{ openMenu }}"')
+    .replace('      openMenu: () => this.setState({ menu: true }),','      menuHidden: !this.state.menu, menuExpanded: this.state.menu, menuVisibility: this.state.menu ? "visible" : "hidden",\n      openMenu: () => this.setMenu(true),')
+    .replace('      closeMenu: () => this.setState({ menu: false }),','      closeMenu: () => this.setMenu(false),')
+    .replace('if (e.key === "Escape") this.setState({ menu: false });','if (e.key === "Escape" && this.state.menu) this.setMenu(false); if (e.key === "Tab" && this.state.menu) { const items = [...document.querySelectorAll("#home-menu a, #home-menu button")]; const first=items[0], last=items.at(-1); if(e.shiftKey && document.activeElement===first){e.preventDefault();last.focus();} else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();} }')
+    .replace('  componentDidMount() {',`  setMenu(open) {
+    if(open){this._menuFocus=document.activeElement;this._bodyOverflow=document.body.style.overflow;document.body.style.overflow='hidden';this._lenis?.stop();}
+    this.setState({menu:open},()=>{
+      if(open)document.querySelector('#home-menu button')?.focus();
+      else {document.body.style.overflow=this._bodyOverflow || '';this._lenis?.start();this._menuFocus?.focus();}
+    });
+  }
+  componentDidMount() {`);
+  home=home.replace('<div onMouseEnter="{{ tPause }}"','<div class="home-testimonial-window" onFocus="{{ tPause }}" onBlur="{{ tResume }}" onMouseEnter="{{ tPause }}"')
+    .replace('<div style="display:flex;gap:24px;transform:{{ tTransform }}','<div class="home-testimonial-track" style="display:flex;gap:24px;transform:{{ tTransform }}')
+    .replace('width:10px;height:10px;padding:0;border:0;border-radius:50%;background:{{ d.bg }}','width:44px;height:44px;box-sizing:border-box;padding:17px;background-clip:content-box;border:0;border-radius:50%;background-color:{{ d.bg }}')
+    .replace(/    this\._tTimer = setInterval[^\n]+\n/,'');
+  const rendered=await renderHome(home);
+  home=home.replace('</head>','<style data-home-rendered>'+rendered.css+'</style></head>');
+  const noScript='<noscript><style>[aria-controls="home-menu"]{visibility:hidden}.home-testimonial-track{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));transform:none!important}.home-testimonial-window{overflow:visible!important}</style><a href="'+(/<html[^>]*lang="en"/.test(home)?'/en/mapa/':'/mapa/')+'" aria-label="'+(/<html[^>]*lang="en"/.test(home)?'All pages':'Todas las páginas')+'" style="position:fixed;right:max(calc((100vw - 1440px)/2 + 24px),calc(clamp(12px,4vw,56px) + 16px));top:24px;z-index:100000;color:#0b0b0a;background:#f2efe8;padding:4px;font-size:24px;line-height:1">☰</a></noscript>';
+  home=home.replace('<body data-pixel-home>','<body data-pixel-home>'+noScript+'<div id="dc-root" data-home-ssr>'+rendered.html+'</div>');
   const navigationCSS=await readFile('public/navigation.css','utf8');
   home=home.replace('</head>','<style>'+navigationCSS+'</style><script defer src="/app-navigation.js"></script></head>');
   // Keep the runtime template inert in the initial document: one real H1, no duplicate outline.
@@ -74,7 +108,7 @@ export async function compressOutput(dir='dist') {
     if(!/\.(html|js|css|svg|json)$/.test(path))continue;
     const bytes=await readFile(path);
     if(bytes.length<500)continue;
-    await writeFile(path+'.br',brotliCompressSync(bytes,{params:{[constants.BROTLI_PARAM_QUALITY]:6}}));
+    await writeFile(path+'.br',brotliCompressSync(bytes,{params:{[constants.BROTLI_PARAM_QUALITY]:/^(?:dist\/|dist\/en\/)index\.html$/.test(path)?11:6}}));
     await writeFile(path+'.gz',gzipSync(bytes,{level:9}));
   }
 }

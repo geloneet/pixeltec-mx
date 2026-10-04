@@ -224,7 +224,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
 
   // Interacción
   const mouse = { x: 0, y: 0 }, sm = { x: 0, y: 0 };
-  let open = 0, target = 0, lastInput = performance.now(), visible = true, hovered = -1;
+  let open = 0, target = 0, lastInput = performance.now(), visible = true, hovered = -1, needsPaint = true;
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
   parts.forEach((p, i) => p.obj.traverse(ch => { ch.userData.part = i; }));
   let overCube = false, cursorEl = null;
@@ -249,18 +249,22 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   const onClick = e => { const r = stage.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom || e.target.closest('a,button')) return; if (!pickCube(e, r)) return; target = target ? 0 : 1; lastInput = performance.now(); };
   addEventListener('click', onClick);
   if (autoOpen) setTimeout(() => { target = 1; lastInput = performance.now(); }, autoOpen);
-  const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; }); io.observe(stage);
-  document.addEventListener('visibilitychange', () => { if (!document.hidden) lastInput = performance.now(); });
+  const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if(visible) needsPaint = true; }); io.observe(stage);
+  const onVisibility = () => { if (!document.hidden) {lastInput = performance.now(); needsPaint = true;} };
+  document.addEventListener('visibilitychange', onVisibility);
 
   let w = 1, h = 1;
   const ro = new ResizeObserver(() => {
-    const r = stage.getBoundingClientRect(); w = r.width; h = r.height;
+    const r = stage.getBoundingClientRect(); if(!r.width || !r.height) return; w = r.width; h = r.height;
     renderer.setSize(w, h, false);
     // El clúster abierto mide ~3 unidades desde el centro; las etiquetas necesitan 150px libres a cada lado
     const hw = Math.max(half, Math.min(half * 1.25, 3.0 * (w / 2) / Math.max(60, w / 2 - 110)));
     camera.left = -hw; camera.right = hw; camera.top = hw * h / w; camera.bottom = -hw * h / w;
     camera.updateProjectionMatrix();
-  }).observe(stage);
+    // setSize clears the drawing buffer even while the scene is idle.
+    needsPaint = true;
+  });
+  ro.observe(stage);
 
   const faceCam = { z: camera.quaternion.clone(), x: camera.quaternion.clone().multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2)) };
   const qRest = new THREE.Quaternion(), tmpV = new THREE.Vector3();
@@ -271,7 +275,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     const dt = Math.min(0.05, (now - prev) / 1000); prev = now;
     // Sin mouse reciente, sin transición y fuera de pantalla: no se renderiza nada
     const settling = Math.abs(target - open) > 0.002 || Math.abs(mouse.x - sm.x) + Math.abs(mouse.y - sm.y) > 0.002;
-    const active = settling || now - lastInput < 2500 || open > 0.5; // abierto: los pulsos siguen animando
+    const active = needsPaint || settling || now - lastInput < 2500 || open > 0.5; // abierto: los pulsos siguen animando
     if (!visible || document.hidden || !active) return;
     t += dt;
     sm.x += (mouse.x - sm.x) * 0.05; sm.y += (mouse.y - sm.y) * 0.05;
@@ -331,6 +335,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     }
 
     renderer.render(scene, camera);
+    needsPaint = false;
 
     const sr = stage.getBoundingClientRect();
     parts.forEach(p => {
@@ -348,6 +353,6 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     });
   });
 
-  const destroy = () => { renderer.setAnimationLoop(null); removeEventListener('pointermove', onMove); removeEventListener('click', onClick); io.disconnect(); ro.disconnect(); renderer.dispose(); canvas.remove(); parts.forEach(p => p.label.remove()); stage.style.cursor = ''; };
+  const destroy = () => { renderer.setAnimationLoop(null); removeEventListener('pointermove', onMove); removeEventListener('click', onClick); document.removeEventListener('visibilitychange',onVisibility); io.disconnect(); ro.disconnect(); renderer.dispose(); canvas.remove(); parts.forEach(p => p.label.remove()); stage.style.cursor = ''; };
   return { destroy, open: () => { target = 1; }, close: () => { target = 0; }, toggle: () => { target = target ? 0 : 1; }, get isOpen() { return !!target; } };
 }

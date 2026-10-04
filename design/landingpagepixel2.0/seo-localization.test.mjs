@@ -1,4 +1,6 @@
 import {test} from 'node:test';
+import {parseHTML} from 'linkedom';
+import {company,serviceContent,caseStudies,editorial,method} from './.build/content.js';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {loadSources,articleHtml} from './source-content.mjs';
@@ -34,10 +36,10 @@ test('release gate rejects client-only home even with a decorative H2 and preser
  const before=await html('/');
  const report=await inspectRelease();
  assert.equal(report.homes.length,2);
- for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,0);assert.equal(home.status,'FAIL');}
- assert.throws(()=>assertReleaseReady(report),/RELEASE BLOCKED.*HOME_INITIAL_CONTENT/);
- assert.equal(inspectHome(before.replace('</body>','<h2>Decorative</h2></body>')).status,'FAIL');
- assert.equal(inspectHome('<main><h1>Title</h1><h2>Service</h2><p>Approved service content</p></main>').status,'PASS');
+ for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,7);assert.equal(home.status,'PASS');assert.equal(home.clientOnlyTemplate,false);}
+ assert.throws(()=>assertReleaseReady(report),/RELEASE BLOCKED.*NEXT_INTEGRATION/);
+ assert.equal(inspectHome('<h1>Title</h1><h2>Decorative</h2>').status,'FAIL');
+ assert.equal(inspectHome('<main><h1>Title</h1><h2>Service</h2><p>Approved service content</p></main>').status,'FAIL');
  const attempt=spawnSync(process.execPath,['build.mjs'],{encoding:'utf8',env:{...process.env,SEO_ENV:'public'}});
  assert.notEqual(attempt.status,0);assert.match(attempt.stderr,/RELEASE BLOCKED/);
  assert.equal(await html('/'),before,'blocked build must not replace preview');
@@ -76,19 +78,25 @@ test('source rendering escapes text and disallows unsafe link protocols',()=>{
  assert.ok(!out.includes('<script>'));assert.ok(!out.includes('javascript:'));assert.ok(out.includes('href="/about/"'));
 });
 
-test('home first paint contains localized content and working links before runtime startup',async()=>{
+test('complete approved ES/EN home content exists in the shipped HTML before JavaScript',async()=>{
  for(const path of ['/','/en/']){
-  const page=await html(path);
-  const first=page.match(/id="home-first-paint">([\s\S]*?)<script type="application\/json" data-dc-template>/)?.[1];
-  assert.ok(first,path+' first paint missing');
-  assert.doesNotMatch(first,/\{\{|\bonClick=|\bref=/);
-  const title=first.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1];
-  const template=JSON.parse(page.match(/<script type="application\/json" data-dc-template>([\s\S]*?)<\/script>/)[1]).html;
-  assert.equal((page.match(/<h1\b/g)??[]).length,1,path+' source H1');
-  assert.equal(title,template.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1],path+' duplicate content drift');
-  const prefix=path==='/en/'?'/en':'';
-  for(const target of ['/services/','/about/','/contact/','/diagnostico/'])assert.ok(first.includes('href="'+prefix+target+'"'),path+' '+target);
-  assert.match(page,/src="\/app-navigation.js"/);
+  const page=await html(path), locale=path==='/en/'?'en':'es';
+  const doc=parseHTML(page).document, root=doc.querySelector('#dc-root');
+  assert.ok(root?.hasAttribute('data-home-ssr'));
+  assert.ok(page.includes('href="'+(locale==='en'?'/en/mapa/':'/mapa/')+'" aria-label="'+(locale==='en'?'All pages':'Todas las páginas')+'"'));
+  const text=root.textContent.replace(/\s+/g,' ').trim();
+  const approved=[company.about[locale],company.team[locale],...serviceContent.flatMap(s=>[s.title[locale],s.description[locale]]),...caseStudies.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
+  for(const copy of approved)assert.ok(text.includes(copy.replace(/\s+/g,' ').trim()),path+' missing approved copy: '+copy);
+  assert.equal(root.querySelectorAll('h1').length,1);
+  assert.equal(root.querySelectorAll('h2').length,7);
+  assert.doesNotMatch(root.innerHTML,/\{\{|\bonClick=|\bref=|<sc-for/);
+  const prefix=locale==='en'?'/en':'';
+  for(const target of ['/services/','/about/','/contact/','/diagnostico/'])assert.ok(root.querySelector('a[href="'+prefix+target+'"]'));
+  const menu=root.querySelector('#home-menu');assert.equal(menu.getAttribute('aria-hidden'),'true');assert.match(menu.getAttribute('style'),/visibility:hidden/);
+  assert.equal(root.querySelector('[aria-controls="home-menu"]').getAttribute('aria-expanded'),'false');
+  assert.equal(inspectHome(page).status,'PASS');
+  const services=doc.querySelector('#servicios'); services.remove();
+  assert.equal(inspectHome(doc.toString()).status,'FAIL','missing service section must block release');
  }
 });
 

@@ -1,16 +1,22 @@
 import {readFile,writeFile} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {pathToFileURL} from 'node:url';
+import {parseHTML} from 'linkedom';
 
 // This is a prototype gate, not a Google ranking rule or a deployment approval.
 export function inspectHome(html){
  const initial=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi,'');
  const h1=(initial.match(/<h1\b/gi)??[]).length;
  const h2=(initial.match(/<h2\b/gi)??[]).length;
- const clientOnlyTemplate=/data-dc-template\b/.test(html);
- return {sha256:createHash('sha256').update(html).digest('hex'),h1,h2,clientOnlyTemplate,
-  status:h1===1&&h2>0&&!clientOnlyTemplate?'PASS':'FAIL',
-  requirement:'Serve the complete approved home content initially. Adding decorative headings does not resolve the client-only template.'};
+ const doc=parseHTML(initial).document;
+ const minimums={'#nosotros h3':3,'#servicios h3':4,'#por-que h3':4,'#proyectos a[href]':6,'#blog a[href]':5,'#contacto a[href]':1,'footer a[href]':10};
+ const missingContent=Object.entries(minimums).filter(([selector,n])=>doc.querySelectorAll(selector).length<n).map(([selector])=>selector);
+ const contentComplete=h1===1&&h2>=7&&missingContent.length===0&&!/\{\{|<sc-for\b|sc-placeholder/.test(initial);
+ const hasEnhancementTemplate=/data-dc-template\b/.test(html);
+ const clientOnlyTemplate=hasEnhancementTemplate&&!contentComplete;
+ return {sha256:createHash('sha256').update(html).digest('hex'),h1,h2,hasEnhancementTemplate,clientOnlyTemplate,missingContent,
+  status:contentComplete?'PASS':'FAIL',
+  requirement:'All home sections and their content must exist before JavaScript. Shape checks are backed by approved-content parity tests; headings alone are insufficient.'};
 }
 export async function inspectRelease(root=new URL('./',import.meta.url)){
  const homes=[];

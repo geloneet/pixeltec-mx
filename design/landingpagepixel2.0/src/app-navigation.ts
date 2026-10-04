@@ -55,14 +55,5 @@ window.addEventListener('pageswap',event=>{
  reset();
  document.querySelector<HTMLDialogElement>('dialog[open]')?.close();
 });
-// Keep the static first paint until React has actually committed the matching header + hero.
-function ready():boolean {
- if(!document.querySelector('#dc-root header')||!document.querySelector('#dc-root h1'))return false;
- document.getElementById('home-first-paint')?.remove();return true;
-}
-if(document.getElementById('home-first-paint')&&!ready()){
- const mount=new MutationObserver(()=>{if(ready())mount.disconnect();});
- mount.observe(document.body,{childList:true,subtree:true});
- window.addEventListener('pagehide',()=>mount.disconnect(),{once:true});
-}
+// The homepage now hydrates its complete build-rendered document in place.
 export {};

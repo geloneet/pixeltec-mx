@@ -156,3 +156,5 @@ Presupuesto documentado: el HTML inicial incorpora 30 opciones y el resultado ac
 ### Animación de ilustraciones de servicios — 2026-10-05
 
 Las cards `.service-art` animan órbitas, piezas, gráficos y conversación con CSS (transform/opacity), sin dependencias nuevas. El observador compartido de `src/motion.ts` activa solo ilustraciones visibles y pausa al ocultar la pestaña. `prefers-reduced-motion` conserva la composición estática, incluso si cambia durante la sesión. Sin JavaScript las ilustraciones permanecen visibles y quietas. No se anima el texto de servicios ni cambia su geometría.
+
+Segunda dirección visual solicitada por Miguel: órbitas tridimensionales con nodos luminosos, núcleo con volumen, panel con perspectiva y gráficas secuenciales, mensajes progresivos y mosaico con elevación escalonada. Reutiliza la pausa por visibilidad y la alternativa estática; ningún cambio de contenido o dependencias.

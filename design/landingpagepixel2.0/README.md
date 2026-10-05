@@ -152,3 +152,7 @@ El diagnóstico recupera los catálogos de empresa, problemas (selección múlti
 Pruebas: paridad completa con el motor original en 122,640 combinaciones, entradas inválidas y duplicados; npm run verify 14/14. Caso manual: logística, trabajo manual + Excel, 6–20 empleados y automatizar = 59%, automatización IA + dashboard, 4–6 semanas. Móvil 390px sin overflow. El visitante comparte voluntariamente por WhatsApp; no se solicita contacto, guarda lead ni se llama al backend productivo. Esa integración sigue pendiente para Next/CMS.
 
 Presupuesto documentado: el HTML inicial incorpora 30 opciones y el resultado accesible; ES mide 30,628 bytes Brotli (628 bytes sobre el límite previo). El límite ES/EN pasa de 30KB a 32KB por este alcance adicional; el nuevo controlador completo queda en 8,893 bytes Brotli, con límite separado de 22KB. Se retiró del HTML generado el renderer canvas del footer, ya sustituido por textura CSS. Fuente de diseño original intacta.
+
+### Animación de ilustraciones de servicios — 2026-10-05
+
+Las cards `.service-art` animan órbitas, piezas, gráficos y conversación con CSS (transform/opacity), sin dependencias nuevas. El observador compartido de `src/motion.ts` activa solo ilustraciones visibles y pausa al ocultar la pestaña. `prefers-reduced-motion` conserva la composición estática, incluso si cambia durante la sesión. Sin JavaScript las ilustraciones permanecen visibles y quietas. No se anima el texto de servicios ni cambia su geometría.

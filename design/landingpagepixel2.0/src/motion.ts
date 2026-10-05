@@ -82,3 +82,22 @@ window.addEventListener('pagehide', () => {
   for (const animation of running.values()) animation.cancel();
   running.clear();
 });
+
+// Decorative service loops never run off-screen or while the document is hidden.
+const serviceArt = Array.from(document.querySelectorAll<HTMLElement>('.service-art .art'));
+const visibleArt = new Set<Element>();
+function syncServiceArt(): void {
+  for (const art of serviceArt) art.classList.toggle('art-active', visibleArt.has(art) && !document.hidden && !reduced.matches);
+}
+const artObserver = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) visibleArt.add(entry.target);
+    else visibleArt.delete(entry.target);
+  }
+  syncServiceArt();
+}, { threshold: .1 }) : null;
+serviceArt.forEach(art => artObserver?.observe(art));
+document.addEventListener('visibilitychange', syncServiceArt);
+reduced.addEventListener('change', syncServiceArt);
+window.addEventListener('pagehide', () => serviceArt.forEach(art => art.classList.remove('art-active')));
+window.addEventListener('pageshow', syncServiceArt);

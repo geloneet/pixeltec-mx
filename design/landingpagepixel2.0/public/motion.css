@@ -28,3 +28,34 @@
   *,*:before,*:after{animation:none!important;transition:none!important}
   .visual-link:hover .art{transform:none}
 }
+
+/* Service illustrations: compositor-only loops, paused by the shared visibility observer. */
+@media(prefers-reduced-motion:no-preference){
+  .service-art .art :where(.orbit,.core,.sat,.tile-grid i,.mock-browser,.chart i,.phone,.bubble,.typing){animation-duration:6s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-play-state:paused}
+  .service-art .art.art-active :where(.orbit,.core,.sat,.tile-grid i,.mock-browser,.chart i,.phone,.bubble,.typing){animation-play-state:running}
+  .service-art .orbit{animation-name:service-orbit;animation-duration:24s;animation-timing-function:linear}
+  .service-art .o2{animation-direction:reverse;animation-duration:30s}
+  .service-art .o3{animation-duration:20s}
+  .service-art .core{animation-name:service-core;animation-duration:8s}
+  .service-art .sat{animation-name:service-float}
+  .service-art .s2{animation-delay:-2s}.service-art .s3{animation-delay:-4s}
+  .service-art .tile-grid i{animation-name:service-tile}
+  .service-art .tile-grid i:nth-child(3n+2){animation-delay:-2s}
+  .service-art .tile-grid i:nth-child(3n){animation-delay:-4s}
+  .service-art :where(.mock-browser,.phone){animation-name:service-float;animation-duration:8s}
+  .service-art .chart i{animation-name:service-chart;transform-origin:bottom;animation-duration:5s}
+  .service-art .chart i:nth-child(2n){animation-delay:-1.5s}
+  .service-art .chart i:nth-child(3n){animation-delay:-3s}
+  .service-art .bubble{animation-name:service-message;animation-duration:9s}
+  .service-art .bubble:nth-child(3){animation-delay:-6s}
+  .service-art .bubble:nth-child(4){animation-delay:-3s}
+  .service-art .typing{animation-name:service-typing;animation-duration:2s}
+  @keyframes service-orbit{to{rotate:360deg}}
+  @keyframes service-core{0%,100%{rotate:-3deg}50%{rotate:7deg}}
+  @keyframes service-float{0%,100%{transform:translateY(0) rotate(var(--service-tilt,0deg))}50%{transform:translateY(-7px) rotate(var(--service-tilt,0deg))}}
+  .service-art .mock-browser{--service-tilt:-5deg}.service-art .phone{--service-tilt:-8deg}
+  @keyframes service-tile{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+  @keyframes service-chart{0%,100%{transform:scaleY(.72)}50%{transform:scaleY(1)}}
+  @keyframes service-message{0%,100%{opacity:.65;transform:translateY(3px)}35%,70%{opacity:1;transform:translateY(0)}}
+  @keyframes service-typing{0%,100%{opacity:.35}50%{opacity:1}}
+}

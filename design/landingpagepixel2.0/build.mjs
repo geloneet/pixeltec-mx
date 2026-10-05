@@ -1,3 +1,4 @@
+import {build as bundle} from 'esbuild';
 import {z} from 'zod';
 import {robotsMeta} from './.build/seo-policy.js';
 import {assertReleaseReady,inspectRelease} from './release-check.mjs';
@@ -77,7 +78,7 @@ for(const locale of languages){
 }
 await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true});await cp('public','dist',{recursive:true});
 await writeFile('dist/app-navigation.js',(await readFile('.build/app-navigation.js','utf8')).replace('export {};',''));
-await cp('.build/client.js','dist/client.js');await cp('.build/diagnostic-client.js','dist/diagnostic-client.js');await cp('.build/motion.js','dist/motion.js');
+await cp('.build/client.js','dist/client.js');await bundle({entryPoints:['src/diagnostic-client.ts'],bundle:true,format:'esm',minify:true,external:['./motion.js'],outfile:'dist/diagnostic-client.js'});await cp('.build/motion.js','dist/motion.js');
 await optimizeAssets();
 await writeFile('dist/favicon.svg',logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
 for(const page of allPages){const dir='dist'+localPath(page.path,page.locale);await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',page.html);}

@@ -7,7 +7,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc && node build.mjs",
     "preview": "node serve.mjs",
-    "verify": "npm run build && node verify.mjs && node --test server.test.mjs seo-localization.test.mjs && node performance-budget.mjs && node release-check.mjs --report-only",
+    "verify": "npm run build && node verify.mjs && node --test server.test.mjs seo-localization.test.mjs diagnostic.test.mjs && node performance-budget.mjs && node release-check.mjs --report-only",
     "release:check": "npm run build && node release-check.mjs"
   },
   "devDependencies": {

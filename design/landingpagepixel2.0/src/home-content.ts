@@ -70,6 +70,8 @@ export function homeContent(home:string,locale:Locale):string {
  home=home.replace(/<a href="[^"]*"([^>]*?)>(Comenzar →|Get started →)<\/a>/,`<button type="button" data-start-diagnostic aria-expanded="false"$1>$2</button>`);
  home=home.replace('</head>','<script type="module" src="/diagnostic-client.js"></script></head>');
  home=home.replaceAll('hidden="true"','hidden="{{ true }}"');
+ // The shared footer uses CSS texture; remove its now-unused canvas renderer.
+ home=home.replace(/  initSand2\(\) \{[\s\S]*?\n  quotes =/, '  quotes =').replaceAll('this.initSand2();','').replace('  sand2Ref = React.createRef();','').replace('      sand2Ref: this.sand2Ref,','');
  // Shared public navigation replaces only the generated menu, preserving source bytes.
  home=home.replace('<header style=', '<header class="home-header" style=');
  home=home.replace(/(<header[^>]*>\s*)<nav[\s\S]*?<\/nav>/,`$1<nav class="site-primary-nav" aria-label="${x('Navegación principal','Main navigation')}">${homeNavigation(locale)}</nav>`);

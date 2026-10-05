@@ -101,3 +101,35 @@
 /* Project screenshots supplied by Miguel; shared by cards and project details. */
 .project-screenshot{aspect-ratio:1.6;overflow:hidden;background:#ece9e2;border-radius:14px}.project-screenshot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease}.project-screenshot-detail{aspect-ratio:auto}.project-screenshot-detail img{height:auto}.visual-link:hover .project-screenshot img{transform:scale(1.025)}.home-case-shot{aspect-ratio:1.6;overflow:hidden;border-radius:14px;background:#171717}.home-case-shot img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;transition:transform .5s ease}#proyectos a:hover .home-case-shot img{transform:scale(1.025)}.project-app-preview{display:flex;justify-content:center;gap:3%;aspect-ratio:1.6;padding:5%;overflow:hidden;border-radius:14px;background:#122f39;box-sizing:border-box}.project-app-preview img{display:block;min-width:0;width:29%;height:100%;object-fit:contain;border-radius:5px}.case-hero>.project-app-preview{max-height:640px}.project-app-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(20px,3vw,40px);margin-top:40px}.project-app-gallery figure{min-width:0;margin:0}.project-app-gallery img{display:block;width:100%;height:auto;border-radius:16px}.project-app-gallery figcaption{padding:16px 0;color:#555;font-size:16px}.work-card .visual-link{display:block}.work-card[hidden]{display:none!important}@media(max-width:950px){.project-app-gallery{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.project-app-gallery{grid-template-columns:1fr}.project-app-preview{gap:2%;padding:4%}}@media(prefers-reduced-motion:reduce){.project-screenshot img,.home-case-shot img{transition:none}.visual-link:hover .project-screenshot img,#proyectos a:hover .home-case-shot img{transform:none}}
 .project-cards .visual-link{aspect-ratio:1.6;overflow:hidden;border-radius:14px}.project-cards .visual-link>.art{height:100%;min-height:0}.project-cards .visual-link>.project-screenshot,.project-cards .visual-link>.project-app-preview{height:100%}
+
+.home-diagnostic-card .wizard{background:var(--panel);padding:45px;border-radius:var(--radius);align-self:start;min-height:580px}
+.home-diagnostic-card .wizard-top{display:flex;align-items:center;justify-content:space-between;gap:30px;margin-bottom:45px}
+.home-diagnostic-card .progress-track{width:140px;height:3px;background:#deded9}
+.home-diagnostic-card .progress-track i{background:var(--blue);height:100%;display:block;transition:width .3s}
+.home-diagnostic-card .wizard fieldset{margin:0}
+.home-diagnostic-card .wizard legend{font-size:32px;line-height:1.15;letter-spacing:-.02em;font-weight:600}
+.home-diagnostic-card .wizard fieldset>p{color:var(--muted);font-size:14px;margin-bottom:25px}
+.home-diagnostic-card .wizard-options{display:grid;gap:10px}
+.home-diagnostic-card .wizard-options label{position:relative}
+.home-diagnostic-card .wizard-options input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer}
+.home-diagnostic-card .wizard-options span{display:flex;align-items:center;justify-content:space-between;padding:18px;border:1px solid #d8d8d2;border-radius:6px;background:white;font-size:15px;pointer-events:none}
+.home-diagnostic-card .wizard-options b{font-size:20px;font-weight:400}
+.home-diagnostic-card .wizard-options input:checked+span{border-color:var(--blue);background:#e8efff;color:var(--blue)}
+.home-diagnostic-card .wizard-options input:focus-visible+span{outline:3px solid var(--blue-light);outline-offset:2px}
+.home-diagnostic-card .wizard-actions{display:flex;justify-content:space-between;gap:20px;margin-top:28px}
+.home-diagnostic-card .wizard-actions .button{margin-left:auto}
+.home-diagnostic-card .wizard h2{font-size:42px;margin:20px 0 30px}
+.home-diagnostic-card .wizard dl{display:grid;gap:10px}
+.home-diagnostic-card .wizard dt{font-size:11px;text-transform:uppercase;color:var(--muted)}
+.home-diagnostic-card .wizard dd{margin:0 0 15px;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.home-diagnostic-card .wizard [data-restart]{margin-top:24px}
+.home-diagnostic-card .wizard{padding:30px}
+.home-diagnostic-card .wizard{min-height:540px}
+.home-diagnostic-card .wizard{padding:26px 22px;min-height:560px}
+.home-diagnostic-card .wizard-top{gap:15px}
+.home-diagnostic-card .progress-track{width:100px}
+.home-diagnostic-card .wizard legend{font-size:28px}
+.home-diagnostic-card .wizard-options span{font-size:14px;padding:16px}
+.pixel-footer{background-color:#000;background-image:radial-gradient(#ffffff10 .7px,transparent .7px);background-size:13px 13px}.pixel-footer-grid{grid-template-columns:repeat(4,minmax(0,1fr))}.pixel-footer a{text-decoration:none}.pixel-footer a:hover{color:#5c9bff!important}.pixel-footer-extra{padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px}.home-diagnostic-card [hidden]{display:none!important}.home-diagnostic-card [data-diagnostic-intro]{display:flex;flex-direction:column;flex:1}.home-diagnostic-card .wizard{padding:0;border:0;background:#fff;color:#0b0b0a}.home-diagnostic-card .button{display:inline-flex;justify-content:center;align-items:center;padding:18px 25px;border:0;border-radius:6px;background:#1466ff;color:white;font:inherit;font-weight:700;cursor:pointer}.home-diagnostic-card .text-button{border:0;background:none;color:#0b0b0a;font:inherit;cursor:pointer;padding:12px 0}.home-diagnostic-card .eyebrow{font-size:12px;letter-spacing:.08em}.home-diagnostic-card fieldset{min-width:0}.home-diagnostic-card legend{font-size:clamp(26px,2.5vw,36px)}.home-diagnostic-card [data-summary] h2{font-size:36px}.home-diagnostic-card [data-start-diagnostic]{border:0;font:inherit;cursor:pointer}.home-diagnostic-card [data-summary-list] dt{font-weight:700;margin-top:18px}.home-diagnostic-card [data-summary-list] dd{margin:6px 0 0;color:#555}.home-diagnostic-card [data-share-summary]{white-space:normal}.home-diagnostic-card input:focus-visible+span{outline:3px solid #1466ff;outline-offset:3px}@media(max-width:900px){.pixel-footer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:560px){.pixel-footer-grid{grid-template-columns:1fr}.home-diagnostic-card .wizard-options{grid-template-columns:1fr}}
+
+.home-diagnostic-card{--blue:#1466ff;--blue-light:#80b0ff;--muted:#666;--line:#ddd}.pixel-footer{background-image:radial-gradient(#ffffff10 .7px,transparent .7px)!important}.pixel-footer [style*="Outfit"]{font-family:Outfit,Bricolage Grotesque,sans-serif!important}

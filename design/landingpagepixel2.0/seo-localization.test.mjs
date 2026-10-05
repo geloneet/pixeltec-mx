@@ -36,7 +36,7 @@ test('release gate rejects client-only home even with a decorative H2 and preser
  const before=await html('/');
  const report=await inspectRelease();
  assert.equal(report.homes.length,2);
- for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,7);assert.equal(home.status,'PASS');assert.equal(home.clientOnlyTemplate,false);}
+ for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,8);assert.equal(home.status,'PASS');assert.equal(home.clientOnlyTemplate,false);}
  assert.throws(()=>assertReleaseReady(report),/RELEASE BLOCKED.*NEXT_INTEGRATION/);
  assert.equal(inspectHome('<h1>Title</h1><h2>Decorative</h2>').status,'FAIL');
  assert.equal(inspectHome('<main><h1>Title</h1><h2>Service</h2><p>Approved service content</p></main>').status,'FAIL');
@@ -88,7 +88,7 @@ test('complete approved ES/EN home content exists in the shipped HTML before Jav
   const approved=[company.about[locale],company.team[locale],...serviceContent.flatMap(s=>[s.title[locale],s.description[locale]]),...featuredCaseStudies.map(c=>c.name),...testimonials.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
   for(const copy of approved)assert.ok(text.includes(copy.replace(/\s+/g,' ').trim()),path+' missing approved copy: '+copy);
   assert.equal(root.querySelectorAll('h1').length,1);
-  assert.equal(root.querySelectorAll('h2').length,7);
+  assert.equal(root.querySelectorAll('h2').length,8);
   assert.doesNotMatch(root.innerHTML,/\{\{|\bonClick=|\bref=|<sc-for/);
   const prefix=locale==='en'?'/en':'';
   for(const target of ['/services/','/about/','/contact/','/diagnostico/'])assert.ok(root.querySelector('a[href="'+prefix+target+'"]'));
@@ -138,5 +138,22 @@ test('legal contact slots absent in server snapshots retain their approved addre
   const page=await html(path);const article=page.match(/<article class="article-copy source-copy">([\s\S]*?)<\/article>/)[1];
   assert.ok(article.includes('href="mailto:contacto@pixeltec.mx"'),path);
   assert.ok(!article.includes('correo electrónico a .'),path);
+ }
+});
+
+test('shared footer appears once across all routes and home diagnostic starts inline',async()=>{
+ for(const route of routes){
+  const page=await readFile('dist'+route.path+'index.html','utf8');
+  const {document}=parseHTML(page);
+  assert.equal(document.querySelectorAll('footer.pixel-footer').length,1,route.path);
+  assert.equal(document.querySelectorAll('.pixel-footer-grid').length,1,route.path);
+ }
+ for(const prefix of ['','/en']){
+  const {document}=parseHTML(await readFile('dist'+prefix+'/index.html','utf8'));
+  assert.equal(document.querySelector('[data-start-diagnostic]')?.tagName,'BUTTON');
+  assert.ok(document.querySelector('[data-inline-diagnostic]').hasAttribute('hidden'));
+  assert.equal(document.querySelectorAll('#diagnostic-form [data-step]').length,4);
+  assert.equal(document.querySelectorAll('#diagnostic-form [data-step]:not([hidden])').length,1);
+  assert.ok(document.querySelector('[data-summary]').hasAttribute('hidden'));
  }
 });

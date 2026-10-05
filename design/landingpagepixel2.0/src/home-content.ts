@@ -5,32 +5,10 @@ import {homeNavigation} from './navigation.js';
 import {company,serviceContent,caseStudies,featuredCaseStudies,testimonials,industryContent,editorial,method} from './content.js';
 import {langSwitch,localPath,type Locale} from './i18n.js';
 import {escapeHTML as esc} from './catalog.js';
-const en:Record<string,string>={
- 'Desarrollo Web y Apps. Automatización con IA. Desde Puerto Vallarta para todo México.':'Web and apps. AI automation. From Puerto Vallarta, for businesses across Mexico.',
- 'Somos arquitectos de tu transformación digital. Combinamos consultoría TI, inteligencia artificial y desarrollo a la medida para que tu empresa opere y escale sin fricción.':'We design your digital transformation. IT consulting, artificial intelligence and custom development, built around the way your business works.',
- 'Tecnología confiable, escalable y segura, diseñada para que tu empresa opere con eficiencia y se adapte rápido.':'Technology designed around your operations, with the expertise and support your business needs to evolve.',
- 'Ideas, guías y casos reales sobre IA, desarrollo y transformación digital para que tu empresa decida con claridad.':'Ideas, guides and real cases on AI, development and digital transformation to help your business make informed decisions.',
- 'Cuéntanos qué está frenando tu operación y lo resolvemos juntos.':'Tell us what is slowing your business down. Let’s work on it together.',
- 'Responde 4 preguntas y comparte tus datos: revisamos tu caso y te proponemos un siguiente paso claro, sin soluciones genéricas.':'Answer four questions to organize your starting point, then choose whether to share your summary with our team.',
- 'En menos de 3 minutos analizaremos tu situación actual y prepararemos una sesión mucho más productiva.':'A few minutes of context make the next conversation more useful.',
- 'Consultoría TI, inteligencia artificial y desarrollo a la medida para que pymes y empresas de todo México operen y escalen sin fricción.':'IT consulting, artificial intelligence and custom development for businesses across Mexico.',
- 'Desarrollo web, apps y automatización con IA para pymes y empresas de Puerto Vallarta, Guadalajara y todo México.':'Websites, apps and AI automation for businesses in Puerto Vallarta, Guadalajara and across Mexico.',
- '// Ayudamos a empresas a operar y crecer con tecnología.':'// Technology that supports real business operations.',
- 'Empresas que ya escalaron con nosotros':'Businesses that have grown with us',
- '© 2026 PixelTEC. Todos los derechos reservados.':'© 2026 PixelTEC. All rights reserved.',
- 'Ver todos los servicios':'Explore all services','Más sobre nosotros →':'More about us →','Hablar con un especialista':'Talk to a specialist','Iniciar diagnóstico':'Start an assessment',
- '¿Tienes un proyecto en mente?':'Have a project in mind?','Diagnóstico inteligente':'Business assessment',
- 'Software a la medida':'Custom software','Apps a la medida':'Custom apps','Transformación digital':'Digital transformation','Desarrollo Web &amp; Apps':'Web &amp; Apps','Automatización con IA':'AI automation','Automatización IA':'AI automation','WhatsApp IA':'WhatsApp AI','Consultoría TI':'IT consulting','Soporte TI':'IT support','Desarrollo Web':'Web development',
- 'Nuestros servicios':'Our services','Enlaces rápidos':'Quick links','Sobre PixelTEC':'About PixelTEC','WhatsApp directo':'WhatsApp direct','Aviso de Privacidad':'Privacy notice',
- 'Explorar todas las páginas ↗':'Explore all pages ↗','Guías y presencia local':'Guides & local presence','Acceso de clientes':'Client access','Metodología':'Our process','Equipo':'Team','Términos':'Terms',
- 'Servicios.':'Services.','Proyectos.':'Work.','Industrias.':'Industries.','Nosotros.':'About.','Contacto.':'Contact.',
- '>Diagnóstico<':'>Assessment<','>Servicios<':'>Services<','>Nosotros<':'>About<','>Proyectos<':'>Work<','>Contacto<':'>Contact<','>Oficina<':'>Office<','>Blog<':'>Journal<','>Hablemos<':'>Let’s talk<',
- '>Soluciones<':'>Technology<','>Tecnológicas<':'>that works<','Por qué<br>nosotros':'Why<br>PixelTEC','VER TODOS':'VIEW ALL','Comenzar →':'Get started →',
- 'Puerto Vallarta, Jalisco, México':'Puerto Vallarta, Jalisco, Mexico','>México<':'>Mexico<',
- 'aria-label="Menú"':'aria-label="Menu"','aria-label="Cerrar menú"':'aria-label="Close menu"','5 de 5 estrellas':'5 out of 5 stars',
- 'Desarrollador de PixelTEC sosteniendo una pantalla de código':'PixelTEC character holding a screen of code',
- "'Ver testimonios '":"'View testimonials '","'Proyectos'":"'Work'"
-};
+import {en} from './home-translations.js';
+import {sharedFooter} from './shared-footer.js';
+import {diagnosticWidget} from './diagnostic.js';
+
 export function homeContent(home:string,locale:Locale):string {
  const x=(a:string,b:string):string=>locale==='es'?a:b;
  home=home.replace(/<p([^>]*)>(<span[^>]*>Somos arquitectos[\s\S]*?<\/span>)<\/p>/,'<h2$1>$2</h2>');
@@ -84,6 +62,14 @@ export function homeContent(home:string,locale:Locale):string {
    // Switching language is always reciprocal, never localized into itself.
    home=home.replace(/(<a class="language-link" href=")[^"]+/, '$1/');
  }
+ home=home.replace(/<footer[\s\S]*?<\/footer>/,sharedFooter(locale));
+ home=home.replace(/(<div style="border-radius:10px;background:#ffffff;color:#0b0b0a;[^"]*")>/,'$1 class="home-diagnostic-card"><div data-diagnostic-intro>');
+ const contactEnd=home.indexOf('\n    </div>\n  </div>\n</section>',home.indexOf('class="home-diagnostic-card"'));
+ if(contactEnd<0)throw new Error('Diagnostic card anchor missing');
+ home=home.slice(0,contactEnd)+`</div><div data-inline-diagnostic hidden="true">${diagnosticWidget(locale)}</div>`+home.slice(contactEnd);
+ home=home.replace(/<a href="[^"]*"([^>]*?)>(Comenzar →|Get started →)<\/a>/,`<button type="button" data-start-diagnostic aria-expanded="false"$1>$2</button>`);
+ home=home.replace('</head>','<script type="module" src="/diagnostic-client.js"></script></head>');
+ home=home.replaceAll('hidden="true"','hidden="{{ true }}"');
  // Shared public navigation replaces only the generated menu, preserving source bytes.
  home=home.replace('<header style=', '<header class="home-header" style=');
  home=home.replace(/(<header[^>]*>\s*)<nav[\s\S]*?<\/nav>/,`$1<nav class="site-primary-nav" aria-label="${x('Navegación principal','Main navigation')}">${homeNavigation(locale)}</nav>`);

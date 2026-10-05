@@ -138,3 +138,9 @@ Verificado: TypeScript/build, 11/11 tests, 152 rutas, 60 slugs preservados, 8,75
 Pipas Tondoroque mantiene su representación conceptual: no se recibió captura suya y Transportes Sánchez JR es otro proyecto. No se inventaron testimonios ni publicación de Subsify en tiendas. Release continúa BLOCKED exclusivamente por NEXT_INTEGRATION; sin deploy ni integración Next/CMS en este lote.
 
 Ajuste solicitado el 2026-10-05: Subsify sustituye a Pipas Tondoroque en el segundo destacado del inicio ES/EN, usando tres capturas verticales y etiqueta Apps. Pipas conserva ficha y catálogo.
+
+## Diagnóstico inline y footer compartido — 2026-10-05
+
+El botón Comenzar abre las cuatro preguntas dentro de la tarjeta del inicio ES/EN; permite regresar, mantiene selecciones y muestra el resumen sin navegar. Compartir en WhatsApp sigue siendo una acción explícita del visitante. No se guardan respuestas ni se envía nada automáticamente. La página /diagnostico/ reutiliza el mismo componente y controlador.
+
+Todas las rutas usan el footer del inicio, extraído a shared-footer.ts con cuatro columnas, marca azul, enlaces localizados y textura CSS ligera. La fuente de diseño original permanece intacta. Verificación: build estricto, suite existente y prueba de footer único en las 152 rutas y estados iniciales del formulario; flujo manual completo, selección obligatoria, retroceso, resumen y reinicio en navegador; 390px sin overflow. No hay deploy; NEXT_INTEGRATION sigue pendiente.

@@ -6,6 +6,8 @@ Prototipo local de diseño y contenido, actualizado 2026-10-03. La fuente visual
 
 Portadas ES/EN completas en el HTML inicial, con hidratación sobre los mismos nodos y contenido aprobado verificado. [Cierre de HTML y QA visual — WO-506](docs/cierre-html-2026-10-03.md). Once pruebas, compilación estricta, 60 slugs y presupuestos de tamaño conservados. La prueba de portada ahora contrasta el `dist` con textos de servicios, casos, testimonios, metodología y artículos, además de su estructura.
 
+**Ajuste visual — 2026-10-05:** se retiró del H1 el antetítulo «Desde Puerto Vallarta para todo México»; la frase descriptiva principal del hero se conserva.
+
 El [primer lote SEO y GSC](docs/ejecucion-seo-2026-10-03.md) conserva su evidencia histórica. Sus mediciones Lighthouse 98 móvil / 100 escritorio **no corresponden al HTML de WO-506**: no se repitió Lighthouse en este lote. Continúan pendientes Next/CMS, flujos productivos, traducciones largas y revisión editorial. **No es un reemplazo publicable ni SEO certificado al 100%.**
 
 ## Abrir y continuar

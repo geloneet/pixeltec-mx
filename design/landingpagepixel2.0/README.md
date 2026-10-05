@@ -128,3 +128,11 @@ Para levantar ese bloqueo hace falta un cambio revisado de **código** en `relea
 En WO-505, `inspectHome()` exigía un H1, al menos un H2 y ausencia de plantilla inerte. WO-506 lo sustituye por controles de secciones y mínimos de contenido, respaldados por regresión de paridad con los textos aprobados en `dist`. La plantilla inerte permanece como datos de hidratación y ya no es motivo de fallo cuando el contenido completo está presente. Los siete H2 son una señal de la estructura de esta portada, no una regla universal ni garantía SEO. La permanencia del bloqueo global sigue pendiente de Miguel.
 
 La prueba pública llama `renderer(locale, 'public').document(page)` con el cuerpo sintético `<h1>Policy fixture</h1>` para las 144 entradas del inventario: **no genera ni inspecciona un `dist` público**. Incluso la entrada `/` usa ese renderer de interiores. Su comparación con `robotsMeta('/')` comprueba la función compartida, **no ejercita el reemplazo `__PAGE_ROBOTS__` de la portada en modo público**. El intento de build público se detiene antes de llegar a ese reemplazo. Las pruebas sobre `dist` corresponden a preview; sigue pendiente cubrir el build público real cuando exista un candidato integrado.
+
+## Portafolio visual — WO-2026-00508 (2026-10-05)
+
+DALK sustituye a Barro Stock únicamente en los cinco destacados del inicio. El catálogo conserva Barro Stock y sus rutas, y suma DALK, Velank, Transportes Sánchez JR y Subsify: nueve proyectos. Subsify tiene filtro Apps y seis capturas por idioma. Las siete capturas web y doce de la app se sirven como 38 variantes WebP responsive; procedencia, SHA-256 y tamaños en `docs/portfolio-assets-2026-10-05.json`. El retrato nuevo se aplica solo a Nosotros.
+
+Verificado: TypeScript/build, 11/11 tests, 152 rutas, 60 slugs preservados, 8,754 referencias locales, presupuestos de rendimiento y fuente original del diseño. Navegador: destacados, enlace Ver todos, filtro Apps y ficha Subsify ES/EN; móvil 390px sin desbordamiento horizontal. No es una nueva medición Lighthouse.
+
+Pipas Tondoroque mantiene su representación conceptual: no se recibió captura suya y Transportes Sánchez JR es otro proyecto. No se inventaron testimonios ni publicación de Subsify en tiendas. Release continúa BLOCKED exclusivamente por NEXT_INTEGRATION; sin deploy ni integración Next/CMS en este lote.

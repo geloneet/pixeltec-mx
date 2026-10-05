@@ -1,6 +1,6 @@
 import {test} from 'node:test';
 import {parseHTML} from 'linkedom';
-import {company,serviceContent,caseStudies,editorial,method} from './.build/content.js';
+import {company,serviceContent,caseStudies,featuredCaseStudies,testimonials,editorial,method} from './.build/content.js';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {loadSources,articleHtml} from './source-content.mjs';
@@ -30,7 +30,7 @@ test('public HTML excludes incomplete English and utility pages; preview remains
   if(route.candidateIndexable)eligible++;
   if(route.contentStatus==='translation-incomplete'){incomplete++;assert.equal(expected,'noindex,nofollow');}
  }
- assert.equal(incomplete,52);assert.equal(eligible,86);
+ assert.equal(incomplete,52);assert.equal(eligible,94);
 });
 test('release gate rejects client-only home even with a decorative H2 and preserves preview on public build',async()=>{
  const before=await html('/');
@@ -55,7 +55,7 @@ test('all published Spanish URLs retain title, description and canonical',async(
  }
 });
 test('every ES/EN page has reciprocal language links, self canonical and preview noindex',async()=>{
- assert.equal(routes.length,144);
+ assert.equal(routes.length,152);
  for(const route of routes){
   const page=await html(route.path);const spanish=route.locale==='en'?route.path.slice(3):route.path;
   const english='/en'+spanish;
@@ -85,7 +85,7 @@ test('complete approved ES/EN home content exists in the shipped HTML before Jav
   assert.ok(root?.hasAttribute('data-home-ssr'));
   assert.ok(page.includes('href="'+(locale==='en'?'/en/mapa/':'/mapa/')+'" aria-label="'+(locale==='en'?'All pages':'Todas las páginas')+'"'));
   const text=root.textContent.replace(/\s+/g,' ').trim();
-  const approved=[company.about[locale],company.team[locale],...serviceContent.flatMap(s=>[s.title[locale],s.description[locale]]),...caseStudies.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
+  const approved=[company.about[locale],company.team[locale],...serviceContent.flatMap(s=>[s.title[locale],s.description[locale]]),...featuredCaseStudies.map(c=>c.name),...testimonials.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
   for(const copy of approved)assert.ok(text.includes(copy.replace(/\s+/g,' ').trim()),path+' missing approved copy: '+copy);
   assert.equal(root.querySelectorAll('h1').length,1);
   assert.equal(root.querySelectorAll('h2').length,7);

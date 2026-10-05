@@ -1,7 +1,8 @@
+import {projectImage} from './project-media.js';
 import {languageAlternates,socialMetadata} from './seo-policy.js';
 import {brandMark} from './brand.js';
 import {homeNavigation} from './navigation.js';
-import {company,serviceContent,caseStudies,industryContent,editorial,method} from './content.js';
+import {company,serviceContent,caseStudies,featuredCaseStudies,testimonials,industryContent,editorial,method} from './content.js';
 import {langSwitch,localPath,type Locale} from './i18n.js';
 import {escapeHTML as esc} from './catalog.js';
 const en:Record<string,string>={
@@ -51,10 +52,10 @@ export function homeContent(home:string,locale:Locale):string {
  {n:'MX',suf:'',label:x('Desde Vallarta para todo México','From Vallarta, across Mexico')}
  ],'whyItems');
  replaceArray('whyItems',method.map(f=>({t:f.title[locale],d:f.body[locale]})),'footCols');
- const cases=caseStudies.map(c=>({href:localPath(c.path,locale),id:c.id,name:c.name,tags:[c.category[locale]],short:c.scope[locale],label:c.category[locale],headline:c.id==='villa-nogal'?x('Una experiencia de reserva propia.','A booking experience of their own.'):c.id==='pipas-tondoroque'?x('Pedidos que siguen su curso.','Orders that keep moving.'):c.id==='barro-stock'?x('Cada pieza, en su lugar.','Every piece in its place.'):c.id==='smile-more'?x('Más control. Mejor atención.','More control. Better care.'):x('Tradición que evoluciona.','Tradition that evolves.')}));
+ const cases=featuredCaseStudies.map(c=>({image:projectImage(c.id)?.src??'',imageSet:projectImage(c.id)?`${projectImage(c.id)!.small} 640w, ${projectImage(c.id)!.src} 1280w`:'',imageWidth:projectImage(c.id)?.width??1280,imageHeight:projectImage(c.id)?.height??800,href:localPath(c.path,locale),id:c.id,name:c.name,tags:[c.category[locale]],short:c.scope[locale],label:c.category[locale],headline:c.id==='villa-nogal'?x('Una experiencia de reserva propia.','A booking experience of their own.'):c.id==='pipas-tondoroque'?x('Pedidos que siguen su curso.','Orders that keep moving.'):c.id==='barro-stock'?x('Cada pieza, en su lugar.','Every piece in its place.'):c.id==='smile-more'?x('Más control. Mejor atención.','More control. Better care.'):x('Tradición que evoluciona.','Tradition that evolves.')}));
  replaceArray('projTop',cases.slice(0,2),'projBottom');replaceArray('projBottom',cases.slice(2),'projects');replaceArray('projects',cases,'nlColumns');
  replaceArray('posts',editorial.slice(0,4).map(p=>({href:localPath(p.path,locale),cat:p.category[locale],date:new Intl.DateTimeFormat(locale==='es'?'es-MX':'en-US',{day:'numeric',month:'short',year:'numeric',timeZone:'UTC'}).format(new Date(p.date+'T12:00:00Z')),title:p.title[locale],excerpt:p.description[locale]})),'industries');
- const quotes=caseStudies.map(c=>({text:c.quote[locale],name:c.person,role:c.role[locale],title:c.name}));
+ const quotes=testimonials.map(c=>({text:c.quote[locale],name:c.person,role:c.role[locale],title:c.name}));
  home=home.replace(/  quotes = \[[\s\S]*?\n  \];/,'  quotes = '+JSON.stringify(quotes)+';');
  home=home.replace(/const ind = \[[^\n]+\];/,'const ind = '+JSON.stringify(industryContent.map(i=>i.title[locale]))+';');
  // Root-relative resource URL is required for the /en/ homepage.
@@ -63,7 +64,7 @@ export function homeContent(home:string,locale:Locale):string {
  let cubeIndex=0;home=home.replace(/\{ title: '[^']+', caption: '[^']+', icon:/g,()=>{const v=cubeLabels[cubeIndex++];if(!v)throw new Error('Unexpected cube label');return `{ title: ${JSON.stringify(v[locale==='es'?0:1])}, caption: ${JSON.stringify(v[locale==='es'?2:3])}, icon:`;});
  home=home.replace(/<div style="flex:2 1 0;[^>]*>\[ foto&nbsp;\{\{ sv.n \}\}&nbsp;\]<\/div>\s*<div style="flex:1 1 0;[^>]*><\/div>/,`<div class="home-service-plate" aria-hidden="true"><div class="plate-label"><span>PIXELTEC / {{ sv.n }}</span><span>↗</span></div><div class="plate-mark">{{ sv.symbol }}</div><div class="plate-label"><span>{{ sv.t }}</span><span>●</span></div></div>`);
  home=home.replace(/<div style="grid-column:\{\{ whyPhotoSpan \}\};[^>]*>\[ foto equipo PixelTEC \]<\/div>/,`<div class="home-founder" style="grid-column:{{ whyPhotoSpan }};grid-row:{{ whyPhotoRow }}"><img src="/assets/miguel-robles.webp" alt="Miguel Robles Sánchez" width="640" height="640" loading="lazy" decoding="async"><div><strong>Miguel Robles Sánchez</strong><span>Founder & Lead Software Architect</span></div></div>`);
- home=home.replace(/<div style="aspect-ratio:(?:16\/10|1\/1);[^>]*>\[ captura&nbsp;\{\{ p.name \}\}&nbsp;\]<\/div>/g,`<div class="home-case-plate" data-case="{{ p.id }}"><span>{{ p.name }} / {{ p.label }}</span><strong>{{ p.headline }}</strong><span>PIXELTEC</span></div>`);
+ home=home.replace(/<div style="aspect-ratio:(?:16\/10|1\/1);[^>]*>\[ captura&nbsp;\{\{ p.name \}\}&nbsp;\]<\/div>/g,`<sc-if value="{{ p.image }}"><div class="home-case-shot"><img src="{{ p.image }}" srcset="{{ p.imageSet }}" sizes="(max-width: 759px) 90vw, (max-width: 1100px) 45vw, 660px" alt="{{ p.name }}" width="{{ p.imageWidth }}" height="{{ p.imageHeight }}" loading="lazy" decoding="async"></div></sc-if><sc-if value="{{ !p.image }}"><div class="home-case-plate" data-case="{{ p.id }}"><span>{{ p.name }} / {{ p.label }}</span><strong>{{ p.headline }}</strong><span>${x('REPRESENTACIÓN CONCEPTUAL','CONCEPTUAL VISUAL')}</span></div></sc-if>`);
  home=home.replace(/<div style="margin-top:auto;width:62%;[^>]*>\[ foto \]<\/div>/g,`<div class="home-insight-symbol"><span>${x('IDEAS PARA DECIDIR','IDEAS FOR DECISIONS')}</span><b aria-hidden="true">↗</b></div>`);
  const newsletterStart=home.indexOf('    <div style="position:relative;overflow:hidden;border-radius:',home.indexOf('<section id="blog"'));
  const newsletterEnd=home.indexOf('  <div style="max-width:1440px;margin:0 auto">',newsletterStart);

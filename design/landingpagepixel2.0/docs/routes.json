@@ -90,6 +90,30 @@
     "locale": "es"
   },
   {
+    "path": "/proyectos/dalk/",
+    "title": "DALK",
+    "family": "Proyectos",
+    "locale": "es"
+  },
+  {
+    "path": "/proyectos/velank/",
+    "title": "Velank",
+    "family": "Proyectos",
+    "locale": "es"
+  },
+  {
+    "path": "/proyectos/transportes-sanchez-jr/",
+    "title": "Transportes Sánchez JR",
+    "family": "Proyectos",
+    "locale": "es"
+  },
+  {
+    "path": "/proyectos/subsify/",
+    "title": "Subsify",
+    "family": "Proyectos",
+    "locale": "es"
+  },
+  {
     "path": "/industrias/",
     "title": "Software para clínicas, hoteles, logística y más",
     "family": "Industrias",
@@ -518,6 +542,30 @@
   {
     "path": "/en/proyectos/materiales-de-barro/",
     "title": "Materiales de Barro",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/dalk/",
+    "title": "DALK",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/velank/",
+    "title": "Velank",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/transportes-sanchez-jr/",
+    "title": "Transportes Sánchez JR",
+    "family": "Work",
+    "locale": "en"
+  },
+  {
+    "path": "/en/proyectos/subsify/",
+    "title": "Subsify",
     "family": "Work",
     "locale": "en"
   },

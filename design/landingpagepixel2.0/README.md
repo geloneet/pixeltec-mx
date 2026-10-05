@@ -136,3 +136,5 @@ DALK sustituye a Barro Stock únicamente en los cinco destacados del inicio. El 
 Verificado: TypeScript/build, 11/11 tests, 152 rutas, 60 slugs preservados, 8,754 referencias locales, presupuestos de rendimiento y fuente original del diseño. Navegador: destacados, enlace Ver todos, filtro Apps y ficha Subsify ES/EN; móvil 390px sin desbordamiento horizontal. No es una nueva medición Lighthouse.
 
 Pipas Tondoroque mantiene su representación conceptual: no se recibió captura suya y Transportes Sánchez JR es otro proyecto. No se inventaron testimonios ni publicación de Subsify en tiendas. Release continúa BLOCKED exclusivamente por NEXT_INTEGRATION; sin deploy ni integración Next/CMS en este lote.
+
+Ajuste solicitado el 2026-10-05: Subsify sustituye a Pipas Tondoroque en el segundo destacado del inicio ES/EN, usando tres capturas verticales y etiqueta Apps. Pipas conserva ficha y catálogo.

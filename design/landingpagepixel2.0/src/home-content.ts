@@ -2,7 +2,7 @@ import {projectImage,projectVisual} from './project-media.js';
 import {languageAlternates,socialMetadata} from './seo-policy.js';
 import {brandMark} from './brand.js';
 import {homeNavigation} from './navigation.js';
-import {company,serviceContent,caseStudies,featuredCaseStudies,testimonials,industryContent,editorial,method} from './content.js';
+import {company,serviceContent,marketedServices,caseStudies,featuredCaseStudies,testimonials,industryContent,editorial,method} from './content.js';
 import {langSwitch,localPath,type Locale} from './i18n.js';
 import {escapeHTML as esc} from './catalog.js';
 import {en} from './home-translations.js';
@@ -23,7 +23,7 @@ export function homeContent(home:string,locale:Locale):string {
  {n:'002.',t:x('Entender antes de construir','Understand before building'),d:x('Combinamos consultoría empresarial con desarrollo de software. Primero entendemos la operación, después elegimos la tecnología.','We combine business consulting and software development. We understand the operation first, then choose the technology.')},
  {n:'003.',t:x('El equipo que tu proyecto necesita','The team your project needs'),d:company.team[locale]}
  ],'cubeRef');
- replaceArray('svc',serviceContent.map((s,i)=>({n:'0'+(i+1),href:localPath(s.path,locale),t:s.title[locale],d:s.description[locale],tags:s.category[locale].split(' · '),symbol:['⌘','</>','↗','◎'][i]})),'whyCols');
+ replaceArray('svc',marketedServices.map((s,i)=>({n:'0'+(i+1),href:localPath(s.path,locale),t:s.title[locale],d:s.description[locale],tags:s.category[locale].split(' · '),image:`/assets/services/${s.id}-3d-1280.webp`,imageSet:`/assets/services/${s.id}-3d-640.webp 640w, /assets/services/${s.id}-3d-1280.webp 1280w`})),'whyCols');
  replaceArray('whyStats',[
  {n:'01',suf:'',label:x('Arquitecto líder por proyecto','Lead architect per project')},
  {n:'06',suf:'',label:x('Industrias con experiencia publicada','Industries with published experience')},
@@ -40,7 +40,7 @@ export function homeContent(home:string,locale:Locale):string {
  home=home.replace("new URL('./cubo.js', document.baseURI)","new URL('/cubo.js', document.baseURI)");
  const cubeLabels=[['Automatización','AI automation','Flujos que trabajan solos.','Workflows that run for you.'],['Desarrollo Web & Apps','Web & apps','Tu operación, conectada.','Your operations, connected.'],['WhatsAgent','WhatsAgent','Tu marca en cada conversación.','Your brand in every conversation.'],['Consultoría TI','IT consulting','Claridad antes de construir.','Clarity before building.']];
  let cubeIndex=0;home=home.replace(/\{ title: '[^']+', caption: '[^']+', icon:/g,()=>{const v=cubeLabels[cubeIndex++];if(!v)throw new Error('Unexpected cube label');return `{ title: ${JSON.stringify(v[locale==='es'?0:1])}, caption: ${JSON.stringify(v[locale==='es'?2:3])}, icon:`;});
- home=home.replace(/<div style="flex:2 1 0;[^>]*>\[ foto&nbsp;\{\{ sv.n \}\}&nbsp;\]<\/div>\s*<div style="flex:1 1 0;[^>]*><\/div>/,`<div class="home-service-plate" aria-hidden="true"><div class="plate-label"><span>PIXELTEC / {{ sv.n }}</span><span>↗</span></div><div class="plate-mark">{{ sv.symbol }}</div><div class="plate-label"><span>{{ sv.t }}</span><span>●</span></div></div>`);
+ home=home.replace(/<div style="flex:2 1 0;[^>]*>\[ foto&nbsp;\{\{ sv.n \}\}&nbsp;\]<\/div>\s*<div style="flex:1 1 0;[^>]*><\/div>/,`<div class="home-service-image" aria-hidden="true"><img src="{{ sv.image }}" srcset="{{ sv.imageSet }}" sizes="(max-width: 639px) 90vw, (max-width: 999px) 80vw, 600px" width="1536" height="1024" alt="" loading="lazy" decoding="async"></div>`);
  home=home.replace(/<div style="grid-column:\{\{ whyPhotoSpan \}\};[^>]*>\[ foto equipo PixelTEC \]<\/div>/,`<div class="home-founder" style="grid-column:{{ whyPhotoSpan }};grid-row:{{ whyPhotoRow }}"><img src="/assets/miguel-robles.webp" alt="Miguel Robles Sánchez" width="640" height="640" loading="lazy" decoding="async"><div><strong>Miguel Robles Sánchez</strong><span>Founder & Lead Software Architect</span></div></div>`);
  home=home.replace(/<div style="aspect-ratio:(?:16\/10|1\/1);[^>]*>\[ captura&nbsp;\{\{ p.name \}\}&nbsp;\]<\/div>/g,`<sc-if value="{{ p.image }}"><div class="home-case-shot"><img src="{{ p.image }}" srcset="{{ p.imageSet }}" sizes="(max-width: 759px) 90vw, (max-width: 1100px) 45vw, 660px" alt="{{ p.name }}" width="{{ p.imageWidth }}" height="{{ p.imageHeight }}" loading="lazy" decoding="async"></div></sc-if><sc-if value="{{ p.app }}">${projectVisual(caseStudies.find(c=>c.id==='subsify')!,locale)}</sc-if><sc-if value="{{ p.conceptual }}"><div class="home-case-plate" data-case="{{ p.id }}"><span>{{ p.name }} / {{ p.label }}</span><strong>{{ p.headline }}</strong><span>${x('REPRESENTACIÓN CONCEPTUAL','CONCEPTUAL VISUAL')}</span></div></sc-if>`);
  home=home.replace(/<div style="margin-top:auto;width:62%;[^>]*>\[ foto \]<\/div>/g,`<div class="home-insight-symbol"><span>${x('IDEAS PARA DECIDIR','IDEAS FOR DECISIONS')}</span><b aria-hidden="true">↗</b></div>`);

@@ -9,7 +9,7 @@ export function inspectHome(html){
  const h1=(initial.match(/<h1\b/gi)??[]).length;
  const h2=(initial.match(/<h2\b/gi)??[]).length;
  const doc=parseHTML(initial).document;
- const minimums={'#nosotros h3':3,'#servicios h3':4,'#por-que h3':4,'#proyectos a[href]':6,'#blog a[href]':5,'#contacto a[href]':1,'footer a[href]':10};
+ const minimums={'#nosotros h3':3,'#servicios h3':3,'#por-que h3':4,'#proyectos a[href]':6,'#blog a[href]':5,'#contacto a[href]':1,'footer a[href]':10};
  const missingContent=Object.entries(minimums).filter(([selector,n])=>doc.querySelectorAll(selector).length<n).map(([selector])=>selector);
  const contentComplete=h1===1&&h2>=7&&missingContent.length===0&&!/\{\{|<sc-for\b|sc-placeholder/.test(initial);
  const hasEnhancementTemplate=/data-dc-template\b/.test(html);

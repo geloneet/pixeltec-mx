@@ -73,3 +73,6 @@ export const faqContent:Feature[]=[
  feature('¿Trabajan fuera de Puerto Vallarta?','Do you work outside Puerto Vallarta?','Sí. Trabajamos con empresas de todo México, con presencia local en Puerto Vallarta, Bahía de Banderas, Guadalajara y Zapopan.','Yes. We work with businesses across Mexico, with a local presence in Puerto Vallarta, Bahía de Banderas, Guadalajara and Zapopan.'),
  feature('¿Qué pasa después de la entrega?','What happens after delivery?','Acompañamos la adopción y evolución de la solución. El soporte, las integraciones y las mejoras se definen en el alcance de cada proyecto.','We support adoption and evolution. Support, integrations and improvements are defined in each project’s scope.')
 ];
+
+// WhatsAgent is part of automation; its existing detail URL remains available.
+export const marketedServices=serviceContent.filter(s=>s.id!=='whatsagent');

@@ -85,7 +85,7 @@ test('complete approved ES/EN home content exists in the shipped HTML before Jav
   assert.ok(root?.hasAttribute('data-home-ssr'));
   assert.ok(page.includes('href="'+(locale==='en'?'/en/mapa/':'/mapa/')+'" aria-label="'+(locale==='en'?'All pages':'Todas las páginas')+'"'));
   const text=root.textContent.replace(/\s+/g,' ').trim();
-  const approved=[company.about[locale],company.team[locale],...serviceContent.flatMap(s=>[s.title[locale],s.description[locale]]),...featuredCaseStudies.map(c=>c.name),...testimonials.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
+  const approved=[company.about[locale],company.team[locale],...serviceContent.filter(s=>s.id!=='whatsagent').flatMap(s=>[s.title[locale],s.description[locale]]),...featuredCaseStudies.map(c=>c.name),...testimonials.flatMap(c=>[c.name,c.quote[locale]]),...method.flatMap(m=>[m.title[locale],m.body[locale]]),...editorial.slice(0,4).map(e=>e.title[locale])];
   for(const copy of approved)assert.ok(text.includes(copy.replace(/\s+/g,' ').trim()),path+' missing approved copy: '+copy);
   assert.equal(root.querySelectorAll('h1').length,1);
   assert.equal(root.querySelectorAll('h2').length,8);
@@ -95,7 +95,7 @@ test('complete approved ES/EN home content exists in the shipped HTML before Jav
   const menu=root.querySelector('#home-menu');assert.equal(menu.getAttribute('aria-hidden'),'true');assert.match(menu.getAttribute('style'),/visibility:hidden/);
   assert.equal(root.querySelector('[aria-controls="home-menu"]').getAttribute('aria-expanded'),'false');
   assert.equal(inspectHome(page).status,'PASS');
-  const services=doc.querySelector('#servicios'); services.remove();
+  const services=doc.querySelector('#servicios'); assert.equal(services.querySelectorAll('h3').length,3); assert.equal(services.querySelectorAll('.home-service-image img').length,3); assert.ok(!services.querySelector('a[href$="/pixelbot/"]')); services.remove();
   assert.equal(inspectHome(doc.toString()).status,'FAIL','missing service section must block release');
  }
 });

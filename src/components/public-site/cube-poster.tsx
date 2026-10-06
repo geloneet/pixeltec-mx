@@ -1,5 +1,5 @@
-export const CUBE_POSTER = '/assets/brand/cube-poster-768.webp';
-export const CUBE_POSTER_SET = '/assets/brand/cube-poster-480.webp 480w, /assets/brand/cube-poster-768.webp 768w';
+export const CUBE_POSTER = '/assets/brand/cube-poster-hq-768.webp';
+export const CUBE_POSTER_SET = '/assets/brand/cube-poster-hq-768.webp 768w, /assets/brand/cube-poster-hq-1536.webp 1536w';
 export const CUBE_POSTER_SIZES = '(max-width: 700px) 90vw, 50vw';
 
 /** Discover the responsive hero image before the home content and client bundle. */

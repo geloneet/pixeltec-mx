@@ -39,3 +39,11 @@ QA usa exclusivamente PostgreSQL local `pixeltec_web_wo509_qa`, creado para esta
 Lectura SSH del 2026-10-05: contenedor `pixeltec-mx` activo con imagen y `.deploy-active-sha` `39a8faed5df16a8d336b6d302a47e98de40185dc`; DB sana. Wrapper `/usr/local/sbin/deploy-pixeltec-mx` presente. Nginx corre en Docker; su inventario está en el contenedor `pixeltec-nginx`, no en `/etc/nginx` del host. UFW activo; lectura sin cambios de configuración.
 
 Camino único: SHA completo aprobado y ancestro de `origin/main`, `deploy-pixeltec-mx --sha SHA --check-only`, luego despliegue dentro de tmux. El motor conserva la imagen anterior y revierte ante health fallido. No se ejecutó activación en esta etapa. Checklist operativo: `docs/operacion-web`, servidor local 4870.
+
+## Dependencias — revisión previa a publicación
+
+`npm audit fix --ignore-scripts` dentro de los rangos declarados actualiza Next 15.5.22→15.5.27 y sharp 0.35.2→0.35.5, más transitivas compatibles. No se utilizó `--force`. Suite posterior: 166 archivos / 2,143 pruebas PASS.
+
+Auditoría de dependencias productivas: 0 críticas, 6 altas, 35 moderadas y 2 bajas. No se declara seguridad absoluta. Las altas remanentes pertenecen a la cadena de compilación Tailwind 3/braces/glob y PostCSS anidado en Next; requieren cambio mayor u override que no se introduce sin validación específica. El editor privado Tiptap 2 conserva alertas moderadas; su actualización a v3 es deuda explícita, al igual que Mermaid/KaTeX. Responsable: Ingeniería; siguiente mantenimiento antes de ampliar entradas de CSS/editor o exponerlas públicamente.
+
+Fuentes: https://github.com/advisories/GHSA-2xp9-vwfh-vxw4 y https://github.com/advisories/GHSA-rgj7-g3m4-5g8c. Informe completo reproducible: `npm audit --omit=dev`; snapshot `dependency-audit.json`.

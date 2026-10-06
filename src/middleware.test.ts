@@ -285,3 +285,25 @@ describe("middleware — X-Robots-Tag en rutas privadas (PRV-02)", () => {
     expect(res.headers.get("X-Robots-Tag")).toBe("noindex, nofollow");
   });
 });
+
+
+describe("middleware — nonce de render y CSP (WO513)", () => {
+  it("propaga un nonce nuevo al renderer y conserva la misma política estricta", async () => {
+    const first = await run("/blog/ejemplo");
+    const second = await run("/blog/ejemplo");
+    const nonce = first.headers.get("x-nonce");
+    expect(nonce).toMatch(/^[a-f0-9]{32}$/);
+    expect(second.headers.get("x-nonce")).not.toBe(nonce);
+    expect(first.headers.get("x-middleware-request-x-nonce")).toBe(nonce);
+    expect(first.headers.get("x-middleware-request-content-security-policy")).toBe(first.headers.get("content-security-policy"));
+    expect(first.headers.get("content-security-policy")).toContain("'strict-dynamic'");
+  });
+  it("no acepta el nonce ni la política enviados por el visitante", async () => {
+    const req = makeRequest("/blog/ejemplo");
+    req.headers.set("x-nonce", "attacker");
+    req.headers.set("Content-Security-Policy", "script-src *");
+    const res = await (middleware as unknown as (req: AuthedRequest, ev: unknown) => Promise<Response>)(req, {});
+    expect(res.headers.get("x-middleware-request-x-nonce")).not.toBe("attacker");
+    expect(res.headers.get("content-security-policy")).not.toContain("script-src *");
+  });
+});

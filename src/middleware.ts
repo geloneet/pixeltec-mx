@@ -37,6 +37,15 @@ function withSecurityHeaders(res: NextResponse, nonce: string, pathname: string)
   return res;
 }
 
+/** Forward the same nonce upstream so Next can authorize SSR/dynamic chunks. */
+function forwardWithNonce(request: Request, nonce: string, pathname: string): NextResponse {
+  const headers = new Headers(request.headers);
+  // Overwrite untrusted inbound values; never copy request headers to the response.
+  headers.set('x-nonce', nonce);
+  headers.set('Content-Security-Policy', cspForPath(nonce, pathname));
+  return withSecurityHeaders(NextResponse.next({ request: { headers } }), nonce, pathname);
+}
+
 /**
  * 403 del rol restringido (WO-2026-00051). Server-side, antes de cualquier
  * page/route handler: aplica igual a la navegación por URL directa, a los
@@ -111,10 +120,10 @@ export default auth(async (request) => {
       loginUrl.searchParams.set('redirect', pathname);
       return withSecurityHeaders(NextResponse.redirect(loginUrl), nonce, pathname);
     }
-    return withSecurityHeaders(NextResponse.next(), nonce, pathname);
+    return forwardWithNonce(request, nonce, pathname);
   }
 
-  return withSecurityHeaders(NextResponse.next(), nonce, pathname);
+  return forwardWithNonce(request, nonce, pathname);
 });
 
 export const config = {

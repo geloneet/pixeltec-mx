@@ -4,7 +4,7 @@ import { buildMetadata } from '@/lib/seo';
 import { absoluteUrl } from '@/lib/site-config';
 import { BlogPostingStructuredData, BreadcrumbStructuredData, FAQPageStructuredData } from '@/components/seo/structured-data';
 import { buildExtraSchemaNodes } from '@/lib/blog-cms/schema-types';
-import BlogPostClient from './blog-post-client';
+import BlogPostContent from './blog-post-content';
 import { extractHeadings } from '@/lib/blog/heading-utils';
 import { toPublicBlogPost } from '@/lib/blog/public-post';
 import type { BlogPostSerialized } from '@/lib/blog/types';
@@ -130,7 +130,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
         />
       ))}
       {/* Frontera P1-A: al cliente cruza SOLO el DTO público (allowlist). */}
-      <BlogPostClient
+      <BlogPostContent
         post={publicPost}
         headings={headings}
         related={related.map((r) => ({ slug: r.slug, title: r.title, excerpt: r.excerpt, category: r.category }))}

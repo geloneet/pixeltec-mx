@@ -1,4 +1,4 @@
-'use client';
+import 'server-only';
 
 import React from 'react';
 import ReactMarkdown from 'react-markdown';

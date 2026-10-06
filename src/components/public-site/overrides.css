@@ -35,3 +35,8 @@ body:has([data-cookie-banner]) .public-website .wa-float{visibility:hidden;point
 .public-website .site-header .brand-wordmark>span{color:#087acc!important}
 /* The dark poster must not obscure the adjacent headline at desktop overlap. */
 .public-website .progressive-cube{mix-blend-mode:lighten}
+
+/* Readable CTAs and editorial card labels on their actual backgrounds. */
+.public-website .site-header .talk{background:#145bdf;color:#fff}
+.public-website .home-insight-symbol span{color:#bbc5d4}
+.public-website .site-header .talk:hover{background:#0b0b0a;color:#fff}

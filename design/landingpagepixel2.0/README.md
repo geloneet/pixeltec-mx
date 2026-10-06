@@ -245,3 +245,6 @@ Por indicación de Miguel, el nombre visual del logo usa PIXELTEC en mayúsculas
 
 ### Color del wordmark — 2026-10-05
 Referencia de Miguel: PIXEL blanco en fondos oscuros y TEC azul #2196f3. Encabezado claro mantiene PIXEL oscuro por contraste. Componente wordmark compartido en marca de encabezado, menú y footer ES/EN.
+
+### Diagnóstico desde cabecera — 2026-10-05
+Inicio ES/EN abre diagnóstico en modal desde CTA superior. Controlador compartido delega apertura y aísla cada formulario para coexistir con el inline sin IDs duplicados ni mezclar respuestas; cierre/Escape retorna foco. Fallback conserva enlace.

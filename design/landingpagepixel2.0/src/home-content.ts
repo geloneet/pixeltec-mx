@@ -89,7 +89,9 @@ export function homeContent(home:string,locale:Locale):string {
  const canonical=locale==='es'?'https://pixeltec.mx':'https://pixeltec.mx/en';
  home=home.replace('</head>',`<meta name="description" content="${esc(company.description[locale])}"><link rel="canonical" href="${canonical}">${languageAlternates("/")}${socialMetadata(title,company.description[locale],locale==='es'?'/':'/en/',locale)}<link rel="stylesheet" href="/content.css"></head>`);
  home=home.replaceAll('href="{{ p.href }}"','data-project-popup="{{ p.id }}" aria-haspopup="dialog" href="{{ p.href }}"');
+ home=home.replace(/<a href="(\/(?:en\/)?diagnostico\/)"/g,'<a data-open-diagnostic aria-haspopup="dialog" href="$1"');
+ const assessmentPopup=`<dialog class="diagnostic-modal home-diagnostic-card" id="diagnostic-modal" aria-label="${x('Diagnóstico de tu empresa','Business assessment')}"><button class="diagnostic-close" type="button" data-close-diagnostic aria-label="${x('Cerrar diagnóstico','Close assessment')}">×</button>${diagnosticWidget(locale).replace('id="diagnostic-form"','id="diagnostic-modal-form"')}</dialog>`;
  const projectPopups=featuredCaseStudies.map(c=>`<dialog class="diagnostic-modal project-modal" id="project-popup-${esc(c.id)}" aria-labelledby="project-title-${esc(c.id)}"><form method="dialog"><button class="diagnostic-close" aria-label="${x('Cerrar proyecto','Close project')}">×</button></form><div class="project-popup-visual">${projectVisual(c,locale)}</div><div class="project-popup-copy"><p class="eyebrow">${esc(c.category[locale])}</p><h2 id="project-title-${esc(c.id)}">${esc(c.name)}</h2><p>${esc(c.description[locale])}</p><h3>${x('Sobre el proyecto','About the project')}</h3><p>${esc(c.scope[locale])}</p><a class="project-popup-link" href="${localPath(c.path,locale)}">${x('Ver proyecto completo','View full project')} ↗</a></div></dialog>`).join('');
- home=home.replace('</body>',projectPopups+'<script type="module" src="/project-popup.js"></script></body>');
+ home=home.replace('</body>',assessmentPopup+projectPopups+'<script type="module" src="/project-popup.js"></script></body>');
  return home;
 }

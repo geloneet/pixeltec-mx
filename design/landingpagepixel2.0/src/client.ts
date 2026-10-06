@@ -53,23 +53,3 @@ document.querySelectorAll<HTMLFormElement>('[data-preview-form]').forEach(form=>
 }));
 export {};
 
-// The shared CTA reuses the existing assessment, without a document navigation.
-const diagnosticModal = document.querySelector<HTMLDialogElement>('#diagnostic-modal');
-let diagnosticOpener: HTMLElement | null = null;
-document.querySelectorAll<HTMLAnchorElement>('[data-open-diagnostic]').forEach(trigger => {
-  trigger.addEventListener('click', event => {
-    if (!diagnosticModal || typeof diagnosticModal.showModal !== 'function') return;
-    event.preventDefault();
-    diagnosticOpener = trigger;
-    diagnosticModal.showModal();
-    const heading = diagnosticModal.querySelector<HTMLElement>('[data-summary]:not([hidden]) h2') ?? diagnosticModal.querySelector<HTMLElement>('fieldset:not([hidden]) legend');
-    if (heading) { heading.tabIndex = -1; heading.focus(); }
-  });
-});
-diagnosticModal?.querySelector('[data-close-diagnostic]')?.addEventListener('click', () => diagnosticModal.close());
-diagnosticModal?.addEventListener('close', () => diagnosticOpener?.focus());
-diagnosticModal?.addEventListener('click', event => {
-  if (event.target !== diagnosticModal) return;
-  const rect = diagnosticModal.getBoundingClientRect();
-  if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) diagnosticModal.close();
-});

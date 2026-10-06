@@ -184,3 +184,7 @@ Miguel agrupa distribución de agua dentro de logística/transporte: retirada la
 ### Gráfico editorial — WO-508, 2026-10-05
 
 El asterisco de Perspectivas en portada ES/EN se sustituye por un gráfico 3D conceptual de cubos de cristal azul y órbitas metálicas, fondo negro, visible también en móvil. Imagen estática WebP 640/1280 con lazy/srcset y proporción reservada. Procedencia: [editorial-art-provenance.json](docs/editorial-art-provenance.json). `npm run verify` PASS 14/14 y presupuestos; revisión visual desktop en work/portfolio-20261005/editorial-cube.png. Sin cambios de rutas ni publicación productiva.
+
+### Revisión final — 2026-10-05
+
+[Informe técnico y límites de publicación](docs/revision-final-2026-10-05.md). Reflejo editorial fundido, revisión de contenido visible y nueva auditoría estática integrada en `verify`. 46 rutas inglesas aún requieren traducción completa/revisión legal; no se declara cierre total ni publicación productiva.

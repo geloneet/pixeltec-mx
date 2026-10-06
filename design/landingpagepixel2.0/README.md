@@ -236,3 +236,6 @@ Contacto ES/EN reemplaza el desplegable por el modal compartido del CTA; una sol
 
 ### Diagnóstico rectangular — 2026-10-05
 Modal compartido de hasta 1080px con opciones en tres columnas, dos en tablet y una en móvil; altura natural limitada al viewport con scroll interno para resultados largos. Selectores exclusivos de diagnóstico preservan popups de proyectos e Inicio inline.
+
+### Logo oficial — 2026-10-05
+Miguel aprobó el cubo azul con circuitos. Original PNG preservado en public/assets/brand; copia de 128px para encabezado, menú y favicon ES/EN. src/brand.ts comparte la marca con Inicio, sin modificar home.dc.html. Se conserva el wordmark PixelTEC.

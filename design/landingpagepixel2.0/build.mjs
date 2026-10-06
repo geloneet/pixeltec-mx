@@ -5,7 +5,7 @@ import {robotsMeta} from './.build/seo-policy.js';
 import {assertReleaseReady,inspectRelease} from './release-check.mjs';
 import { optimizeAssets, optimizeHome, compressOutput } from './optimize.mjs';
 import { readFile, writeFile, mkdir, cp, rm } from 'node:fs/promises';
-import {renderer,logo,canonicalPath} from './.build/templates.js';
+import {renderer,canonicalPath} from './.build/templates.js';
 import {homeContent} from './.build/home-content.js';
 import {company,serviceContent,caseStudies,industryContent,editorial} from './.build/content.js';
 import {guideContent} from './.build/guides.js';
@@ -81,13 +81,13 @@ await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true}
 await writeFile('dist/app-navigation.js',(await readFile('.build/app-navigation.js','utf8')).replace('export {};',''));
 await cp('.build/client.js','dist/client.js');await cp('.build/project-popup.js','dist/project-popup.js');await bundle({entryPoints:['src/diagnostic-client.ts'],bundle:true,format:'esm',minify:true,external:['./motion.js'],outfile:'dist/diagnostic-client.js'});await cp('.build/motion.js','dist/motion.js');await bundle({entryPoints:['src/smooth-scroll.ts'],bundle:true,format:'esm',minify:true,outfile:'dist/smooth-scroll.js'});
 await optimizeAssets();
-await writeFile('dist/favicon.svg',logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
+
 for(const page of allPages){const dir='dist'+localPath(page.path,page.locale);await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',page.html);}
 await writeFile('dist/404.html',allPages.find(p=>p.path==='/404/'&&p.locale==='es').html);
 await writeFile('dist/robots.txt','User-agent: *\nDisallow: /\n');
 await writeFile('dist/routes.json',JSON.stringify(entries,null,2));
 let home=await readFile('src/home.dc.html','utf8');
-home=home.replace('<html>','<html lang="es">').replace('<head>','<head>\n<title>PixelTEC · Inicio</title>\n__PAGE_ROBOTS__<link rel="icon" href="/favicon.svg">');
+home=home.replace('<html>','<html lang="es">').replace('<head>','<head>\n<title>PixelTEC · Inicio</title>\n__PAGE_ROBOTS__<link rel="icon" href="/assets/brand/pixeltec-circuit-cube.png" type="image/png">');
 home=home.replace(/<a\b[^>]*>[\s\S]*?<\/a>/g,a=>{
  const text=a.replace(/<[^>]*>/g,'').trim();
  let href=null;

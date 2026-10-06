@@ -4,6 +4,8 @@ Laterales del encabezado transparentes: solo la tarjeta de navegación conserva 
 
 Validación: TypeScript PASS. Navegador a 390 y 320 px sin desbordamiento horizontal; menú abre/cierra, diagnóstico modal Hotel avanza al paso 2 sin navegar. ES/EN con 25 estrellas SVG, encabezado rgba(0,0,0,0), consola sin errores observados. Imágenes cargadas sin naturalWidth=0. Evidencia mobile.png.
 
-Fotos: las cinco tarjetas usan iniciales desde el catálogo, sin rutas de retratos. No se encontraron fotografías asociadas en public; se solicitó su ubicación a Miguel. Pendientes Aidee García, Juan Antonio Sánchez, Francisco Arredondo, Polett Niebla y Juan Sánchez. No se reemplazan con rostros inventados ni se certifica completado este punto.
+Testimonios: Miguel decide «deja iniciales». Se conservan las iniciales en las cinco tarjetas; el pedido de retratos queda sustituido por esta decisión. No hay fotografías faltantes pendientes de este alcance.
 
 Sin cambios de datos ni envíos de prueba. Publicación pendiente al registrar esta evidencia.
+
+Compilación del primer candidato 2f981f5d falló antes de activarse: next/font/google Roboto no reconoce extensión de URL (loader.js:122). Se incluye el mismo WOFF2 Latin usado por el build local, con SIL OFL de google/fonts/ofl/roboto, y next/font/local conserva variable, display swap y preload=false. Evita dependencia externa de esta fuente; Poppins/League Spartan no cambian.

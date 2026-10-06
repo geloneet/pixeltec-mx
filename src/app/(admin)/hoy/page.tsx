@@ -58,7 +58,7 @@ export default async function HoyPage({
   );
   const show = (w: InicioWidget) => isInicioWidgetVisible(w);
   const conversationsNote =
-    d.conversationsStatus === "unavailable" ? "Sin datos de conversaciones: PixelBot no respondió. Se muestran el resto de las prioridades." : null;
+    d.conversationsStatus === "unavailable" ? "Sin datos de conversaciones: PixelBot no está disponible ahora. El resto de las prioridades sí está al día." : null;
 
   return (
     <div className="mx-auto flex w-full max-w-[1600px] flex-col gap-5">
@@ -69,7 +69,7 @@ export default async function HoyPage({
 
       {visibleKpis.size > 0 && <KpiRow result={d.kpis} visible={visibleKpis} />}
 
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,3fr)_minmax(300px,1fr)]">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className="flex min-w-0 flex-col gap-5">
           {show("prioridades") && (
             <PrioritiesPanel

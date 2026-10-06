@@ -18,11 +18,12 @@ const W = 80;
 const H = 28;
 
 function Sparkline({ card }: { card: KpiCard }) {
-  if (card.series.length < 2) return <span className="h-7 w-20" aria-hidden />;
+  // <2 puntos o serie toda en cero: no hay forma que mostrar.
+  if (card.series.length < 2 || card.series.every((v) => v === 0)) return <span className="h-7 w-14 2xl:w-20" aria-hidden />;
   const color = TONE_STROKE[card.tone];
   if (card.chart === "bars") {
     return (
-      <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className={cn("flex-shrink-0", color)} aria-hidden>
+      <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={cn("h-7 w-14 min-w-[28px] flex-shrink 2xl:w-20", color)} aria-hidden>
         {buildBarRects(card.series, W, H, 2).map((r, i) => (
           <rect key={i} x={r.x} y={r.y} width={r.width} height={r.height} rx={2} fill="currentColor" opacity={i === card.series.length - 1 ? 1 : 0.7} />
         ))}
@@ -32,8 +33,8 @@ function Sparkline({ card }: { card: KpiCard }) {
   const d = buildSparklinePath(card.series, W, H, 2);
   if (!d) return <span className="h-7 w-20" aria-hidden />;
   return (
-    <svg width={W} height={H} viewBox={`0 0 ${W} ${H}`} className={cn("flex-shrink-0", color)} aria-hidden>
-      <path d={d} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+    <svg viewBox={`0 0 ${W} ${H}`} preserveAspectRatio="none" className={cn("h-7 w-14 min-w-[28px] flex-shrink 2xl:w-20", color)} aria-hidden>
+      <path vectorEffect="non-scaling-stroke" d={d} fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -51,7 +52,7 @@ function Delta({ card }: { card: KpiCard }) {
   const pct = delta.pct === null ? "sin base" : `${delta.pct > 0 ? "+" : ""}${delta.pct}%`;
   return (
     <p className="flex items-center gap-1 text-xs">
-      <span className={cn("inline-flex items-center gap-0.5 font-semibold tabular-nums", color)}>
+      <span className={cn("inline-flex flex-shrink-0 items-center gap-0.5 whitespace-nowrap font-semibold tabular-nums", color)}>
         <Icon className="h-3.5 w-3.5" aria-hidden />
         {pct}
       </span>
@@ -68,16 +69,16 @@ export function KpiCardView({ card }: { card: KpiCard }) {
       data-kpi={card.id}
       className={cn(
         CARD,
-        "group flex min-w-0 items-start gap-3 p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        "group flex min-w-0 items-start gap-3 p-4 xl:gap-2.5 xl:p-3.5 2xl:gap-3 2xl:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       )}
     >
-      <span className={cn("flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full", TONE_TILE[card.tone])}>
+      <span className={cn("flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full xl:h-9 xl:w-9 2xl:h-10 2xl:w-10", TONE_TILE[card.tone])}>
         <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
         <p className="truncate text-[13px] font-medium text-foreground">{card.label}</p>
         <div className="mt-1 flex items-end justify-between gap-2">
-          <p className={cn("font-bold tabular-nums tracking-tight text-foreground", card.valueText ? "text-[26px] leading-8" : "text-sm leading-8 text-muted-foreground")}>
+          <p className={cn("font-bold tabular-nums tracking-tight text-foreground", card.valueText ? "text-[26px] leading-8 xl:text-2xl 2xl:text-[26px]" : "text-sm leading-8 text-muted-foreground")}>
             {card.valueText ?? "Sin datos"}
           </p>
           <Sparkline card={card} />

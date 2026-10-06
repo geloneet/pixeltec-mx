@@ -8,9 +8,9 @@ import { EmptyState, WidgetError } from "./states";
 function Column({ col }: { col: PipelineColumn }) {
   const tone = TONE_COLUMN[col.tone];
   return (
-    <div className={cn("flex min-w-[200px] snap-start flex-col rounded-lg p-2.5", tone.column)}>
+    <div className={cn("flex min-w-[124px] snap-start flex-col rounded-lg p-2", tone.column)}>
       <div className="mb-2 flex items-center justify-between px-1">
-        <h3 className={cn("truncate text-[13px] font-semibold", tone.title)}>{col.label}</h3>
+        <h3 className={cn("truncate text-xs font-semibold", tone.title)}>{col.label}</h3>
         <span className="text-xs font-medium tabular-nums text-muted-foreground">{col.count}</span>
       </div>
       <ul role="list" aria-label={`Etapa ${col.label}, ${col.count} ${col.count === 1 ? "oportunidad" : "oportunidades"}`} className="flex flex-col gap-2">
@@ -18,7 +18,7 @@ function Column({ col }: { col: PipelineColumn }) {
           <li key={card.id}>
             <Link
               href={card.href}
-              className="block rounded-md border border-border bg-card px-3 py-2 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              className="block rounded-md border border-border bg-card px-2.5 py-1.5 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
             >
               <span className="block truncate text-[13px] font-medium text-foreground">{card.name}</span>
               {card.amountText && <span className="block text-xs tabular-nums text-muted-foreground">{card.amountText}</span>}
@@ -52,7 +52,7 @@ export function PipelineBoard({ result }: { result: WidgetResult<{ columns: Pipe
       ) : result.data.total === 0 ? (
         <EmptyState>Aún no hay oportunidades en el pipeline.</EmptyState>
       ) : (
-        <div className="-mx-1 grid snap-x auto-cols-[minmax(200px,1fr)] grid-flow-col gap-3 overflow-x-auto px-1 pb-1">
+        <div className="-mx-1 grid snap-x auto-cols-[minmax(124px,1fr)] grid-flow-col gap-2 overflow-x-auto px-1 pb-1">
           {result.data.columns.map((col) => (
             <Column key={col.id} col={col} />
           ))}

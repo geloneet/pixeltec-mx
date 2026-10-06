@@ -89,7 +89,7 @@
   /* ── Panel «Centro Comercial» (WO-2026-00515) ────────────────────────────
      Tokens ACOTADOS al admin: la clase `.crm` vive en el <div> raíz del Shell
      de src/app/(admin)/layout.tsx. `:root`/`.dark` (sitio público) no cambian.
-     Contraste AA medido (WCAG 2.x, script en la evidencia de la WO):
+     Contraste AA medido (WCAG 2.x, `node scripts/wo515-contrast-check.mjs`):
        claro  foreground/background 17.6 · muted-fg/card 5.6 · muted-fg/bg 5.2
               blanco/primary 5.5 · primary/card 5.5 · primary/sidebar-accent 5.0
        oscuro foreground/background 18.2 · muted-fg/card 7.1

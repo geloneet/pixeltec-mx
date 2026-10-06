@@ -77,13 +77,13 @@ export function UserMenu() {
               </div>
             )}
           </div>
-          <span className="hidden min-w-0 flex-col leading-tight xl:flex">
+          <span className="hidden min-w-0 flex-col leading-tight 2xl:flex">
             <span className="max-w-[140px] truncate text-[13px] font-semibold text-foreground">
               {user.displayName ?? user.email ?? "Usuario"}
             </span>
             {roleLabel && <span className="text-[11px] text-muted-foreground">{roleLabel}</span>}
           </span>
-          <ChevronDown className="hidden h-4 w-4 text-muted-foreground xl:block" aria-hidden />
+          <ChevronDown className="hidden h-4 w-4 text-muted-foreground 2xl:block" aria-hidden />
         </button>
       </DropdownMenuTrigger>
 

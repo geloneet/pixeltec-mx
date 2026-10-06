@@ -212,7 +212,7 @@ export function AppSidebar({
   return (
     <aside
       className={cn(
-        "w-[232px] flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-3 py-5",
+        "w-[256px] flex-shrink-0 flex-col border-r border-sidebar-border bg-sidebar px-3 py-5",
         className
       )}
       aria-label="Navegación principal"
@@ -242,12 +242,14 @@ export function AppSidebar({
                 <div
                   aria-disabled="true"
                   title={`${item.label}: próximamente`}
-                  className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground/70"
+                  className="flex cursor-not-allowed items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground"
                 >
                   <Icon className="h-[18px] w-[18px] flex-shrink-0" strokeWidth={1.75} aria-hidden />
-                  <span className="flex-1 truncate">{item.label}</span>
-                  <span className="rounded-md bg-muted px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted-foreground">
-                    Pronto
+                  <span className="flex min-w-0 flex-1 items-center gap-1.5">
+                    <span className="truncate">{item.label}</span>
+                    <span className="flex-shrink-0 rounded bg-muted px-1 py-px text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">
+                      Pronto
+                    </span>
                   </span>
                 </div>
               </li>

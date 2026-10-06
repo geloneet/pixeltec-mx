@@ -14,13 +14,13 @@ export function CobrosPanel({ result }: { result: WidgetResult<CobroRow[]> }) {
       ) : (
         <ul className="flex flex-col">
           {result.data.map((row) => (
-            <li key={row.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-3 border-t border-border py-2.5 first:border-t-0">
-              <span className="min-w-0">
-                <span className="block truncate text-[13px] font-semibold text-foreground">{row.clientName}</span>
-                <span className="block truncate text-xs text-muted-foreground">{row.concept}</span>
+            <li key={row.id} className="grid grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 border-t border-border py-2.5 first:border-t-0">
+              <span className="min-w-0 truncate text-[13px] font-semibold text-foreground" title={`${row.clientName} · ${row.concept}`}>
+                {row.clientName}
+                <span className="sr-only"> · {row.concept}</span>
               </span>
-              <span className="whitespace-nowrap text-[13px] font-medium tabular-nums text-foreground">{row.amountText}</span>
-              <ToneChip tone={row.chip.tone}>{row.chip.label}</ToneChip>
+              <span className="whitespace-nowrap text-xs font-medium tabular-nums text-foreground">{row.amountText}</span>
+              <ToneChip tone={row.chip.tone} className="px-1.5 text-[11px]">{row.chip.label}</ToneChip>
             </li>
           ))}
         </ul>

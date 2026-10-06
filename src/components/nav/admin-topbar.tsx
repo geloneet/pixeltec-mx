@@ -43,7 +43,7 @@ export function AdminTopbar({
         type="button"
         onClick={() => setOpen(true)}
         aria-label="Abrir buscador"
-        className="flex h-10 min-w-0 max-w-[480px] flex-1 items-center gap-2.5 rounded-lg border border-border bg-muted/50 px-3 text-left text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        className="flex h-10 min-w-[180px] max-w-[440px] flex-1 items-center gap-2.5 rounded-lg border border-border bg-muted/50 px-3 text-left text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       >
         <Search className="h-4 w-4 flex-shrink-0" aria-hidden />
         <span className="min-w-0 flex-1 truncate text-[13px]">Buscar clientes, conversaciones, cotizaciones...</span>
@@ -52,7 +52,7 @@ export function AdminTopbar({
         </kbd>
       </button>
 
-      <div className="flex min-w-0 flex-1 justify-center">
+      <div className="flex min-w-0 flex-shrink-0 justify-center xl:mx-auto">
         {onHoy && (
           <Suspense fallback={null}>
             <HoyViewTabs className="hidden xl:block" />
@@ -60,7 +60,7 @@ export function AdminTopbar({
         )}
       </div>
 
-      <div className="flex flex-shrink-0 items-center gap-3">
+      <div className="ml-auto flex flex-shrink-0 items-center gap-3">
         {canQuote && <NuevaCotizacionButton />}
         <NotificationsMenu />
         <UserMenu />

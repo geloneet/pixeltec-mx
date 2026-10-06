@@ -56,7 +56,7 @@ function Shell({
             conserva TopNavigation completo, sin cambios (ver más abajo). */}
         <AppSidebar activeArea={activeArea} className="hidden lg:flex" />
 
-        <div className="flex h-full min-h-0 flex-1 flex-col">
+        <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
           {/* Mobile: rail horizontal original, intacto. */}
           <div className="lg:hidden">
             <TopNavigation />

@@ -28,7 +28,7 @@ export function HoySkeleton() {
           </div>
         ))}
       </div>
-      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,3fr)_minmax(300px,1fr)]">
+      <div className="grid grid-cols-1 gap-5 xl:grid-cols-[minmax(0,1fr)_320px] 2xl:grid-cols-[minmax(0,1fr)_360px]">
         <div className={cn(CARD, "flex flex-col gap-4 p-5")}>
           <Bone className="h-5 w-40" />
           {Array.from({ length: 5 }, (_, i) => (

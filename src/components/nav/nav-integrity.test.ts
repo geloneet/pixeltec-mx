@@ -30,6 +30,7 @@ function routeExists(href: string): boolean {
   return [
     path.join(APP_DIR, rel, "page.tsx"),
     path.join(APP_DIR, "(admin)", rel, "page.tsx"),
+    path.join(APP_DIR, "(public)", rel, "page.tsx"),
   ].some((p) => fs.existsSync(p));
 }
 

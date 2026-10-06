@@ -9,7 +9,7 @@ import { getSitePage } from './page-schema';
  * así que se leen como texto (patrón `home-wiring.test.ts`). El segmento
  * propio del title va ≤ 49 porque el layout raíz añade « | PixelTEC» (11).
  */
-const APP = resolve(__dirname, '..', '..', 'app');
+const APP = resolve(__dirname, '..', '..', 'app', '(public)');
 
 function metaOf(file: string): { title: string; description: string } {
   const src = readFileSync(file, 'utf8');

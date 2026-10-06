@@ -1,0 +1,81 @@
+{
+  "date": "2026-10-03",
+  "method": "Lighthouse 13.5.0, Chrome 154, sequential local simulated runs; no UA/score-specific behavior. Other Chrome processes and WindowServer under load. No claim of causal isolation or field performance.",
+  "runs": [
+    {
+      "run": "mobile-es",
+      "url": "http://127.0.0.1:4317/",
+      "score": 76,
+      "lcp_ms": 2593.347,
+      "tbt_ms": 932.0000000000002,
+      "cls": 0,
+      "bytes": 412138,
+      "warnings": []
+    },
+    {
+      "run": "mobile-en",
+      "url": "http://127.0.0.1:4317/en/",
+      "score": 67,
+      "lcp_ms": 3382.0438499999996,
+      "tbt_ms": 1206.0000000000005,
+      "cls": 0,
+      "bytes": 412041,
+      "warnings": []
+    },
+    {
+      "run": "final-mobile-en",
+      "url": "http://127.0.0.1:4317/en/",
+      "score": 66,
+      "lcp_ms": 3161.44045,
+      "tbt_ms": 1611.7599250000003,
+      "cls": 0,
+      "bytes": 411729,
+      "warnings": []
+    },
+    {
+      "run": "final-mobile-es",
+      "url": "http://127.0.0.1:4317/",
+      "score": 86,
+      "lcp_ms": 3167.4813999999997,
+      "tbt_ms": 292,
+      "cls": 0,
+      "bytes": 412138,
+      "warnings": []
+    },
+    {
+      "run": "previous-mobile-control",
+      "url": "http://127.0.0.1:56668/",
+      "score": 87,
+      "lcp_ms": 2997.61305,
+      "tbt_ms": 326.397825,
+      "cls": 0,
+      "bytes": 386617,
+      "warnings": []
+    },
+    {
+      "run": "confirmation-mobile-en",
+      "url": "http://127.0.0.1:4317/en/",
+      "score": 88,
+      "lcp_ms": 3168.9938,
+      "tbt_ms": 236.5,
+      "cls": 0,
+      "bytes": 411729,
+      "warnings": []
+    },
+    {
+      "run": "final-desktop-es",
+      "url": "http://127.0.0.1:4317/",
+      "score": 100,
+      "lcp_ms": 650.5868,
+      "tbt_ms": 1,
+      "cls": 0,
+      "bytes": 399636,
+      "warnings": []
+    }
+  ],
+  "notes": [
+    "mobile-en was before data-dc-static correction; final-mobile-en and confirmation-mobile-en include it.",
+    "Control uses the previous optimized Desktop armazon copy, unchanged HTML verified by source hash. Temporary listener on 56668 stopped after the control.",
+    "Final CSS caption positioning affects only about pages; performance runs precede this interior-only correction."
+  ]
+}

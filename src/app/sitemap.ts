@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import publicPages from "@/components/public-site/generated/pages.json";
 import { getPublishedPosts } from "@/lib/blog/queries/posts";
 import { publishDueScheduledPosts } from "@/lib/blog-cms/queries";
 import { SITE } from "@/lib/site-config";
@@ -60,6 +61,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/terminos-de-servicio`,      lastModified: new Date('2026-04-01'), changeFrequency: "yearly",  priority: 0.3 },
     { url: `${BASE_URL}/data-deletion`,             lastModified: new Date('2026-04-01'), changeFrequency: "yearly",  priority: 0.2 },
   ];
+
+  staticRoutes.push(...Object.keys(publicPages).filter(path=>path.startsWith('/casos-de-exito')).map(path=>({url:BASE_URL+path,lastModified:new Date('2026-10-05'),changeFrequency:'monthly' as const,priority:0.7})));
 
   const serviceRoutes: MetadataRoute.Sitemap = servicesSlugs.map((slug) => ({
     url: `${BASE_URL}/services/${slug}`,

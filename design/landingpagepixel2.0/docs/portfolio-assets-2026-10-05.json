@@ -1,0 +1,344 @@
+{
+  "villa-nogal": {
+    "source": "Villa Nogal_ Refugio Boutique de Lujo (1).png",
+    "sha256": "e7e68387236d04b87c1088f82cb00e792dedfbcb6e59aa552019850f463c7484",
+    "variants": [
+      {
+        "src": "/assets/projects/villa-nogal-640.webp",
+        "width": 640,
+        "height": 400,
+        "bytes": 36342
+      },
+      {
+        "src": "/assets/projects/villa-nogal-1280.webp",
+        "width": 1280,
+        "height": 801,
+        "bytes": 92704
+      }
+    ]
+  },
+  "dalk": {
+    "source": "Elegancia escultural con faja premium.png",
+    "sha256": "9ac8d2003ee19f6a2bfa0e3bc5fefd3b95df9afd639c8070bd9057730ae62c5d",
+    "variants": [
+      {
+        "src": "/assets/projects/dalk-640.webp",
+        "width": 640,
+        "height": 400,
+        "bytes": 14566
+      },
+      {
+        "src": "/assets/projects/dalk-1280.webp",
+        "width": 1280,
+        "height": 801,
+        "bytes": 38250
+      }
+    ]
+  },
+  "barro-stock": {
+    "source": "barrostock_portfolio_filtro (1).png",
+    "sha256": "97ad9b7b460abedbba5f173f42c9ec67abfe6744f4012a1d98eb4b6445e20353",
+    "variants": [
+      {
+        "src": "/assets/projects/barro-stock-640.webp",
+        "width": 640,
+        "height": 429,
+        "bytes": 37798
+      },
+      {
+        "src": "/assets/projects/barro-stock-1280.webp",
+        "width": 1280,
+        "height": 857,
+        "bytes": 110480
+      }
+    ]
+  },
+  "smile-more": {
+    "source": "Sonríe más_ clínica dental moderna.png",
+    "sha256": "307a3efa24ab7340859801b5e3a00e2afa281601458ef2a98302ac7c3ff7c99c",
+    "variants": [
+      {
+        "src": "/assets/projects/smile-more-640.webp",
+        "width": 640,
+        "height": 438,
+        "bytes": 21550
+      },
+      {
+        "src": "/assets/projects/smile-more-1280.webp",
+        "width": 1280,
+        "height": 876,
+        "bytes": 50294
+      }
+    ]
+  },
+  "velank": {
+    "source": "velank_portfolio_filtro.png",
+    "sha256": "4d5f11dbef2de7acf0503b9e272aa117c5a7eb5da6cb80db1abd9f482166a2ba",
+    "variants": [
+      {
+        "src": "/assets/projects/velank-640.webp",
+        "width": 640,
+        "height": 423,
+        "bytes": 15496
+      },
+      {
+        "src": "/assets/projects/velank-1280.webp",
+        "width": 1280,
+        "height": 846,
+        "bytes": 36256
+      }
+    ]
+  },
+  "transportes-sanchez-jr": {
+    "source": "transportes_sanchez_jr_portfolio_filtro.png",
+    "sha256": "97d04e64be49a60b7e9316013e28700338660210bbba2a57ef28b06a34856d1a",
+    "variants": [
+      {
+        "src": "/assets/projects/transportes-sanchez-jr-640.webp",
+        "width": 640,
+        "height": 442,
+        "bytes": 30794
+      },
+      {
+        "src": "/assets/projects/transportes-sanchez-jr-1280.webp",
+        "width": 1280,
+        "height": 884,
+        "bytes": 82382
+      }
+    ]
+  },
+  "materiales-de-barro": {
+    "source": "materiales_de_barro_sanchez_portfolio_filtro.png",
+    "sha256": "f1b1506acfaf26e3802fbcd9cbeba4547bf1f787953809ebd17a01ed8041c0d3",
+    "variants": [
+      {
+        "src": "/assets/projects/materiales-de-barro-640.webp",
+        "width": 640,
+        "height": 432,
+        "bytes": 26832
+      },
+      {
+        "src": "/assets/projects/materiales-de-barro-1280.webp",
+        "width": 1280,
+        "height": 864,
+        "bytes": 62752
+      }
+    ]
+  },
+  "subsify-es-01-home": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/01-home.png",
+    "sha256": "8305c1d91fdc1e4304392b7132b71f3d14ec8082da6a9a7e1c555c511240fbbf",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-01-home-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 45782
+      },
+      {
+        "src": "/assets/projects/subsify-es-01-home-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 104106
+      }
+    ]
+  },
+  "subsify-es-02-spending": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/02-spending.png",
+    "sha256": "bfe228d607d612d1a0f1980da4c28031e55d3d5219e9538811af476bc8f98374",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-02-spending-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 42444
+      },
+      {
+        "src": "/assets/projects/subsify-es-02-spending-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 96564
+      }
+    ]
+  },
+  "subsify-es-03-calendar": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/03-calendar.png",
+    "sha256": "37836fe6ad9778b9a6befef1d1e7b32712da664bdb3ad7cb54f08c8bf40305d9",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-03-calendar-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 34892
+      },
+      {
+        "src": "/assets/projects/subsify-es-03-calendar-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 80148
+      }
+    ]
+  },
+  "subsify-es-04-family": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/04-family.png",
+    "sha256": "8e21b4d43e83ff1d5e05888af1b00f6850db94778768175fbf3ec39d580c75a2",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-04-family-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 36830
+      },
+      {
+        "src": "/assets/projects/subsify-es-04-family-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 85254
+      }
+    ]
+  },
+  "subsify-es-05-detail": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/05-detail.png",
+    "sha256": "da14ea905f11d45f12a71f1458e24092bed0cd24b853f7e892fe9a7b2ff1c24f",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-05-detail-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 32414
+      },
+      {
+        "src": "/assets/projects/subsify-es-05-detail-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 72286
+      }
+    ]
+  },
+  "subsify-es-06-search": {
+    "source": "Subsify-AppStore-1.1-ES-EN/es-MX/iphone/06-search.png",
+    "sha256": "1339967aa3634635e7de61bb862fe35c93e27e2cbf6e40cf18f5111fd11746ee",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-es-06-search-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 30022
+      },
+      {
+        "src": "/assets/projects/subsify-es-06-search-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 70154
+      }
+    ]
+  },
+  "subsify-en-01-home": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/01-home.png",
+    "sha256": "cd01514d198b6c467bc82ccd14ff3a88d66d7c087eef7a957c35472f68788607",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-01-home-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 44686
+      },
+      {
+        "src": "/assets/projects/subsify-en-01-home-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 103782
+      }
+    ]
+  },
+  "subsify-en-02-spending": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/02-spending.png",
+    "sha256": "1b0e0853eac4371a04923b054c510689989ac922b9e433e878c0ccfe0a99b137",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-02-spending-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 42536
+      },
+      {
+        "src": "/assets/projects/subsify-en-02-spending-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 95472
+      }
+    ]
+  },
+  "subsify-en-03-calendar": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/03-calendar.png",
+    "sha256": "9967b9e2f8cb73b23ab06a00d1dc9291eefe3cf435005dbd803297f8f8a13ffb",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-03-calendar-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 35252
+      },
+      {
+        "src": "/assets/projects/subsify-en-03-calendar-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 80592
+      }
+    ]
+  },
+  "subsify-en-04-family": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/04-family.png",
+    "sha256": "09140ffdacb216c90777cbda56feafcee0b211377133232d862ea4cb046cc477",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-04-family-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 34334
+      },
+      {
+        "src": "/assets/projects/subsify-en-04-family-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 79600
+      }
+    ]
+  },
+  "subsify-en-05-detail": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/05-detail.png",
+    "sha256": "627573de794296b59410c64b7e33b1b6aa1e9dd62faaa3de26e2d0e0330b8638",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-05-detail-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 31430
+      },
+      {
+        "src": "/assets/projects/subsify-en-05-detail-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 69762
+      }
+    ]
+  },
+  "subsify-en-06-search": {
+    "source": "Subsify-AppStore-1.1-ES-EN/en-US/iphone/06-search.png",
+    "sha256": "51980f14f2553dc5584890b15987da62df6b3f86f4df8b591586d03a5bf1ae3b",
+    "variants": [
+      {
+        "src": "/assets/projects/subsify-en-06-search-480.webp",
+        "width": 480,
+        "height": 1043,
+        "bytes": 29244
+      },
+      {
+        "src": "/assets/projects/subsify-en-06-search-960.webp",
+        "width": 960,
+        "height": 2086,
+        "bytes": 69002
+      }
+    ]
+  }
+}

@@ -1,0 +1,427 @@
+{
+  "date": "2026-10-03",
+  "preview": "noindex,nofollow; robots Disallow /",
+  "production": "Not deployed. Keep existing Spanish URLs; canonicalize slash aliases with one permanent redirect in the production router only.",
+  "routes": [
+    {
+      "existing": "https://pixeltec.mx",
+      "spanish": "/",
+      "english": "/en/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/services",
+      "spanish": "/services/",
+      "english": "/en/services/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/pixelbot",
+      "spanish": "/pixelbot/",
+      "english": "/en/pixelbot/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog",
+      "spanish": "/blog/",
+      "english": "/en/blog/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/industrias",
+      "spanish": "/industrias/",
+      "english": "/en/industrias/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/diagnostico",
+      "spanish": "/diagnostico/",
+      "english": "/en/diagnostico/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/about",
+      "spanish": "/about/",
+      "english": "/en/about/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/equipo",
+      "spanish": "/equipo/",
+      "english": "/en/equipo/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/contact",
+      "spanish": "/contact/",
+      "english": "/en/contact/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/aviso-de-privacidad",
+      "spanish": "/aviso-de-privacidad/",
+      "english": "/en/aviso-de-privacidad/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/terminos-de-servicio",
+      "spanish": "/terminos-de-servicio/",
+      "english": "/en/terminos-de-servicio/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/data-deletion",
+      "spanish": "/data-deletion/",
+      "english": "/en/data-deletion/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/services/ecosistemas-web",
+      "spanish": "/services/ecosistemas-web/",
+      "english": "/en/services/ecosistemas-web/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/services/automatizacion",
+      "spanish": "/services/automatizacion/",
+      "english": "/en/services/automatizacion/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/services/consultoria",
+      "spanish": "/services/consultoria/",
+      "english": "/en/services/consultoria/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/industrias/clinicas-dentales",
+      "spanish": "/industrias/clinicas-dentales/",
+      "english": "/en/industrias/clinicas-dentales/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/industrias/hoteles",
+      "spanish": "/industrias/hoteles/",
+      "english": "/en/industrias/hoteles/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-guadalajara",
+      "spanish": "/automatizacion-guadalajara/",
+      "english": "/en/automatizacion-guadalajara/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-zapopan",
+      "spanish": "/automatizacion-zapopan/",
+      "english": "/en/automatizacion-zapopan/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-puerto-vallarta",
+      "spanish": "/automatizacion-puerto-vallarta/",
+      "english": "/en/automatizacion-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-bahia-de-banderas",
+      "spanish": "/automatizacion-bahia-de-banderas/",
+      "english": "/en/automatizacion-bahia-de-banderas/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-web-guadalajara",
+      "spanish": "/desarrollo-web-guadalajara/",
+      "english": "/en/desarrollo-web-guadalajara/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-web-zapopan",
+      "spanish": "/desarrollo-web-zapopan/",
+      "english": "/en/desarrollo-web-zapopan/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-web-puerto-vallarta",
+      "spanish": "/desarrollo-web-puerto-vallarta/",
+      "english": "/en/desarrollo-web-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-web-bahia-de-banderas",
+      "spanish": "/desarrollo-web-bahia-de-banderas/",
+      "english": "/en/desarrollo-web-bahia-de-banderas/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/consultoria-guadalajara",
+      "spanish": "/consultoria-guadalajara/",
+      "english": "/en/consultoria-guadalajara/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/consultoria-zapopan",
+      "spanish": "/consultoria-zapopan/",
+      "english": "/en/consultoria-zapopan/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/consultoria-puerto-vallarta",
+      "spanish": "/consultoria-puerto-vallarta/",
+      "english": "/en/consultoria-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/consultoria-bahia-de-banderas",
+      "spanish": "/consultoria-bahia-de-banderas/",
+      "english": "/en/consultoria-bahia-de-banderas/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/empresas-de-desarrollo-de-software",
+      "spanish": "/empresas-de-desarrollo-de-software/",
+      "english": "/en/empresas-de-desarrollo-de-software/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/empresas-de-desarrollo-de-software-puerto-vallarta",
+      "spanish": "/empresas-de-desarrollo-de-software-puerto-vallarta/",
+      "english": "/en/empresas-de-desarrollo-de-software-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/programador-de-software",
+      "spanish": "/programador-de-software/",
+      "english": "/en/programador-de-software/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/programador-de-software-puerto-vallarta",
+      "spanish": "/programador-de-software-puerto-vallarta/",
+      "english": "/en/programador-de-software-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/sistemas-a-medida",
+      "spanish": "/sistemas-a-medida/",
+      "english": "/en/sistemas-a-medida/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/sistemas-a-medida-puerto-vallarta",
+      "spanish": "/sistemas-a-medida-puerto-vallarta/",
+      "english": "/en/sistemas-a-medida-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/software-a-medida-para-empresas",
+      "spanish": "/software-a-medida-para-empresas/",
+      "english": "/en/software-a-medida-para-empresas/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/software-a-medida-para-empresas-puerto-vallarta",
+      "spanish": "/software-a-medida-para-empresas-puerto-vallarta/",
+      "english": "/en/software-a-medida-para-empresas-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/sistema-personalizado-para-empresas",
+      "spanish": "/sistema-personalizado-para-empresas/",
+      "english": "/en/sistema-personalizado-para-empresas/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/sistema-personalizado-para-empresas-puerto-vallarta",
+      "spanish": "/sistema-personalizado-para-empresas-puerto-vallarta/",
+      "english": "/en/sistema-personalizado-para-empresas-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatiza-tu-negocio",
+      "spanish": "/automatiza-tu-negocio/",
+      "english": "/en/automatiza-tu-negocio/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatiza-tu-negocio-puerto-vallarta",
+      "spanish": "/automatiza-tu-negocio-puerto-vallarta/",
+      "english": "/en/automatiza-tu-negocio-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp",
+      "spanish": "/automatizar-mensajes-de-whatsapp/",
+      "english": "/en/automatizar-mensajes-de-whatsapp/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+      "spanish": "/automatizar-mensajes-de-whatsapp-puerto-vallarta/",
+      "english": "/en/automatizar-mensajes-de-whatsapp-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizar-whatsapp-business",
+      "spanish": "/automatizar-whatsapp-business/",
+      "english": "/en/automatizar-whatsapp-business/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizar-whatsapp-business-puerto-vallarta",
+      "spanish": "/automatizar-whatsapp-business-puerto-vallarta/",
+      "english": "/en/automatizar-whatsapp-business-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp",
+      "spanish": "/automatizacion-de-mensajes-en-whatsapp/",
+      "english": "/en/automatizacion-de-mensajes-en-whatsapp/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+      "spanish": "/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta/",
+      "english": "/en/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrolladores-de-app",
+      "spanish": "/desarrolladores-de-app/",
+      "english": "/en/desarrolladores-de-app/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrolladores-de-app-puerto-vallarta",
+      "spanish": "/desarrolladores-de-app-puerto-vallarta/",
+      "english": "/en/desarrolladores-de-app-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-de-app",
+      "spanish": "/desarrollo-de-app/",
+      "english": "/en/desarrollo-de-app/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-de-app-puerto-vallarta",
+      "spanish": "/desarrollo-de-app-puerto-vallarta/",
+      "english": "/en/desarrollo-de-app-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrolladores-de-apps",
+      "spanish": "/desarrolladores-de-apps/",
+      "english": "/en/desarrolladores-de-apps/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrolladores-de-apps-puerto-vallarta",
+      "spanish": "/desarrolladores-de-apps-puerto-vallarta/",
+      "english": "/en/desarrolladores-de-apps-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles",
+      "spanish": "/desarrollo-de-aplicaciones-moviles/",
+      "english": "/en/desarrollo-de-aplicaciones-moviles/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+      "spanish": "/desarrollo-de-aplicaciones-moviles-puerto-vallarta/",
+      "english": "/en/desarrollo-de-aplicaciones-moviles-puerto-vallarta/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico",
+      "spanish": "/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",
+      "english": "/en/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real",
+      "spanish": "/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+      "english": "/en/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+      "spanish": "/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa/",
+      "english": "/en/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+      "spanish": "/blog/agente-de-ia-en-whatsapp-para-mi-negocio/",
+      "english": "/en/blog/agente-de-ia-en-whatsapp-para-mi-negocio/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    },
+    {
+      "existing": "https://pixeltec.mx/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+      "spanish": "/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero/",
+      "english": "/en/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero/",
+      "action": "preserve-slug",
+      "redirectRequired": false
+    }
+  ]
+}

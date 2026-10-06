@@ -237,3 +237,11 @@ npm install
 cp .env.local.example .env.local   # completar variables locales
 npm run dev                         # http://localhost:3000
 ```
+
+## Website público integrado (WO-2026-00509)
+
+El diseño aprobado se sirve desde `src/app/(public)` con layout persistente; el panel privado conserva sus rutas. `/casos-de-exito` es el portafolio y `/proyectos` sigue privado. El blog y la captura de diagnósticos conservan sus consultas y acciones productivas.
+
+La presentación generada en `src/components/public-site/generated` se versiona. Para actualizarla desde el diseño: ejecutar el build de `design/landingpagepixel2.0`, luego `node scripts/public-site/compile-home.mjs`, `node scripts/public-site/compile-home.mjs --en` y `node scripts/public-site/compile-pages.mjs`. Personalizaciones de integración: `overrides.css`; no editar `public.css` generado. El build Next consume esos artefactos directamente, sin intérprete de plantillas.
+
+Validación y límites: [expediente WO-509](docs/evidencias/wo509/integracion.md). Checklist de publicación: `node docs/operacion-web/servidor.mjs` en localhost:4870. Se conserva el procedimiento VPS gobernado descrito arriba; el prototipo no se publica como sustituto de Next.

@@ -1,0 +1,1262 @@
+[
+  {
+    "path": "/",
+    "requestedWidth": 320,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 320,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 320,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 320,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 320,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 320,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 320,
+    "width": 320
+  },
+  {
+    "path": "/",
+    "requestedWidth": 390,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 390,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 390,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 390,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 390,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 390,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 390,
+    "width": 390
+  },
+  {
+    "path": "/",
+    "requestedWidth": 768,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 768,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 768,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 768,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 768,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 768,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "none",
+    "scrollWidth": 768,
+    "width": 768
+  },
+  {
+    "path": "/",
+    "requestedWidth": 1024,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 1024,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 1024,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 1024,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 1024,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 1024,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1024,
+    "width": 1024
+  },
+  {
+    "path": "/",
+    "requestedWidth": 1280,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 1280,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 1280,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 1280,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 1280,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 1280,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1280,
+    "width": 1280
+  },
+  {
+    "path": "/",
+    "requestedWidth": 1840,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  },
+  {
+    "path": "/en/",
+    "requestedWidth": 1840,
+    "headerBackground": null,
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  },
+  {
+    "path": "/about/",
+    "requestedWidth": 1840,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  },
+  {
+    "path": "/en/about/",
+    "requestedWidth": 1840,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": true,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  },
+  {
+    "path": "/services/",
+    "requestedWidth": 1840,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/",
+        "label": "Inicio."
+      },
+      {
+        "href": "/about/",
+        "label": "Nosotros."
+      },
+      {
+        "href": "/services/",
+        "label": "Servicios."
+      },
+      {
+        "href": "/industrias/",
+        "label": "Industrias."
+      },
+      {
+        "href": "/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/contact/",
+        "label": "Contacto."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  },
+  {
+    "path": "/en/services/",
+    "requestedWidth": 1840,
+    "headerBackground": "rgb(255, 255, 255)",
+    "illustrationInside": null,
+    "links": [
+      {
+        "href": "/en/",
+        "label": "Home."
+      },
+      {
+        "href": "/en/about/",
+        "label": "About."
+      },
+      {
+        "href": "/en/services/",
+        "label": "Services."
+      },
+      {
+        "href": "/en/industrias/",
+        "label": "Industries."
+      },
+      {
+        "href": "/en/blog/",
+        "label": "Blog."
+      },
+      {
+        "href": "/en/contact/",
+        "label": "Contact."
+      }
+    ],
+    "navDisplay": "grid",
+    "scrollWidth": 1840,
+    "width": 1840
+  }
+]

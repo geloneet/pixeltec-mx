@@ -1,0 +1,27 @@
+{
+  "name": "pixeltec-public-design-shell",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "build": "tsc && node build.mjs",
+    "preview": "node serve.mjs",
+    "verify": "npm run build && node verify.mjs && node --test server.test.mjs seo-localization.test.mjs diagnostic.test.mjs && node performance-budget.mjs && node quality-audit.mjs && node release-check.mjs --report-only",
+    "release:check": "npm run build && node release-check.mjs"
+  },
+  "devDependencies": {
+    "esbuild": "0.28.2",
+    "linkedom": "0.18.12",
+    "sharp": "0.35.5",
+    "typescript": "5.9.3",
+    "zod": "4.6.5"
+  },
+  "dependencies": {
+    "lenis": "1.1.13",
+    "matter-js": "0.19.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.184.0"
+  }
+}

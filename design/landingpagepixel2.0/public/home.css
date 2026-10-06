@@ -1,0 +1,43 @@
+/* Same inset cream header as the supplied home, with enough room for its logo on mobile. */
+@media(max-width:900px){
+  [data-pixel-home] header{grid-template-columns:1fr auto!important;height:80px!important}
+  [data-pixel-home] header>nav{display:none!important}
+  [data-pixel-home] header>a{padding:0 12px!important;font-size:24px!important;gap:7px!important}
+  [data-pixel-home] header>a svg{width:28px!important}
+  [data-pixel-home] header>div>div{display:none!important}
+  [data-pixel-home] header>div>a{padding:0 16px!important;font-size:14px!important}
+  [data-pixel-home] header button{width:53px!important;padding-right:15px!important}
+}
+@media(max-width:360px){
+  [data-pixel-home] header>a{padding:0 10px!important;font-size:22px!important;gap:6px!important}
+  [data-pixel-home] header>a svg{width:24px!important}
+  [data-pixel-home] header>div>a{padding:0 12px!important;font-size:13px!important}
+  [data-pixel-home] header button{width:48px!important;padding-right:12px!important}
+}
+/* CSS owns layout before and after hydration; the content is never viewport-dependent. */
+[data-pixel-home]{--home-about-cols:3;--home-nav-display:flex;--home-social-display:flex;--home-svc-cols:60px minmax(0,1.1fr) minmax(0,1fr);--home-svc-img-col:auto;--home-why-cols:minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr);--home-why-photo-span:auto;--home-why-photo-row:auto;--home-foot-cols:4;--home-proj-top-cols:2;--home-proj-bottom-cols:3;--home-blog-cols:4;--home-t-basis:calc((100% - 72px)/4)}
+[data-pixel-home] :where(a,button):focus-visible{outline:3px solid #5c9bff;outline-offset:5px}
+[data-pixel-home] section{scroll-margin-top:110px}
+[data-pixel-home] .home-pills{min-height:70px}
+@media(max-width:1199px){[data-pixel-home]{--home-t-basis:calc((100% - 48px)/3)}}
+@media(max-width:1099px){[data-pixel-home]{--home-why-cols:repeat(2,minmax(0,1fr));--home-why-photo-span:1 / -1;--home-why-photo-row:2;--home-blog-cols:2}}
+@media(max-width:999px){[data-pixel-home]{--home-svc-cols:48px minmax(0,1fr);--home-svc-img-col:2 / -1;--home-foot-cols:2}}
+@media(max-width:959px){[data-pixel-home]{--home-about-cols:1}}
+@media(max-width:899px){[data-pixel-home]{--home-nav-display:none}}
+@media(max-width:859px){[data-pixel-home]{--home-t-basis:calc((100% - 24px)/2)}}
+@media(max-width:759px){[data-pixel-home]{--home-proj-bottom-cols:1}}
+@media(max-width:699px){[data-pixel-home]{--home-why-cols:minmax(0,1fr)}}
+@media(max-width:639px){
+ [data-pixel-home]{--home-svc-cols:minmax(0,1fr);--home-svc-img-col:auto;--home-proj-top-cols:1;--home-blog-cols:1}
+ [data-pixel-home] .home-pills>div:not(:last-child){gap:6px!important}
+ [data-pixel-home] .home-pills [data-pill]{font-size:9px!important;padding:5px 9px!important;gap:6px!important;transform:none!important;touch-action:auto!important;cursor:default!important}
+ [data-pixel-home] .home-intro{margin-top:36px!important}
+ [data-pixel-home] .home-intro>div{margin-top:26px!important}
+ [data-pixel-home] .home-intro a{font-size:13px!important;padding:17px 20px!important}
+}
+@media(max-width:599px){[data-pixel-home]{--home-t-basis:100%}}
+@media(max-width:559px){[data-pixel-home]{--home-foot-cols:1;--home-social-display:none}}
+@media(prefers-reduced-motion:reduce){[data-pixel-home] #nosotros h2 span{background-size:100% 100%!important}}
+
+[data-pixel-home] .home-founder img{object-position:right top}
+#home-menu>div>p{color:#b9b6af!important}

@@ -1,0 +1,1 @@
+export function enter(element:HTMLElement|null|undefined){if(!element||matchMedia('(prefers-reduced-motion: reduce)').matches)return;element.animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:320,easing:'cubic-bezier(.22,1,.36,1)'});}

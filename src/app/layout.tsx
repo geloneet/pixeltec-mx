@@ -67,7 +67,7 @@ export default async function RootLayout({
 }>) {
   const nonce = (await headers()).get('x-nonce') ?? undefined;
   return (
-    <html lang="es-MX" className={cn('scroll-smooth', poppins.variable, roboto.variable, leagueSpartan.variable)} suppressHydrationWarning>
+    <html data-scroll-behavior="smooth" lang="es-MX" className={cn('scroll-smooth', poppins.variable, roboto.variable, leagueSpartan.variable)} suppressHydrationWarning>
       <body className={cn('font-body antialiased min-h-screen bg-background text-foreground')}>
         <ThemeProvider nonce={nonce}>
           <OrganizationStructuredData />

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200;12..96,400;12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500&family=Outfit:wght@800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+<style>
+body{margin:0;background:#0b0b0a;color:#f2efe8;font-family:'Bricolage Grotesque',sans-serif;-webkit-font-smoothing:antialiased}
+a{color:#f2efe8;text-decoration:none}a:hover{color:#1466ff}
+@keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes nlUp{from{transform:translateY(0)}to{transform:translateY(-50%)}}
+@keyframes nlDown{from{transform:translateY(-50%)}to{transform:translateY(0)}}
+@keyframes orb{to{transform:rotate(360deg)}}
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}
+</style>
+</helmet>
+<div style="min-height:100vh;background:#0b0b0a;overflow-x:clip">
+
+<div style="position:sticky;top:0;z-index:99999;padding:0 clamp(12px,4vw,56px)">
+<header style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:stretch;height:96px;background:#f2efe8;color:#0b0b0a;border-radius:0 0 16px 16px;overflow:hidden">
+  <nav style="display:{{ navDisplay }};flex-wrap:wrap;align-items:center;align-content:center;row-gap:6px;column-gap:clamp(14px,2.2vw,32px);padding:0 clamp(16px,2.4vw,36px);font-size:16px;font-weight:600;letter-spacing:.02em;text-transform:uppercase">
+    <a href="#servicios" style="color:#0b0b0a" style-hover="color:#1466ff">Servicios.</a><a href="#proyectos" style="color:#0b0b0a" style-hover="color:#1466ff">Proyectos.</a><a href="#proyectos" style="color:#0b0b0a" style-hover="color:#1466ff">Industrias.</a><a href="#nosotros" style="color:#0b0b0a" style-hover="color:#1466ff">Nosotros.</a>
+  </nav>
+  <a href="#" style="display:flex;align-items:center;gap:10px;padding:0 16px;font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(24px,2.6vw,36px);letter-spacing:-.025em;color:#0b0b0a"><svg viewBox="0 0 40 44" style="width:clamp(28px,2.6vw,38px);height:auto;display:block" aria-hidden="true"><polygon points="20,2 38,12 20,22 2,12" fill="#5c9bff"></polygon><polygon points="2,12 20,22 20,42 2,32" fill="#1466ff"></polygon><polygon points="20,22 38,12 38,32 20,42" fill="#0a4fd6"></polygon><g stroke="#0b0b0a" stroke-width="1.2" fill="none" opacity=".55"><path d="M11,7 29,17 M29,7 11,17"></path><path d="M8,15.3 8,35.3 M14,18.7 14,38.7 M2,18.7 20,28.7 M2,25.3 20,35.3"></path><path d="M26,18.7 26,38.7 M32,15.3 32,35.3 M20,28.7 38,18.7 M20,35.3 38,25.3"></path></g></svg>PixelTEC</a>
+  <div style="display:flex;align-items:stretch;justify-content:flex-end">
+    <div style="display:{{ socialDisplay }};align-items:center;gap:clamp(12px,1.6vw,24px);padding:0 clamp(12px,2vw,32px);font-size:16px;font-weight:600;text-transform:uppercase">
+      <a href="#" style="color:#0b0b0a" style-hover="color:#1466ff">FB.</a><a href="#" style="color:#0b0b0a" style-hover="color:#1466ff">IG.</a><a href="https://api.whatsapp.com/send?phone=523221378336" style="color:#0b0b0a" style-hover="color:#1466ff">WA.</a>
+    </div>
+    <a href="#contacto" style="display:flex;align-items:center;padding:0 clamp(18px,2vw,30px);background:#1466ff;color:#ffffff;font-weight:700;font-size:17px" style-hover="background:#0b0b0a;color:#f2efe8">Hablemos</a>
+    <button aria-label="Menú" onClick="{{ openMenu }}" style="display:flex;flex-direction:column;align-items:flex-end;justify-content:center;gap:5px;width:96px;border:0;background:transparent;cursor:pointer;padding:0 24px 0 0">
+      <span style="display:block;width:24px;height:2px;background:#0b0b0a"></span><span style="display:block;width:16px;height:2px;background:#0b0b0a"></span><span style="display:block;width:24px;height:2px;background:#0b0b0a"></span>
+    </button>
+  </div>
+</header>
+</div>
+
+<section style="position:relative;isolation:isolate;max-width:1440px;margin:0 auto;padding:clamp(40px,5vw,72px) clamp(12px,4vw,56px) clamp(40px,4vw,64px)">
+  <canvas ref="{{ sandRef }}" aria-hidden="true" style="position:absolute;z-index:-1;top:-120px;height:calc(100% + 120px);left:50%;width:100vw;transform:translateX(-50%);pointer-events:none;display:block"></canvas>
+  <div ref="{{ pillsRef }}" style="position:relative;z-index:1;isolation:isolate;display:flex;flex-direction:column;gap:6px;align-items:center;padding:0">
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:10px 18px"><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;transform:rotate(9deg) translateY(8px)"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Automatización IA</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Next.js</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>WhatsApp IA</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Apps a la medida</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;transform:rotate(-8deg) translateY(-6px)"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>CRM</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Consultoría TI</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;transform:rotate(12deg) translateY(6px)"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>UI/UX</span></div>
+    <div style="display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-end;gap:10px"><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Desarrollo Web</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Firebase</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Soporte TI</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Bots</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Software a la medida</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Transformación digital</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>React</span><span data-pill="1" style="cursor:grab;touch-action:none;user-select:none;position:relative;display:inline-flex;align-items:center;gap:10px;padding:6px 16px;border:1.5px solid #f2efe8;border-radius:999px;background:#0b0b0a;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap;"><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span>Diagnóstico</span></div>
+    <div style="align-self:stretch;height:5px;border-top:1px solid #f2efe8;border-bottom:1px solid #f2efe8;margin-top:6px"></div>
+  </div>
+  <div style="position:relative;margin-top:clamp(48px,7vw,110px)">
+    <h1 style="position:relative;z-index:2;margin:0;font-size:clamp(40px,10.4vw,160px);line-height:.84;letter-spacing:-.03em;text-transform:uppercase;display:flex;flex-direction:column;align-items:flex-start"><span style="font-weight:800">Soluciones</span><span style="font-weight:300;font-size:.9em;letter-spacing:.015em;line-height:1;margin-top:.1em">Tecnológicas</span></h1>
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:clamp(32px,4vw,64px)">
+      <div style="flex:1 1 380px;min-width:0;max-width:640px;padding-bottom:8px;align-self:flex-start;margin-top:clamp(80px,8.5vw,136px)">
+      <p style="margin:0;font-weight:700;font-size:clamp(24px,2.6vw,40px);line-height:1.15;letter-spacing:-.02em;position:relative;text-wrap:pretty">Desarrollo Web y Apps. Automatización con IA. Desde Puerto Vallarta para todo México.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:40px">
+        <a href="#contacto" style="padding:20px 32px;border-radius:6px;background:#1466ff;color:#ffffff;font-weight:700;font-size:16px;text-transform:uppercase;letter-spacing:.02em" style-hover="background:#f2efe8;color:#0b0b0a">Iniciar diagnóstico</a>
+        <a href="https://api.whatsapp.com/send?phone=523221378336" style="padding:20px 32px;border-radius:6px;border:1px solid #3a3833;font-weight:600;font-size:16px;text-transform:uppercase;letter-spacing:.02em" style-hover="border-color:#f2efe8">Hablar con un especialista</a>
+      </div>
+    </div>
+  
+      <div ref="{{ cubeRef }}" aria-label="Visual PixelTEC" style="flex:1 1 clamp(320px,50%,760px);min-width:min(100%,320px);max-width:760px;margin-top:clamp(-220px,-14vw,-60px);top:clamp(-170px,-9vw,-50px);margin-bottom:clamp(-300px,-17vw,-80px);margin-right:clamp(-180px,-9vw,-40px);aspect-ratio:1/1;position:relative;z-index:3"></div>
+    </div>
+  </div>
+</section>
+
+<div style="border-top:1px solid #22211e;border-bottom:1px solid #22211e;margin-top:clamp(24px,3vw,48px);padding:22px 0;overflow:hidden">{{ marquee }}</div>
+
+<section id="nosotros" style="background:#ffffff;color:#0b0b0a;padding:clamp(80px,10vw,150px) clamp(20px,4vw,56px)">
+  <div style="max-width:1280px;margin:0 auto;display:flex;flex-direction:column;align-items:center;gap:clamp(32px,4vw,56px);text-align:center">
+    <p style="margin:0;font-weight:800;font-size:clamp(30px,4.4vw,68px);line-height:1.08;letter-spacing:-.035em;text-transform:uppercase;text-wrap:balance"><span ref="{{ revealRef }}" style="color:transparent;-webkit-background-clip:text;background-clip:text;background-color:#dedbd4;background-image:linear-gradient(#0b0b0a,#0b0b0a);background-repeat:no-repeat;background-size:0% 100%">Somos arquitectos de tu transformación digital. Combinamos consultoría TI, inteligencia artificial y desarrollo a la medida para que tu empresa opere y escale sin fricción.</span></p>
+    <a href="#contacto" style="color:#0b0b0a;font-weight:600;font-size:17px;border-bottom:1px solid #1466ff;padding-bottom:4px" style-hover="color:#1466ff">Más sobre nosotros →</a>
+    <div style="align-self:stretch;margin-top:clamp(24px,4vw,64px);display:grid;grid-template-columns:repeat({{ aboutCols }},minmax(0,1fr));gap:clamp(16px,2vw,30px);text-align:left">
+      <sc-for list="{{ aboutCards }}" as="ac" hint-placeholder-count="3">
+        <div style="display:flex;flex-direction:column;padding:clamp(28px,3vw,44px) clamp(24px,2.4vw,40px) clamp(32px,3.2vw,52px);border-radius:12px;background:#f4f4f4;min-height:clamp(380px,30vw,520px);box-sizing:border-box">
+          <span style="font-weight:700;font-size:18px">{{ ac.n }}</span>
+          <h3 style="margin:auto 0 24px;padding-top:clamp(60px,7vw,120px);font-weight:800;font-size:clamp(24px,2.1vw,34px);line-height:1.15;letter-spacing:-.025em;text-transform:uppercase;text-wrap:balance">{{ ac.t }}</h3>
+          <p style="margin:0;max-width:420px;font-size:17px;line-height:1.75;color:#4a4740;text-wrap:pretty">{{ ac.d }}</p>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="servicios" style="background:#ffffff;padding:0;content-visibility:auto;contain-intrinsic-size:auto 1000px">
+  <div style="background:#000000;color:#ffffff;border-radius:clamp(24px,2.6vw,40px);padding:clamp(70px,7vw,120px) clamp(20px,4vw,56px)">
+    <div style="max-width:1300px;margin:0 auto">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:clamp(48px,5vw,80px)">
+        <h2 style="margin:0;font-weight:800;font-size:clamp(64px,8vw,128px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase">Servicios</h2>
+        <a href="#contacto" style="padding:11px 22px;border:1px solid #2a2a2a;border-radius:999px;font-weight:700;font-size:17px;text-transform:uppercase;color:#5c9bff" style-hover="background:#1466ff;border-color:#1466ff;color:#ffffff">Ver todos los servicios</a>
+      </div>
+      <sc-for list="{{ svc }}" as="sv" hint-placeholder-count="4">
+        <div style="display:grid;grid-template-columns:{{ svcCols }};gap:clamp(20px,3vw,48px);padding:clamp(28px,3vw,36px) 0;border-bottom:1px solid #1f1f1f;align-items:start">
+          <span style="font-size:20px;font-weight:500;padding-top:8px">{{ sv.n }}</span>
+          <div style="min-width:0">
+            <h3 style="margin:0 0 24px;font-weight:800;font-size:clamp(32px,3.4vw,52px);line-height:1;letter-spacing:-.04em;text-transform:uppercase;text-wrap:balance">{{ sv.t }}</h3>
+            <p style="margin:0 0 clamp(28px,3.5vw,60px);max-width:420px;font-size:17px;line-height:1.65;color:#a8a49b;text-wrap:pretty">{{ sv.d }}</p>
+            <div style="display:flex;flex-wrap:wrap;gap:12px"><sc-for list="{{ sv.tags }}" as="tg" hint-placeholder-count="3"><span style="padding:8px 18px;border:1px solid #2a2a2a;border-radius:999px;font-size:15px;font-weight:600">{{ tg }}</span></sc-for></div>
+          </div>
+          <div style="grid-column:{{ svcImgCol }};display:flex;gap:clamp(16px,2vw,32px);align-items:flex-start;min-width:0">
+            <div style="flex:2 1 0;min-width:0;aspect-ratio:4/3;border-radius:8px;background:repeating-linear-gradient(135deg,#141414 0 14px,#1a1a1a 14px 28px);display:flex;align-items:flex-end;padding:14px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:11px;color:#5a5852">[ foto&nbsp;{{ sv.n }}&nbsp;]</div>
+            <div style="flex:1 1 0;min-width:0;aspect-ratio:1/1;border-radius:8px;background:repeating-linear-gradient(135deg,#141414 0 14px,#1a1a1a 14px 28px)"></div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="por-que" style="background:#ffffff;color:#0b0b0a;padding:clamp(70px,8vw,120px) clamp(20px,4vw,56px);content-visibility:auto;contain-intrinsic-size:auto 1000px">
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:clamp(48px,6vw,110px)">
+      <h2 style="margin:0;font-weight:800;font-size:clamp(56px,7vw,112px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase">Por qué<br>nosotros</h2>
+      <p style="margin:0;max-width:480px;font-size:clamp(17px,1.4vw,21px);line-height:1.5;text-wrap:pretty">Tecnología confiable, escalable y segura, diseñada para que tu empresa opere con eficiencia y se adapte rápido.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:{{ whyCols }};gap:clamp(24px,3vw,48px);align-items:stretch">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <sc-for list="{{ whyStats }}" as="st" hint-placeholder-count="3">
+          <div style="flex:1;position:relative;padding:clamp(28px,2.6vw,44px);border:1px solid #e2e0db;border-radius:10px;background:#f1f1f0">
+            <div style="font-weight:800;font-size:clamp(56px,5.4vw,84px);line-height:1;letter-spacing:-.05em">{{ st.n }}<span style="font-weight:300">{{ st.suf }}</span></div>
+            <div style="margin-top:12px;font-size:clamp(18px,1.5vw,22px);font-weight:500">{{ st.label }}</div>
+            <span style="position:absolute;right:16px;bottom:16px;width:12px;height:12px;background:#1466ff"></span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="grid-column:{{ whyPhotoSpan }};grid-row:{{ whyPhotoRow }};min-height:420px;border-radius:10px;background:repeating-linear-gradient(135deg,#e6e4df 0 14px,#dedcd6 14px 28px);display:flex;align-items:flex-end;padding:20px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:12px;color:#6f6b62">[ foto equipo PixelTEC ]</div>
+      <div style="display:flex;flex-direction:column;justify-content:space-between">
+        <sc-for list="{{ whyItems }}" as="wi" hint-placeholder-count="4">
+          <div style="padding:clamp(18px,2vw,28px) 0;border-bottom:1px solid #d8d6d0">
+            <h3 style="margin:0 0 16px;font-weight:700;font-size:clamp(22px,1.8vw,28px);letter-spacing:-.015em">{{ wi.t }}</h3>
+            <p style="margin:0;font-size:16px;line-height:1.75;color:#4a4740;text-wrap:pretty">{{ wi.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos" style="background:#ffffff;padding:0;content-visibility:auto;contain-intrinsic-size:auto 1000px">
+  <div style="background:#000000;color:#ffffff;border-radius:clamp(24px,2.6vw,40px);overflow:hidden;padding:clamp(60px,6vw,96px) 0 clamp(60px,6vw,90px);position:relative">
+    <div style="overflow:hidden">{{ projMarquee }}</div>
+    <div style="max-width:1440px;margin:0 auto;padding:0 clamp(20px,4vw,56px)">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;margin:clamp(40px,5vw,72px) 0 32px;font-weight:600;font-size:18px"><span>// Ayudamos a empresas a operar y crecer con tecnología.</span><span>©2026</span></div>
+      <div style="border:1px solid #1f1f1f;border-radius:16px;overflow:hidden">
+        <div style="display:grid;grid-template-columns:repeat({{ projTopCols }},minmax(0,1fr));margin:0 -1px -1px 0">
+        <sc-for list="{{ projTop }}" as="p" hint-placeholder-count="2">
+          <a href="#" style="display:flex;flex-direction:column;gap:24px;padding:clamp(16px,1.6vw,30px);border-right:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;color:#ffffff;min-width:0" style-hover="color:#5c9bff">
+            <div style="aspect-ratio:16/10;border-radius:14px;background:repeating-linear-gradient(135deg,#141414 0 14px,#1a1a1a 14px 28px);display:flex;align-items:flex-end;padding:18px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5a5852">[ captura&nbsp;{{ p.name }}&nbsp;]</div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+              <span style="display:flex;align-items:center;gap:12px;font-weight:600;font-size:clamp(22px,2vw,32px);letter-spacing:-.02em"><span style="font-weight:300;color:#6f6b62">+</span>{{ p.name }}</span>
+              <span style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ p.tags }}" as="tg" hint-placeholder-count="2"><span style="padding:7px 14px;border:1px solid #2a2a2a;border-radius:999px;font-size:14px;font-weight:600;color:#ffffff">{{ tg }}</span></sc-for></span>
+            </div>
+          </a>
+        </sc-for>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat({{ projBottomCols }},minmax(0,1fr));margin:0 -1px -1px 0">
+        <sc-for list="{{ projBottom }}" as="p" hint-placeholder-count="3">
+          <a href="#" style="display:flex;flex-direction:column;gap:24px;padding:clamp(16px,1.6vw,30px);border-right:1px solid #1f1f1f;border-bottom:1px solid #1f1f1f;color:#ffffff;min-width:0" style-hover="color:#5c9bff">
+            <div style="aspect-ratio:1/1;border-radius:14px;background:repeating-linear-gradient(135deg,#141414 0 14px,#1a1a1a 14px 28px);display:flex;align-items:flex-end;padding:18px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:12px;color:#5a5852">[ captura&nbsp;{{ p.name }}&nbsp;]</div>
+            <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+              <span style="display:flex;align-items:center;gap:12px;font-weight:600;font-size:clamp(22px,2vw,32px);letter-spacing:-.02em"><span style="font-weight:300;color:#6f6b62">+</span>{{ p.name }}</span>
+              <span style="display:flex;flex-wrap:wrap;gap:8px"><sc-for list="{{ p.tags }}" as="tg" hint-placeholder-count="2"><span style="padding:7px 14px;border:1px solid #2a2a2a;border-radius:999px;font-size:14px;font-weight:600;color:#ffffff">{{ tg }}</span></sc-for></span>
+            </div>
+          </a>
+        </sc-for>
+        </div>
+      </div>
+      <div style="position:relative;display:flex;justify-content:center;align-items:center;margin-top:clamp(56px,6vw,90px);min-height:260px">
+        <div aria-hidden="true" style="position:absolute;left:0;bottom:0;width:60px;height:100px">
+          <span style="position:absolute;left:8px;top:0;width:34px;height:34px;background:#ffffff;transform:rotate(45deg)"></span>
+          <span style="position:absolute;left:12px;top:48px;width:34px;height:34px;background:#1466ff;transform:rotate(45deg)"></span>
+        </div>
+        <a href="#" style="position:relative;width:254px;height:254px;border-radius:50%;border:1px solid #262626;display:flex;align-items:center;justify-content:center;color:#ffffff;font-weight:700;font-size:18px;letter-spacing:.02em;transition:background .35s,color .35s" style-hover="background:#1466ff;border-color:#1466ff;color:#ffffff">{{ orbitDot }}<span style="position:relative">VER TODOS</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="background:#ffffff;color:#0b0b0a;padding:clamp(80px,9vw,130px) clamp(20px,4vw,56px) clamp(40px,4vw,60px);content-visibility:auto;contain-intrinsic-size:auto 1000px">
+  <div style="max-width:1440px;margin:0 auto;position:relative">
+    <div aria-hidden="true" style="position:absolute;top:8px;right:clamp(0px,3vw,48px);width:64px;height:56px">
+      <span style="position:absolute;left:0;top:0;width:30px;height:30px;background:#1466ff;transform:rotate(-18deg)"></span>
+      <span style="position:absolute;left:28px;top:20px;width:30px;height:30px;background:#0b0b0a;transform:rotate(-18deg)"></span>
+    </div>
+    <h2 style="margin:0 auto clamp(48px,6vw,80px);max-width:960px;padding:0 clamp(0px,9vw,96px);box-sizing:border-box;text-align:center;font-weight:700;font-size:clamp(34px,4.2vw,64px);line-height:1.1;letter-spacing:-.03em;text-wrap:balance">Empresas que ya escalaron con nosotros</h2>
+    <div onMouseEnter="{{ tPause }}" onMouseLeave="{{ tResume }}" style="overflow:hidden;margin:-8px;padding:8px">
+    <div style="display:flex;gap:24px;transform:{{ tTransform }};transition:transform .8s cubic-bezier(.65,0,.25,1)">
+      <sc-for list="{{ tAll }}" as="t" hint-placeholder-count="4">
+        <article style="flex:0 0 {{ tBasis }};display:flex;flex-direction:column;gap:24px;padding:clamp(28px,2.4vw,40px) clamp(24px,2vw,32px);border-radius:16px;background:#f4f3f0;min-height:440px;box-sizing:border-box">
+          <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">★★★★★</div>
+          <h3 style="margin:0;font-weight:700;font-size:clamp(20px,1.6vw,24px);line-height:1.25;letter-spacing:-.01em;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px;text-wrap:pretty">{{ t.title }}</h3>
+          <p style="margin:0;font-size:16px;line-height:1.75;color:#4a4740;text-wrap:pretty">{{ t.text }}</p>
+          <div style="margin-top:auto;display:flex;align-items:center;gap:14px">
+            <div style="width:56px;height:56px;flex:none;border-radius:8px;background:#1466ff;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:18px;letter-spacing:.02em">{{ t.ini }}</div>
+            <div><div style="font-weight:700;font-size:18px">{{ t.name }}</div><div style="font-size:14px;color:#3a3833;margin-top:2px">{{ t.role }}</div></div>
+          </div>
+        </article>
+      </sc-for>
+    </div>
+    </div>
+    <div style="display:flex;justify-content:center;margin-top:48px">
+      <div style="display:flex;gap:10px;padding:10px 16px;border-radius:999px;background:#f4f3f0">
+        <sc-for list="{{ tDots }}" as="d" hint-placeholder-count="2">
+          <button aria-label="{{ d.label }}" onClick="{{ d.go }}" style="width:10px;height:10px;padding:0;border:0;border-radius:50%;background:{{ d.bg }};cursor:pointer"></button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="blog" style="background:#ffffff;color:#0b0b0a;padding:clamp(24px,2.5vw,40px) clamp(20px,4vw,56px) clamp(80px,9vw,130px);margin-bottom:clamp(80px,10vw,140px);content-visibility:auto;contain-intrinsic-size:auto 1000px">
+    <div style="position:relative;overflow:hidden;border-radius:clamp(24px,2.6vw,40px);background:#000000;color:#ffffff;min-height:clamp(420px,32vw,560px);display:flex;align-items:center;margin:0 calc(-1 * clamp(20px,4vw,56px)) clamp(80px,9vw,130px)">
+      <div style="position:absolute;top:-60%;bottom:-60%;right:-4%;width:min(46%,640px);transform:rotate(32deg);transform-origin:center;pointer-events:none" aria-hidden="true">{{ nlColumns }}</div>
+      <div style="position:absolute;inset:0;background:linear-gradient(90deg,#000000 38%,rgba(0,0,0,.6) 55%,rgba(0,0,0,0) 72%);pointer-events:none"></div>
+      <div style="position:relative;z-index:1;padding:clamp(40px,6vw,96px) clamp(24px,4vw,56px) clamp(40px,6vw,96px) max(clamp(24px,6vw,96px), calc(50% - 720px + 96px));max-width:640px;box-sizing:content-box">
+        <h3 style="margin:0 0 clamp(32px,3.5vw,56px);font-weight:700;font-size:clamp(32px,3.2vw,50px);line-height:1.18;letter-spacing:-.025em;text-wrap:balance">Ideas tecnológicas frescas, directo a tu correo</h3>
+        <form onSubmit="{{ subscribe }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:16px;padding:18px 18px 18px 28px;border-radius:8px;background:#141414">
+          <input type="email" required="" placeholder="Tu correo" aria-label="Correo electrónico" style="flex:1 1 220px;min-width:0;padding:14px 4px;border:0;border-bottom:1px solid #3a3833;background:transparent;color:#ffffff;font:inherit;font-size:16px;outline:none"></input>
+          <button type="submit" style="padding:16px 30px;border:0;border-radius:999px;background:#1466ff;color:#ffffff;font:inherit;font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.02em;cursor:pointer" style-hover="background:#ffffff;color:#0b0b0a">{{ subLabel }}</button>
+        </form>
+      </div>
+    </div>
+  <div style="max-width:1440px;margin:0 auto">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:32px;margin-bottom:clamp(48px,6vw,90px)">
+      <h2 style="margin:0;font-weight:800;font-size:clamp(64px,8vw,128px);line-height:.85;letter-spacing:-.05em;text-transform:uppercase">Blog</h2>
+      <p style="margin:0;max-width:480px;font-size:clamp(17px,1.4vw,21px);line-height:1.5;text-wrap:pretty">Ideas, guías y casos reales sobre IA, desarrollo y transformación digital para que tu empresa decida con claridad.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat({{ blogCols }},minmax(0,1fr));gap:24px">
+      <sc-for list="{{ posts }}" as="b" hint-placeholder-count="4">
+        <a href="#" style="display:flex;flex-direction:column;gap:24px;padding:28px 26px 26px;border:1px solid #e4e1da;border-radius:14px;color:#0b0b0a;min-height:460px;box-sizing:border-box" style-hover="border-color:#1466ff">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap"><span>{{ b.cat }}</span><span style="width:6px;height:6px;border-radius:50%;background:#1466ff"></span><span>{{ b.date }}</span></div>
+          <div style="font-weight:700;font-size:24px;line-height:1.3;letter-spacing:-.015em;text-wrap:pretty">{{ b.title }}</div>
+          <p style="margin:0;font-size:16px;line-height:1.7;color:#3a3833;text-wrap:pretty">{{ b.excerpt }}</p>
+          <div style="margin-top:auto;width:62%;aspect-ratio:6/5;border-radius:12px;background:repeating-linear-gradient(135deg,#efede8 0 12px,#e6e3dc 12px 24px);display:flex;align-items:flex-end;padding:12px;box-sizing:border-box;font-family:'JetBrains Mono',monospace;font-size:11px;color:#6f6b62">[ foto ]</div>
+        </a>
+      </sc-for>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" style="padding:0 clamp(20px,4vw,56px) clamp(80px,10vw,140px);content-visibility:auto;contain-intrinsic-size:auto 1000px">
+  <div style="max-width:1320px;margin:0 auto;display:flex;flex-wrap:wrap;gap:clamp(40px,5vw,80px);align-items:stretch;box-sizing:border-box">
+    <div style="flex:1 1 340px;min-width:0;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:28px">
+      <img src="assets/desarrollador-codigo-sinfondo.png" alt="Desarrollador de PixelTEC sosteniendo una pantalla de código" style="width:clamp(220px,24vw,360px);height:auto;display:block;margin:-6% 0 -4%"></img>
+      <h2 style="margin:0;font-weight:700;font-size:clamp(32px,3.4vw,52px);line-height:1.15;letter-spacing:-.025em;text-wrap:balance">Cuéntanos qué está frenando tu operación y lo resolvemos juntos.</h2>
+      <div style="display:flex;gap:14px">
+        <a href="#" aria-label="Facebook" style="width:56px;height:56px;border-radius:6px;background:#ffffff;color:#0b0b0a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px" style-hover="background:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:24px;height:24px;flex:none;display:block" fill="currentColor" aria-hidden="true"><path d="M13.5 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.6 1.6-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.4v3.2h2.7v8z"></path></svg></a>
+        <a href="#" aria-label="Instagram" style="width:56px;height:56px;border-radius:6px;background:#ffffff;color:#0b0b0a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px" style-hover="background:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:24px;height:24px;flex:none;display:block" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.4" cy="6.6" r="1.25" fill="currentColor" stroke="none"></circle></svg></a>
+        <a href="https://api.whatsapp.com/send?phone=523221378336" aria-label="WhatsApp" style="width:56px;height:56px;border-radius:6px;background:#ffffff;color:#0b0b0a;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px" style-hover="background:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:24px;height:24px;flex:none;display:block" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg></a>
+      </div>
+    </div>
+    <div style="border-radius:10px;background:#ffffff;color:#0b0b0a;padding:clamp(32px,4vw,64px);box-sizing:border-box;flex:1.25 1 480px;min-width:0;min-height:clamp(420px,38vw,600px);display:flex;flex-direction:column">
+      <div style="font-size:20px;font-weight:500;margin-bottom:6px">Diagnóstico inteligente</div>
+      <div style="font-weight:800;font-size:clamp(34px,3.6vw,56px);line-height:1.05;letter-spacing:-.03em;margin-bottom:auto;padding-bottom:40px;text-wrap:pretty">¿Tienes un proyecto en mente?</div>
+      <p style="margin:0 0 16px;font-size:19px;line-height:1.5">Responde 4 preguntas y comparte tus datos: revisamos tu caso y te proponemos un siguiente paso claro, sin soluciones genéricas.</p>
+      <p style="margin:0 0 32px;font-size:16px;line-height:1.5;color:#5c5850">En menos de 3 minutos analizaremos tu situación actual y prepararemos una sesión mucho más productiva.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px">
+        <a href="#" style="padding:20px 32px;border-radius:6px;background:#1466ff;color:#ffffff;font-weight:700;font-size:17px" style-hover="background:#0b0b0a;color:#ffffff">Comenzar →</a>
+        <a href="https://api.whatsapp.com/send?phone=523221378336" style="padding:20px 32px;border-radius:6px;border:1px solid #0b0b0a;color:#0b0b0a;font-weight:600;font-size:17px" style-hover="background:#0b0b0a;color:#f2efe8">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer style="position:relative;isolation:isolate;background:#000000;color:#ffffff">
+  <canvas ref="{{ sand2Ref }}" aria-hidden="true" style="position:absolute;z-index:-1;inset:0;width:100%;height:100%;pointer-events:none;display:block"></canvas>
+  <div style="display:flex;flex-wrap:wrap">
+    <div style="flex:1 1 100%;min-width:0;overflow:hidden;padding:clamp(56px,6vw,110px) clamp(20px,4vw,56px) 0">
+      <div style="max-width:1440px;margin:0 auto;display:grid;grid-template-columns:repeat({{ footCols }},minmax(0,1fr));gap:clamp(32px,4vw,64px)">
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <span style="font-weight:700;font-size:20px">Sobre PixelTEC</span>
+          <p style="margin:0;max-width:360px;font-size:16px;line-height:1.75;color:#a8a49b;text-wrap:pretty">Consultoría TI, inteligencia artificial y desarrollo a la medida para que pymes y empresas de todo México operen y escalen sin fricción.</p>
+          <div style="display:flex;gap:12px"><a href="#" aria-label="Facebook" style="width:48px;height:48px;border-radius:50%;border:1.5px solid #3a3a3e;color:#ffffff;display:flex;align-items:center;justify-content:center" style-hover="background:#1466ff;border-color:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:20px;height:20px;flex:none;display:block" fill="currentColor" aria-hidden="true"><path d="M13.5 21.5v-8h2.7l.4-3.2h-3.1V8.3c0-.9.3-1.6 1.6-1.6h1.7V3.9c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.2H7.4v3.2h2.7v8z"></path></svg></a><a href="#" aria-label="Instagram" style="width:48px;height:48px;border-radius:50%;border:1.5px solid #3a3a3e;color:#ffffff;display:flex;align-items:center;justify-content:center" style-hover="background:#1466ff;border-color:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:20px;height:20px;flex:none;display:block" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5.2"></rect><circle cx="12" cy="12" r="4.1"></circle><circle cx="17.4" cy="6.6" r="1.25" fill="currentColor" stroke="none"></circle></svg></a><a href="https://api.whatsapp.com/send?phone=523221378336" aria-label="WhatsApp" style="width:48px;height:48px;border-radius:50%;border:1.5px solid #3a3a3e;color:#ffffff;display:flex;align-items:center;justify-content:center" style-hover="background:#1466ff;border-color:#1466ff;color:#ffffff"><svg viewBox="0 0 24 24" style="width:20px;height:20px;flex:none;display:block" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"></path></svg></a></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <span style="font-weight:700;font-size:20px">Nuestros servicios</span>
+          <div style="display:flex;flex-direction:column;gap:16px;font-size:16px"><a href="#servicios" style="color:#a8a49b" style-hover="color:#ffffff">Automatización con IA</a><a href="#servicios" style="color:#a8a49b" style-hover="color:#ffffff">Desarrollo Web &amp; Apps</a><a href="#servicios" style="color:#a8a49b" style-hover="color:#ffffff">WhatsApp IA</a><a href="#servicios" style="color:#a8a49b" style-hover="color:#ffffff">Consultoría TI</a><a href="#servicios" style="color:#a8a49b" style-hover="color:#ffffff">Soporte TI</a></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <span style="font-weight:700;font-size:20px">Enlaces rápidos</span>
+          <div style="display:flex;flex-direction:column;gap:16px;font-size:16px"><a href="#nosotros" style="color:#a8a49b" style-hover="color:#ffffff">Nosotros</a><a href="#proyectos" style="color:#a8a49b" style-hover="color:#ffffff">Proyectos</a><a href="#blog" style="color:#a8a49b" style-hover="color:#ffffff">Blog</a><a href="#contacto" style="color:#a8a49b" style-hover="color:#ffffff">Contacto</a></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <span style="font-weight:700;font-size:20px">Contacto</span>
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:16px"><a href="tel:+523221378336" style="color:#ffffff" style-hover="color:#5c9bff">+52 (322) 137-8336</a><a href="https://api.whatsapp.com/send?phone=523221378336" style="color:#ffffff" style-hover="color:#5c9bff">WhatsApp directo</a></div>
+          <span style="font-weight:700;font-size:20px;margin-top:8px">Oficina</span>
+          <span style="font-size:16px;line-height:1.7;color:#a8a49b">Puerto Vallarta, Jalisco,<br>México</span>
+        </div>
+      </div>
+      <div style="max-width:1440px;margin:clamp(48px,5vw,80px) auto 0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;border-top:1px solid #1c1d22;padding-top:clamp(32px,3vw,48px)">
+        <div aria-hidden="true" style="flex:1 1 50%;min-width:0;font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(64px,11.5vw,210px);line-height:.78;letter-spacing:-.05em;color:#1466ff;margin-bottom:-.12em;white-space:nowrap">PixelTEC</div>
+        <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right;padding-bottom:clamp(24px,2.5vw,40px);font-size:16px;font-weight:600;text-wrap:balance"><span>© 2026 PixelTEC. Todos los derechos reservados.</span><a href="#" style="color:#a8a49b;font-weight:500" style-hover="color:#ffffff">Aviso de Privacidad</a></div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div onClick="{{ closeMenu }}" style="position:fixed;inset:0;z-index:100000;background:rgba(11,11,10,.55);backdrop-filter:{{ overlayBlur }};opacity:{{ overlayOpacity }};pointer-events:{{ overlayEvents }};transition:opacity .35s ease"></div>
+<aside aria-label="Menú" style="position:fixed;top:0;right:0;bottom:0;z-index:100001;width:min(420px,88vw);background:#000000;color:#ffffff;border-left:2px solid #1466ff;box-sizing:border-box;padding:32px clamp(24px,3vw,40px) 40px;display:flex;flex-direction:column;gap:36px;overflow-y:auto;transform:{{ drawerTransform }};transition:transform .45s cubic-bezier(.2,.8,.2,1)">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:16px">
+    <a href="#" style="display:flex;align-items:center;gap:10px;font-family:'Outfit',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.025em;color:#ffffff"><svg viewBox="0 0 40 44" style="width:clamp(28px,2.6vw,38px);height:auto;display:block" aria-hidden="true"><polygon points="20,2 38,12 20,22 2,12" fill="#5c9bff"></polygon><polygon points="2,12 20,22 20,42 2,32" fill="#1466ff"></polygon><polygon points="20,22 38,12 38,32 20,42" fill="#0a4fd6"></polygon><g stroke="#000000" stroke-width="1.2" fill="none" opacity=".55"><path d="M11,7 29,17 M29,7 11,17"></path><path d="M8,15.3 8,35.3 M14,18.7 14,38.7 M2,18.7 20,28.7 M2,25.3 20,35.3"></path><path d="M26,18.7 26,38.7 M32,15.3 32,35.3 M20,28.7 38,18.7 M20,35.3 38,25.3"></path></g></svg>PixelTEC</a>
+    <button aria-label="Cerrar menú" onClick="{{ closeMenu }}" style="width:46px;height:46px;flex:none;border-radius:50%;border:0;background:#1466ff;color:#ffffff;font-size:22px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center" style-hover="background:#ffffff;color:#1466ff">×</button>
+  </div>
+  <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <nav style="display:flex;flex-direction:column">
+      <a href="#servicios" onClick="{{ closeMenu }}" style="padding:16px 0;border-bottom:1px solid #3a3833;color:#ffffff;font-weight:700;font-size:18px;text-transform:uppercase" style-hover="color:#5c9bff">Servicios.</a>
+      <a href="#proyectos" onClick="{{ closeMenu }}" style="padding:16px 0;border-bottom:1px solid #3a3833;color:#ffffff;font-weight:700;font-size:18px;text-transform:uppercase" style-hover="color:#5c9bff">Proyectos.</a>
+      <a href="#proyectos" onClick="{{ closeMenu }}" style="padding:16px 0;border-bottom:1px solid #3a3833;color:#ffffff;font-weight:700;font-size:18px;text-transform:uppercase" style-hover="color:#5c9bff">Industrias.</a>
+      <a href="#nosotros" onClick="{{ closeMenu }}" style="padding:16px 0;border-bottom:1px solid #3a3833;color:#ffffff;font-weight:700;font-size:18px;text-transform:uppercase" style-hover="color:#5c9bff">Nosotros.</a>
+      <a href="#contacto" onClick="{{ closeMenu }}" style="padding:16px 0;border-bottom:1px solid #3a3833;color:#ffffff;font-weight:700;font-size:18px;text-transform:uppercase" style-hover="color:#5c9bff">Contacto.</a>
+    </nav>
+  </sc-if>
+  <p style="margin:0;font-weight:600;font-size:17px;line-height:1.6;color:#ffffff;text-wrap:pretty">Desarrollo web, apps y automatización con IA para pymes y empresas de Puerto Vallarta, Guadalajara y todo México.</p>
+  <div style="display:flex;flex-direction:column;gap:20px">
+    <div style="font-size:22px;font-weight:500;letter-spacing:.02em;text-transform:uppercase;color:#6f6b62">Contacto</div>
+    <a href="#" style="display:flex;gap:16px;align-items:flex-start;color:#ffffff;font-weight:600;font-size:17px;line-height:1.45" style-hover="color:#5c9bff"><svg viewBox="0 0 24 24" style="width:18px;height:18px;flex:none;display:block" fill="none" stroke="#1466ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"></path><circle cx="12" cy="9.5" r="2.5"></circle></svg><span>Puerto Vallarta, Jalisco, México</span></a>
+    <a href="tel:+523221378336" style="display:flex;gap:16px;align-items:flex-start;color:#ffffff;font-weight:600;font-size:17px;line-height:1.45" style-hover="color:#5c9bff"><svg viewBox="0 0 24 24" style="width:18px;height:18px;flex:none;display:block" fill="none" stroke="#1466ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg><span>+52 (322) 137-8336</span></a>
+    <a href="https://api.whatsapp.com/send?phone=523221378336" style="display:flex;gap:16px;align-items:flex-start;color:#ffffff;font-weight:600;font-size:17px;line-height:1.45" style-hover="color:#5c9bff"><svg viewBox="0 0 24 24" style="width:18px;height:18px;flex:none;display:block" fill="none" stroke="#1466ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 20.5l1.6-5.4A8.4 8.4 0 1 1 21 11.5z"></path></svg><span>WhatsApp</span></a>
+  </div>
+  <div style="display:flex;gap:12px;margin-top:auto">
+    <a href="#" aria-label="Facebook" style="width:48px;height:48px;border-radius:50%;background:#1466ff;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px" style-hover="background:#ffffff;color:#1466ff">FB</a>
+    <a href="#" aria-label="Instagram" style="width:48px;height:48px;border-radius:50%;background:#1466ff;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px" style-hover="background:#ffffff;color:#1466ff">IG</a>
+    <a href="https://api.whatsapp.com/send?phone=523221378336" aria-label="WhatsApp" style="width:48px;height:48px;border-radius:50%;background:#1466ff;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px" style-hover="background:#ffffff;color:#1466ff">WA</a>
+  </div>
+</aside>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;heroVisual&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Cubo servicios&quot;,&quot;Cubo 3×3&quot;,&quot;Monolito&quot;],&quot;default&quot;:&quot;Cubo servicios&quot;,&quot;tsType&quot;:&quot;'Cubo servicios' | 'Cubo 3×3' | 'Monolito'&quot;,&quot;section&quot;:&quot;Hero&quot;}}">
+class Component extends DCLogic {
+  state = { q: 0, menu: false, w: typeof window !== "undefined" ? window.innerWidth : 1440 };
+  pillsRef = React.createRef();
+  sandRef = React.createRef();
+  sand2Ref = React.createRef();
+  revealRef = React.createRef();
+  cubeRef = React.createRef();
+  async initCube() {
+    const host = this.cubeRef.current; if (!host) return;
+    let THREE;
+    try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); } catch (err) { return; }
+    if (this._cubeDead || !this.cubeRef.current) return;
+    const firstRun = !this._cubeIntroDone; this._cubeIntroDone = true;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.2; renderer.setClearColor(0x000000, 0);
+    Object.assign(renderer.domElement.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block' });
+    host.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const env = new THREE.Scene();
+    env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x04050b, side: THREE.BackSide })));
+    const panel = (w, hh, c, k, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, hh), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m); };
+    panel(9, 4, 0xdfe6ff, 2, -4, 9, 5); panel(2, 10, 0x4d7dff, 1.4, 9, 1, -2); panel(10, 1.2, 0xa9b8e6, 0.6, 0, -3, 10);
+    const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(env, 0.035).texture; pm.dispose();
+    const camera = new THREE.PerspectiveCamera(22, 0.8, 0.1, 60); camera.position.set(0, 6.1, 11.5); camera.lookAt(0, -0.05, 0);
+    scene.add(new THREE.HemisphereLight(0x6a7fe0, 0x05071a, 0.7));
+    const key = new THREE.DirectionalLight(0xdbe4ff, 1.5); key.position.set(-1.5, 9, 2.5); scene.add(key);
+    const front = new THREE.DirectionalLight(0x9fb2ff, 0.6); front.position.set(-5, 2.5, 6); scene.add(front);
+    const side = new THREE.DirectionalLight(0x7f97ff, 0.35); side.position.set(7, 3, 1); scene.add(side);
+    const rim = new THREE.DirectionalLight(0x3d6cff, 0.9); rim.position.set(6, 1, -5); scene.add(rim);
+    const group = new THREE.Group(); scene.add(group);
+    const S = 2.3, H = S / 2, seam0 = 0.012, hS = (S - 2 * seam0) / 3, b = 0.02, cr = 0.05;
+    const rr = new THREE.Shape(), A = H - b;
+    rr.moveTo(-A + cr, -A); rr.lineTo(A - cr, -A); rr.absarc(A - cr, -A + cr, cr, -Math.PI / 2, 0); rr.lineTo(A, A - cr); rr.absarc(A - cr, A - cr, cr, 0, Math.PI / 2);
+    rr.lineTo(-A + cr, A); rr.absarc(-A + cr, A - cr, cr, Math.PI / 2, Math.PI); rr.lineTo(-A, -A + cr); rr.absarc(-A + cr, -A + cr, cr, Math.PI, Math.PI * 1.5);
+    const slabGeo = new THREE.ExtrudeGeometry(rr, { depth: hS - 2 * b, bevelEnabled: true, bevelThickness: b, bevelSize: b, bevelSegments: 4, curveSegments: 10 });
+    slabGeo.center(); slabGeo.rotateX(-Math.PI / 2);
+    const slabMat = new THREE.MeshPhysicalMaterial({ color: 0x24316c, roughness: 0.55, metalness: 0.05, clearcoat: 0.3, clearcoatRoughness: 0.45, envMapIntensity: 1.2 });
+    const seamU = { uSeam0: { value: 0 }, uSeam1: { value: 0 }, uGlow: { value: 0 }, uGlowCol: { value: new THREE.Color(0x3d6cff) }, uGInv: { value: new THREE.Matrix4() } };
+    slabMat.onBeforeCompile = sh => {
+      Object.assign(sh.uniforms, seamU);
+      sh.vertexShader = 'uniform mat4 uGInv; varying float vGY;\n' + sh.vertexShader.replace('#include <project_vertex>', '#include <project_vertex>\n vGY = (uGInv * modelMatrix * vec4(transformed, 1.0)).y;');
+      sh.fragmentShader = 'uniform float uSeam0; uniform float uSeam1; uniform float uGlow; uniform vec3 uGlowCol; varying float vGY;\n' + sh.fragmentShader.replace('#include <emissivemap_fragment>', '#include <emissivemap_fragment>\n float sd = min(abs(vGY - uSeam0), abs(vGY - uSeam1)); totalEmissiveRadiance += uGlowCol * uGlow * exp(-sd / 0.055);');
+    };
+    const base = [-H + hS / 2, 0, H - hS / 2];
+    const offs = [[0.012, -0.045, -0.025, 0.006], [0.028, 0, 0.035, -0.014], [-0.03, 0.045, -0.015, 0.004]];
+    const slabs = base.map(y => { const m = new THREE.Mesh(slabGeo, slabMat); m.position.y = y; group.add(m); return m; });
+    const coreGeo = new THREE.BoxGeometry(S * 0.965, 0.008, S * 0.965);
+    const coreMat = new THREE.MeshBasicMaterial({ color: new THREE.Color(0x5c8fff).multiplyScalar(1.6) });
+    const cores = [0, 1].map(() => { const m = new THREE.Mesh(coreGeo, coreMat); group.add(m); return m; });
+    const glowC = document.createElement('canvas'); glowC.width = glowC.height = 256;
+    { const g = glowC.getContext('2d'); const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.45, 'rgba(255,255,255,.3)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }
+    const glowTex = new THREE.CanvasTexture(glowC); glowTex.colorSpace = THREE.SRGBColorSpace;
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(3.6, 3.6), new THREE.MeshBasicMaterial({ map: glowTex, color: 0x2a5cff, transparent: true, opacity: 0.06, blending: THREE.AdditiveBlending, depthWrite: false }));
+    floor.rotation.x = -Math.PI / 2; floor.position.set(0, -H - 0.45, -0.3); scene.add(floor);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    const tilt = { x: 0, y: 0, tx: 0, ty: 0 }; let hover = 0, hoverT = 0;
+    const onMove = ev => { const bb = host.getBoundingClientRect(); const u = (ev.clientX - bb.left) / bb.width, v = (ev.clientY - bb.top) / bb.height; tilt.tx = Math.max(-0.5, Math.min(0.5, u - 0.5)) * 0.3; tilt.ty = Math.max(-0.5, Math.min(0.5, v - 0.5)) * 0.14; hoverT = (u > 0 && u < 1 && v > 0 && v < 1) ? 1 : 0; };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    const resize = () => { const w = host.clientWidth, hh = host.clientHeight; if (!w || !hh) return; renderer.setSize(w, hh, false); camera.aspect = w / hh; camera.updateProjectionMatrix(); };
+    resize();
+    const ro = new ResizeObserver(resize); ro.observe(host);
+    let visible = true;
+    const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }); io.observe(host);
+    const t0 = performance.now();
+    const loop = () => {
+      this._cubeRaf = requestAnimationFrame(loop);
+      if (!visible) return;
+      const time = reduce ? 0 : (performance.now() - t0) / 1000;
+      const intro = (reduce || !firstRun) ? 1 : ease(Math.min(Math.max((time - 0.5) / 2.2, 0), 1));
+      tilt.x += (tilt.tx - tilt.x) * 0.05; tilt.y += (tilt.ty - tilt.y) * 0.05; hover += (hoverT - hover) * 0.045;
+      const open = intro * (1 + 0.6 * hover) + (reduce ? 0 : Math.sin(time * 0.8) * 0.06 * intro);
+      slabs.forEach((m, i) => { const o = offs[i]; m.position.set(o[0] * open, base[i] + o[1] * open, o[2] * open); m.rotation.y = o[3] * open; });
+      cores.forEach((m, i) => { const a = slabs[i].position, c = slabs[i + 1].position; m.position.set((a.x + c.x) / 2, (a.y + c.y) / 2, (a.z + c.z) / 2); });
+      const glow = 0.15 + 0.85 * intro;
+      coreMat.color.setHex(0x6a9bff).multiplyScalar(0.5 + 2.2 * glow * (1 + 0.25 * hover));
+      group.rotation.set(tilt.y, -0.78 + Math.sin(time * 0.3) * 0.05 + tilt.x, 0);
+      group.updateMatrixWorld(true); seamU.uGInv.value.copy(group.matrixWorld).invert();
+      seamU.uSeam0.value = cores[0].position.y; seamU.uSeam1.value = cores[1].position.y; seamU.uGlow.value = (0.12 + 0.9 * intro) * (1 + 0.35 * hover);
+      renderer.render(scene, camera);
+    };
+    loop();
+    this._cubeCleanup = () => { cancelAnimationFrame(this._cubeRaf); ro.disconnect(); io.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose(); renderer.domElement.remove(); };
+  }
+  initHero() { const v = this.props.heroVisual ?? 'Cubo servicios'; v === 'Monolito' ? this.initCube() : v === 'Cubo 3×3' ? this.initGrid() : this.initServiceCube(); }
+  async initServiceCube() {
+    const host = this.cubeRef.current; if (!host) return;
+    let mod; try { mod = await import(new URL('./cubo.js', document.baseURI).href); } catch (err) { console.error(err); return; }
+    if (this._cubeDead || !this.cubeRef.current) return;
+    const services = [
+      { title: 'Automatización', caption: 'Flujos que trabajan solos.', icon: 'M14 14h20v20H14z M20 20h8v8h-8z M19 14V8M24 14V8M29 14V8M19 40v-6M24 40v-6M29 40v-6M14 19H8M14 24H8M14 29H8M40 19h-6M40 24h-6M40 29h-6' },
+      { title: 'Estrategia humana', caption: 'Criterio donde la IA no llega.', icon: 'M23 17a5 5 0 1 1-10 0a5 5 0 1 1 10 0 M8 36c0-6 4.5-10 10-10s10 4 10 10 M36 15a4 4 0 1 1-8 0a4 4 0 1 1 8 0 M30 24c5 0 10 3.5 10 9 M36 6l1.5 3 3 .5-2.2 2.2.5 3.2L36 13.4 33.2 15l.5-3.2L31.5 9.5l3-.5z' },
+      { title: 'Targeting', caption: 'Al cliente correcto, en el momento justo.', icon: 'M38 24a14 14 0 1 1-28 0a14 14 0 1 1 28 0 M31 24a7 7 0 1 1-14 0a7 7 0 1 1 14 0 M25.5 24a1.5 1.5 0 1 1-3 0a1.5 1.5 0 1 1 3 0 M24 4v8M24 36v8M4 24h8M36 24h8' },
+      { title: 'Analítica de datos', caption: 'Métricas que mueven decisiones.', icon: 'M8 40h32 M11 26h6v14h-6z M21 18h6v22h-6z M31 10h6v30h-6z M10 20l10-8 8 4 12-10 M36 6h4v4' }
+    ];
+    const c = mod.mountCube(host, { variant: 'A', services, half: 2.1, bg: null, ink: '#f2efe8', inkSoft: '#a8a49b' });
+    host.style.fontFamily = "'Bricolage Grotesque',sans-serif";
+    this._cubeCleanup = () => c.destroy();
+  }
+  async initGrid() {
+    const host = this.cubeRef.current; if (!host) return;
+    let THREE;
+    try { THREE = await import('https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js'); } catch (err) { return; }
+    if (this._cubeDead || !this.cubeRef.current) return;
+    const firstRun = !this._gridIntroDone; this._gridIntroDone = true;
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.05; renderer.setClearColor(0x000000, 0);
+    Object.assign(renderer.domElement.style, { position: 'absolute', inset: '0', width: '100%', height: '100%', display: 'block' });
+    host.appendChild(renderer.domElement);
+    const scene = new THREE.Scene();
+    const env = new THREE.Scene();
+    env.add(new THREE.Mesh(new THREE.BoxGeometry(30, 30, 30), new THREE.MeshBasicMaterial({ color: 0x05060f, side: THREE.BackSide })));
+    const panel = (w, hh, c, k, x, y, z) => { const m = new THREE.Mesh(new THREE.PlaneGeometry(w, hh), new THREE.MeshBasicMaterial({ color: new THREE.Color(c).multiplyScalar(k), side: THREE.DoubleSide })); m.position.set(x, y, z); m.lookAt(0, 0, 0); env.add(m); };
+    panel(8, 3, 0xffffff, 2.5, -3, 9, 4); panel(1.5, 8, 0xbfd0ff, 1.5, 8, 1, 2); panel(6, 1, 0x5b8cff, 1.2, 0, -5, 6);
+    const pm = new THREE.PMREMGenerator(renderer); scene.environment = pm.fromScene(env, 0.03).texture; pm.dispose();
+    const camera = new THREE.PerspectiveCamera(24, 0.8, 0.1, 60); camera.position.set(0, 7.0, 13.2); camera.lookAt(0, 0.1, 0);
+    scene.add(new THREE.HemisphereLight(0x8fa6ff, 0x060a22, 0.9));
+    const key = new THREE.DirectionalLight(0xffffff, 1.6); key.position.set(-2, 8, 3); scene.add(key);
+    const fill = new THREE.DirectionalLight(0x9fb8ff, 0.5); fill.position.set(6, 2, 5); scene.add(fill);
+    const rim = new THREE.DirectionalLight(0x3d6cff, 0.8); rim.position.set(4, 1, -6); scene.add(rim);
+    const group = new THREE.Group(); scene.add(group);
+    const N = 3, cs = 0.74, bev = 0.035;
+    const sq = new THREE.Shape(), a = cs / 2 - bev;
+    sq.moveTo(-a, -a); sq.lineTo(a, -a); sq.lineTo(a, a); sq.lineTo(-a, a); sq.closePath();
+    const geo = new THREE.ExtrudeGeometry(sq, { depth: cs - 2 * bev, bevelEnabled: true, bevelThickness: bev, bevelSize: bev, bevelSegments: 3 }); geo.center();
+    const mk = c => new THREE.MeshPhysicalMaterial({ color: c, roughness: 0.42, metalness: 0.05, clearcoat: 0.5, clearcoatRoughness: 0.3, envMapIntensity: 0.9 });
+    const matSide = mk(0x1466ff), matDark = mk(0x0a4fd6), matTop = mk(0x5c9bff);
+    const pieces = [];
+    for (let x = 0; x < N; x++) for (let y = 0; y < N; y++) for (let z = 0; z < N; z++) {
+      const m = new THREE.Mesh(geo, y === N - 1 ? matTop : (x === N - 1 || z === 0 ? matDark : matSide));
+      const g = new THREE.Vector3(x - 1, y - 1, z - 1);
+      m.userData.g = g; m.userData.ring = Math.max(Math.abs(g.x), Math.abs(g.y), Math.abs(g.z)); m.userData.ph = (x * 7 + y * 3 + z * 11) % 10 / 10;
+      group.add(m); pieces.push(m);
+    }
+    const glowC = document.createElement('canvas'); glowC.width = glowC.height = 256;
+    { const g = glowC.getContext('2d'); const gr = g.createRadialGradient(128, 128, 0, 128, 128, 128); gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.5, 'rgba(255,255,255,.25)'); gr.addColorStop(1, 'rgba(255,255,255,0)'); g.fillStyle = gr; g.fillRect(0, 0, 256, 256); }
+    const glowTex = new THREE.CanvasTexture(glowC); glowTex.colorSpace = THREE.SRGBColorSpace;
+    const core = new THREE.Sprite(new THREE.SpriteMaterial({ map: glowTex, color: 0x3d7bff, transparent: true, opacity: 0, blending: THREE.AdditiveBlending, depthWrite: false })); core.scale.set(2.6, 2.6, 1); group.add(core);
+    const floor = new THREE.Mesh(new THREE.PlaneGeometry(4, 4), new THREE.MeshBasicMaterial({ map: glowTex, color: 0x2a5cff, transparent: true, opacity: 0.08, blending: THREE.AdditiveBlending, depthWrite: false }));
+    floor.rotation.x = -Math.PI / 2; floor.position.y = -1.75; scene.add(floor);
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const ease = x => x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+    const tilt = { x: 0, y: 0, tx: 0, ty: 0 }; let hover = 0, hoverT = 0;
+    const onMove = ev => { const bb = host.getBoundingClientRect(); const u = (ev.clientX - bb.left) / bb.width, v = (ev.clientY - bb.top) / bb.height; tilt.tx = Math.max(-0.5, Math.min(0.5, u - 0.5)) * 0.5; tilt.ty = Math.max(-0.5, Math.min(0.5, v - 0.5)) * 0.25; hoverT = (u > 0 && u < 1 && v > 0 && v < 1) ? 1 : 0; };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    const resize = () => { const w = host.clientWidth, hh = host.clientHeight; if (!w || !hh) return; renderer.setSize(w, hh, false); camera.aspect = w / hh; camera.updateProjectionMatrix(); };
+    resize();
+    const ro = new ResizeObserver(resize); ro.observe(host);
+    let visible = true;
+    const io = new IntersectionObserver(es => { visible = es[0].isIntersecting; }); io.observe(host);
+    const t0 = performance.now();
+    const loop = () => {
+      this._cubeRaf = requestAnimationFrame(loop);
+      if (!visible) return;
+      const time = reduce ? 0 : (performance.now() - t0) / 1000;
+      const intro = (reduce || !firstRun) ? 1 : ease(Math.min(Math.max((time - 0.3) / 1.6, 0), 1));
+      tilt.x += (tilt.tx - tilt.x) * 0.05; tilt.y += (tilt.ty - tilt.y) * 0.05; hover += (hoverT - hover) * 0.05;
+      // cycle: 0-2.4 hold · 2.4-4.0 expand (outer shell first, then middle) · 4.0-5.0 hold open · 5.0-6.8 close
+      const cyc = reduce ? 0 : (time % 8);
+      const ex = reduce ? 0 : (cyc < 2.4 ? 0 : cyc < 4 ? (cyc - 2.4) / 1.6 : cyc < 5 ? 1 : cyc < 6.8 ? 1 - (cyc - 5) / 1.8 : 0);
+      pieces.forEach(p => {
+        const u = p.userData, g = u.g;
+        const lag = u.ring === 2 ? 0 : 0.35;
+        const k = ease(Math.max(0, Math.min(1, (ex - lag) / (1 - lag)))) * intro * (1 + 0.3 * hover);
+        const gap = 0.34 * k;
+        p.position.set(g.x * (cs + gap), g.y * (cs + gap), g.z * (cs + gap));
+        if (!reduce) p.position.y += Math.sin(time * 1.1 + u.ph * 6.28) * 0.012 * k;
+      });
+      core.material.opacity = intro * (0.1 + 0.4 * ex + 0.15 * hover);
+      group.rotation.set(0.08 + tilt.y, -0.78 + time * 0.1 + tilt.x, 0);
+      renderer.render(scene, camera);
+    };
+    loop();
+    this._cubeCleanup = () => { cancelAnimationFrame(this._cubeRaf); ro.disconnect(); io.disconnect(); window.removeEventListener('pointermove', onMove); renderer.dispose(); renderer.domElement.remove(); };
+  }
+  componentDidUpdate(prev) { if (prev.heroVisual !== this.props.heroVisual) { this._cubeCleanup && this._cubeCleanup(); this._cubeCleanup = null; this.initHero(); } }
+  initSand() {
+    const cv = this.sandRef.current; if (!cv) return;
+    cancelAnimationFrame(this._sandRaf);
+    const ctx = cv.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const GAP = 11, cols = Math.ceil(W / GAP), rows = Math.ceil(H / GAP), N = cols * rows;
+    const bx = new Float32Array(N), by = new Float32Array(N), x = new Float32Array(N), y = new Float32Array(N),
+          vx = new Float32Array(N), vy = new Float32Array(N), sz = new Float32Array(N), grp = new Uint8Array(N);
+    for (let r = 0, i = 0; r < rows; r++) for (let c = 0; c < cols; c++, i++) {
+      bx[i] = x[i] = c * GAP + Math.random() * GAP; by[i] = y[i] = r * GAP + Math.random() * GAP;
+      sz[i] = Math.random() < 0.8 ? 1 : 1.6; grp[i] = Math.floor(Math.random() * 4);
+    }
+    const byG = [[], [], [], []]; for (let i = 0; i < N; i++) byG[grp[i]].push(i);
+    const fills = ['rgba(150,148,140,0.08)', 'rgba(150,148,140,0.12)', 'rgba(140,165,220,0.14)', 'rgba(170,168,160,0.18)'];
+    const m = { x: -9999, y: -9999, px: -9999, py: -9999, vx: 0, vy: 0 };
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const RAD = 170, RAD2 = RAD * RAD, PUSH = 0.35, DRAG = 0.06, K = 0.012, FR = 0.9;
+    let awake = 2;
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let g = 0; g < 4; g++) {
+        ctx.fillStyle = fills[g]; const L = byG[g];
+        for (let j = 0; j < L.length; j++) { const i = L[j]; ctx.fillRect(x[i], y[i], sz[i], sz[i]); }
+      }
+    };
+    const step = () => {
+      m.vx = m.vx * 0.8 + (m.x - m.px) * 0.2; m.vy = m.vy * 0.8 + (m.y - m.py) * 0.2; m.px = m.x; m.py = m.y;
+      let moving = Math.abs(m.vx) + Math.abs(m.vy) > 0.05;
+      const x0 = m.x - RAD, x1 = m.x + RAD, y0 = m.y - RAD, y1 = m.y + RAD;
+      for (let i = 0; i < N; i++) {
+        const px = x[i], py = y[i];
+        if (moving && px > x0 && px < x1 && py > y0 && py < y1) {
+          const dx = px - m.x, dy = py - m.y, d2 = dx * dx + dy * dy;
+          if (d2 < RAD2 && d2 > 0.01) {
+            const d = Math.sqrt(d2), f = 1 - d / RAD, f2 = f * f;
+            const speed = Math.min(1, Math.hypot(m.vx, m.vy) / 12);
+            vx[i] += (dx / d) * f2 * PUSH * speed + m.vx * f2 * DRAG;
+            vy[i] += (dy / d) * f2 * PUSH * speed + m.vy * f2 * DRAG;
+          }
+        }
+        vx[i] = (vx[i] + (bx[i] - px) * K) * FR; vy[i] = (vy[i] + (by[i] - py) * K) * FR;
+        x[i] = px + vx[i]; y[i] = py + vy[i];
+        if (!moving && (Math.abs(vx[i]) > 0.01 || Math.abs(bx[i] - x[i]) > 0.05)) moving = true;
+      }
+      return moving;
+    };
+    let running = false;
+    const tick = () => {
+      if (step()) { awake = 2; draw(); } else if (awake > 0) { awake--; draw(); }
+      else { running = false; return; }
+      this._sandRaf = requestAnimationFrame(tick);
+    };
+    const wake = () => { if (!running) { running = true; awake = 2; this._sandRaf = requestAnimationFrame(tick); } };
+    draw();
+    if (this._sandMove) window.removeEventListener('pointermove', this._sandMove);
+    this._sandMove = e => { const b = cv.getBoundingClientRect(); if (b.bottom < 0 || b.top > window.innerHeight) return; m.x = e.clientX - b.left; m.y = e.clientY - b.top; if (m.px < -9000) { m.px = m.x; m.py = m.y; } wake(); };
+    if (!reduce) window.addEventListener('pointermove', this._sandMove, { passive: true });
+  }
+  initSand2() {
+    const cv = this.sand2Ref.current; if (!cv) return;
+    cancelAnimationFrame(this._sand2Raf);
+    const ctx = cv.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = cv.clientWidth, H = cv.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const GAP = 11, cols = Math.ceil(W / GAP), rows = Math.ceil(H / GAP), N = cols * rows;
+    const bx = new Float32Array(N), by = new Float32Array(N), x = new Float32Array(N), y = new Float32Array(N),
+          vx = new Float32Array(N), vy = new Float32Array(N), sz = new Float32Array(N), grp = new Uint8Array(N);
+    for (let r = 0, i = 0; r < rows; r++) for (let c = 0; c < cols; c++, i++) {
+      bx[i] = x[i] = c * GAP + Math.random() * GAP; by[i] = y[i] = r * GAP + Math.random() * GAP;
+      sz[i] = Math.random() < 0.8 ? 1 : 1.6; grp[i] = Math.floor(Math.random() * 4);
+    }
+    const byG = [[], [], [], []]; for (let i = 0; i < N; i++) byG[grp[i]].push(i);
+    const fills = ['rgba(150,148,140,0.08)', 'rgba(150,148,140,0.12)', 'rgba(140,165,220,0.14)', 'rgba(170,168,160,0.18)'];
+    const m = { x: -9999, y: -9999, px: -9999, py: -9999, vx: 0, vy: 0 };
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const RAD = 170, RAD2 = RAD * RAD, PUSH = 0.35, DRAG = 0.06, K = 0.012, FR = 0.9;
+    let awake = 2;
+    const draw = () => {
+      ctx.clearRect(0, 0, W, H);
+      for (let g = 0; g < 4; g++) {
+        ctx.fillStyle = fills[g]; const L = byG[g];
+        for (let j = 0; j < L.length; j++) { const i = L[j]; ctx.fillRect(x[i], y[i], sz[i], sz[i]); }
+      }
+    };
+    const step = () => {
+      m.vx = m.vx * 0.8 + (m.x - m.px) * 0.2; m.vy = m.vy * 0.8 + (m.y - m.py) * 0.2; m.px = m.x; m.py = m.y;
+      let moving = Math.abs(m.vx) + Math.abs(m.vy) > 0.05;
+      const x0 = m.x - RAD, x1 = m.x + RAD, y0 = m.y - RAD, y1 = m.y + RAD;
+      for (let i = 0; i < N; i++) {
+        const px = x[i], py = y[i];
+        if (moving && px > x0 && px < x1 && py > y0 && py < y1) {
+          const dx = px - m.x, dy = py - m.y, d2 = dx * dx + dy * dy;
+          if (d2 < RAD2 && d2 > 0.01) {
+            const d = Math.sqrt(d2), f = 1 - d / RAD, f2 = f * f;
+            const speed = Math.min(1, Math.hypot(m.vx, m.vy) / 12);
+            vx[i] += (dx / d) * f2 * PUSH * speed + m.vx * f2 * DRAG;
+            vy[i] += (dy / d) * f2 * PUSH * speed + m.vy * f2 * DRAG;
+          }
+        }
+        vx[i] = (vx[i] + (bx[i] - px) * K) * FR; vy[i] = (vy[i] + (by[i] - py) * K) * FR;
+        x[i] = px + vx[i]; y[i] = py + vy[i];
+        if (!moving && (Math.abs(vx[i]) > 0.01 || Math.abs(bx[i] - x[i]) > 0.05)) moving = true;
+      }
+      return moving;
+    };
+    let running = false;
+    const tick = () => {
+      if (step()) { awake = 2; draw(); } else if (awake > 0) { awake--; draw(); }
+      else { running = false; return; }
+      this._sand2Raf = requestAnimationFrame(tick);
+    };
+    const wake = () => { if (!running) { running = true; awake = 2; this._sand2Raf = requestAnimationFrame(tick); } };
+    draw();
+    if (this._sand2Move) window.removeEventListener('pointermove', this._sand2Move);
+    this._sand2Move = e => { const b = cv.getBoundingClientRect(); if (b.bottom < 0 || b.top > window.innerHeight) return; m.x = e.clientX - b.left; m.y = e.clientY - b.top; if (m.px < -9000) { m.px = m.x; m.py = m.y; } wake(); };
+    if (!reduce) window.addEventListener('pointermove', this._sand2Move, { passive: true });
+  }
+  quotes = [
+    { text: 'PixelTEC transformó por completo nuestra presencia digital. El nuevo sistema de reservas a medida no solo es elegante, sino que optimizó nuestras operaciones diarias de manera increíble.', name: 'Aidee García', role: 'Directora, Villa Nogal', title: 'Una presencia digital que sí opera' },
+    { text: 'La automatización de nuestros pedidos y la reestructuración de la gestión logística nos ha ahorrado incontables horas. Ahora atendemos a nuestros clientes de forma mucho más rápida y sin errores.', name: 'Juan Antonio Sánchez', role: 'Director General, Pipas Tondoroque', title: 'Horas ahorradas cada semana' },
+    { text: 'Digitalizar un negocio tradicional parecía un reto imposible, pero el equipo diseñó un ecosistema a la medida que nos permitió modernizarnos, escalar ventas y tener control total.', name: 'Juan Sánchez', role: 'Fundador, Materiales de Barro', title: 'De tradicional a escalable' },
+    { text: 'La arquitectura web y el control de inventario que desarrollaron para nosotros nos ha dado una ventaja competitiva enorme. La plataforma es robusta, rápida y exactamente lo que necesitábamos.', name: 'Francisco Arredondo', role: 'CEO, Barro Stock', title: 'Una ventaja competitiva real' },
+    { text: 'El sistema de gestión integral para la clínica y el rediseño del sitio web superaron todas nuestras expectativas. Hemos mejorado nuestra captación de pacientes notablemente.', name: 'Polett Niebla', role: 'Fundadora, Smile More', title: 'Más pacientes, menos fricción' }
+  ];
+  componentDidMount() {
+    const wait = () => window.Matter ? this.initPhysics() : (this._w = setTimeout(wait, 100));
+    wait();
+    this._onKey = e => { if (e.key === "Escape") this.setState({ menu: false }); };
+    window.addEventListener("keydown", this._onKey);
+    this.initSand();
+    this.initSand2();
+    const startLenis = () => {
+      if (!window.Lenis) return (this._lw = setTimeout(startLenis, 120));
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      const lenis = this._lenis = new window.Lenis({ duration: 1.1, easing: t => 1 - Math.pow(1 - t, 3), smoothWheel: true, wheelMultiplier: 1.15, touchMultiplier: 1.5, syncTouch: true, syncTouchLerp: 0.06, touchInertiaMultiplier: 28, autoResize: true });
+      const raf = t => { lenis.raf(t); this._lenisRaf = requestAnimationFrame(raf); }; this._lenisRaf = requestAnimationFrame(raf);
+      this._onAnchor = e => { const a = e.target.closest && e.target.closest('a[href^="#"]'); if (!a) return; const id = a.getAttribute('href'); if (id.length < 2) return; const el = document.querySelector(id); if (!el) return; e.preventDefault(); lenis.scrollTo(el, { offset: -110, duration: 1.1 }); };
+      document.addEventListener('click', this._onAnchor);
+    };
+    startLenis();
+    this._onRevealScroll = () => { const el = this.revealRef.current; if (!el) return; const r = el.parentNode.getBoundingClientRect(), vh = window.innerHeight; const p = Math.min(1, Math.max(0, (vh * 0.85 - r.top) / (r.height + vh * 0.45))); el.style.backgroundSize = (p * 100).toFixed(1) + '% 100%'; };
+    const rv = this._onRevealScroll; let rq = 0; this._onRevealScroll = () => { if (!rq) rq = requestAnimationFrame(() => { rq = 0; rv(); }); };
+    window.addEventListener('scroll', this._onRevealScroll, { passive: true }); rv();
+    this._tTimer = setInterval(() => { if (this._tHover || document.hidden) return; const w = this.state.w, c = w >= 1200 ? 4 : w >= 860 ? 3 : w >= 600 ? 2 : 1, p = this.quotes.length - c + 1; this.setState(st => ({ q: (Math.min(st.q, p - 1) + 1) % p })); }, 4500);
+    this.initHero();
+    this._onResize = () => { this.setState({ w: window.innerWidth }); clearTimeout(this._sr); this._sr = setTimeout(() => { this.initSand(); this.initSand2(); }, 250); clearTimeout(this._rs); this._rs = setTimeout(() => this.initPhysics(), 250); };
+    window.addEventListener('resize', this._onResize);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this._sand2Raf); window.removeEventListener('pointermove', this._sand2Move); clearTimeout(this._lw); cancelAnimationFrame(this._lenisRaf); this._lenis && this._lenis.destroy(); document.removeEventListener('click', this._onAnchor); window.removeEventListener('scroll', this._onRevealScroll); clearInterval(this._tTimer); this.stopPhysics(); clearTimeout(this._w); window.removeEventListener('resize', this._onResize); window.removeEventListener('keydown', this._onKey); cancelAnimationFrame(this._sandRaf); this._cubeDead = true; this._cubeCleanup && this._cubeCleanup(); window.removeEventListener('pointermove', this._sandMove); }
+  stopPhysics() {
+    cancelAnimationFrame(this._raf);
+    (this._cleanup || []).forEach(f => f()); this._cleanup = [];
+    if (this._engine) Matter.Engine.clear(this._engine);
+  }
+  initPhysics() {
+    this.stopPhysics();
+    const root = this.pillsRef.current; if (!root) return;
+    const { Engine, Bodies, Composite, Body } = Matter;
+    const pills = [...root.querySelectorAll('[data-pill]')];
+    pills.forEach(el => { if (el.dataset.base == null) el.dataset.base = el.style.transform || ''; el.style.transform = 'none'; el.style.transition = 'border-color .2s'; el.style.willChange = 'transform'; });
+    const rr = root.getBoundingClientRect();
+    const fr = root.lastElementChild.getBoundingClientRect();
+    const floorY = fr.top - rr.top, L = fr.left - rr.left, R = fr.right - rr.left;
+    const engine = Engine.create({ gravity: { y: 0.6 }, positionIterations: 8, velocityIterations: 6, enableSleeping: true });
+    let onScreen = true; const pio = new IntersectionObserver(es => { onScreen = es[0].isIntersecting; }); pio.observe(root); this._cleanup.push(() => pio.disconnect());
+    const T = 60;
+    Composite.add(engine.world, [
+      Bodies.rectangle((L + R) / 2, floorY + T / 2, (R - L) * 3, T, { isStatic: true, friction: 0.9 }),
+      Bodies.rectangle(L - T / 2, floorY - 1000, T, 2400, { isStatic: true }),
+      Bodies.rectangle(R + T / 2, floorY - 1000, T, 2400, { isStatic: true })
+    ]);
+    const drop = !this._dropped && !window.matchMedia('(prefers-reduced-motion: reduce)').matches; this._dropped = true;
+    const items = pills.map(el => {
+      const r = el.getBoundingClientRect();
+      const cx = r.left - rr.left + r.width / 2, cy = r.top - rr.top + r.height / 2;
+      const b = el.dataset.base;
+      const rot = +(b.match(/rotate\((-?[\d.]+)deg\)/) || [0, 0])[1];
+      const ty = +(b.match(/translateY\((-?[\d.]+)px\)/) || [0, 0])[1];
+      const body = Bodies.rectangle(cx, cy + ty, r.width, r.height, { chamfer: { radius: r.height / 2 - 1 }, friction: 0.5, frictionStatic: 0.8, frictionAir: 0.045, restitution: 0.05, density: 0.002, slop: 0.02 });
+      Body.setAngle(body, rot * Math.PI / 180);
+      if (drop) {
+        Body.setPosition(body, { x: body.position.x, y: body.position.y - (floorY + 120 + Math.random() * 420) });
+        Body.setAngle(body, (Math.random() - 0.5) * 0.9);
+        el.style.transform = `translate3d(0,${-(floorY + 600)}px,0)`;
+      }
+      return { el, body, cx, cy };
+    });
+    Composite.add(engine.world, items.map(i => i.body));
+    let drag = null, top = 10;
+    const local = ev => { const b = root.getBoundingClientRect(); return { x: ev.clientX - b.left, y: ev.clientY - b.top }; };
+    const release = () => { if (!drag) return; drag.it.el.style.cursor = 'grab'; drag.it.el.style.borderColor = '#f2efe8'; drag = null; };
+    items.forEach(it => {
+      const down = ev => {
+        ev.preventDefault(); it.el.setPointerCapture(ev.pointerId);
+        const p = local(ev);
+        Matter.Sleeping.set(it.body, false); drag = { it, ox: p.x - it.body.position.x, oy: p.y - it.body.position.y, tx: p.x, ty: p.y };
+        it.el.style.zIndex = ++top; it.el.style.cursor = 'grabbing'; it.el.style.borderColor = '#1466ff';
+      };
+      const move = ev => { if (!drag || drag.it !== it) return; const p = local(ev); drag.tx = p.x; drag.ty = p.y; if (p.x < L || p.x > R) release(); };
+      it.el.addEventListener('pointerdown', down); it.el.addEventListener('pointermove', move);
+      it.el.addEventListener('pointerup', release); it.el.addEventListener('pointercancel', release);
+      this._cleanup.push(() => { it.el.removeEventListener('pointerdown', down); it.el.removeEventListener('pointermove', move); it.el.removeEventListener('pointerup', release); it.el.removeEventListener('pointercancel', release); });
+    });
+    this._engine = engine;
+    let last = performance.now(), acc = 0; const STEP = 1000 / 120;
+    const tick = (now = performance.now()) => {
+      if (!onScreen && !drag) { last = now; acc = 0; this._raf = requestAnimationFrame(tick); return; }
+      acc += Math.min(now - last, 50); last = now;
+      while (acc >= STEP) {
+        if (drag) {
+          const b = drag.it.body;
+          const dx = drag.tx - drag.ox - b.position.x, dy = drag.ty - drag.oy - b.position.y;
+          Body.setVelocity(b, { x: dx * 0.45, y: dy * 0.45 });
+          Body.setAngularVelocity(b, b.angularVelocity * 0.85 + Math.max(-0.02, Math.min(0.02, dx * 0.0008)));
+        }
+        Engine.update(engine, STEP); acc -= STEP;
+      }
+      items.forEach(({ el, body, cx, cy }) => { if (body.isSleeping && body._drawn) return; body._drawn = body.isSleeping; el.style.transform = `translate3d(${(body.position.x - cx).toFixed(2)}px,${(body.position.y - cy).toFixed(2)}px,0) rotate(${body.angle.toFixed(4)}rad)`; });
+      this._raf = requestAnimationFrame(tick);
+    };
+    this._raf = requestAnimationFrame(tick);
+  }
+  renderVals() {
+    const n = this.quotes.length, w = this.state.w;
+    const tCols = w >= 1200 ? 4 : w >= 860 ? 3 : w >= 600 ? 2 : 1, pages = n - tCols + 1, qs = Math.min(this.state.q, pages - 1);
+    const tDots = Array.from({ length: pages }, (_, i) => ({ label: 'Ver testimonios ' + (i + 1), bg: i === qs ? '#1466ff' : '#cfcabf', go: () => this.setState({ q: i }) }));
+    const ind = ['Logística y transporte','Distribución de agua','Salud dental','Hotelería','Moda y comercio especializado','Energía solar'];
+    const words = [...ind, ...ind];
+    const marquee = React.createElement('div', { style: { display: 'flex', gap: 48, width: 'max-content', animation: 'mq 40s linear infinite', fontSize: 28, fontWeight: 500, letterSpacing: '-.01em', whiteSpace: 'nowrap' } },
+      words.map((w, i) => React.createElement('span', { key: i, style: { display: 'flex', gap: 48, alignItems: 'center' } }, w, React.createElement('span', { style: { color: '#1466ff' } }, '✦'))));
+    return {
+      marquee,
+      sandRef: this.sandRef,
+      sand2Ref: this.sand2Ref,
+      revealRef: this.revealRef,
+      aboutCols: this.state.w >= 960 ? 3 : 1,
+      aboutCards: [
+        { n: '001.', t: 'Consultoría que entiende tu operación', d: 'Antes de escribir código, diagnosticamos cómo trabaja tu equipo para resolver el problema real, no el síntoma.' },
+        { n: '002.', t: 'Nuestra misión: que operes sin fricción', d: 'Combinamos IA, automatización y desarrollo a la medida para liberar horas-hombre y darte control total de tu negocio.' },
+        { n: '003.', t: 'Nuestra visión: liderar con innovación', d: 'Ser el aliado tecnológico de referencia para pymes y empresas de Puerto Vallarta, Guadalajara y todo México.' }
+      ],
+      cubeRef: this.cubeRef,
+      isMobile: this.state.w < 900,
+      navDisplay: this.state.w < 900 ? 'none' : 'flex',
+      socialDisplay: this.state.w < 560 ? 'none' : 'flex',
+      openMenu: () => this.setState({ menu: true }),
+      closeMenu: () => this.setState({ menu: false }),
+      drawerTransform: this.state.menu ? 'translateX(0)' : 'translateX(105%)',
+      overlayOpacity: this.state.menu ? 1 : 0,
+      overlayEvents: this.state.menu ? 'auto' : 'none',
+      overlayBlur: this.state.menu ? 'blur(3px)' : 'none',
+      pillsRef: this.pillsRef,
+      tCols, tDots, tTransform: `translateX(calc(${-qs} * (100% + 24px) / ${tCols}))`, tBasis: `calc((100% - ${24 * (tCols - 1)}px) / ${tCols})`, tPause: () => { this._tHover = true; }, tResume: () => { this._tHover = false; }, tAll: this.quotes.map(t => ({ ...t, ini: t.name.split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase() })),
+      projMarquee: React.createElement('div', { style: { display: 'flex', width: 'max-content', animation: 'mq 40s linear infinite', willChange: 'transform' } }, [0, 1, 2, 3, 4, 5, 6, 7].map(i => React.createElement('span', { key: i, style: { fontWeight: 800, fontSize: 'clamp(80px,13vw,220px)', lineHeight: .9, letterSpacing: '-.04em', textTransform: 'uppercase', whiteSpace: 'nowrap', paddingRight: '.3em' } }, 'Proyectos'))),
+      orbitDot: React.createElement('span', { 'aria-hidden': true, style: { position: 'absolute', inset: -1, borderRadius: '50%', animation: 'orb 6s linear infinite', pointerEvents: 'none' } }, React.createElement('span', { style: { position: 'absolute', top: '50%', right: -13, width: 26, height: 26, marginTop: -13, borderRadius: '50%', background: '#1466ff', boxShadow: '0 0 0 4px #000' } })),
+      svcCols: this.state.w >= 1000 ? '60px minmax(0,1.1fr) minmax(0,1fr)' : this.state.w >= 640 ? '48px minmax(0,1fr)' : 'minmax(0,1fr)',
+      svcImgCol: this.state.w >= 1000 ? 'auto' : this.state.w >= 640 ? '2 / -1' : 'auto',
+      svc: [
+        { n: '01', t: 'Automatización con IA', d: 'Eliminamos tareas repetitivas con bots, scripts e IA aplicada a tu operación diaria y conectamos sistemas que no se hablaban.', tags: ['Bots', 'Flujos', 'Integraciones'] },
+        { n: '02', t: 'Desarrollo Web & Apps', d: 'Ecosistemas web robustos, CRMs a la medida y portales corporativos ultra rápidos con Next.js, React y Firebase.', tags: ['Next.js', 'CRM', 'Apps'] },
+        { n: '03', t: 'WhatsApp IA', d: 'Agentes que atienden, cotizan y agendan por WhatsApp 24/7, con traspaso a tu equipo cuando hace falta.', tags: ['WhatsAgent', 'Ventas', 'Atención'] },
+        { n: '04', t: 'Consultoría & Soporte TI', d: 'Diagnóstico estratégico, transformación digital y rediseño UI/UX para modernizar procesos de adentro hacia afuera.', tags: ['Diagnóstico', 'UI/UX', 'Soporte'] }
+      ],
+      whyCols: this.state.w >= 1100 ? 'minmax(0,1fr) minmax(0,1.4fr) minmax(0,1fr)' : this.state.w >= 700 ? 'repeat(2,minmax(0,1fr))' : 'minmax(0,1fr)',
+      whyPhotoSpan: this.state.w >= 1100 ? 'auto' : '1 / -1',
+      whyPhotoRow: this.state.w >= 1100 ? 'auto' : '2',
+      whyStats: [
+        { n: '98', suf: '%', label: 'Clientes satisfechos' },
+        { n: '50', suf: '+', label: 'Proyectos entregados' },
+        { n: '24', suf: '/7', label: 'Soporte y monitoreo' }
+      ],
+      whyItems: [
+        { t: 'Equipo experto', d: 'Desarrolladores, consultores TI y especialistas en IA con experiencia real en operación de empresas.' },
+        { t: 'Soluciones a la medida', d: 'Nada genérico: diseñamos cada sistema a partir de cómo trabaja tu equipo hoy.' },
+        { t: 'Soporte cercano', d: 'Acompañamiento directo por WhatsApp y en sitio desde Puerto Vallarta.' },
+        { t: 'Resultados medibles', d: 'Definimos indicadores desde el inicio: horas ahorradas, ventas y control.' }
+      ],
+      footCols: this.state.w >= 1000 ? 4 : this.state.w >= 560 ? 2 : 1,
+      projTopCols: this.state.w >= 640 ? 2 : 1,
+      projBottomCols: this.state.w >= 760 ? 3 : 1,
+      projTop: [
+        { name: 'Villa Nogal', tags: ['Reservas', 'Web', 'UX'] },
+        { name: 'Pipas Tondoroque', tags: ['Automatización', 'Logística'] }
+      ],
+      projBottom: [
+        { name: 'Barro Stock', tags: ['Web', 'Inventario'] },
+        { name: 'Smile More', tags: ['Clínica', 'Web'] },
+        { name: 'Materiales de Barro', tags: ['E-commerce', 'UX'] }
+      ],
+      projects: [
+        { name: 'Villa Nogal', tag: 'Sistema de reservas' },
+        { name: 'Pipas Tondoroque', tag: 'Automatización logística' },
+        { name: 'Barro Stock', tag: 'Web + inventario' },
+        { name: 'Smile More', tag: 'Gestión clínica + web' }
+      ],
+      nlColumns: React.createElement('div', { style: { display: 'flex', gap: 16, height: '100%' } }, [0, 1, 2].map(c => React.createElement('div', { key: c, style: { flex: '1 1 0', minWidth: 0, alignSelf: 'flex-start', display: 'flex', flexDirection: 'column', gap: 16, paddingBottom: 16, animation: (c % 2 ? 'nlDown ' : 'nlUp ') + (34 + c * 6) + 's linear infinite', willChange: 'transform' } }, Array.from({ length: 8 }, (_, i) => React.createElement('div', { key: i, style: { flex: 'none', aspectRatio: '4/5', borderRadius: 32, background: 'repeating-linear-gradient(135deg,#16161a 0 12px,#1d1d22 12px 24px)', display: 'flex', alignItems: 'flex-end', padding: 16, boxSizing: 'border-box', fontFamily: "'JetBrains Mono',monospace", fontSize: 11, color: '#5a5852' } }, '[ foto ' + ((c * 4 + i) % 4 + 1 + c * 4) + ' ]'))))),
+      subLabel: this.state.subbed ? '¡Listo!' : 'Suscribirme',
+      subscribe: e => { e.preventDefault(); this.setState({ subbed: true }); },
+      blogCols: this.state.w >= 1100 ? 4 : this.state.w >= 640 ? 2 : 1,
+      posts: [
+        { cat: 'IA', date: '12 Sep 2026', title: 'Cómo un agente de IA en WhatsApp atiende 24/7 sin perder el trato humano', excerpt: 'Qué tareas automatizar primero, cuáles dejar a tu equipo y cómo medir el impacto desde la primera semana.' },
+        { cat: 'Desarrollo', date: '28 Ago 2026', title: 'Web a la medida vs. plantilla: cuándo conviene cada una', excerpt: 'Costos reales, tiempos de entrega y escalabilidad para elegir sin arrepentirte en seis meses.' },
+        { cat: 'Operación', date: '14 Ago 2026', title: 'Cinco procesos que tu pyme puede automatizar este trimestre', excerpt: 'Desde cotizaciones hasta inventario: tareas repetitivas que liberan horas-hombre de inmediato.' },
+        { cat: 'Estrategia', date: '30 Jul 2026', title: 'Transformación digital: más allá de comprar software', excerpt: 'Por qué el cambio empieza en los procesos y el equipo, y cómo la tecnología lo acelera.' }
+      ],
+      industries: ind.map((name, i) => ({ name, n: String(i + 1).padStart(2, '0') }))
+    };
+  }
+}
+</script>
+</body>
+</html>

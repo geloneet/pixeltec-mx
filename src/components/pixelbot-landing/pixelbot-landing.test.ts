@@ -15,7 +15,7 @@ import {
 } from './pixelbot-content';
 
 const LANDING_DIR = path.join(process.cwd(), 'src/components/pixelbot-landing');
-const PAGE_FILE = path.join(process.cwd(), 'src/app/pixelbot/page.tsx');
+const PAGE_FILE = path.join(process.cwd(), 'src/app/(public)/pixelbot/page.tsx');
 const CONTENT_FILE = path.join(LANDING_DIR, 'pixelbot-content.ts');
 
 function landingSources(): Array<{ file: string; text: string }> {

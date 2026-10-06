@@ -1,0 +1,406 @@
+{
+  "date": "2026-10-03",
+  "scope": "DOM geometry checks in 50 viewports; visual screenshots separately reviewed, not 50 screenshot audits",
+  "checks": [
+    {
+      "route": "/",
+      "contactLayout": null,
+      "heading": "SolucionesTecnológicas",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/services/",
+      "contactLayout": null,
+      "heading": "Tecnología quetrabaja contigo.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/about/",
+      "contactLayout": null,
+      "heading": "Un aliado.De verdad.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/contact/",
+      "contactLayout": "flex",
+      "heading": "Tu próximo pasoempieza aquí.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/industrias/",
+      "contactLayout": null,
+      "heading": "Entendemostu contexto.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/proyectos/",
+      "contactLayout": null,
+      "heading": "Tecnología.En operación.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/blog/",
+      "contactLayout": null,
+      "heading": "Tecnología práctica.Mejores decisiones.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/diagnostico/",
+      "contactLayout": null,
+      "heading": "Entender hoy.Decidir mejor.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/en/services/",
+      "contactLayout": null,
+      "heading": "Technology thatworks with you.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/en/contact/",
+      "contactLayout": "flex",
+      "heading": "Your next stepstarts here.",
+      "headingOverflow": [],
+      "scroll": 320,
+      "width": 320
+    },
+    {
+      "route": "/",
+      "contactLayout": null,
+      "heading": "SolucionesTecnológicas",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/services/",
+      "contactLayout": null,
+      "heading": "Tecnología quetrabaja contigo.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/about/",
+      "contactLayout": null,
+      "heading": "Un aliado.De verdad.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/contact/",
+      "contactLayout": "flex",
+      "heading": "Tu próximo pasoempieza aquí.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/industrias/",
+      "contactLayout": null,
+      "heading": "Entendemostu contexto.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/proyectos/",
+      "contactLayout": null,
+      "heading": "Tecnología.En operación.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/blog/",
+      "contactLayout": null,
+      "heading": "Tecnología práctica.Mejores decisiones.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/diagnostico/",
+      "contactLayout": null,
+      "heading": "Entender hoy.Decidir mejor.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/en/services/",
+      "contactLayout": null,
+      "heading": "Technology thatworks with you.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/en/contact/",
+      "contactLayout": "flex",
+      "heading": "Your next stepstarts here.",
+      "headingOverflow": [],
+      "scroll": 390,
+      "width": 390
+    },
+    {
+      "route": "/",
+      "contactLayout": null,
+      "heading": "SolucionesTecnológicas",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/services/",
+      "contactLayout": null,
+      "heading": "Tecnología quetrabaja contigo.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/about/",
+      "contactLayout": null,
+      "heading": "Un aliado.De verdad.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/contact/",
+      "contactLayout": "flex",
+      "heading": "Tu próximo pasoempieza aquí.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/industrias/",
+      "contactLayout": null,
+      "heading": "Entendemostu contexto.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/proyectos/",
+      "contactLayout": null,
+      "heading": "Tecnología.En operación.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/blog/",
+      "contactLayout": null,
+      "heading": "Tecnología práctica.Mejores decisiones.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/diagnostico/",
+      "contactLayout": null,
+      "heading": "Entender hoy.Decidir mejor.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/en/services/",
+      "contactLayout": null,
+      "heading": "Technology thatworks with you.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/en/contact/",
+      "contactLayout": "flex",
+      "heading": "Your next stepstarts here.",
+      "headingOverflow": [],
+      "scroll": 768,
+      "width": 768
+    },
+    {
+      "route": "/",
+      "contactLayout": null,
+      "heading": "SolucionesTecnológicas",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/services/",
+      "contactLayout": null,
+      "heading": "Tecnología quetrabaja contigo.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/about/",
+      "contactLayout": null,
+      "heading": "Un aliado.De verdad.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/contact/",
+      "contactLayout": "flex",
+      "heading": "Tu próximo pasoempieza aquí.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/industrias/",
+      "contactLayout": null,
+      "heading": "Entendemostu contexto.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/proyectos/",
+      "contactLayout": null,
+      "heading": "Tecnología.En operación.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/blog/",
+      "contactLayout": null,
+      "heading": "Tecnología práctica.Mejores decisiones.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/diagnostico/",
+      "contactLayout": null,
+      "heading": "Entender hoy.Decidir mejor.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/en/services/",
+      "contactLayout": null,
+      "heading": "Technology thatworks with you.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/en/contact/",
+      "contactLayout": "flex",
+      "heading": "Your next stepstarts here.",
+      "headingOverflow": [],
+      "scroll": 1024,
+      "width": 1024
+    },
+    {
+      "route": "/",
+      "contactLayout": null,
+      "heading": "SolucionesTecnológicas",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/services/",
+      "contactLayout": null,
+      "heading": "Tecnología quetrabaja contigo.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/about/",
+      "contactLayout": null,
+      "heading": "Un aliado.De verdad.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/contact/",
+      "contactLayout": "flex",
+      "heading": "Tu próximo pasoempieza aquí.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/industrias/",
+      "contactLayout": null,
+      "heading": "Entendemostu contexto.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/proyectos/",
+      "contactLayout": null,
+      "heading": "Tecnología.En operación.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/blog/",
+      "contactLayout": null,
+      "heading": "Tecnología práctica.Mejores decisiones.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/diagnostico/",
+      "contactLayout": null,
+      "heading": "Entender hoy.Decidir mejor.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/en/services/",
+      "contactLayout": null,
+      "heading": "Technology thatworks with you.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    },
+    {
+      "route": "/en/contact/",
+      "contactLayout": "flex",
+      "heading": "Your next stepstarts here.",
+      "headingOverflow": [],
+      "scroll": 1280,
+      "width": 1280
+    }
+  ]
+}

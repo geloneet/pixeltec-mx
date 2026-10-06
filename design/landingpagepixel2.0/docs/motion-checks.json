@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-02",
+  "scope": "Prototipo visual local; nuevos efectos CSS/TypeScript",
+  "build": "PASS TypeScript strict + 73 HTML + 3711 referencias locales",
+  "http": "72 rutas HTTP 200",
+  "browser": {
+    "home": "14 hooks de movimiento, 3 canvas originales, sin overflow a 1440 px",
+    "menu": "Apertura/cierre en desktop y móvil; Escape cierra y devuelve foco a Abrir menú",
+    "filters": "Web muestra 3 tarjetas; Todos restaura el catálogo",
+    "diagnostic": "Paso 1 a 2, foco en leyenda, regreso conserva Salud",
+    "responsive": "Sin overflow a 390 px: servicios, proyectos, diagnóstico",
+    "console_errors": []
+  },
+  "reduced_motion": "Guardas y cancelación comprobadas en código; no emulación visual disponible",
+  "original_sha256": "b49e6c58fbe039b35e6ac5ad8685939ca8023d49d3d4d0b07657e9fb44df6e02"
+}

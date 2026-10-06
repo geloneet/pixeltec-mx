@@ -227,3 +227,6 @@ CTA compartido de interiores abre dialog nativo con diagnosticWidget existente E
 
 ### Proyectos de Inicio — 2026-10-05
 Tarjetas destacadas ES/EN abren dialog con imagen, descripción y alcance del catálogo canónico, más enlace al detalle. Eventos delegados compatibles con montaje DC; cerrar/Escape devuelve foco. Sin JS se conserva navegación normal; no se duplican datos editoriales.
+
+### Transiciones diagnóstico — 2026-10-05
+Controlador compartido: salida 140ms, entrada 320ms y altura 360ms, dirección inversa al volver. Bloqueo de avance duplicado durante transición; foco preventScroll. Reduced-motion cambia de inmediato. Se conserva validación y lógica de resultados.

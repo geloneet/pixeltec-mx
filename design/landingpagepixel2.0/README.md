@@ -233,3 +233,6 @@ Controlador compartido: salida 140ms, entrada 320ms y altura 360ms, dirección i
 
 ### Contacto modal — 2026-10-05
 Contacto ES/EN reemplaza el desplegable por el modal compartido del CTA; una sola instancia del widget, conserva transición, resultado, cierre/Escape y foco. Inicio permanece inline.
+
+### Diagnóstico rectangular — 2026-10-05
+Modal compartido de hasta 1080px con opciones en tres columnas, dos en tablet y una en móvil; altura natural limitada al viewport con scroll interno para resultados largos. Selectores exclusivos de diagnóstico preservan popups de proyectos e Inicio inline.

@@ -155,3 +155,14 @@
 .project-modal{width:min(960px,calc(100vw - 32px));padding:52px 24px 24px}.project-modal form{margin:0}.project-popup-copy{padding:28px clamp(0px,3vw,32px);font-family:Arial,sans-serif}.project-popup-copy .eyebrow{text-transform:uppercase;font-size:12px;letter-spacing:.1em;color:#555}.project-popup-copy h2{font-size:clamp(30px,4vw,48px);margin:16px 0;letter-spacing:-.04em}.project-popup-copy h3{font-size:20px;margin-top:28px}.project-popup-copy p{font-size:17px;line-height:1.65;color:#555}.project-popup-link{display:inline-block;background:#1466ff;color:white!important;border-radius:6px;padding:17px 22px;margin-top:16px;text-decoration:none}.project-popup-visual{border-radius:14px;overflow:hidden}.project-modal .diagnostic-close{font-family:Arial,sans-serif;z-index:1}html:has(.project-modal[open]){overflow:hidden}
 
 .wizard{box-sizing:border-box}.wizard fieldset{border:0;padding:0;margin:0;min-width:0}.wizard[aria-busy="true"]{pointer-events:none}
+
+/* Diagnostic dialog: landscape on desktop, stacked on phones. */
+#diagnostic-modal{width:min(1080px,calc(100vw - 48px));border-radius:14px}
+#diagnostic-modal .wizard{padding:20px clamp(24px,4vw,48px) 32px}
+#diagnostic-modal .wizard-top{margin-bottom:28px}
+#diagnostic-modal .wizard legend{font-size:clamp(26px,3vw,34px)}
+#diagnostic-modal .wizard-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#diagnostic-modal .wizard-options label{min-width:0}
+#diagnostic-modal .wizard-options span{height:100%;min-height:64px;padding:16px;gap:12px}
+@media(max-width:850px){#diagnostic-modal .wizard-options{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){#diagnostic-modal{width:calc(100vw - 24px);max-height:calc(100dvh - 24px)}#diagnostic-modal .wizard{padding:16px 20px 24px}#diagnostic-modal .wizard-options{grid-template-columns:1fr}#diagnostic-modal .wizard-top{margin-bottom:24px}}

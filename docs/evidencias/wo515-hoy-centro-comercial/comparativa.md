@@ -53,3 +53,34 @@ Nodos `.crm` en `/`: 0. No se tomó captura «antes» del público (requería ot
 ## Contraste
 
 `node scripts/wo515-contrast-check.mjs` — todos los pares ≥ 4.5:1 (mínimo 4.84 en oscuro primary/sidebar-accent).
+
+## Fase 2 (verificación independiente)
+
+### KPI a 1440 / 1280 / 1024
+`kpi-{1440,1280,1024}-{claro,oscuro}.png`: etiquetas y deltas ya no se recortan con «…»; envuelven a 2 líneas cuando falta ancho. Rejilla de KPI: 5 columnas desde 1400 px, 3 por debajo (a 1280 los 5 en una fila no dejaban espacio a valor + sparkline).
+
+### Pipeline a 1440
+`pipeline-1440-{claro,oscuro}.png`: a 1440 las 7 etapas no caben (≈916 px de mínimo vs ≈740 disponibles). Se deja scroll horizontal con `snap-mandatory` (aterriza al inicio de columna), región enfocable por teclado con nombre accesible y un desvanecido a la derecha que indica que hay más; desde ~1660 px caben las 7 sin scroll.
+
+### Smoke /hoy, /whatsapp y /cobros con la paleta `.crm`
+`smoke-{hoy,whatsapp,cobros}-{claro,oscuro}.png`. Fondos, tarjetas, bordes, tablas, filtros y textos toman el tema en ambos modos; ningún fondo queda sin cambiar. Muestreo automático de contraste (texto visible con ratio < 3:1 sobre su fondo efectivo):
+
+| Página | Claro | Oscuro |
+|---|---|---|
+| /hoy | 0 | 0 |
+| /whatsapp | 1 · pestaña activa «Bandeja» `text-cyan-300` sobre blanco (1.45:1) | 0 |
+| /cobros | 7 · botones «Registrar pago» `text-cyan-300` (1.45:1) y chips de frecuencia `text-sky-500` (2.77:1) | 0 |
+
+Causa: clases de color **fijas para fondo oscuro** dentro de componentes congelados (`src/components/cobros/cobros-view.tsx` y la consola de WhatsApp), no tokens. No dependen de `.crm`: en modo claro se veían igual antes de esta WO. No se corrigen aquí: los componentes están congelados/prohibidos y un override global de `.text-cyan-300` en `globals.css` tocaría 59 usos en el admin con riesgo colateral. En oscuro (tema por defecto del panel) todo pasa.
+
+Consola: los únicos errores vienen del entorno local sin PixelBot (`/api/whatsapp-inbox/conversations` → 503 «PIXELBOT_TENANT_ID no configurado», y los `useInboxConversations error` de la consola de WhatsApp) más un `ClientFetchError` de next-auth al abortarse una petición durante una navegación. El hook del badge del sidebar traga su 503 sin romper nada; el «Failed to load resource» del navegador no se puede silenciar desde JS.
+
+### Baseline `npm test`: origin/main vs rama
+origin/main = `be009256c27e` (= base de la WO).
+
+| | Archivos | Archivos fallidos | Tests | Pasan | Fallan |
+|---|---|---|---|---|---|
+| origin/main (worktree limpio, temporal) | 169 | 1 | 2149 | 2149 | 0 |
+| feat/hoy-centro-comercial | 182 | 1 | 2247 | 2247 | 0 |
+
+El único archivo fallido es `src/lib/blog/cluster-map.test.ts` en ambos lados, con el mismo error: `ENOENT … src/app/(public)/blog/[slug]/blog-post-client.tsx` (solo cambia la ruta del worktree). La rama no introduce regresiones.

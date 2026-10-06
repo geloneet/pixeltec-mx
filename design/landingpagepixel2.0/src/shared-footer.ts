@@ -25,7 +25,7 @@ const markup = `<footer id="footer" class="pixel-footer" style="position:relativ
         </div>
       </div>
       <div style="max-width:1440px;margin:clamp(48px,5vw,80px) auto 0;display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;border-top:1px solid #1c1d22;padding-top:clamp(32px,3vw,48px)">
-        <div aria-hidden="true" style="flex:1 1 50%;min-width:0;font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(64px,11.5vw,210px);line-height:.78;letter-spacing:-.05em;color:#1466ff;margin-bottom:-.12em;white-space:nowrap">PixelTEC</div>
+        <div aria-hidden="true" style="flex:1 1 50%;min-width:0;font-family:'Outfit',sans-serif;font-weight:800;font-size:clamp(64px,11.5vw,210px);line-height:.78;letter-spacing:-.05em;color:#1466ff;margin-bottom:-.12em;white-space:nowrap">PIXELTEC</div>
         <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;align-items:flex-end;gap:8px;text-align:right;padding-bottom:clamp(24px,2.5vw,40px);font-size:16px;font-weight:600;text-wrap:balance"><span>© 2026 PixelTEC. Todos los derechos reservados.</span><a href="/aviso-de-privacidad/" style="color:#a8a49b;font-weight:500" style-hover="color:#ffffff">Aviso de Privacidad</a></div>
       </div>
     </div>

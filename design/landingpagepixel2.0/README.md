@@ -239,3 +239,6 @@ Modal compartido de hasta 1080px con opciones en tres columnas, dos en tablet y 
 
 ### Logo oficial — 2026-10-05
 Miguel aprobó el cubo azul con circuitos. Original PNG preservado en public/assets/brand; copia de 128px para encabezado, menú y favicon ES/EN. src/brand.ts comparte la marca con Inicio, sin modificar home.dc.html. Se conserva el wordmark PixelTEC.
+
+### Wordmark — 2026-10-05
+Por indicación de Miguel, el nombre visual del logo usa PIXELTEC en mayúsculas en encabezado, menú y footer ES/EN. El texto editorial conserva su escritura existente.

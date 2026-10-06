@@ -22,3 +22,6 @@
 
 /* Consent stays actionable above promotional UI, without dismissing WhatsApp. */
 body:has([data-cookie-banner]) .public-website .wa-float{visibility:hidden;pointer-events:none}
+
+/* A small existing brand asset avoids an empty hero while Three loads. */
+.public-website [aria-label="Visual PixelTEC"]:not([data-cube-ready]){background:url('/assets/brand/pixeltec-circuit-cube.png') center/36% auto no-repeat}

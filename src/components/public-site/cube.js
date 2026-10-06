@@ -30,7 +30,7 @@ function perforated(base, dot, aniso, n = 22) {
     g.fillStyle = bg; g.fillRect(0, 0, s, s); g.fillStyle = fg;
     const st = s / n;
     for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { g.beginPath(); g.arc(st * (i + .5), st * (j + .5), st * 0.24, 0, Math.PI * 2); g.fill(); }
-  }, aniso, 512);
+  }, aniso, 256);
   const map = grid(base, dot); map.colorSpace = THREE.SRGBColorSpace;
   return { map, roughnessMap: grid('#555555', '#bbbbbb'), bumpMap: grid('#ffffff', '#000000') };
 }
@@ -63,6 +63,9 @@ function iconTex(path, color, aniso) {
 }
 
 export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, bg = 0x0a0d1a, half = 2.9, gap = 0.12, ink = '#eef2ff', inkSoft = '#aab4cc', concept = null }) {
+  const compact = matchMedia('(max-width: 700px), (pointer: coarse)').matches;
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  const frameInterval = 1000 / (compact ? 30 : 45);
   // Conceptos: 'hover' (A) tocar un cubo lo eleva y adelanta su etiqueta · 'parallax' (B) capas por profundidad que siguen al mouse
   // 'focus' (C) los servicios giran para mirarte y los decorativos se apartan · 'cascade' (D) apertura en cascada, uno tras otro
   concept = concept || { A: 'hover', B: 'parallax', C: 'focus', D: 'cascade' }[variant];
@@ -71,11 +74,11 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
   stage.appendChild(canvas);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: false });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 1.25));
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !compact, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: false });
+  renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1 : 1.25));
   renderer.shadowMap.enabled = false; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.3;
-  const aniso = renderer.capabilities.getMaxAnisotropy();
+  const aniso = Math.min(renderer.capabilities.getMaxAnisotropy(), compact ? 2 : 4);
 
   const scene = new THREE.Scene(); if (bg !== null) scene.background = new THREE.Color(bg);
   // Cámara isométrica (como el logo): vemos la cara superior, la +z (izquierda) y la +x (derecha)
@@ -97,7 +100,9 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   panel(0x1e3fb0, 3, 4, 4, [5, -4, 4]);
   await new Promise(resolve => requestAnimationFrame(resolve));
   const pm = new THREE.PMREMGenerator(renderer);
-  scene.environment = pm.fromScene(env, 0.04).texture; pm.dispose();
+  const environment = pm.fromScene(env, 0.04, .1, 100, {size: compact ? 64 : 128});
+  scene.environment = environment.texture; pm.dispose();
+  env.traverse(obj => {obj.geometry?.dispose(); obj.material?.dispose();});
 
   scene.add(new THREE.AmbientLight(0x6f8fff, 0.35));
   const key = new THREE.DirectionalLight(0xe8f0ff, 2.6); key.position.set(2, 7, 4); scene.add(key);
@@ -116,7 +121,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   const slatMats = ['#3a56a8', '#1b2a5e', '#3a56a8', '#1b2a5e'].map(solid);
 
   const S = 0.98, R = 0.045;
-  const cubeGeo = roundedBox(S, S, S, 0.06, 12, 12, 12);
+  const cubeGeo = roundedBox(S, S, S, 0.06, compact ? 5 : 8, compact ? 5 : 8, compact ? 5 : 8);
   const coreGeo = roundedBox(0.64, 0.64, 0.64, 0.05, 4, 4, 4);
   const slatGeo = roundedBox(S / 4 - 0.025, S, S, 0.03, 2, 8, 8);
   const navy = new THREE.MeshPhysicalMaterial({ color: 0x2f66f0, roughness: 0.2, metalness: 0.5, clearcoat: 1, clearcoatRoughness: 0.06, envMapIntensity: 1.6 });
@@ -191,12 +196,12 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
       .forEach(({ j }) => { const k = i < j ? i + '-' + j : j + '-' + i; if (!seen.has(k)) { seen.add(k); links.push({ a, b: all[j] }); } });
   });
   // Tubo de vidrio azulado + hilo interior luminoso
-  const glassWire = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: 1, transparent: true, opacity: 1, roughness: 0.12, metalness: 0, thickness: 0.35, ior: 1.52, attenuationColor: new THREE.Color(0xdfe9ff), attenuationDistance: 1.2, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.6, side: THREE.FrontSide });
+  const glassWire = new THREE.MeshPhysicalMaterial({ color: 0xffffff, transmission: compact ? 0 : 1, transparent: true, opacity: 1, roughness: 0.12, metalness: 0, thickness: 0.35, ior: 1.52, attenuationColor: new THREE.Color(0xdfe9ff), attenuationDistance: 1.2, clearcoat: 1, clearcoatRoughness: 0.05, envMapIntensity: 1.6, side: THREE.FrontSide });
   // Sombra de contacto: borde oscuro suave para separar el vidrio del fondo blanco
   const rimWire = new THREE.MeshBasicMaterial({ color: 0x1b2a5e, transparent: true, opacity: 0, side: THREE.BackSide, depthWrite: false });
   const coreWire = rimWire; // alias para el fundido
-  const wireGeo = new THREE.CylinderGeometry(0.04, 0.04, 1, 20, 1, false); wireGeo.rotateX(Math.PI / 2);
-  const coreGeoW = new THREE.CylinderGeometry(0.05, 0.05, 1, 20, 1, false); coreGeoW.rotateX(Math.PI / 2);
+  const wireGeo = new THREE.CylinderGeometry(0.04, 0.04, 1, compact ? 8 : 16, 1, false); wireGeo.rotateX(Math.PI / 2);
+  const coreGeoW = new THREE.CylinderGeometry(0.05, 0.05, 1, compact ? 8 : 16, 1, false); coreGeoW.rotateX(Math.PI / 2);
   const wireGroup = new THREE.Group(); wireGroup.visible = false; root.add(wireGroup);
   links.forEach(l => {
     l.mesh = new THREE.Group();
@@ -210,7 +215,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     gr.addColorStop(0, 'rgba(255,255,255,1)'); gr.addColorStop(0.25, 'rgba(190,215,255,0.9)'); gr.addColorStop(0.6, 'rgba(80,130,255,0.35)'); gr.addColorStop(1, 'rgba(80,130,255,0)');
     g.fillStyle = gr; g.fillRect(0, 0, s, s);
   }, aniso, 64);
-  const PULSES = 3; // cada pulso lleva una luz real; 3 mantiene el coste bajo
+  const PULSES = compact ? 1 : 3; // cada pulso lleva una luz real; 3 mantiene el coste bajo
   const pulseGeo = new THREE.SphereGeometry(0.034, 12, 10);
   const pulses = Array.from({ length: PULSES }, () => {
     const g = new THREE.Group(); wireGroup.add(g);
@@ -230,7 +235,9 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   let overCube = false, cursorEl = null;
   const pickCube = (e, r) => { ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1); ray.setFromCamera(ndc, camera); return ray.intersectObjects([...parts, ...decos].map(p => p.obj), true).length > 0; };
   const onMove = e => {
+    if (!visible || document.hidden || reduced.matches) return;
     lastInput = performance.now();
+    wake();
     const r = stage.getBoundingClientRect();
     if (concept === 'hover' || concept === 'focus') {
       ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
@@ -245,12 +252,12 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     mouse.x = clamp((e.clientX - (r.left + r.width / 2)) / (innerWidth * 0.5), -1, 1);
     mouse.y = clamp((e.clientY - (r.top + r.height / 2)) / (innerHeight * 0.5), -1, 1);
   };
-  addEventListener('pointermove', onMove);
-  const onClick = e => { const r = stage.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom || e.target.closest('a,button')) return; if (!pickCube(e, r)) return; target = target ? 0 : 1; lastInput = performance.now(); };
-  addEventListener('click', onClick);
-  if (autoOpen) setTimeout(() => { target = 1; lastInput = performance.now(); }, autoOpen);
-  const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if(visible) needsPaint = true; }); io.observe(stage);
-  const onVisibility = () => { if (!document.hidden) {lastInput = performance.now(); needsPaint = true;} };
+  stage.addEventListener('pointermove', onMove, {passive:true});
+  const onClick = e => { const r = stage.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom || e.target.closest('a,button')) return; if (!pickCube(e, r)) return; target = target ? 0 : 1; lastInput = performance.now(); needsPaint = true; wake(); };
+  stage.addEventListener('click', onClick);
+  const autoTimer = autoOpen ? setTimeout(() => { target = 1; lastInput = performance.now(); needsPaint = true; wake(); }, autoOpen) : null;
+  const io = new IntersectionObserver(([e]) => { visible = e.isIntersecting; if(visible) {needsPaint = true; wake();} else sleep(); }); io.observe(stage);
+  const onVisibility = () => { if (!document.hidden) {lastInput = performance.now(); needsPaint = true; wake();} else sleep(); };
   document.addEventListener('visibilitychange', onVisibility);
 
   let w = 1, h = 1;
@@ -262,7 +269,7 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     camera.left = -hw; camera.right = hw; camera.top = hw * h / w; camera.bottom = -hw * h / w;
     camera.updateProjectionMatrix();
     // setSize clears the drawing buffer even while the scene is idle.
-    needsPaint = true;
+    needsPaint = true; wake();
   });
   ro.observe(stage);
 
@@ -270,16 +277,19 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   const qRest = new THREE.Quaternion(), tmpV = new THREE.Vector3();
   const v = new THREE.Vector3(), topOff = new THREE.Vector3(0, 0.62, 0), botOff = new THREE.Vector3(0, -0.62, 0);
   const shift = { left: 'translate(-100%,-50%)', right: 'translate(0,-50%)', below: 'translate(-50%,0)' };
-  let t = 0, prev = performance.now();
-  renderer.setAnimationLoop(now => {
+  let t = 0, prev = performance.now(), frame = 0, timer = 0, destroyed = false;
+  function sleep() {cancelAnimationFrame(frame); clearTimeout(timer); frame = 0; timer = 0;}
+  function wake() {if (!destroyed && visible && !document.hidden && !frame && !timer) {prev = performance.now(); frame = requestAnimationFrame(paint);}}
+  function paint(now) {
+    frame = 0;
     const dt = Math.min(0.05, (now - prev) / 1000); prev = now;
     // Sin mouse reciente, sin transición y fuera de pantalla: no se renderiza nada
     const settling = Math.abs(target - open) > 0.002 || Math.abs(mouse.x - sm.x) + Math.abs(mouse.y - sm.y) > 0.002;
-    const active = needsPaint || settling || now - lastInput < 2500 || open > 0.5; // abierto: los pulsos siguen animando
+    const active = needsPaint || settling || (!reduced.matches && (now - lastInput < 2500 || open > 0.5)); // abierto: los pulsos siguen animando
     if (!visible || document.hidden || !active) return;
     t += dt;
-    sm.x += (mouse.x - sm.x) * 0.05; sm.y += (mouse.y - sm.y) * 0.05;
-    open += (target - open) * 0.04;
+    sm.x += (mouse.x - sm.x) * (1 - Math.exp(-dt * 3)); sm.y += (mouse.y - sm.y) * (1 - Math.exp(-dt * 3));
+    open = reduced.matches ? target : open + (target - open) * (1 - Math.exp(-dt * 2.5));
     const o = ease(clamp(open, 0, 1));
     const cascade = concept === 'cascade', par = concept === 'parallax';
 
@@ -291,12 +301,12 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
       p.oi = cascade ? ease(clamp((open - i * 0.14) / (1 - 3 * 0.14), 0, 1)) : o;
       p.obj.position.lerpVectors(p.rest, p.opened, p.oi);
       const wantLift = (concept === 'hover' && hovered === i && open < 0.5) ? 1 : 0;
-      p.lift += (wantLift - p.lift) * 0.12;
+      p.lift = reduced.matches ? 0 : p.lift + (wantLift - p.lift) * (1 - Math.exp(-dt * 7.5));
       if (concept === 'hover') { tmpV.copy(p.pos).normalize().multiplyScalar(0.22 * p.lift); tmpV.y += 0.1 * p.lift; p.obj.position.add(tmpV); }
       if (par) { tmpV.set(sm.x, -sm.y, 0).multiplyScalar(0.18 * (p.opened.z + 1.2)); p.obj.position.add(tmpV); }
       if (concept === 'focus') {
         const wantTurn = open > 0.5 || hovered === i ? 1 : 0;
-        p.turn += (wantTurn - p.turn) * 0.08;
+        p.turn = reduced.matches ? wantTurn : p.turn + (wantTurn - p.turn) * (1 - Math.exp(-dt * 5));
         qRest.identity(); p.obj.quaternion.copy(qRest).slerp(faceCam[p.face], ease(clamp(p.turn, 0, 1)));
         p.obj.scale.setScalar(1 + 0.06 * p.turn);
       }
@@ -335,10 +345,12 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
     }
 
     renderer.render(scene, camera);
+    stage.dataset.cubeReady = "true";
     needsPaint = false;
 
     const sr = stage.getBoundingClientRect();
     parts.forEach(p => {
+      if (p.oi < .001 && p.lift < .001) {p.label.style.opacity = "0"; return;}
       // Etiqueta siempre fuera del cubo: arriba (o abajo si es la fila inferior frontal), sin tapar su icono
       const below = p.side === 'below' && p.oi > 0.5;
       v.copy(p.obj.position).add(below ? botOff : topOff).applyMatrix4(root.matrixWorld).project(camera);
@@ -351,8 +363,12 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
       p.label.style.transform = `translate(-50%,${below ? '0' : '-100%'}) translate(${x}px,${y}px)`;
       p.label.style.opacity = Math.max(0, (p.oi - 0.55) / 0.45, p.lift * 0.95);
     });
-  });
+    if (!reduced.matches) timer = setTimeout(() => {timer = 0; frame = requestAnimationFrame(paint);}, frameInterval);
+  }
+  const onReduced = () => {needsPaint = true; wake();};
+  reduced.addEventListener('change', onReduced);
+  wake();
 
-  const destroy = () => { renderer.setAnimationLoop(null); removeEventListener('pointermove', onMove); removeEventListener('click', onClick); document.removeEventListener('visibilitychange',onVisibility); io.disconnect(); ro.disconnect(); renderer.dispose(); canvas.remove(); parts.forEach(p => p.label.remove()); stage.style.cursor = ''; };
-  return { destroy, open: () => { target = 1; }, close: () => { target = 0; }, toggle: () => { target = target ? 0 : 1; }, get isOpen() { return !!target; } };
+  const destroy = () => { destroyed = true; sleep(); clearTimeout(autoTimer); reduced.removeEventListener('change', onReduced); stage.removeEventListener('pointermove', onMove); stage.removeEventListener('click', onClick); document.removeEventListener('visibilitychange',onVisibility); io.disconnect(); ro.disconnect(); const geometries = new Set(), materials = new Set(), textures = new Set(); scene.traverse(obj => {if(obj.geometry) geometries.add(obj.geometry); for(const material of (Array.isArray(obj.material) ? obj.material : obj.material ? [obj.material] : [])) materials.add(material);}); for(const material of materials) {for(const value of Object.values(material)) if(value?.isTexture) textures.add(value); material.dispose();} geometries.forEach(g => g.dispose()); textures.forEach(t => t.dispose()); environment.dispose(); renderer.dispose(); renderer.forceContextLoss(); canvas.remove(); parts.forEach(p => p.label.remove()); stage.style.cursor = ''; };
+  return { destroy, open: () => { target = 1; needsPaint = true; wake(); }, close: () => { target = 0; needsPaint = true; wake(); }, toggle: () => { target = target ? 0 : 1; needsPaint = true; wake(); }, get isOpen() { return !!target; } };
 }

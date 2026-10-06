@@ -215,3 +215,6 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 
 ### Parallax de servicios — 2026-10-05
 Las imágenes oficiales de Inicio, Servicios y detalles ES/EN comparten profundidad al scroll en `motion.ts`: desplazamiento máximo 4%, overscan 10%, un frame por evento y solo tarjetas visibles. Sin bucle continuo; respeta movimiento reducido y pausa al ocultar la pestaña. Sin JS conserva la imagen estática. Verificar las tres superficies al cambiar estos selectores.
+
+### Menú lateral — 2026-10-05
+Backdrop anima color y blur explícitos al abrir/cerrar; panel conserva su último frame hasta dialog.close() para evitar reaparición al terminar. Cierre interrumpido parte del estilo visible; reduced-motion sigue inmediato.

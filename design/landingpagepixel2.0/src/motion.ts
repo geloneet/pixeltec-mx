@@ -19,15 +19,16 @@ export function enter(element: HTMLElement | null | undefined, delay = 0): void 
 
 export function panelMotion(element: HTMLElement, opening: boolean): Animation | undefined {
   if (reduced.matches || typeof element.animate !== 'function') return;
+  const current = getComputedStyle(element);
+  const start = { opacity: current.opacity, translate: current.translate };
   running.get(element)?.cancel();
   const animation = element.animate(opening ? [
     { opacity: 0, translate: '36px 0' }, { opacity: 1, translate: '0 0' }
   ] : [
-    { opacity: 1, translate: '0 0' }, { opacity: 0, translate: '20px 0' }
-  ], { duration: opening ? 420 : 180, easing: ease });
+    start, { opacity: 0, translate: '36px 0' }
+  ], { duration: opening ? 420 : 220, easing: ease, fill: 'both' });
   running.set(element, animation);
   const clean = (): void => { if (running.get(element) === animation) running.delete(element); };
-  animation.addEventListener('finish', clean, { once: true });
   animation.addEventListener('cancel', clean, { once: true });
   return animation;
 }

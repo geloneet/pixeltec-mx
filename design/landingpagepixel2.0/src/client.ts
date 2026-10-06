@@ -9,6 +9,7 @@ let closingMenu = false;
 const closeMenu = (): void => {
   if (!menu?.open || closingMenu) return;
   closingMenu = true;
+  menu.classList.add('menu-closing');
   const finish = (): void => { menu.close(); closingMenu = false; };
   const animation = panelMotion(menu, false);
   if (animation) void animation.finished.then(finish, finish);
@@ -16,7 +17,7 @@ const closeMenu = (): void => {
 };
 toggle?.addEventListener('click',()=>{
   if (!menu || menu.open) return;
-  menu.showModal();toggle.setAttribute('aria-expanded','true');panelMotion(menu,true);
+  menu.classList.remove('menu-closing');menu.showModal();toggle.setAttribute('aria-expanded','true');panelMotion(menu,true);
 });
 document.querySelector('[data-close-menu]')?.addEventListener('click',closeMenu);
 menu?.addEventListener('cancel',event=>{event.preventDefault();closeMenu();});

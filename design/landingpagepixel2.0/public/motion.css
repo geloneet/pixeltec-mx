@@ -7,7 +7,9 @@
   .art :where(.mock-browser,.phone,.tile-grid,.core){transition:translate 800ms var(--motion-ease),scale 800ms var(--motion-ease)}
   .progress-track i{transition:width 600ms var(--motion-ease)}
   .menu-dialog[open]::backdrop{animation:pixel-backdrop 420ms ease both}
-  @keyframes pixel-backdrop{from{opacity:0}to{opacity:1}}
+  .menu-dialog[open].menu-closing::backdrop{animation:pixel-backdrop-out 220ms ease both}
+  @keyframes pixel-backdrop{from{background-color:transparent;backdrop-filter:blur(0)}to{background-color:#0009;backdrop-filter:blur(5px)}}
+  @keyframes pixel-backdrop-out{from{background-color:#0009;backdrop-filter:blur(5px)}to{background-color:transparent;backdrop-filter:blur(0)}}
   .site-header nav a,[data-pixel-home] header nav a{position:relative}
   .site-header nav a:after,[data-pixel-home] header nav a:after{content:'';position:absolute;left:0;right:0;bottom:-5px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform 350ms var(--motion-ease)}
   .site-header nav a:is(:hover,:focus-visible):after,[data-pixel-home] header nav a:is(:hover,:focus-visible):after{transform:scaleX(1)}

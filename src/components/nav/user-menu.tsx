@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { LogOut, User } from "lucide-react";
+import { ChevronDown, LogOut, Moon, Sun, User } from "lucide-react";
 import { signOut } from "next-auth/react";
+import { useTheme } from "next-themes";
 import { useUser } from "@/hooks/use-user";
 import { useUserProfile } from "@/hooks/use-user-profile";
 import { isRestrictedRole } from "@/lib/routes/reviewer-access";
@@ -15,6 +16,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+/** Segunda línea del topbar (D-8): el rol real de la sesión, nunca un texto fijo. */
+const ROLE_LABEL: Record<string, string> = {
+  admin: "Administrador",
+  staff: "Staff",
+  reviewer: "Revisor",
+};
 
 function getInitials(displayName: string | null, email: string | null): string {
   if (displayName && displayName.trim().length > 0) {
@@ -28,6 +36,8 @@ export function UserMenu() {
   const router = useRouter();
   const user = useUser();
   const { userProfile } = useUserProfile();
+  const { resolvedTheme, setTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
 
   const handleLogout = async () => {
     await signOut({ redirectTo: "/login" });
@@ -40,6 +50,7 @@ export function UserMenu() {
   // WO-2026-00051: el reviewer no tiene /perfil (bloqueado en middleware);
   // se oculta el enlace — presentación, no enforcement.
   const canOpenProfile = !userProfile || !isRestrictedRole(userProfile.role);
+  const roleLabel = userProfile?.role ? ROLE_LABEL[userProfile.role] ?? null : null;
 
   return (
     <DropdownMenu>
@@ -47,10 +58,9 @@ export function UserMenu() {
         <button
           type="button"
           aria-label="Menú de usuario"
-          className="relative flex-shrink-0 rounded-full ring-offset-background transition-all hover:ring-2 hover:ring-sky-400/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/50"
+          className="flex flex-shrink-0 items-center gap-2.5 rounded-lg py-1 pl-1 pr-2 text-left transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          {/* Avatar */}
-          <div className="relative h-8 w-8 sm:h-9 sm:w-9 rounded-full overflow-hidden">
+          <div className="relative h-9 w-9 flex-shrink-0 overflow-hidden rounded-full">
             {user.photoURL ? (
               <Image
                 src={user.photoURL}
@@ -60,20 +70,20 @@ export function UserMenu() {
                 sizes="40px"
               />
             ) : (
-              <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-sky-500 to-indigo-600">
-                <span className="text-white text-xs font-semibold uppercase select-none">
+              <div className="flex h-full w-full items-center justify-center bg-primary">
+                <span className="select-none text-xs font-semibold uppercase text-primary-foreground">
                   {initials}
                 </span>
               </div>
             )}
           </div>
-
-          {/* Admin badge overlay */}
-          {isAdmin && (
-            <span className="absolute -bottom-0.5 -right-0.5 z-10 flex items-center justify-center rounded-full bg-amber-500 text-black text-[9px] font-bold px-1 py-0.5 leading-none border border-background">
-              A
+          <span className="hidden min-w-0 flex-col leading-tight xl:flex">
+            <span className="max-w-[140px] truncate text-[13px] font-semibold text-foreground">
+              {user.displayName ?? user.email ?? "Usuario"}
             </span>
-          )}
+            {roleLabel && <span className="text-[11px] text-muted-foreground">{roleLabel}</span>}
+          </span>
+          <ChevronDown className="hidden h-4 w-4 text-muted-foreground xl:block" aria-hidden />
         </button>
       </DropdownMenuTrigger>
 
@@ -125,6 +135,18 @@ export function UserMenu() {
           Perfil y seguridad
         </DropdownMenuItem>
         )}
+
+        {/* D-15: el toggle de tema vive aquí (antes solo en el header público). */}
+        <DropdownMenuItem
+          className="flex items-center gap-2 text-muted-foreground hover:text-foreground focus:text-foreground focus:bg-accent rounded-lg cursor-pointer px-2 py-2 text-sm"
+          onSelect={(e) => {
+            e.preventDefault();
+            setTheme(isDark ? "light" : "dark");
+          }}
+        >
+          {isDark ? <Sun className="h-4 w-4 flex-shrink-0" /> : <Moon className="h-4 w-4 flex-shrink-0" />}
+          {isDark ? "Modo claro" : "Modo oscuro"}
+        </DropdownMenuItem>
 
         <DropdownMenuSeparator className="bg-border" />
 

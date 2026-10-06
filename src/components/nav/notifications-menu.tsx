@@ -115,11 +115,11 @@ export function NotificationsMenu() {
         <button
           type="button"
           aria-label="Notificaciones"
-          className="relative flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-secondary/60 border border-border backdrop-blur-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-all"
+          className="relative flex h-10 w-10 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
         >
-          <Bell className="w-4 h-4" />
+          <Bell className="h-5 w-5" strokeWidth={1.75} />
           {unreadCount > 0 && (
-            <span className="absolute top-0 right-0 flex h-4 min-w-4 items-center justify-center rounded-full bg-rose-500 border-2 border-background text-[9px] font-bold text-white px-0.5">
+            <span className="absolute right-1 top-1 flex h-4 min-w-4 items-center justify-center rounded-full border-2 border-card bg-red-600 px-0.5 text-[9px] font-bold tabular-nums text-white">
               {badgeLabel}
             </span>
           )}

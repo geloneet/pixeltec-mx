@@ -22,12 +22,7 @@ import {
 } from "@/components/nav/nav-config";
 import { ADMIN_ROUTES } from "@/lib/routes/admin-routes";
 import { QUICK_LINKS } from "@/app/(admin)/_not-found-client";
-import {
-  INICIO_QUICK_ACTIONS,
-  INICIO_STAT_CARDS,
-  getVisibleQuickActions,
-  getVisibleStatCards,
-} from "@/components/hoy/inicio-surface";
+import { INICIO_WIDGETS, getVisibleInicioWidgets } from "@/components/hoy/inicio-surface";
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../../..");
 const ADMIN_DIR = path.join(REPO_ROOT, "src/app/(admin)");
@@ -54,7 +49,14 @@ const EXPECTED_STATES: Record<ModuleId, ReturnType<typeof getModule>["state"]> =
   notificaciones: "active",
   perfil: "active",
   "smilemore-respuestas": "active",
+  // WO-2026-00515 (mockup «Centro Comercial», D-1): anunciados como «Pronto»
+  // en el sidebar; sin rutas, fuera de ⌘K, 404 y submenús.
+  calendario: "planned",
+  reportes: "planned",
+  automatizaciones: "planned",
 };
+
+const PLANNED_IDS = (Object.keys(EXPECTED_STATES) as ModuleId[]).filter((id) => EXPECTED_STATES[id] === "planned");
 
 const HIDDEN_IDS = (Object.keys(EXPECTED_STATES) as ModuleId[]).filter(
   (id) => EXPECTED_STATES[id] === "hidden" || EXPECTED_STATES[id] === "legacy"
@@ -83,9 +85,9 @@ describe("registro central de módulos (WO-2026-00088 · renovado por WO-2026-00
     expect(getChildModules("proyectos")).toEqual([]);
   });
 
-  it("visibilidad: todo módulo vigente (active/protected) es visible", () => {
+  it("visibilidad: todo módulo vigente (active/protected) es visible; planned no", () => {
     for (const m of MODULES) {
-      expect(isModuleVisible(m.id), m.id).toBe(true);
+      expect(isModuleVisible(m.id), m.id).toBe(m.state !== "planned");
     }
     expect(isModuleVisible("clientes")).toBe(true);
     expect(isModuleVisible("whatsapp")).toBe(true);
@@ -93,9 +95,18 @@ describe("registro central de módulos (WO-2026-00088 · renovado por WO-2026-00
     expect(isModuleVisible("cotizaciones")).toBe(true);
   });
 
-  it("rutas: sin módulos ocultos hoy, toda ruta de un módulo registrado se sirve", () => {
+  it("rutas: sin módulos ocultos hoy, toda ruta de un módulo vigente se sirve", () => {
     for (const id of HIDDEN_IDS) expect(isModuleRouteEnabled(id), id).toBe(false);
-    for (const m of MODULES) expect(isModuleRouteEnabled(m.id), m.id).toBe(true);
+    for (const m of MODULES) expect(isModuleRouteEnabled(m.id), m.id).toBe(m.state !== "planned");
+  });
+
+  it("planned (WO-2026-00515): sin rutas, sin destino en ⌘K y fuera de toda superficie navegable", () => {
+    expect(getModulesByState("planned").map((m) => m.id).sort()).toEqual([...PLANNED_IDS].sort());
+    for (const id of PLANNED_IDS) {
+      expect(getModule(id).routes, id).toEqual([]);
+      expect(PALETTE_NAV_ITEMS.some((i) => i.module === id), id).toBe(false);
+      expect(getVisibleNavItems("admin").some((i) => i.module === id), id).toBe(false);
+    }
   });
 
   it("resuelve el módulo dueño de un pathname por prefijo más largo", () => {
@@ -184,16 +195,8 @@ describe("superficies: un módulo oculto no aparece en ninguna", () => {
 
   it("quick links del 404 y superficie de Inicio no referencian módulos ocultos", () => {
     for (const link of QUICK_LINKS) expect(hiddenHrefs.has(link.href), link.href).toBe(false);
-    for (const a of getVisibleQuickActions()) expect(isModuleVisible(a.module), a.href).toBe(true);
-    for (const c of getVisibleStatCards()) expect(isModuleVisible(c.module), c.key).toBe(true);
-    // WO-2026-00132: Trabajo (proyectos) y Cotizaciones son accesos rápidos reales, no declaraciones dormidas.
-    expect(INICIO_QUICK_ACTIONS.some((a) => a.module === "proyectos")).toBe(true);
-    expect(INICIO_STAT_CARDS.some((c) => c.module === "proyectos")).toBe(true);
-    expect(getVisibleQuickActions().map((a) => a.href)).toEqual([
-      "/clientes",
-      "/cotizaciones",
-      "/proyectos",
-      "/cobros",
-    ]);
+    // WO-2026-00515: Inicio son widgets, cada uno con su módulo; todos visibles hoy.
+    for (const w of getVisibleInicioWidgets()) expect(isModuleVisible(INICIO_WIDGETS[w]), w).toBe(true);
+    expect(getVisibleInicioWidgets()).toHaveLength(Object.keys(INICIO_WIDGETS).length);
   });
 });

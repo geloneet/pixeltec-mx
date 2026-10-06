@@ -13,6 +13,9 @@ import {
   getSecondaryItems,
   getVisibleNavAreas,
   getVisibleNavItems,
+  getPrimaryNavAreas,
+  getMoreNavAreas,
+  getPlannedNavItems,
   resolveActiveHref,
 } from "./nav-config";
 import { QUICK_LINKS } from "@/app/(admin)/_not-found-client";
@@ -47,13 +50,16 @@ function extractRedirects(): Array<{ source: string; destination: string; perman
 describe("taxonomía visible (ADR-0030 · ADR-0039 · WO-2026-00088/ADR-0054 propuesta)", () => {
   it("navegación visible para admin/staff, en orden, con las etiquetas aprobadas", () => {
     expect(getVisibleNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual([
+      // WO-2026-00515 (mockup «Centro Comercial»): orden comercial y etiquetas
+      // «Conversaciones» (área whatsapp, ruta /whatsapp intacta) y «Cobros»
+      // (área finanzas, ruta /cobros intacta).
       "Inicio",
+      "Conversaciones",
       "Clientes",
-      "WhatsApp",
-      "Finanzas",
       // WO-2026-00132 (Funcional·Simple·Único): Cotizaciones y Trabajo
       // reemplazan Proyectos/Definición/PixelForge.
       "Cotizaciones",
+      "Cobros",
       "Trabajo",
       "Blog",
       // «SEO» añadido por orden de Miguel (2026-08-26, WO-2026-00095).
@@ -62,6 +68,25 @@ describe("taxonomía visible (ADR-0030 · ADR-0039 · WO-2026-00088/ADR-0054 pro
     ]);
     expect(getVisibleNavAreas("staff")).toEqual(getVisibleNavAreas("admin"));
     expect(getVisibleNavAreas(undefined)).toEqual(getVisibleNavAreas("admin"));
+  });
+
+  it("WO-2026-00515: grupo principal del mockup y el resto tras «Más»", () => {
+    expect(getPrimaryNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual([
+      "Inicio",
+      "Conversaciones",
+      "Clientes",
+      "Cotizaciones",
+      "Cobros",
+    ]);
+    expect(getMoreNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual(["Trabajo", "Blog", "SEO", "Usuarios"]);
+    expect(getPrimaryNavAreas("reviewer")).toEqual([]);
+    expect(getMoreNavAreas("reviewer")).toEqual([]);
+  });
+
+  it("WO-2026-00515: Calendario, Reportes y Automatizaciones son «Pronto» (planned), sin href", () => {
+    expect(getPlannedNavItems("admin").map((p) => p.label)).toEqual(["Calendario", "Reportes", "Automatizaciones"]);
+    for (const p of getPlannedNavItems("admin")) expect(p).not.toHaveProperty("href");
+    expect(getPlannedNavItems("reviewer")).toEqual([]);
   });
 
   it("el reviewer no ve áreas y en ⌘K solo ve WhatsApp (WO-2026-00051 intacto)", () => {

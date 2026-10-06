@@ -52,7 +52,12 @@ export function PipelineBoard({ result }: { result: WidgetResult<{ columns: Pipe
       ) : result.data.total === 0 ? (
         <EmptyState>Aún no hay oportunidades en el pipeline.</EmptyState>
       ) : (
-        <div className="-mx-1 grid snap-x auto-cols-[minmax(124px,1fr)] grid-flow-col gap-2 overflow-x-auto px-1 pb-1">
+        <div
+          role="region"
+          aria-label="Etapas del pipeline (desliza para ver todas)"
+          tabIndex={0}
+          className="-mx-1 grid snap-x snap-mandatory scroll-px-1 auto-cols-[minmax(124px,1fr)] grid-flow-col gap-2 overflow-x-auto px-1 pb-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring max-[1659px]:pr-8 max-[1659px]:[mask-image:linear-gradient(to_right,black_calc(100%-40px),transparent)]"
+        >
           {result.data.columns.map((col) => (
             <Column key={col.id} col={col} />
           ))}

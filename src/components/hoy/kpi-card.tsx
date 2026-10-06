@@ -51,12 +51,12 @@ function Delta({ card }: { card: KpiCard }) {
         : "text-muted-foreground";
   const pct = delta.pct === null ? "sin base" : `${delta.pct > 0 ? "+" : ""}${delta.pct}%`;
   return (
-    <p className="flex items-center gap-1 text-xs">
+    <p className="flex flex-wrap items-center gap-x-1 gap-y-0.5 text-xs leading-snug">
       <span className={cn("inline-flex flex-shrink-0 items-center gap-0.5 whitespace-nowrap font-semibold tabular-nums", color)}>
         <Icon className="h-3.5 w-3.5" aria-hidden />
         {pct}
       </span>
-      <span className="truncate text-muted-foreground">{delta.comparison}</span>
+      <span className="text-muted-foreground">{delta.comparison}</span>
     </p>
   );
 }
@@ -69,14 +69,14 @@ export function KpiCardView({ card }: { card: KpiCard }) {
       data-kpi={card.id}
       className={cn(
         CARD,
-        "group flex min-w-0 items-start gap-3 p-4 xl:gap-2.5 xl:p-3.5 2xl:gap-3 2xl:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        "group flex w-full min-w-0 items-start gap-3 p-4 xl:gap-2.5 xl:p-3.5 2xl:gap-3 2xl:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       )}
     >
       <span className={cn("flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full xl:h-9 xl:w-9 2xl:h-10 2xl:w-10", TONE_TILE[card.tone])}>
         <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
-        <p className="truncate text-[13px] font-medium text-foreground">{card.label}</p>
+        <p className="text-[13px] font-medium leading-snug text-foreground [overflow-wrap:anywhere]">{card.label}</p>
         <div className="mt-1 flex items-end justify-between gap-2">
           <p className={cn("font-bold tabular-nums tracking-tight text-foreground", card.valueText ? "text-[26px] leading-8 xl:text-2xl 2xl:text-[26px]" : "text-sm leading-8 text-muted-foreground")}>
             {card.valueText ?? "Sin datos"}
@@ -103,9 +103,9 @@ export function KpiRow({ result, visible }: { result: WidgetResult<KpiCard[]>; v
   const cards = visible ? result.data.filter((c) => visible.has(c.id)) : result.data;
   if (cards.length === 0) return null;
   return (
-    <ul aria-label="Indicadores del día" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-5">
+    <ul aria-label="Indicadores del día" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 min-[1400px]:grid-cols-5">
       {cards.map((card) => (
-        <li key={card.id} className="min-w-0">
+        <li key={card.id} className="flex min-w-0">
           <KpiCardView card={card} />
         </li>
       ))}

@@ -92,6 +92,20 @@ describe.each(["light", "dark crm"] as const)("tablero completo (%s)", (theme) =
   });
 });
 
+describe("KPI legibles a 1024–1440 (fase 2)", () => {
+  it("etiquetas y comparaciones del delta no se recortan con ellipsis", () => {
+    render(<KpiRow result={full.kpis} />);
+    for (const label of ["Cotizaciones pendientes", "Seguimientos hoy", "Cobros por vencer", "Cobrado este mes"]) {
+      const el = screen.getByText(label);
+      expect(el.className, label).not.toMatch(/\btruncate\b|line-clamp/);
+    }
+    for (const cmp of ["programados vs. ayer", "vs. semana pasada", "vs. mes anterior"]) {
+      const el = screen.getByText(cmp);
+      expect(el.className, cmp).not.toMatch(/\btruncate\b/);
+    }
+  });
+});
+
 describe("BD vacía: estados vacíos honestos", () => {
   it("sin cifras inventadas ni NaN", () => {
     const { container } = render(<Board d={empty} theme="light" />);

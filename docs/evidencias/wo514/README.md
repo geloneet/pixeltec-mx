@@ -6,4 +6,4 @@ Se renderizó de nuevo el modelo existente de `cube.js` en lienzo1536×1536, fon
 
 Validación: TypeScript PASS y2 pruebas del control progresivo PASS. Comparación visual al mismo tamaño: aristas e iconos definidos, sin fondo de partículas incrustado. La ganancia de CPU de WO513 se conserva por arquitectura; no se atribuyen las puntuaciones anteriores de PageSpeed a esta nueva imagen sin medirla.
 
-Publicación y comprobaciones finales: pendientes.
+Publicación final: `f07514261aa03d72f33ff4121b1562dea80c726b`, 6/10 15:35 México; wrapper rc0, rollback=no. Build/tipos/205 páginas PASS. Portada real sirve srcset HQ nuevo, cero canvas del cubo inicial. Móvil390px: scrollWidth379, imagen cargada y sin overflow. Capturas de producción adjuntas.

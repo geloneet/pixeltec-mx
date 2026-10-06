@@ -176,3 +176,7 @@ Validación: `npm run verify`, 14 pruebas, 152 rutas y presupuesto de rendimient
 ### Imagen de metodología — WO-508, 2026-10-05
 
 Por petición de Miguel, el retrato y firma de la portada ES/EN se sustituyen por una ilustración 3D conceptual de un cubo modular azul en ensamblaje. Es una imagen estática, optimizada en WebP 640/1080 con carga diferida y espacio reservado; la foto de Nosotros se conserva. Procedencia: [method-art-provenance.json](docs/method-art-provenance.json). `npm run verify`: 14/14, presupuestos y fuente original PASS. Inspección visual local: imagen cargada, sin retrato ni overflow desktop. Evidencia: `work/portfolio-20261005/method-cube.png`. Sin publicación productiva.
+
+### Consolidación de industrias — WO-508, 2026-10-05
+
+Miguel agrupa distribución de agua dentro de logística/transporte: retirada la categoría independiente de catálogo, portada, Industrias y opciones visibles del diagnóstico ES/EN. El valor histórico `agua` sigue aceptado por el evaluador para no romper datos previos; sus reglas originales no cambian. Casos reales conservados. Contador derivado del catálogo (05). Separador de franja cambiado de estrella a dos píxeles azules. Fuente HTML original preservada. `npm run verify` PASS 14/14 y presupuestos; búsqueda del HTML construido sin la etiqueta independiente ES/EN. Evidencia visual: `work/portfolio-20261005/industry-strip-five.png`.

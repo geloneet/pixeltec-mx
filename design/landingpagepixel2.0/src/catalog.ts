@@ -16,7 +16,6 @@ export const industries: Item[] = [
   {title:'Salud dental',href:'/industrias/clinicas-dentales/',category:'Agenda · Expediente · Operación',visual:'clinic'},
   {title:'Hotelería',href:'/industrias/hoteles/',category:'Reservas · Experiencia · Hospitalidad',visual:'hotel'},
   {title:'Logística y transporte',href:'/industrias/#logistica',category:'Coordinación · Procesos',visual:'dashboard'},
-  {title:'Distribución de agua',href:'/industrias/#agua',category:'Servicio · Operación',visual:'orbit'},
   {title:'Comercio especializado',href:'/industrias/#comercio',category:'Catálogo · Experiencia',visual:'store'},
   {title:'Energía solar',href:'/industrias/#solar',category:'Información · Contacto',visual:'grid'}
 ];

@@ -26,7 +26,7 @@ export function homeContent(home:string,locale:Locale):string {
  replaceArray('svc',marketedServices.map((s,i)=>({n:'0'+(i+1),href:localPath(s.path,locale),t:s.title[locale],d:s.description[locale],tags:s.category[locale].split(' · '),image:`/assets/services/${s.id}-3d-1280.webp`,imageSet:`/assets/services/${s.id}-3d-640.webp 640w, /assets/services/${s.id}-3d-1280.webp 1280w`})),'whyCols');
  replaceArray('whyStats',[
  {n:'01',suf:'',label:x('Arquitecto líder por proyecto','Lead architect per project')},
- {n:'06',suf:'',label:x('Industrias con experiencia publicada','Industries with published experience')},
+ {n:String(industryContent.length).padStart(2,'0'),suf:'',label:x('Industrias con experiencia publicada','Industries with published experience')},
  {n:'MX',suf:'',label:x('Desde Vallarta para todo México','From Vallarta, across Mexico')}
  ],'whyItems');
  replaceArray('whyItems',method.map(f=>({t:f.title[locale],d:f.body[locale]})),'footCols');
@@ -38,6 +38,7 @@ export function homeContent(home:string,locale:Locale):string {
  home=home.replace(/const ind = \[[^\n]+\];/,'const ind = '+JSON.stringify(industryContent.map(i=>i.title[locale]))+';');
  // Root-relative resource URL is required for the /en/ homepage.
  home=home.replace("new URL('./cubo.js', document.baseURI)","new URL('/cubo.js', document.baseURI)");
+ home=home.replace("React.createElement('span', { style: { color: '#1466ff' } }, '✦')","React.createElement('span', { 'aria-hidden': true, style: { width: 12, height: 12, flexShrink: 0, background: '#1466ff', boxShadow: '5px -5px 0 #76a5ff' } })");
  const cubeLabels=[['Automatización','AI automation','Flujos que trabajan solos.','Workflows that run for you.'],['Desarrollo Web & Apps','Web & apps','Tu operación, conectada.','Your operations, connected.'],['WhatsAgent','WhatsAgent','Tu marca en cada conversación.','Your brand in every conversation.'],['Consultoría TI','IT consulting','Claridad antes de construir.','Clarity before building.']];
  let cubeIndex=0;home=home.replace(/\{ title: '[^']+', caption: '[^']+', icon:/g,()=>{const v=cubeLabels[cubeIndex++];if(!v)throw new Error('Unexpected cube label');return `{ title: ${JSON.stringify(v[locale==='es'?0:1])}, caption: ${JSON.stringify(v[locale==='es'?2:3])}, icon:`;});
  home=home.replace(/<div style="flex:2 1 0;[^>]*>\[ foto&nbsp;\{\{ sv.n \}\}&nbsp;\]<\/div>\s*<div style="flex:1 1 0;[^>]*><\/div>/,`<div class="home-service-image" aria-hidden="true"><img src="{{ sv.image }}" srcset="{{ sv.imageSet }}" sizes="(max-width: 639px) 90vw, (max-width: 999px) 80vw, 600px" width="1536" height="1024" alt="" loading="lazy" decoding="async"></div>`);

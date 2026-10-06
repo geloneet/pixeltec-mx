@@ -134,7 +134,7 @@ export default async function BlogPage({ searchParams }: { searchParams: Promise
 
           <div className="lg:grid lg:grid-cols-[1fr_280px] lg:items-start lg:gap-12">
             <section aria-labelledby="blog-posts-heading">
-              <h2 id="blog-posts-heading" className="sr-only">Blog Posts</h2>
+              <h2 id="blog-posts-heading" className="sr-only">Artículos del blog</h2>
               <BlogGrid posts={posts} />
             </section>
             <div className="hidden lg:block">

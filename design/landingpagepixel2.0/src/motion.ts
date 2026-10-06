@@ -84,7 +84,7 @@ window.addEventListener('pagehide', () => {
 });
 
 // Decorative service loops never run off-screen or while the document is hidden.
-const serviceArt = Array.from(document.querySelectorAll<HTMLElement>('.service-art .art, .sector-art'));
+const serviceArt = Array.from(document.querySelectorAll<HTMLElement>('.service-art .art, .sector-art, .method-symbol'));
 const visibleArt = new Set<Element>();
 function syncServiceArt(): void {
   for (const art of serviceArt) art.classList.toggle('art-active', visibleArt.has(art) && !document.hidden && !reduced.matches);

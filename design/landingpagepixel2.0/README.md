@@ -196,3 +196,5 @@ CTA compartido ES/EN en todas las rutas, incluido 404. Cuatro sugerencias rotati
 Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del footer, con relleno sólido y sin stroke para evitar contornos dobles.
 
 2026-10-05 — Tarjetas de principios ES/EN con gráficos CSS grises: piezas enlazadas, capas y módulos. Decorativos aria-hidden, sin recursos ni JavaScript adicionales; máscara gradual y escala móvil. verify PASS y revisión visual desktop; evidencia work/portfolio-20261005/about-depth.png.
+
+2026-10-05 — Símbolos de metodología ES/EN animados: pulso, balanceo, giro y avance diagonal. Observer existente pausa fuera de pantalla/pestaña oculta; movimiento reducido desactiva bucles. Sin dependencias nuevas.

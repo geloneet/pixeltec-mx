@@ -1,4 +1,4 @@
-'use client';
+import 'server-only';
 
 import MarkdownRenderer from '@/components/blog/markdown-renderer';
 import Link from 'next/link';
@@ -12,7 +12,7 @@ import { BlogSidebar } from '@/components/blog/blog-sidebar';
 import { relatedResourcesFor } from '@/lib/blog/cluster-map';
 import { GoogleBusinessCard } from '@/components/site/google-business-card';
 
-// El cuerpo siempre se muestra: import estático evita precargas next/dynamic sin nonce CSP.
+// El artículo se prepara en servidor; solo los controles interactivos son islas de cliente.
 
 // Portada local por defecto: el placeholder externo (placehold.co) metía un
 // tercer origen en la ruta crítica del LCP y era el "cover" de posts reales.
@@ -31,7 +31,7 @@ interface SidebarData {
   tags: string[];
 }
 
-export default function BlogPostClient({
+export default function BlogPostContent({
   post,
   related,
   headings,

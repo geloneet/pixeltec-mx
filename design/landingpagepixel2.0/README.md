@@ -198,3 +198,5 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Tarjetas de principios ES/EN con gráficos CSS grises: piezas enlazadas, capas y módulos. Decorativos aria-hidden, sin recursos ni JavaScript adicionales; máscara gradual y escala móvil. verify PASS y revisión visual desktop; evidencia work/portfolio-20261005/about-depth.png.
 
 2026-10-05 — Símbolos de metodología ES/EN animados: pulso, balanceo, giro y avance diagonal. Observer existente pausa fuera de pantalla/pestaña oculta; movimiento reducido desactiva bucles. Sin dependencias nuevas.
+
+2026-10-05 — Contacto ES/EN integra el diagnóstico compartido en un desplegable nativo dentro de la tarjeta. Cuatro preguntas y resultado sin navegación, validación y envío voluntario existentes reutilizados.

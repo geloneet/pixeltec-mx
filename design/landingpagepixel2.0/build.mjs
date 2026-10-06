@@ -1,3 +1,4 @@
+import {whatsappFloat} from './.build/whatsapp-float.js';
 import {build as bundle} from 'esbuild';
 import {z} from 'zod';
 import {robotsMeta} from './.build/seo-policy.js';
@@ -127,6 +128,9 @@ home=home.replaceAll('<a href="{{ p.href }}"', '<a data-motion href="{{ p.href }
 home=home.replace('</footer>','<div style="padding:24px clamp(20px,4vw,56px);border-top:1px solid #222;display:flex;flex-wrap:wrap;gap:20px;font-size:13px"><a href="/mapa/">Explorar todas las páginas ↗</a><a href="/equipo/">Equipo</a><a href="/metodologia/">Metodología</a><a href="/guias-transformacion/">Guías y presencia local</a><a href="/login/">Acceso de clientes</a><a href="/terminos-de-servicio/">Términos</a></div></footer>');
 
 for(const locale of languages){const dir=locale==='es'?'dist/':'dist/en/';await mkdir(dir,{recursive:true});let output=homeContent(home,locale).replace('__PAGE_ROBOTS__',robotsMeta('/',locale,environment));if(locale==='es'){const seo=sources.get('/').seo;output=output.replace(/<title>[^<]+<\/title>/,'<title>'+escapeHTML(seo.title)+'</title>').replace(/<meta name="description" content="[^"]*">/,'<meta name="description" content="'+escapeHTML(seo.description)+'">');}await writeFile(dir+'index.html',addStructuredData(await optimizeHome(output),{path:'/',locale,title:locale==='es'?'Inicio':'Home'}));}
+await bundle({entryPoints:['src/whatsapp-client.ts'],bundle:true,format:'esm',minify:true,outfile:'dist/whatsapp-client.js'});
+for(const entry of entries){const file='dist'+entry.path+'index.html';const html=await readFile(file,'utf8');await writeFile(file,html.replace('</head>','<link rel="stylesheet" href="/whatsapp.css"><script type="module" src="/whatsapp-client.js"></script></head>').replace('</body>',whatsappFloat(entry.locale)+'</body>'));}
+await writeFile('dist/404.html',await readFile('dist/404/index.html','utf8'));
 await compressOutput();
 await writeFile('docs/routes.json',JSON.stringify(entries,null,2));
 const migration=livePaths.map(path=>({existing:sources.get(path)?.seo.canonical??'https://pixeltec.mx'+canonicalPath(path),spanish:path,english:localPath(path,'en'),action:'preserve-slug',redirectRequired:false}));

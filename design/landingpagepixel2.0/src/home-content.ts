@@ -27,10 +27,12 @@ export function homeContent(home:string,locale:Locale):string {
  ],'cubeRef');
  replaceArray('svc',marketedServices.map((s,i)=>({n:'0'+(i+1),href:localPath(s.path,locale),t:s.title[locale],d:s.description[locale],tags:s.category[locale].split(' · '),image:`/assets/services/${s.id}-3d-1280.webp`,imageSet:`/assets/services/${s.id}-3d-640.webp 640w, /assets/services/${s.id}-3d-1280.webp 1280w`})),'whyCols');
  replaceArray('whyStats',[
- {n:'01',suf:'',label:x('Arquitecto líder por proyecto','Lead architect per project')},
- {n:String(industryContent.length).padStart(2,'0'),suf:'',label:x('Industrias con experiencia publicada','Industries with published experience')},
- {n:'MX',suf:'',label:x('Desde Vallarta para todo México','From Vallarta, across Mexico')}
+ {n:x('A tu medida','Built for you'),suf:'',label:x('Software diseñado alrededor de tu operación.','Software designed around your operations.')},
+ {n:x('Todo conectado','Connected systems'),suf:'',label:x('Integramos tus herramientas para simplificar el trabajo.','We integrate your tools to simplify work.')},
+ {n:x('Contigo, paso a paso','With you, step by step'),suf:'',label:x('Te acompañamos desde el diagnóstico hasta la evolución.','We support you from assessment through continued improvement.')}
  ],'whyItems');
+ home=home.replace('font-size:clamp(56px,5.4vw,84px);line-height:1;letter-spacing:-.05em">{{ st.n }}','font-size:clamp(28px,2.7vw,40px);line-height:1.08;letter-spacing:-.035em">{{ st.n }}');
+
  replaceArray('whyItems',method.map(f=>({t:f.title[locale],d:f.body[locale]})),'footCols');
  const cases=featuredCaseStudies.map(c=>({app:c.id==='subsify',conceptual:!projectImage(c.id)&&c.id!=='subsify',image:projectImage(c.id)?.src??'',imageSet:projectImage(c.id)?`${projectImage(c.id)!.small} 640w, ${projectImage(c.id)!.src} 1280w`:'',imageWidth:projectImage(c.id)?.width??1280,imageHeight:projectImage(c.id)?.height??800,href:localPath(c.path,locale),id:c.id,name:c.name,tags:[c.category[locale]],short:c.scope[locale],label:c.category[locale],headline:c.id==='villa-nogal'?x('Una experiencia de reserva propia.','A booking experience of their own.'):c.id==='pipas-tondoroque'?x('Pedidos que siguen su curso.','Orders that keep moving.'):c.id==='barro-stock'?x('Cada pieza, en su lugar.','Every piece in its place.'):c.id==='smile-more'?x('Más control. Mejor atención.','More control. Better care.'):x('Tradición que evoluciona.','Tradition that evolves.')}));
  replaceArray('projTop',cases.slice(0,2),'projBottom');replaceArray('projBottom',cases.slice(2),'projects');replaceArray('projects',cases,'nlColumns');

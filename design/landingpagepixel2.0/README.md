@@ -200,3 +200,5 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Símbolos de metodología ES/EN animados: pulso, balanceo, giro y avance diagonal. Observer existente pausa fuera de pantalla/pestaña oculta; movimiento reducido desactiva bucles. Sin dependencias nuevas.
 
 2026-10-05 — Contacto ES/EN integra el diagnóstico compartido en un desplegable nativo dentro de la tarjeta. Cuatro preguntas y resultado sin navegación, validación y envío voluntario existentes reutilizados.
+
+2026-10-05 — Métricas de portada sustituidas por beneficios ES/EN: a tu medida, todo conectado y acompañamiento. Sin cifras comerciales nuevas; tipografía adaptada al contenido.

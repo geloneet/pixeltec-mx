@@ -33,3 +33,5 @@ body:has([data-cookie-banner]) .public-website .wa-float{visibility:hidden;point
 @media(prefers-reduced-motion:reduce){.public-website .progressive-cube .cube-poster{transition:none}}
 /* Darker brand blue on the cream header clears large-text contrast. */
 .public-website .site-header .brand-wordmark>span{color:#087acc!important}
+/* The dark poster must not obscure the adjacent headline at desktop overlap. */
+.public-website .progressive-cube{mix-blend-mode:lighten}

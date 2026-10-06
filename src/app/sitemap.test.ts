@@ -42,7 +42,7 @@ beforeEach(() => {
   getFlagMock.mockImplementation(async (_key: string, fallback = false) => fallback);
 });
 
-describe("sitemap — lastModified veraz tras los cambios del 2026-09-14", () => {
+describe("sitemap — fechas reales del rediseño sin alterar el histórico de ciudades", () => {
   test.each([
     "/",
     "/services",
@@ -53,9 +53,9 @@ describe("sitemap — lastModified veraz tras los cambios del 2026-09-14", () =>
     "/about",
     "/contact",
     "/industrias",
-  ])("%s ⇒ 2026-09-14", async (path) => {
+  ])("%s ⇒ fecha del rediseño/auditoría", async (path) => {
     const entries = await sitemap();
-    expect(lastModOf(entries, path)).toBe(CHANGED_ON);
+    expect(lastModOf(entries, path)).toBe(path === "/" || path === "/blog" ? "2026-10-06" : "2026-10-05");
   });
 
   test("landing con localProof ⇒ 2026-09-14; sin localProof ⇒ 2026-08-28", async () => {

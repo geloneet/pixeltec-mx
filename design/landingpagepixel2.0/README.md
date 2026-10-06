@@ -202,3 +202,5 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Contacto ES/EN integra el diagnóstico compartido en un desplegable nativo dentro de la tarjeta. Cuatro preguntas y resultado sin navegación, validación y envío voluntario existentes reutilizados.
 
 2026-10-05 — Métricas de portada sustituidas por beneficios ES/EN: a tu medida, todo conectado y acompañamiento. Sin cifras comerciales nuevas; tipografía adaptada al contenido.
+
+2026-10-05 — Continuidad visual de navegación: header/footer/WhatsApp separados del fundido documental, contenido nuevo entra sobre el anterior sin intervalo vacío. Redes FB/IG/WA igualadas en interiores; footer sin segunda animación de entrada; scrollbar estable. Conserva URLs, historial, SSR y fallback nativo. No es persistencia DOM SPA: navegadores sin View Transitions hacen navegación normal. NEXT_INTEGRATION sigue pendiente.

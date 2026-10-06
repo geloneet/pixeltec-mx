@@ -32,7 +32,7 @@ export function panelMotion(element: HTMLElement, opening: boolean): Animation |
   return animation;
 }
 
-const selector = '[data-motion], .hero-overline, .page-hero h1, .hero-bottom, .section-head, .service-row, .work-card, .feature-grid>article, .process-grid>article, .team-grid>article, .method-list>article, .about-visual, .manifesto, .detail-art, .detail-sidebar, .cta-section, .footer-top, .footer-grid';
+const selector = '[data-motion], .hero-overline, .page-hero h1, .hero-bottom, .section-head, .service-row, .work-card, .feature-grid>article, .process-grid>article, .team-grid>article, .method-list>article, .about-visual, .manifesto, .detail-art, .detail-sidebar, .cta-section';
 const observer = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
   let order = 0;
   for (const entry of entries) {

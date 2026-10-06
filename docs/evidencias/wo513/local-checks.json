@@ -1,0 +1,30 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "xRobots": null,
+    "scriptsMissingNonce": 0,
+    "errorLinks": 0
+  },
+  {
+    "path": "/mapa",
+    "status": 200,
+    "xRobots": null,
+    "scriptsMissingNonce": 0,
+    "errorLinks": 0
+  },
+  {
+    "path": "/en/404",
+    "status": 404,
+    "xRobots": null,
+    "scriptsMissingNonce": 0,
+    "errorLinks": 0
+  },
+  {
+    "path": "/login",
+    "status": 200,
+    "xRobots": "noindex, nofollow",
+    "scriptsMissingNonce": 0,
+    "errorLinks": 0
+  }
+]

@@ -1,0 +1,3 @@
+Release 252879ba4a778bc872bcb538057ddab1470d0175, Next production build:
+/blog/[slug] route 62.3 kB; First Load JS 274 kB.
+Source: /tmp/pixeltec-wo513-blog.log on VPS, build line #16 468.6.

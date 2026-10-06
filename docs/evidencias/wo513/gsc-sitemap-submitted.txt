@@ -1,0 +1,163 @@
+- banner:
+  - button:
+  - link:
+    - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+  - search:
+    - textbox [disabled]: Inspeccionar las URL de "pixeltec.mx"
+    - combobox
+    - button:
+  - button:
+    - generic: help_outline
+  - tooltip: Ayuda
+  - button:
+    - generic: manage_accounts
+  - tooltip: Configuración de usuario
+  - button:
+    - generic: notifications
+  - tooltip: Mensajes
+  - generic: "9"
+  - button:
+  - button:
+- dialog:
+  - navigation:
+    - button:
+      - combobox: pixeltec.mx
+      - generic: 
+    - link:
+      - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+      - generic: home
+      - generic: Descripción general
+    - link:
+      - /url: ./search-console/performance/insights?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lightbulb_2
+      - generic: Estadísticas
+    - link:
+      - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trending_up
+      - generic: Rendimiento
+    - button:
+      - generic: keyboard_arrow_down
+    - button:
+      - generic: search
+      - generic: Inspección de URLs
+    - generic: Indexación
+    - button [expanded]:
+      - generic: keyboard_arrow_up
+    - link:
+      - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx
+      - generic: file_copy
+      - generic: Páginas
+    - link:
+      - /url: ./search-console/sitemaps?resource_id=sc-domain%3Apixeltec.mx
+      - generic: account_tree
+      - generic: Sitemaps
+    - link:
+      - /url: ./search-console/removals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: visibility_off
+      - generic: Retirada de URLs
+    - generic: Experiencia
+    - button [expanded]:
+      - generic: keyboard_arrow_up
+    - link:
+      - /url: ./search-console/core-web-vitals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: speed
+      - generic: Core Web Vitals
+    - link:
+      - /url: ./search-console/https?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lock
+      - generic: HTTPS
+    - generic: Mejoras
+    - button [expanded]:
+      - generic: keyboard_arrow_up
+    - link:
+      - /url: ./search-console/r/breadcrumbs?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Rutas de exploración
+    - link:
+      - /url: ./search-console/r/profile-page?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Página de perfil
+    - generic: Seguridad y Acciones manuales
+    - button:
+      - generic: keyboard_arrow_down
+    - link:
+      - /url: ./search-console/links?resource_id=sc-domain%3Apixeltec.mx
+      - generic: link_2
+      - generic: Enlaces
+    - link:
+      - /url: ./search-console/achievements?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trophy
+      - generic: Logros
+    - link:
+      - /url: ./search-console/settings?resource_id=sc-domain%3Apixeltec.mx
+      - generic: settings
+      - generic: Ajustes
+    - button:
+      - generic: feedback
+      - generic: Enviar comentarios
+    - button:
+      - generic: info
+      - generic: Acerca de Search Console
+    - link:
+      - /url: https://myaccount.google.com/privacypolicy?hl=es
+      - text: Privacidad
+    - link:
+      - /url: https://myaccount.google.com/termsofservice?hl=es
+      - text: Términos
+- navigation:
+  - heading [level=1]: Sitemaps
+- main:
+  - generic: Añadir un sitemap
+  - textbox: https://pixeltec.mx/sitemap.xml
+  - button:
+    - generic: Enviar
+  - heading [level=1]:
+    - generic: Sitemaps enviados
+  - button:
+    - generic: 
+  - table:
+    - rowgroup:
+      - row:
+        - columnheader:
+          - text: Sitemap
+        - columnheader:
+          - text: Tipo
+        - columnheader:
+          - text: Enviado
+        - columnheader:
+          - text: Última lectura
+        - columnheader:
+          - text: Estado
+        - columnheader:
+          - text: Páginas descubiertas
+        - columnheader:
+          - text: Vídeos descubiertos
+        - columnheader
+    - rowgroup:
+      - row:
+        - cell: https://pixeltec.mx/sitemap.xml
+        - cell: Sitemap
+        - cell: 6 oct 2026
+        - cell: 30 sept 2026
+        - cell:
+          - generic: Correcto
+        - cell: "60"
+        - cell: "0"
+        - cell:
+          - button:
+            - generic: 
+  - generic: "Filas por página:"
+  - listbox:
+    - text: "5"
+    - option [selected]: "10"
+    - text: 25 50 100 250 500
+  - generic: 1-1 de 1
+  - generic: 
+  - generic: 
+- dialog "Se ha enviado el sitemap correctamente":
+  - heading "Se ha enviado el sitemap correctamente" [level=2]:
+    - generic: check_circle
+    - generic: Se ha enviado el sitemap correctamente
+  - generic: Google lo procesará de forma periódica para saber si se ha modificado. Si detectamos algún problema, recibirás una notificación.
+  - button "Cerrar" [active]:
+    - generic: Cerrar

@@ -1,0 +1,16 @@
+
+> nextn@0.1.0 test
+> NODE_OPTIONS=--no-experimental-webstorage vitest run src/lib/blog/public-post.test.ts src/lib/blog/markdown-roundtrip.test.ts src/lib/blog/format-date.test.ts
+
+(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:
+  - ESM syntax in a file loaded as CommonJS (vitest.config.ts:1:1). Use a `.mjs` extension or set `"type": "module"` in the closest package.json
+Set `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.
+
+ RUN  v4.1.11 /Users/pixeltec/Documents/Codex/2026-10-02/v/work/pixeltec-design
+
+
+ Test Files  3 passed (3)
+      Tests  61 passed (61)
+   Start at  14:36:07
+   Duration  182ms (transform 70ms, setup 0ms, import 100ms, tests 37ms, environment 0ms)
+

@@ -87,7 +87,7 @@ export default function BlogPostClient({
           <p className="editorial-byline">Por {post.authorName} · PixelTEC</p>
         </header>
         <div className="editorial-cover">
-          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 768px" priority />
+          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 768px" priority fetchPriority="high" />
         </div>
 
         {headings.length >= 3 && (

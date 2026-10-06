@@ -14,8 +14,9 @@
 .public-website .site-header .site-primary-nav a[aria-current="page"],
 .public-website .site-header .header-social a:hover{color:#1466ff}
 
-/* Home uses a dark surround; cream sections retain readable links. */
-.public-website[data-pixel-home] .header-shell{background:#0b0b0a}
+/* Only the navigation card is opaque; page content shows through its gutters. */
+.public-website .header-shell{background:transparent}
+/* Cream sections retain readable links. */
 .public-website[data-pixel-home] .home-local-links a{color:#0b0b0a}
 .public-website[data-pixel-home] .home-local-links a:hover{color:#1466ff}
 

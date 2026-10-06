@@ -15,6 +15,7 @@ class Component extends React.Component {
   cubeRef = React.createRef();
   initHero() { this.initServiceCube(); }
   async initServiceCube() {
+    const generation = this._cubeGeneration = (this._cubeGeneration || 0) + 1;
     const host = this.cubeRef.current; if (!host) return;
     if (host.getBoundingClientRect().top > innerHeight + 200) {
       await new Promise(resolve => {
@@ -25,9 +26,9 @@ class Component extends React.Component {
       });
     }
     await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    if (this._cubeDead) return;
-    let mod; try { mod = await import('./cube.js'); } catch (err) { console.error(err); return; }
-    if (this._cubeDead || !this.cubeRef.current) return;
+    if (this._cubeDead || generation !== this._cubeGeneration) return;
+    let mod; try { mod = await import('../cube.js'); } catch (err) { console.error(err); return; }
+    if (this._cubeDead || generation !== this._cubeGeneration || !this.cubeRef.current) return;
     const services = [
       { title: "Automatización", caption: "Flujos que trabajan solos.", icon: 'M14 14h20v20H14z M20 20h8v8h-8z M19 14V8M24 14V8M29 14V8M19 40v-6M24 40v-6M29 40v-6M14 19H8M14 24H8M14 29H8M40 19h-6M40 24h-6M40 29h-6' },
       { title: "Desarrollo Web & Apps", caption: "Tu operación, conectada.", icon: 'M23 17a5 5 0 1 1-10 0a5 5 0 1 1 10 0 M8 36c0-6 4.5-10 10-10s10 4 10 10 M36 15a4 4 0 1 1-8 0a4 4 0 1 1 8 0 M30 24c5 0 10 3.5 10 9 M36 6l1.5 3 3 .5-2.2 2.2.5 3.2L36 13.4 33.2 15l.5-3.2L31.5 9.5l3-.5z' },
@@ -36,7 +37,7 @@ class Component extends React.Component {
     ];
     const c = await mod.mountCube(host, { variant: 'A', services, half: 2.1, bg: null, ink: '#f2efe8', inkSoft: '#a8a49b' });
     host.style.fontFamily = "'Bricolage Grotesque',sans-serif";
-    if (this._cubeDead) { c.destroy(); return; }
+    if (this._cubeDead || generation !== this._cubeGeneration) { c.destroy(); return; }
     this._cubeCleanup = () => c.destroy();
   }
   componentDidUpdate(prev) { if (prev.heroVisual !== this.props.heroVisual) { this._cubeCleanup && this._cubeCleanup(); this._cubeCleanup = null; this.initHero(); } }
@@ -123,7 +124,7 @@ class Component extends React.Component {
     this._onResize = () => { this.setState({ w: window.innerWidth }); clearTimeout(this._sr); this._sr = setTimeout(() => { this.initSand();  }, 250); clearTimeout(this._rs); this._rs = setTimeout(() => this.initPhysics(), 250); };
     window.addEventListener('resize', this._onResize); this.setState({w: window.innerWidth});
   }
-  componentWillUnmount() { this._cubeHostObserver?.disconnect(); cancelAnimationFrame(this._sand2Raf); window.removeEventListener('pointermove', this._sand2Move); clearTimeout(this._lw); cancelAnimationFrame(this._lenisRaf); this._lenis && this._lenis.destroy(); document.removeEventListener('click', this._onAnchor); window.removeEventListener('scroll', this._onRevealScroll); clearInterval(this._tTimer); this.stopPhysics(); clearTimeout(this._w); window.removeEventListener('resize', this._onResize); window.removeEventListener('keydown', this._onKey); cancelAnimationFrame(this._sandRaf); this._cubeDead = true; this._cubeCleanup && this._cubeCleanup(); window.removeEventListener('pointermove', this._sandMove); }
+  componentWillUnmount() { this._cubeGeneration = (this._cubeGeneration || 0) + 1; this._cubeHostObserver?.disconnect(); cancelAnimationFrame(this._sand2Raf); window.removeEventListener('pointermove', this._sand2Move); clearTimeout(this._lw); cancelAnimationFrame(this._lenisRaf); this._lenis && this._lenis.destroy(); document.removeEventListener('click', this._onAnchor); window.removeEventListener('scroll', this._onRevealScroll); clearInterval(this._tTimer); this.stopPhysics(); clearTimeout(this._w); window.removeEventListener('resize', this._onResize); window.removeEventListener('keydown', this._onKey); cancelAnimationFrame(this._sandRaf); this._cubeDead = true; this._cubeCleanup && this._cubeCleanup(); window.removeEventListener('pointermove', this._sandMove); }
   stopPhysics() {
     cancelAnimationFrame(this._raf);
     (this._cleanup || []).forEach(f => f()); this._cleanup = [];

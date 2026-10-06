@@ -1,0 +1,284 @@
+{
+  "schema": "pixeltec-cierre/v2",
+  "proyecto": {
+    "nombre": "PixelTEC · publicación del nuevo sitio",
+    "objetivo": "Integrar el diseño aprobado en Next.js y reemplazar pixeltec.mx con recuperación verificable.",
+    "supervisor": "Codex · WO-2026-00509",
+    "lede": "Candidato Next verificado: build, TypeScript y 2,143 pruebas PASS; 133 rutas revisadas. Pendiente activación productiva."
+  },
+  "parametros": [
+    {
+      "k": "Dominio",
+      "v": "https://pixeltec.mx"
+    },
+    {
+      "k": "Rama",
+      "v": "design/pixeltec-public-shell-20261002"
+    },
+    {
+      "k": "Portafolio público",
+      "v": "/casos-de-exito"
+    },
+    {
+      "k": "Orden",
+      "v": "WO-2026-00509"
+    }
+  ],
+  "prerrequisitos": [
+    {
+      "id": "pr1",
+      "titulo": "Sincronización NeuroPIXEL",
+      "quien": "Codex",
+      "estado": "ok",
+      "nota": "Conciliada a 2ad1acc7 preservando cambios; registro28b0e21b."
+    },
+    {
+      "id": "pr2",
+      "titulo": "Candidato Next probado",
+      "quien": "Codex",
+      "estado": "ok",
+      "nota": "Evidencia en docs/evidencias/wo509/integracion.md"
+    },
+    {
+      "id": "pr3",
+      "titulo": "Acceso y estado actual del despliegue",
+      "quien": "Codex",
+      "estado": "ok",
+      "nota": "SSH verificado; SHA activo 39a8faed5df16a8d336b6d302a47e98de40185dc, wrapper presente, DB sana."
+    }
+  ],
+  "hero": {
+    "pill": {
+      "tono": "warn",
+      "texto": "Integración en curso"
+    },
+    "titulo": "Del diseño aprobado al sitio productivo.",
+    "texto": "Se conserva CMS, diagnóstico, administración y seguridad. Activación sólo con candidato validado.",
+    "tiles": [
+      {
+        "k": "Diseño",
+        "v": "39c8fae"
+      },
+      {
+        "k": "Producción",
+        "v": "39a8faed (actual)"
+      }
+    ]
+  },
+  "fases": [
+    {
+      "id": "f0",
+      "titulo": "Preparación",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": null,
+      "why": "Admitir sesión, inventariar rutas y registrar recuperación.",
+      "dod": {
+        "inicio": "Diseño aprobado e integración pendiente.",
+        "fin": "WO activo y checklist validado."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s0-1",
+          "tipo": "accion",
+          "titulo": "Preparación",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": false,
+          "detalle": "Admitir sesión, inventariar rutas y registrar recuperación.",
+          "comando": null,
+          "verifica": "WO activo y checklist validado.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    },
+    {
+      "id": "f1",
+      "titulo": "Integración Next",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f0",
+      "why": "Portar componentes, navegación persistente, imágenes y animaciones sin eval.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Compilación estricta y paridad visual."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s1-1",
+          "tipo": "accion",
+          "titulo": "Integración Next",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": false,
+          "detalle": "Portar componentes, navegación persistente, imágenes y animaciones sin eval.",
+          "comando": null,
+          "verifica": "Compilación estricta y paridad visual.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "titulo": "Funciones y contenido",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f1",
+      "why": "Conservar CMS, diagnóstico y panel; portafolio /casos-de-exito.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Pruebas críticas y rutas verificadas."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s2-1",
+          "tipo": "accion",
+          "titulo": "Funciones y contenido",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": false,
+          "detalle": "Conservar CMS, diagnóstico y panel; portafolio /casos-de-exito.",
+          "comando": null,
+          "verifica": "Pruebas críticas y rutas verificadas.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "titulo": "Validación del candidato",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f2",
+      "why": "Pruebas desktop/móvil, accesibilidad, CSP, errores y rendimiento.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Evidencia reproducible sin fallos bloqueantes."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s3-1",
+          "tipo": "accion",
+          "titulo": "Validación del candidato",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": true,
+          "detalle": "Pruebas desktop/móvil, accesibilidad, CSP, errores y rendimiento.",
+          "comando": null,
+          "verifica": "Evidencia reproducible sin fallos bloqueantes.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    },
+    {
+      "id": "f4",
+      "titulo": "Aprobación del candidato",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f3",
+      "why": "Presentar versión y diferencias materiales a Miguel.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Decisión explícita sobre candidato."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s4-1",
+          "tipo": "decision",
+          "titulo": "Aprobación del candidato",
+          "dueno": "miguel",
+          "estimado_min": 0,
+          "gate": true,
+          "detalle": "Presentar versión y diferencias materiales a Miguel.",
+          "comando": null,
+          "verifica": "Decisión explícita sobre candidato.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+          "opciones": [
+            "Aprobar candidato",
+            "Solicitar ajustes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "f5",
+      "titulo": "Publicación",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f4",
+      "why": "SHA aprobado en main; wrapper VPS check-only y despliegue con rollback.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Salud y rutas públicas verificadas."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s5-1",
+          "tipo": "accion",
+          "titulo": "Publicación",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": true,
+          "detalle": "SHA aprobado en main; wrapper VPS check-only y despliegue con rollback.",
+          "comando": null,
+          "verifica": "Salud y rutas públicas verificadas.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    },
+    {
+      "id": "f6",
+      "titulo": "Cierre",
+      "estimado_texto": "Según resultados de verificación",
+      "contexto": "Ruta crítica",
+      "ruta_critica": true,
+      "gate_requiere": "f5",
+      "why": "Sincronizar documentación, conocimiento y GitHub; definir revisión posterior.",
+      "dod": {
+        "inicio": "Fase anterior verificada.",
+        "fin": "Hashes y evidencia del despliegue registrados."
+      },
+      "contingencia": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado.",
+      "pasos": [
+        {
+          "id": "s6-1",
+          "tipo": "accion",
+          "titulo": "Cierre",
+          "dueno": "worker",
+          "estimado_min": 0,
+          "gate": false,
+          "detalle": "Sincronizar documentación, conocimiento y GitHub; definir revisión posterior.",
+          "comando": null,
+          "verifica": "Hashes y evidencia del despliegue registrados.",
+          "rollback": "Conservar sitio actual; ante fallo productivo restaurar SHA anterior con procedimiento documentado."
+        }
+      ]
+    }
+  ],
+  "decisiones": [],
+  "fuera": [
+    "Cambios a datos de producción",
+    "Envíos de prueba reales sin autorización",
+    "Debilitar CSP o protección del panel"
+  ],
+  "post_arranque": [
+    {
+      "id": "post1",
+      "cuando": "Día 1 a 7",
+      "que": "Revisar disponibilidad, errores y formularios; ejecución manual o sesión activa, sin monitor automático configurado."
+    }
+  ],
+  "fuentes": "WO-2026-00509; README del producto, sección Operaciones comunes; playbook cierre-a-operacion-real."
+}

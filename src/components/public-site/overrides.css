@@ -1,0 +1,8 @@
+.public-website .site-header .brand,.public-website .site-header .brand-wordmark{color:#0b0b0a}
+.public-website .service-art img,.public-website .home-service-visual img{transform:translateY(var(--parallax-y,0%)) scale(1.1)}
+.public-website .public-lead{margin-top:28px;border-top:1px solid #d9d9d9;padding-top:20px}.public-website .public-lead summary{cursor:pointer;font-weight:700}.public-website .public-lead form{display:grid;gap:14px;padding-top:18px}.public-website .public-lead label{display:block;font-size:14px}.public-website .public-lead input:not([type=checkbox]){display:block;width:100%;border:1px solid #aaa;background:#fff;color:#111;border-radius:6px;padding:12px}.public-website .public-lead button{background:#1466ff;color:white;padding:14px;border-radius:6px}.public-website .public-lead button:disabled{opacity:.6}
+
+.public-website dialog[open]::backdrop{animation:public-backdrop-in .28s ease both}.public-website dialog.is-closing{animation:public-dialog-out .22s ease both}.public-website dialog.is-closing::backdrop{animation:public-backdrop-out .22s ease both}@keyframes public-backdrop-in{from{opacity:0}to{opacity:1}}@keyframes public-backdrop-out{to{opacity:0}}@keyframes public-dialog-out{to{opacity:0;transform:translateY(8px)}}@media(prefers-reduced-motion:reduce){.public-website dialog,.public-website dialog::backdrop{animation:none!important}}
+
+@media(max-width:900px){.public-website[data-pixel-home] [aria-label="Visual PixelTEC"]{margin:0!important;top:0!important;max-width:100%!important;min-width:0!important;width:100%!important;flex-basis:100%!important;z-index:0!important}}
+.public-website[data-pixel-home] main>div>section:first-child a{position:relative;z-index:5}

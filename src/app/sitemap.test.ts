@@ -83,10 +83,10 @@ describe("sitemap — lastModified veraz tras los cambios del 2026-09-14", () =>
     expect(lastModOf(entries, "/industrias/clinicas-dentales")).toBe(CHANGED_ON);
   });
 
-  test("total sin blog: 12 estáticas + 3 servicios + 2 industrias + 12 ciudades + 26 keyword = 55", async () => {
+  test("total sin blog: 12 estáticas + 3 servicios + 2 industrias + 12 ciudades + 26 keyword + 10 casos públicos = 65", async () => {
     const entries = await sitemap();
-    expect(entries).toHaveLength(55);
-    expect(new Set(entries.map((e) => e.url)).size).toBe(55);
+    expect(entries).toHaveLength(65);
+    expect(new Set(entries.map((e) => e.url)).size).toBe(65);
   });
 
   test("interruptor apagado ⇒ solo la portada", async () => {

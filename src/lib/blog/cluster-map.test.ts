@@ -74,7 +74,7 @@ describe('relatedResourcesFor', () => {
 });
 
 describe('blog-post-client.tsx — bloque «Recursos de PixelTEC mencionados» con fallback', () => {
-  const src = readFileSync(resolve(__dirname, '..', '..', 'app', 'blog', '[slug]', 'blog-post-client.tsx'), 'utf8');
+  const src = readFileSync(resolve(__dirname, '..', '..', 'app', '(public)', 'blog', '[slug]', 'blog-post-client.tsx'), 'utf8');
 
   it('usa relatedResourcesFor cuando el post no trae internalLinks y conserva el tracking', () => {
     expect(src).toMatch(/from ['"]@\/lib\/blog\/cluster-map['"]/);

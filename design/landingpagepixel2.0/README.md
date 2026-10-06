@@ -208,3 +208,5 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Miguel confirma capacidades full stack del equipo: Ecosistemas Web ES/EN amplía contenido sobre UX/UI, frontend, backend/datos y nube/operación. Sin atribuir certificaciones, proveedores ni métricas no confirmadas.
 
 2026-10-05 — Detalles individuales de automatización, web/apps y consultoría reutilizan arte 3D aprobado de portada, WebP responsive/lazy ES/EN. WhatsAgent conserva su ilustración específica con el tratamiento de animación compartido.
+
+2026-10-05 — Corrección de destello: el reveal diferido ya no oculta contenido inicialmente visible (también en recargas/enlaces directos). Se retira el fundido global entre documentos, manteniendo animación de secciones al desplazarse. No equivale a router SPA.

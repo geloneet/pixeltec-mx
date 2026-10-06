@@ -230,3 +230,6 @@ Tarjetas destacadas ES/EN abren dialog con imagen, descripción y alcance del ca
 
 ### Transiciones diagnóstico — 2026-10-05
 Controlador compartido: salida 140ms, entrada 320ms y altura 360ms, dirección inversa al volver. Bloqueo de avance duplicado durante transición; foco preventScroll. Reduced-motion cambia de inmediato. Se conserva validación y lógica de resultados.
+
+### Contacto modal — 2026-10-05
+Contacto ES/EN reemplaza el desplegable por el modal compartido del CTA; una sola instancia del widget, conserva transición, resultado, cierre/Escape y foco. Inicio permanece inline.

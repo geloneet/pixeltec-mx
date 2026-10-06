@@ -18,3 +18,5 @@ html[data-navigating]:after{opacity:1;animation:pixel-navigation-progress 5s cub
  ::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}
  html[data-navigating]:after{animation:none;transform:scaleX(.6)}
 }
+
+html.lenis,html.lenis body{height:auto}.lenis.lenis-smooth{scroll-behavior:auto!important}.lenis.lenis-stopped{overflow:hidden}.lenis [data-lenis-prevent],.lenis dialog{overscroll-behavior:contain}

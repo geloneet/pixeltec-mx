@@ -221,3 +221,6 @@ Backdrop anima color y blur explícitos al abrir/cerrar; panel conserva su últi
 
 ### Diagnóstico modal — 2026-10-05
 CTA compartido de interiores abre dialog nativo con diagnosticWidget existente ES/EN, cuatro pasos y resultado local. Cerrar/Escape/exterior devuelve foco; conserva respuestas al reabrir. Sin JS enlace mantiene ruta independiente. Inicio y Contacto conservan su diagnóstico inline.
+
+### Scroll uniforme — 2026-10-05
+`src/smooth-scroll.ts` es el único controlador Lenis para Inicio e interiores, con los parámetros originales de Inicio. Build elimina solo la inicialización duplicada en la copia generada, preservando home.dc.html. Motion importa el controlador y el parallax compartido responde al scroll real. Diálogos usan scroll nativo; movimiento reducido desactiva Lenis; suspende en pestaña oculta y restaura con pageshow.

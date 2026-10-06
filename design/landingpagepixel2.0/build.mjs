@@ -79,7 +79,7 @@ for(const locale of languages){
 }
 await rm('dist',{recursive:true,force:true});await mkdir('dist',{recursive:true});await cp('public','dist',{recursive:true});
 await writeFile('dist/app-navigation.js',(await readFile('.build/app-navigation.js','utf8')).replace('export {};',''));
-await cp('.build/client.js','dist/client.js');await bundle({entryPoints:['src/diagnostic-client.ts'],bundle:true,format:'esm',minify:true,external:['./motion.js'],outfile:'dist/diagnostic-client.js'});await cp('.build/motion.js','dist/motion.js');
+await cp('.build/client.js','dist/client.js');await bundle({entryPoints:['src/diagnostic-client.ts'],bundle:true,format:'esm',minify:true,external:['./motion.js'],outfile:'dist/diagnostic-client.js'});await cp('.build/motion.js','dist/motion.js');await bundle({entryPoints:['src/smooth-scroll.ts'],bundle:true,format:'esm',minify:true,outfile:'dist/smooth-scroll.js'});
 await optimizeAssets();
 await writeFile('dist/favicon.svg',logo.replace('<svg ','<svg xmlns="http://www.w3.org/2000/svg" '));
 for(const page of allPages){const dir='dist'+localPath(page.path,page.locale);await mkdir(dir,{recursive:true});await writeFile(dir+'index.html',page.html);}
@@ -119,6 +119,8 @@ let postIndex=0;home=home.replace(/\{ cat: '/g,()=>"{ href: '"+posts[postIndex++
 home=home.replace('{{ sv.t }}</h3>','<a href="{{ sv.href }}" style="color:inherit">{{ sv.t }}</a></h3>');
 let serviceIndex=0;home=home.replace(/\{ n: '0[1-4]', t:/g,m=>"{ href: '"+services[serviceIndex++].href+"',"+m.slice(1));
 home=home.replace("subLabel: this.state.subbed ? '¡Listo!' : 'Suscribirme'","subLabel: this.state.subbed ? 'Vista previa · sin envío' : 'Suscribirme'");
+// One scroll controller for home and interior pages; original source stays untouched.
+home=home.replace(/    const startLenis = \(\) => \{[\s\S]*?    startLenis\(\);/, '');
 // Add opt-in motion hooks to the generated copy; preserve the supplied source byte-for-byte.
 home=home.replace('</head>','<link rel="stylesheet" href="/motion.css"><script type="module" src="/motion.js"></script></head>').replace('<body>','<body data-pixel-home>');
 home=home.replaceAll('<h2 style=', '<h2 data-motion style=');

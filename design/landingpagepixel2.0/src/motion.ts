@@ -1,3 +1,4 @@
+import './smooth-scroll.js';
 /** Optional motion: content stays visible if scripts or browser APIs are unavailable. */
 const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
 const running = new Map<Element, Animation>();

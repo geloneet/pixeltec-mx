@@ -4,7 +4,7 @@
 
 ## Estado real
 
-Candidato Next integrado y fusionado en main por PR158; despliegue iniciado, activación todavía pendiente de salud. El prototipo aprobado permanece en `design/landingpagepixel2.0`; el archivo original `src/home.dc.html` se conserva. El portafolio público usa `/casos-de-exito`; `/proyectos` sigue perteneciendo al panel privado.
+Sitio nuevo activo en pixeltec.mx desde 2026-10-06 05:02 UTC, release afcfc883 (PR160). Salud y 135 rutas verificadas. El prototipo aprobado permanece en `design/landingpagepixel2.0`; el archivo original `src/home.dc.html` se conserva. El portafolio público usa `/casos-de-exito`; `/proyectos` sigue perteneciendo al panel privado.
 
 ## Implementación
 
@@ -62,3 +62,11 @@ El build de `f11c577` falló en `npm ci --ignore-scripts` con `EUSAGE: Missing e
 ### Segundo intento: aislamiento del prototipo
 
 Linux compiló la aplicación, pero TypeScript raíz recorrió `design/landingpagepixel2.0/src/diagnostic-logic.ts` y falló por `zod/mini`, dependencia independiente del prototipo. En Mac estaba instalada y ocultaba el problema. `tsconfig.json` excluye el directorio design; `.dockerignore` lo retira del contexto. No se ignoran errores de la aplicación, no se cambia strict, no se incorpora Zod4 al runtime. La fuente del prototipo permanece en Git y conserva su verificación propia; el candidato utiliza artefactos versionados en src/public. El sitio activo siguió en39a8faed, sin activación.
+
+## Corrección visual posterior a publicación (2026-10-06 UTC)
+
+Miguel reporta contraste incorrecto exclusivamente en Inicio: menú y ciudades claros sobre crema, laterales blancos. Overrides explícitos conservan enlaces oscuros y surround negro ES/EN. Cabecera deriva idioma y enlace activo desde la ruta en el primer render. Se retira Lenis para scroll nativo, conservando parallax decorativo. WhatsApp rota mensajes según idioma y reinicia al navegar.
+
+Verificado en navegador Node20 :4321: menú y cuatro ciudades rgb(11,11,10), header-shell rgb(11,11,10); EN muestra «I would like to discuss my project.» y URL WhatsApp coherente. TypeScript estricto PASS; diff check PASS. Sin envíos. Captura header-contrast.png. Cambios pendientes de activar al registrar este bloque.
+
+Primera publicación: log VPS /home/ubuntu/deploy-logs/pixeltec-mx-20261006T045136Z-afcfc8835767-deploy.log, exit0, rollback=no. Smoke production-smoke.json 135 PASS.

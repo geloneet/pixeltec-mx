@@ -6,3 +6,15 @@
 
 @media(max-width:900px){.public-website[data-pixel-home] [aria-label="Visual PixelTEC"]{margin:0!important;top:0!important;max-width:100%!important;min-width:0!important;width:100%!important;flex-basis:100%!important;z-index:0!important}}
 .public-website[data-pixel-home] main>div>section:first-child a{position:relative;z-index:5}
+
+/* Shared light header must not inherit the dark home page's link color. */
+.public-website .site-header .site-primary-nav a,
+.public-website .site-header .header-social a{color:#0b0b0a}
+.public-website .site-header .site-primary-nav a:hover,
+.public-website .site-header .site-primary-nav a[aria-current="page"],
+.public-website .site-header .header-social a:hover{color:#1466ff}
+
+/* Home uses a dark surround; cream sections retain readable links. */
+.public-website[data-pixel-home] .header-shell{background:#0b0b0a}
+.public-website[data-pixel-home] .home-local-links a{color:#0b0b0a}
+.public-website[data-pixel-home] .home-local-links a:hover{color:#1466ff}

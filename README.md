@@ -245,3 +245,7 @@ El diseño aprobado se sirve desde `src/app/(public)` con layout persistente; el
 La presentación generada en `src/components/public-site/generated` se versiona. Para actualizarla desde el diseño: ejecutar el build de `design/landingpagepixel2.0`, luego `node scripts/public-site/compile-home.mjs`, `node scripts/public-site/compile-home.mjs --en` y `node scripts/public-site/compile-pages.mjs`. Personalizaciones de integración: `overrides.css`; no editar `public.css` generado. El build Next consume esos artefactos directamente, sin intérprete de plantillas.
 
 Validación y límites: [expediente WO-509](docs/evidencias/wo509/integracion.md). Checklist de publicación: `node docs/operacion-web/servidor.mjs` en localhost:4870. Se conserva el procedimiento VPS gobernado descrito arriba; el prototipo no se publica como sustituto de Next.
+
+Para verificar una release sin enviar formularios: `node scripts/public-site/smoke.mjs https://pixeltec.mx /tmp/pixeltec-smoke.json`. Comprueba catálogo público, salud, sitemap y protección del portafolio privado.
+
+El Dockerfile utiliza npm10 (Node20 Alpine): al modificar dependencias, mantener el lockfile compatible con `npx npm@10.8.2 install --package-lock-only --ignore-scripts` y validar `npm ci` en Linux. `design/` es un proyecto independiente, excluido de TypeScript raíz y del contexto Docker; no eliminar esa separación ni ignorar errores de la aplicación.

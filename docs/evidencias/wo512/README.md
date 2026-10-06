@@ -19,3 +19,13 @@ Fecha: 2026-10-06. Solicitud de Miguel: subir suavemente antes de cambiar de pá
 - QA local con PostgreSQL desechable aislado en 5452 y migraciones versionadas. Sin datos productivos. El esquema migrado carece de app_settings: advertencia SEO local ajena al cambio; revisión final de producción obligatoria.
 
 No se afirma una reducción porcentual global de CPU o carga: se verificaron los límites del render y la composición, no un benchmark de hardware móvil real.
+
+## Publicación verificada
+
+- PR168 integrado; release `1dd55455f4730145b412efa9f84322334125d3a0` activa desde 2026-10-06T19:30:24Z (13:30 México).
+- Wrapper `deploy-pixeltec-mx`: check-only y deploy rc0, rollback=no. Log VPS `/home/ubuntu/deploy-logs/pixeltec-mx-20261006T191556Z-1dd55455f473-deploy.log`. Recuperación disponible `d049cdc115749617e86b61450f9c1934975b5537`.
+- Compilación de producción, tipos, 205 páginas y salud `/`, `/login`, `/api/health` PASS. Base de datos intacta.
+- Smoke de 135 rutas públicas PASS (`smoke.json`).
+- Navegador real: `/` scroll1440 → scroll563 aún en Inicio → `/services` scroll0; opacidad final1 y aria-busy retirado.
+- Móvil390×844: cubo listo, un lienzo, sin overflow horizontal; `live-mobile.png`. Sin errores de consola observados desde la activación.
+- Entorno local de QA detenido (servidor4321 y contenedor propio `pixeltec-wo512-qa`); no se utilizaron ni alteraron bases de otros proyectos.

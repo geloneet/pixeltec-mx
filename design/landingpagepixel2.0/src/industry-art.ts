@@ -1,16 +1,18 @@
 import type { Locale } from './i18n.js';
-/** Conceptual sector illustrations: no customer records or fabricated performance metrics. */
+import { escapeHTML as esc } from './catalog.js';
+/** Supplied project screenshots plus explicitly identified AI sector imagery. */
 export function industryArt(id:string,locale:Locale):string {
  const x=(es:string,en:string):string=>locale==='es'?es:en;
- const panel=(x:number,y:number,w:number,h:number):string=>`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="#111e32" stroke="#52759b"/>`;
- const scenes:Record<string,string>={
- salud:`${panel(95,55,290,225)}<path d="M95 107H385" stroke="#52759b"/><g fill="#71acff">${[0,1,2,3,4].map(i=>`<rect x="${119+i*49}" y="126" width="30" height="8" rx="4"/>`).join('')}</g><g class="sector-sequence">${[0,1,2].map(i=>`<rect style="--i:${i}" x="${118+i*76}" y="158" width="62" height="${58+i*14}" rx="9" fill="${i===1?'#1466ff':'#294568'}"/>`).join('')}</g><circle cx="369" cy="247" r="43" fill="#1466ff"/><path d="M369 228V266M350 247H388" stroke="white" stroke-width="8" stroke-linecap="round"/>`,
- hoteleria:`<g class="sector-float">${panel(117,55,244,230)}<path d="M209 285V215Q239 165 269 215V285" fill="#1466ff"/><g fill="#8dbdff" class="sector-sequence">${[0,1,2,3,4,5].map(i=>`<rect style="--i:${i}" x="${145+i%3*68}" y="${86+Math.floor(i/3)*54}" width="29" height="33" rx="6"/>`).join('')}</g></g><circle cx="364" cy="76" r="30" fill="#e7bc76"/><path d="M80 287H404" stroke="#8dbdff"/>`,
- logistica:`<path d="M62 244L154 155L252 223L400 89" fill="none" stroke="#304c71" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><path class="sector-route" d="M62 244L154 155L252 223L400 89" fill="none" stroke="#76b3ff" stroke-width="3" stroke-dasharray="8 12"/>${[[62,244],[154,155],[252,223],[400,89]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="13" fill="#1466ff" stroke="#b7d6ff" stroke-width="3"/>`).join('')}<g class="sector-float">${panel(177,58,126,70)}<path d="M198 83H251M198 100H278" stroke="#82baff" stroke-width="6" stroke-linecap="round"/></g>`,
- agua:`<path d="M240 45C217 92 161 142 161 201A79 79 0 00319 201C319 142 263 92 240 45Z" fill="#1466ff" stroke="#84bdff" stroke-width="2"/><path class="sector-water" d="M181 202Q211 182 240 202T299 202M184 224Q212 204 240 224T296 224" fill="none" stroke="#b4e4ff" stroke-width="5" stroke-linecap="round"/><ellipse cx="240" cy="296" rx="126" ry="18" fill="none" stroke="#426899"/><ellipse class="sector-ripple" cx="240" cy="296" rx="95" ry="12" fill="none" stroke="#71b5ff"/>`,
- comercio:`<g class="sector-float"><path d="M146 125H334L350 284H130Z" fill="#1466ff" stroke="#97c6ff" stroke-width="2"/><path d="M195 142V102A45 45 0 01285 102V142" fill="none" stroke="#aed5ff" stroke-width="8" stroke-linecap="round"/><path d="M226 196L248 181L270 196L248 228Z" fill="white"/></g><g transform="rotate(12 355 170)">${panel(316,132,77,103)}<circle cx="354" cy="153" r="5" fill="#b4d6ff"/><path d="M336 185H375M336 202H363" stroke="#7aafff" stroke-width="5"/></g>`,
- solar:`<circle class="sector-sun" cx="335" cy="80" r="31" fill="#f4cc84"/><g transform="matrix(1 .1 -.22 1 50 -10)"><path d="M130 251L120 289M338 251L348 289" stroke="#647b98" stroke-width="9"/><rect x="99" y="118" width="270" height="139" rx="10" fill="#10284d" stroke="#91c0ff" stroke-width="3"/><g class="sector-sequence">${Array.from({length:12},(_,i)=>`<rect style="--i:${i}" x="${110+i%4*64}" y="${130+Math.floor(i/4)*40}" width="55" height="31" rx="3" fill="#1466ff" stroke="#63a5ff"/>`).join('')}</g></g>`
+ const assets:Record<string,{file:string;name:string;concept?:boolean}>={
+  salud:{file:'projects/smile-more',name:'Smile More'},
+  hoteleria:{file:'projects/villa-nogal',name:'Villa Nogal'},
+  logistica:{file:'projects/transportes-sanchez-jr',name:'Transportes Sánchez JR'},
+  comercio:{file:'projects/velank',name:'Velank'},
+  agua:{file:'industries/water',name:x('Distribución de agua','Water distribution'),concept:true},
+  solar:{file:'industries/solar',name:x('Energía solar','Solar energy'),concept:true}
  };
- const labels:Record<string,string>={salud:x('Atención conectada','Connected care'),hoteleria:x('Experiencias memorables','Memorable experiences'),logistica:x('Operación en movimiento','Operations in motion'),agua:x('Cada pedido, conectado','Every order connected'),comercio:x('Marcas con identidad','Brands with identity'),solar:x('Energía bajo control','Energy under control')};
- return `<div class="art sector-art sector-${id}" aria-hidden="true"><span class="sector-kicker">PIXELTEC / ${x('SOLUCIONES','SOLUTIONS')}</span><svg viewBox="0 0 480 340" fill="none">${scenes[id]??''}</svg><span class="sector-caption">${labels[id]??''}<b>↗</b></span></div>`;
+ const asset=assets[id];if(!asset)return '';
+ const label=asset.concept?x('Imagen conceptual · IA','Concept image · AI'):x('Proyecto PixelTEC','PixelTEC project');
+ const alt=asset.concept?x(`Imagen conceptual generada con IA: ${asset.name}`,`AI-generated conceptual image: ${asset.name}`):x(`Captura del sitio de ${asset.name}`,`${asset.name} website screenshot`);
+ return `<figure class="art sector-art sector-${esc(id)} ${asset.concept?'sector-photo':'sector-project'}"><img src="/assets/${asset.file}-640.webp" srcset="/assets/${asset.file}-640.webp 640w, /assets/${asset.file}-1280.webp 1280w" sizes="(max-width:560px) 90vw, (max-width:1440px) 44vw, 620px" width="1280" height="853" loading="lazy" decoding="async" alt="${esc(alt)}"><figcaption><span>${label}</span><strong>${esc(asset.name)}</strong></figcaption></figure>`;
 }

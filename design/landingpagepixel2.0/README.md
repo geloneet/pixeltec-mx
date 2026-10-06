@@ -180,3 +180,7 @@ Por petición de Miguel, el retrato y firma de la portada ES/EN se sustituyen po
 ### Consolidación de industrias — WO-508, 2026-10-05
 
 Miguel agrupa distribución de agua dentro de logística/transporte: retirada la categoría independiente de catálogo, portada, Industrias y opciones visibles del diagnóstico ES/EN. El valor histórico `agua` sigue aceptado por el evaluador para no romper datos previos; sus reglas originales no cambian. Casos reales conservados. Contador derivado del catálogo (05). Separador de franja cambiado de estrella a dos píxeles azules. Fuente HTML original preservada. `npm run verify` PASS 14/14 y presupuestos; búsqueda del HTML construido sin la etiqueta independiente ES/EN. Evidencia visual: `work/portfolio-20261005/industry-strip-five.png`.
+
+### Gráfico editorial — WO-508, 2026-10-05
+
+El asterisco de Perspectivas en portada ES/EN se sustituye por un gráfico 3D conceptual de cubos de cristal azul y órbitas metálicas, fondo negro, visible también en móvil. Imagen estática WebP 640/1280 con lazy/srcset y proporción reservada. Procedencia: [editorial-art-provenance.json](docs/editorial-art-provenance.json). `npm run verify` PASS 14/14 y presupuestos; revisión visual desktop en work/portfolio-20261005/editorial-cube.png. Sin cambios de rutas ni publicación productiva.

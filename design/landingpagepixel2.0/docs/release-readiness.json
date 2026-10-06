@@ -5,7 +5,7 @@
   "homes": [
     {
       "path": "index.html",
-      "sha256": "4564e5cd2eec359e13565a6735b8d17b001907365ddfb6180e70179d254c6e65",
+      "sha256": "c869ec5b2046aa7621c55cd795634946e950da641859147385b1093df1033668",
       "h1": 1,
       "h2": 8,
       "hasEnhancementTemplate": true,
@@ -16,7 +16,7 @@
     },
     {
       "path": "en/index.html",
-      "sha256": "cf3df052f769944494a6bb545097f968d249ac73df6e1085cce6af905cc11837",
+      "sha256": "843fcdb2c0d975e3815dbf9f259620ee0279fc43c113bf81c61afad8dac0c268",
       "h1": 1,
       "h2": 8,
       "hasEnhancementTemplate": true,

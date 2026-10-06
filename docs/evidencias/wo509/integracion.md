@@ -58,3 +58,7 @@ Fuentes: https://github.com/advisories/GHSA-2xp9-vwfh-vxw4 y https://github.com/
 ### Primer intento detenido antes de activar
 
 El build de `f11c577` falló en `npm ci --ignore-scripts` con `EUSAGE: Missing esbuild@0.28.2 from lock file` (y paquetes opcionales de plataforma). npm moderno en Mac había omitido el árbol opcional anidado de Vitest; npm10 del Dockerfile lo exige. Producción confirmó imagen anterior 39a8faed, running; no hubo sustitución ni cambio de datos. Corrección: regenerar sólo lockfile con npm10.8.2 y verificar instalación limpia en Linux Node20; no eliminar validación `npm ci`.
+
+### Segundo intento: aislamiento del prototipo
+
+Linux compiló la aplicación, pero TypeScript raíz recorrió `design/landingpagepixel2.0/src/diagnostic-logic.ts` y falló por `zod/mini`, dependencia independiente del prototipo. En Mac estaba instalada y ocultaba el problema. `tsconfig.json` excluye el directorio design; `.dockerignore` lo retira del contexto. No se ignoran errores de la aplicación, no se cambia strict, no se incorpora Zod4 al runtime. La fuente del prototipo permanece en Git y conserva su verificación propia; el candidato utiliza artefactos versionados en src/public. El sitio activo siguió en39a8faed, sin activación.

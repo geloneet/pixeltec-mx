@@ -18,6 +18,8 @@ export function homeContent(home:string,locale:Locale):string {
   if(start<0||end<0)throw new Error('Home content anchor missing: '+key);
   home=home.slice(0,start)+'      '+key+': '+JSON.stringify(items)+',\n'+home.slice(end);
  };
+ home=home.replace('<div style="display:flex;flex-direction:column;padding:clamp(28px,3vw,44px)', '<div class="about-depth-card" style="display:flex;flex-direction:column;padding:clamp(28px,3vw,44px)');
+ home=home.replace('<span style="font-weight:700;font-size:18px">{{ ac.n }}</span>', '<div class="about-depth-art" data-form="{{ ac.n }}" aria-hidden="true"><i></i><i></i><i></i><i></i></div><span style="font-weight:700;font-size:18px">{{ ac.n }}</span>');
  replaceArray('aboutCards',[
  {n:'001.',t:x('Un aliado estratégico','A strategic partner'),d:company.about[locale]},
  {n:'002.',t:x('Entender antes de construir','Understand before building'),d:x('Combinamos consultoría empresarial con desarrollo de software. Primero entendemos la operación, después elegimos la tecnología.','We combine business consulting and software development. We understand the operation first, then choose the technology.')},

@@ -206,3 +206,5 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Continuidad visual de navegación: header/footer/WhatsApp separados del fundido documental, contenido nuevo entra sobre el anterior sin intervalo vacío. Redes FB/IG/WA igualadas en interiores; footer sin segunda animación de entrada; scrollbar estable. Conserva URLs, historial, SSR y fallback nativo. No es persistencia DOM SPA: navegadores sin View Transitions hacen navegación normal. NEXT_INTEGRATION sigue pendiente.
 
 2026-10-05 — Miguel confirma capacidades full stack del equipo: Ecosistemas Web ES/EN amplía contenido sobre UX/UI, frontend, backend/datos y nube/operación. Sin atribuir certificaciones, proveedores ni métricas no confirmadas.
+
+2026-10-05 — Detalles individuales de automatización, web/apps y consultoría reutilizan arte 3D aprobado de portada, WebP responsive/lazy ES/EN. WhatsAgent conserva su ilustración específica con el tratamiento de animación compartido.

@@ -1,0 +1,39 @@
+{
+  "release": "060ccdcdb5e59af65d8e636b8dd378b8521be99f",
+  "date": "2026-10-06",
+  "browser": "Codex IAB / Chromium, viewport emulation",
+  "viewports": [
+    {
+      "width": 320,
+      "height": 740,
+      "scrollWidth": 309
+    },
+    {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 379
+    },
+    {
+      "width": 768,
+      "height": 1024,
+      "scrollWidth": 757
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "scrollWidth": 1429
+    }
+  ],
+  "observed": {
+    "homeInitialCubeCanvas": 0,
+    "homeActivatedCubeCanvas": 1,
+    "cubeButtonAfterActivation": "Cerrar cubo",
+    "menuOpened": true,
+    "diagnostic": "Hotel selected; step 01 to 02 in dialog without navigation",
+    "englishWhatsApp": "Hi, I would like more information.",
+    "blogCoverFetchPriority": "high",
+    "servicesBrokenLoadedImages": [],
+    "consoleErrorsAfterDeploymentObserved": []
+  },
+  "limits": "Emulated viewports, not physical-device certification; background canvas is separate from progressive cube."
+}

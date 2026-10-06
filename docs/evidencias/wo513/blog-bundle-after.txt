@@ -1,0 +1,5 @@
+Release candidate a5e99292f78a71c4f9bc236dea4aa2996d4d29ab, Next production build:
+/blog/[slug] route 1.59 kB; First Load JS 121 kB.
+Prior release 252879ba: route 62.3 kB; First Load JS 274 kB.
+First Load JS reduction: approximately 55.8%.
+Source: /tmp/pixeltec-wo513-server.log on VPS, build line #16 340.2.

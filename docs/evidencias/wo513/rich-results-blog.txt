@@ -1,0 +1,74 @@
+- banner:
+  - button "Atrás":
+  - heading "Prueba de resultados enriquecidos" [level=1]
+  - button:
+    - generic: 
+  - button "Aplicaciones de Google":
+  - 'button "Cuenta de Google: Miguel Robles ([cuenta omitida])"':
+- generic: 
+- textbox "Escribe la URL que quieras probar": https://pixeltec.mx/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real
+- button "Volver a probar esta URL":
+  - generic: 
+- button "Opciones de user-agent":
+  - generic: 
+- navigation "Rutas de exploración":
+  - heading "Resultados de prueba" [level=1]
+- button "Compartir":
+  - generic: 
+  - generic: Compartir
+- generic: check_circle
+- generic: Se han detectado 4 elementos válidos
+- text: Los elementos válidos pueden aparecer en los resultados enriquecidos de la Búsqueda de Google.
+- link "Más información":
+  - /url: https://support.google.com/webmasters/answer/9012289#enhancements
+- button "Ver página probada":
+  - generic: Ver página probada
+- button "Ver una vista previa de la URL en la Búsqueda de Google":
+  - generic: Generar vista previa de los resultados
+- generic: Detalles
+- generic: Rastreo
+- button "Rastreado correctamente el 6 oct 2026, 14:03:12":
+  - generic: check_circle
+  - generic: Rastreado correctamente el 6 oct 2026, 14:03:12
+  - generic: 
+- generic: Datos estructurados detectados
+- link "Artículos de noticias Se ha detectado 1 elemento válido Detectados problemas no críticos":
+  - /url: ./test/rich-results/result/r%2Farticles?id=Uga6-yDUyjzbB81t6UsVIQ
+  - generic: check_circle
+  - generic: Artículos de noticias
+  - generic: Se ha detectado 1 elemento válido
+  - generic "Detectados problemas no críticos"
+  - generic: 
+- link "Rutas de exploración Se ha detectado 1 elemento válido":
+  - /url: ./test/rich-results/result/r%2Fbreadcrumbs?id=Uga6-yDUyjzbB81t6UsVIQ
+  - generic: check_circle
+  - generic: Rutas de exploración
+  - generic: Se ha detectado 1 elemento válido
+  - generic: 
+- link "Empresas locales Se ha detectado 1 elemento válido Detectados problemas no críticos":
+  - /url: ./test/rich-results/result/r%2Flocal-business?id=Uga6-yDUyjzbB81t6UsVIQ
+  - generic: check_circle
+  - generic: Empresas locales
+  - generic: Se ha detectado 1 elemento válido
+  - generic "Detectados problemas no críticos"
+  - generic: 
+- link "Organización Se ha detectado 1 elemento válido Detectados problemas no críticos":
+  - /url: ./test/rich-results/result/r%2Forganization-info?id=Uga6-yDUyjzbB81t6UsVIQ
+  - generic: check_circle
+  - generic: Organización
+  - generic: Se ha detectado 1 elemento válido
+  - generic "Detectados problemas no críticos"
+  - generic: 
+- generic: Recursos adicionales
+- link "Monitoriza los resultados enriquecidos en todo tu sitio Ir a Search Console":
+  - /url: ./search-console/welcome
+  - generic: 
+  - text: Monitoriza los resultados enriquecidos en todo tu sitio
+  - generic: Ir a Search Console
+- link "Privacidad":
+  - /url: https://myaccount.google.com/privacypolicy?hl=es
+- link "Términos":
+  - /url: https://myaccount.google.com/termsofservice?hl=es
+- iframe [name="a-kquvxsdaick9"]:
+  - text: protección de
+  - strong: reCAPTCHA

@@ -1,0 +1,22 @@
+gw7f5llc9swwpsla0uqm8oblx               	true 	20.94kB   	About an hour ago
+Total:	4.066GB
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        97G   91G  5.8G  95% /
+
+#26 resolving provenance for metadata file
+#26 DONE 0.0s
+ Image pixeltec-mx-app:060ccdcdb5e59af65d8e636b8dd378b8521be99f Built 
+==> [7/9] Recreando exclusivamente el servicio app (db intacta)
+ Container pixeltec-mx Recreate 
+ Container pixeltec-mx Recreated 
+ Container pixeltec-mx Starting 
+ Container pixeltec-mx Started 
+2026/10/06 20:31:49 [notice] 1142#1142: signal process started
+==> [8/9] Health
+direct-health /api/health=200
+direct-health /login=200
+direct-health /=200
+health: nginx-actual sitio=301 login=301
+==> [9/9] OK — fijando latest y versión activa
+DEPLOY OK sha=060ccdcdb5e59af65d8e636b8dd378b8521be99f imageId=sha256:683d39f34e1081bc65b97c332f3e0578e055b3085f2ed776a09b52622bd9df19 utc=2026-10-06T20:32:04Z rollback=no
+== resultado rc=0 mode=deploy log=/home/ubuntu/deploy-logs/pixeltec-mx-20261006T201846Z-060ccdcdb5e5-deploy.log ==

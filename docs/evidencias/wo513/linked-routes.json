@@ -1,0 +1,104 @@
+[
+  {
+    "path": "/en",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/en",
+    "xRobots": null
+  },
+  {
+    "path": "/login",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/login",
+    "xRobots": "noindex, nofollow"
+  },
+  {
+    "path": "/en/pixelbot",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/pixelbot",
+    "xRobots": null
+  },
+  {
+    "path": "/en/aviso-de-privacidad",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/aviso-de-privacidad",
+    "xRobots": null
+  },
+  {
+    "path": "/en/data-deletion",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/data-deletion",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog",
+    "xRobots": null
+  },
+  {
+    "path": "/en/terminos-de-servicio",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/terminos-de-servicio",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog/como-automatizar-procesos-manuales-en-mi-negocio-guia-real",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+    "xRobots": null
+  },
+  {
+    "path": "/en/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+    "xRobots": null
+  },
+  {
+    "path": "/en/login",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/login",
+    "xRobots": "noindex, nofollow"
+  },
+  {
+    "path": "/404",
+    "status": 404,
+    "finalUrl": "https://pixeltec.mx/404",
+    "xRobots": null
+  },
+  {
+    "path": "/reset-password",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/reset-password",
+    "xRobots": "noindex, nofollow"
+  },
+  {
+    "path": "/en/reset-password",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/reset-password",
+    "xRobots": "noindex, nofollow"
+  },
+  {
+    "path": "/en/404",
+    "status": 200,
+    "finalUrl": "https://pixeltec.mx/en/404",
+    "xRobots": null
+  }
+]

@@ -1,0 +1,24 @@
+#25 unpacking to docker.io/library/pixeltec-mx-app:a5e99292f78a71c4f9bc236dea4aa2996d4d29ab 29.7s done
+#25 DONE 105.9s
+
+#26 resolving provenance for metadata file
+#26 DONE 0.0s
+ Image pixeltec-mx-app:a5e99292f78a71c4f9bc236dea4aa2996d4d29ab Built 
+==> [7/9] Recreando exclusivamente el servicio app (db intacta)
+ Container pixeltec-mx Recreate 
+ Container pixeltec-mx Recreated 
+ Container pixeltec-mx Starting 
+ Container pixeltec-mx Started 
+2026/10/06 21:08:29 [notice] 1155#1155: signal process started
+==> [8/9] Health
+direct-health /api/health=200
+direct-health /=200
+direct-health /login=200
+health: nginx-actual sitio=301 login=301
+==> [9/9] OK — fijando latest y versión activa
+DEPLOY OK sha=a5e99292f78a71c4f9bc236dea4aa2996d4d29ab imageId=sha256:9365c8a400e2a5c50c53fd5dafebe206fdb4e6079131a25631df67c9fefb4241 utc=2026-10-06T21:08:44Z rollback=no
+== resultado rc=0 mode=deploy log=/home/ubuntu/deploy-logs/pixeltec-mx-20261006T205807Z-a5e99292f78a-deploy.log ==
+0
+Total:	6.48GB
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        97G   88G  9.2G  91% /

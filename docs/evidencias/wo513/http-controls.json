@@ -1,0 +1,86 @@
+[
+  {
+    "url": "http://pixeltec.mx/",
+    "status": 301,
+    "headers": {
+      "location": "https://pixeltec.mx/",
+      "strict-transport-security": null,
+      "x-content-type-options": null,
+      "x-frame-options": null,
+      "referrer-policy": null,
+      "x-robots-tag": null,
+      "content-security-policy": null,
+      "cache-control": null
+    }
+  },
+  {
+    "url": "https://www.pixeltec.mx/",
+    "status": 301,
+    "headers": {
+      "location": "https://pixeltec.mx/",
+      "strict-transport-security": null,
+      "x-content-type-options": null,
+      "x-frame-options": null,
+      "referrer-policy": null,
+      "x-robots-tag": null,
+      "content-security-policy": null,
+      "cache-control": null
+    }
+  },
+  {
+    "url": "https://pixeltec.mx/login",
+    "status": 200,
+    "headers": {
+      "location": null,
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-robots-tag": "noindex, nofollow",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'nonce-dc99940d3db04ed2a06b63ab60594fa2' 'strict-dynamic' https://static.cloudflareinsights.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://www.facebook.com https://connect.facebook.net; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp-report; report-to csp-endpoint",
+      "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+    }
+  },
+  {
+    "url": "https://pixeltec.mx/hoy",
+    "status": 307,
+    "headers": {
+      "location": "https://pixeltec.mx/login?redirect=%2Fhoy",
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-robots-tag": "noindex, nofollow",
+      "content-security-policy": "default-src 'self'; script-src 'self' 'nonce-080cdbd74c494d3fbe5ef58516dac220' 'strict-dynamic' https://static.cloudflareinsights.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://www.facebook.com https://connect.facebook.net; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp-report; report-to csp-endpoint",
+      "cache-control": null
+    }
+  },
+  {
+    "url": "https://pixeltec.mx/api/health",
+    "status": 200,
+    "headers": {
+      "location": null,
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-robots-tag": null,
+      "content-security-policy": "default-src 'self'; script-src 'self' 'nonce-d102a4d017cf42709a3d070d95d62c02' 'strict-dynamic' https://static.cloudflareinsights.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://www.facebook.com https://connect.facebook.net; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp-report; report-to csp-endpoint",
+      "cache-control": null
+    }
+  },
+  {
+    "url": "https://pixeltec.mx/no-existe-wo513",
+    "status": 404,
+    "headers": {
+      "location": null,
+      "strict-transport-security": "max-age=63072000; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-frame-options": "SAMEORIGIN",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-robots-tag": null,
+      "content-security-policy": "default-src 'self'; script-src 'self' 'nonce-ec3d827af39b4997aef4eb8e16a9b08f' 'strict-dynamic' https://static.cloudflareinsights.com https://connect.facebook.net; style-src 'self' 'unsafe-inline'; connect-src 'self' https://www.facebook.com https://connect.facebook.net; img-src 'self' data: blob: https:; font-src 'self' data:; frame-src 'self' https://www.google.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; report-uri /api/csp-report; report-to csp-endpoint",
+      "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate"
+    }
+  }
+]

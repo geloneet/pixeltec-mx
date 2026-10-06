@@ -21,9 +21,9 @@ subidas a R2, contador de vistas.
 ## 2. Archivos que componen el módulo
 
 ```
-src/app/blog/                              # rutas públicas
+src/app/(public)/blog/                     # rutas públicas
   layout.tsx  page.tsx  blog-grid.tsx
-  [slug]/page.tsx  [slug]/blog-post-client.tsx
+  [slug]/page.tsx  [slug]/blog-post-content.tsx
 
 src/app/(admin)/blog-admin/                # rutas de administración (dentro del
   page.tsx  blog-admin-logic.ts(+.test)     # grupo protegido (admin) del proyecto destino)
@@ -50,9 +50,13 @@ src/lib/blog/                              # todo el dominio — 34 archivos, ~5
   actions/images.ts  actions/posts.ts  actions/versions.ts
 
 src/components/blog/                       # puramente de blog
-  markdown-renderer.tsx  mermaid-diagram.tsx  rich-markdown-editor.tsx
+  markdown-renderer.tsx(+.test)  mermaid-diagram.tsx  rich-markdown-editor.tsx
   tiptap-extensions.ts  tiptap-roundtrip.ts(+.test)  view-beacon.tsx
 ```
+
+### Frontera de render público (WO-2026-00513, 2026-10-06)
+
+`blog-post-content` y `markdown-renderer` son componentes de servidor protegidos con `server-only`. Entregan el cuerpo completo, sanitizado y con anclas en HTML; no convertir toda la plantilla a cliente ni cargar el cuerpo con `next/dynamic`, que generaba precargas sin nonce bajo CSP estricta. `ViewBeacon` y `MermaidDiagram` conservan sus islas de cliente. Las pruebas del renderer verifican contenido sin hidratación, sanitización y tablas.
 
 ## 3. Tablas de base de datos (Postgres/Drizzle)
 

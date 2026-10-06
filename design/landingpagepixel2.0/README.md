@@ -242,3 +242,6 @@ Miguel aprobó el cubo azul con circuitos. Original PNG preservado en public/ass
 
 ### Wordmark — 2026-10-05
 Por indicación de Miguel, el nombre visual del logo usa PIXELTEC en mayúsculas en encabezado, menú y footer ES/EN. El texto editorial conserva su escritura existente.
+
+### Color del wordmark — 2026-10-05
+Referencia de Miguel: PIXEL blanco en fondos oscuros y TEC azul #2196f3. Encabezado claro mantiene PIXEL oscuro por contraste. Componente wordmark compartido en marca de encabezado, menú y footer ES/EN.

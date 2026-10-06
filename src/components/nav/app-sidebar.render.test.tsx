@@ -37,11 +37,17 @@ vi.mock("@/hooks/use-user-profile", () => ({
   useUserProfile: () => ({ profile: { name: "Miguel", role: "admin" }, isLoading: false }),
 }));
 
+const unread = vi.hoisted(() => ({ value: 3 as number | null }));
+vi.mock("@/hooks/use-unread-conversations", () => ({
+  useUnreadConversations: () => unread.value,
+}));
+
 import { AppSidebar } from "./app-sidebar";
 
 afterEach(cleanup);
 beforeEach(() => {
   mockPathname = "/hoy";
+  unread.value = 3;
 });
 
 describe("sidebar del panel", () => {
@@ -49,9 +55,9 @@ describe("sidebar del panel", () => {
     render(<AppSidebar activeArea={null} />);
     for (const label of [
       "Inicio",
+      "Conversaciones",
       "Clientes",
-      "WhatsApp",
-      "Finanzas",
+      "Cobros",
       "Cotizaciones",
       "Trabajo",
       "Blog",
@@ -69,9 +75,41 @@ describe("sidebar del panel", () => {
     }
   });
 
-  it("la marca dice PIXELTEC CRM, no solo PixelTEC", () => {
+  it("la marca dice PixelTEC · Centro Comercial (mockup WO-2026-00515)", () => {
     const { container } = render(<AppSidebar activeArea={null} />);
-    expect(container.textContent).toContain("CRM");
+    expect(container.textContent).toContain("PixelTEC");
+    expect(container.textContent).toContain("Centro Comercial");
+  });
+
+  it("Calendario, Reportes y Automatizaciones: filas deshabilitadas «Pronto», sin enlace", () => {
+    render(<AppSidebar activeArea={null} />);
+    for (const label of ["Calendario", "Reportes", "Automatizaciones"]) {
+      const row = screen.getByText(label).closest("[aria-disabled]");
+      expect(row, label).toHaveAttribute("aria-disabled", "true");
+      expect(screen.getByText(label).closest("a"), `${label} no debe ser enlace`).toBeNull();
+    }
+    expect(screen.getAllByText("Pronto")).toHaveLength(3);
+  });
+
+  it("separa con «Más» las áreas fuera del mockup y muestra la tarjeta del equipo", () => {
+    render(<AppSidebar activeArea={null} />);
+    expect(screen.getByText("Más")).toBeTruthy();
+    expect(screen.getByText("Tu equipo comercial, potenciado")).toBeTruthy();
+    expect(screen.queryByText(/ver video/i)).toBeNull();
+  });
+
+  it("badge de no leídos en Conversaciones solo con dato (admin)", () => {
+    render(<AppSidebar activeArea={null} />);
+    expect(screen.getByLabelText("3 conversaciones sin leer")).toBeTruthy();
+    cleanup();
+    unread.value = null;
+    render(<AppSidebar activeArea={null} />);
+    expect(screen.queryByLabelText(/conversaciones sin leer/)).toBeNull();
+  });
+
+  it("el área activa se marca con aria-current", () => {
+    render(<AppSidebar activeArea="hoy" />);
+    expect(screen.getByText("Inicio").closest("a")).toHaveAttribute("aria-current", "page");
   });
 });
 

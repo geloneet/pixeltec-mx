@@ -10,6 +10,7 @@
  * `@/lib/quotes/money` y `@/lib/quotes/terms` (§30, fuente única).
  */
 import { useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { displayStatus, followUpLabel, formatAmount, formatShortDate, totalsFor } from "@/lib/quotes/terms";
@@ -40,7 +41,12 @@ export function CotizacionesTab({
   siteUrl,
   onChanged,
 }: Props) {
-  const [view, setView] = useState<View>({ kind: "list" });
+  // WO-2026-00515 (D-7): «+ Nueva cotización» del topbar llega con
+  // `?nueva=1` y abre directo el formulario de una cotización nueva.
+  const searchParams = useSearchParams();
+  const [view, setView] = useState<View>(() =>
+    searchParams?.get("nueva") === "1" ? { kind: "form", quote: null } : { kind: "list" }
+  );
 
   if (view.kind === "form") {
     return (

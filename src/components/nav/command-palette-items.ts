@@ -47,7 +47,7 @@ export const PALETTE_NAV_ITEMS: PaletteNavItem[] = [
   {
     href: "/hoy",
     label: "Inicio",
-    description: "Clientes recientes y actividad del día",
+    description: "Centro comercial: prioridades, cobros y pipeline del día",
     icon: Sun,
     module: "inicio",
   },

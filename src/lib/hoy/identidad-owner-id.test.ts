@@ -1,156 +1,116 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 
 /**
- * Gate B1 de la remediación de identidad.
+ * Gate B1 de la remediación de identidad — reescrito para WO-2026-00515.
  *
- * Lo que se protege: que Hoy y Proyectos resuelvan por `users.id` y que el
- * traductor `WHERE firebase_uid = uid` haya desaparecido del bloque. El defecto
- * original dejaba a toda cuenta sin puente con listas vacías o en bucle de
- * login, pese a tener sesión válida.
+ * Garantía que se conserva: /hoy resuelve SIEMPRE por `users.id`
+ * (session.user.id) y nunca traduce por `users.firebase_uid`. Una cuenta sin
+ * alias heredado ve exactamente lo mismo que una con alias.
  *
- * Va en archivo propio y no en `crm-data.test.ts`, que ya existe y cubre la
- * agregación de proyectos: son contratos distintos.
- *
- * Entorno Node — aquí no se renderiza nada, son datos y sesión.
+ * Cambio de contrato: /hoy ya no usa `getFullCrmData` ni `getTodayData`; la
+ * página resuelve la sesión una vez (`requireUserSession`) y pasa `ownerId` a
+ * los loaders de `src/lib/hoy/queries`.
  */
 
 const OWNER_A = "aaaaaaaa-1111-4aaa-8aaa-aaaaaaaaaaaa";
 const OWNER_B = "bbbbbbbb-2222-4bbb-8bbb-bbbbbbbbbbbb";
-const OWNER_INEXISTENTE = "cccccccc-3333-4ccc-8ccc-cccccccccccc";
 const LEGACY_UID = "jO09XxAbCdEfGhIjKlMnOpQrStUv";
 
-/** CRM sintético: cada propietario tiene clientes propios y disjuntos. */
-const CRM_POR_OWNER: Record<string, Array<{ id: string; name: string }>> = {
-  [OWNER_A]: [
-    { id: "cli-a1", name: "Cliente A1" },
-    { id: "cli-a2", name: "Cliente A2" },
-  ],
-  [OWNER_B]: [{ id: "cli-b1", name: "Cliente B1" }],
-};
-
-const getFullCrmDataMock = vi.fn(async (ownerId: string) => ({
-  clients: CRM_POR_OWNER[ownerId] ?? [],
-  tools: [],
-  streak: 0,
-  serverLinks: {},
-  sessions: [],
-}));
-
-// Espía sobre la capa de base: si algo del bloque volviera a traducir por
-// `users.firebase_uid`, tendría que pasar por aquí y el test lo delataría.
-const dbSelectMock = vi.fn();
-
-vi.mock("@/lib/db/repos/crm-sync", () => ({
-  getFullCrmData: (ownerId: string) => getFullCrmDataMock(ownerId),
-}));
-vi.mock("@/lib/db", () => ({
-  db: { select: (...args: unknown[]) => dbSelectMock(...args) },
-}));
+vi.mock("server-only", () => ({}));
 
 const sessionMock = vi.fn();
 vi.mock("@/lib/auth/config", () => ({ auth: () => sessionMock() }));
-
-// La frontera de sesión consulta la autoridad canónica. Se mockea "cuenta
-// activa" para que `dbSelectMock` siga midiendo solo lo que este test vigila:
-// que la identidad NO se resuelva consultando `users.firebase_uid`.
 vi.mock("@/lib/auth/authority", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/lib/auth/authority")>()),
-  resolveAuthority: async (userId: string) => ({
-    ok: true as const,
-    userId,
-    role: "staff" as const,
-    isAdmin: false,
-  }),
+  resolveAuthority: async (userId: string) => ({ ok: true as const, userId, role: "admin" as const, isAdmin: true }),
 }));
 
-// Los proyectos (WO-2026-00132: tabla `projects` real, ya no las 3 fuentes
-// viejas) se neutralizan para aislar la fuente CRM, que es la que cambia de
-// contrato en este test.
-vi.mock("@/lib/projects/queries", () => ({ listProjects: async () => [] }));
-// Igual con cotizaciones (WO-2026-00132): getTodayData ahora también llama a
-// listQuotesForOwner (su propio requireOwner + consulta real). Sin mockear,
-// arrastraría la capa de base fuera del dbSelectMock que este archivo vigila.
-vi.mock("@/lib/quotes/dashboard-queries", () => ({ listQuotesForOwner: async () => [] }));
+// Cada loader registra con qué identidad se le llamó.
+const calls: Record<string, unknown[]> = {};
+const record = (name: string) => async (...args: unknown[]) => {
+  calls[name] = args;
+  return [];
+};
+vi.mock("./queries/snapshot-queries", () => ({
+  loadClients: record("clients"),
+  loadQuotes: record("quotes"),
+  loadSales: record("sales"),
+  loadBilling: record("billing"),
+  loadPayments: record("payments"),
+  loadLeads: record("leads"),
+  loadActivity: record("activity"),
+  loadNotifications: record("notifications"),
+  loadUserFirstName: async (id: string) => {
+    calls.userName = [id];
+    return "Miguel";
+  },
+}));
+vi.mock("./queries/conversaciones", () => ({
+  loadConversations: async () => ({ status: "not_allowed", items: [] }),
+}));
 
-const { getCrmClientsByOwnerId } = await import("./crm-data");
 const sessionModule = await import("@/lib/auth/session");
-const { getTodayData } = await import("@/app/(admin)/hoy/actions");
+const { getHoyDashboard } = await import("./dashboard");
 
-/** Sesión de cuenta anterior a la migración: conserva el alias heredado. */
-const sesionConPuente = (id: string) => ({ user: { id, role: "admin", firebaseUid: LEGACY_UID } });
-/** Sesión de cuenta creada después: sin alias. Es el caso que estaba roto. */
-const sesionSinPuente = (id: string) => ({ user: { id, role: "admin", firebaseUid: null } });
+const sesionConPuente = (id: string) => ({ user: { id, email: "a@x.mx", role: "admin", firebaseUid: LEGACY_UID } });
+const sesionSinPuente = (id: string) => ({ user: { id, email: "a@x.mx", role: "admin", firebaseUid: null } });
+
+const OWNER_SCOPED = ["clients", "quotes", "sales", "billing", "payments", "activity", "notifications", "userName"];
 
 beforeEach(() => {
-  getFullCrmDataMock.mockClear();
-  dbSelectMock.mockClear();
   sessionMock.mockReset();
+  for (const k of Object.keys(calls)) delete calls[k];
 });
 
-describe("getCrmClientsByOwnerId", () => {
-  it("consulta directamente por ownerId, sin traducir", async () => {
-    const clients = await getCrmClientsByOwnerId(OWNER_A);
-    expect(getFullCrmDataMock).toHaveBeenCalledWith(OWNER_A);
-    expect(clients.map((c) => c.id)).toEqual(["cli-a1", "cli-a2"]);
+async function loadFor(session: object | null) {
+  sessionMock.mockResolvedValue(session);
+  const s = await sessionModule.requireUserSession();
+  if (!s) return null;
+  return getHoyDashboard(s.userId, new Date("2026-10-06T18:00:00Z"), {
+    vista: "hoy",
+    actividad: "todas",
+    canConversations: s.role === "admin",
+  });
+}
+
+describe("/hoy — identidad canónica users.id", () => {
+  it("cuenta heredada: todos los loaders con dueño reciben users.id", async () => {
+    await loadFor(sesionConPuente(OWNER_A));
+    for (const name of OWNER_SCOPED) expect(calls[name]?.[0], name).toBe(OWNER_A);
   });
 
-  it("no toca la capa de base para resolver identidad", async () => {
-    await getCrmClientsByOwnerId(OWNER_A);
-    expect(dbSelectMock).not.toHaveBeenCalled();
+  it("cuenta SIN firebase_uid — el defecto original — funciona igual", async () => {
+    const d = await loadFor(sesionSinPuente(OWNER_A));
+    expect(d).not.toBeNull();
+    for (const name of OWNER_SCOPED) expect(calls[name]?.[0], name).toBe(OWNER_A);
   });
 
-  it("un ownerId inexistente devuelve vacío, nunca datos de otro propietario", async () => {
-    const clients = await getCrmClientsByOwnerId(OWNER_INEXISTENTE);
-    expect(clients).toEqual([]);
+  it("el alias heredado nunca llega a una consulta", async () => {
+    await loadFor(sesionConPuente(OWNER_A));
+    expect(JSON.stringify(calls)).not.toContain(LEGACY_UID);
   });
 
-  it("aísla propietarios: cada uno recibe solo lo suyo", async () => {
-    const a = await getCrmClientsByOwnerId(OWNER_A);
-    const b = await getCrmClientsByOwnerId(OWNER_B);
-    expect(a.map((c) => c.id)).toEqual(["cli-a1", "cli-a2"]);
-    expect(b.map((c) => c.id)).toEqual(["cli-b1"]);
-    expect(a.some((c) => b.some((x) => x.id === c.id))).toBe(false);
-  });
-});
-
-describe("Hoy — getTodayData", () => {
-  it("resuelve por session.user.id con cuenta heredada", async () => {
-    sessionMock.mockResolvedValue(sesionConPuente(OWNER_A));
-    const data = await getTodayData();
-    expect(getFullCrmDataMock).toHaveBeenCalledWith(OWNER_A);
-    expect(data?.clients).toHaveLength(2);
+  it("no cruza propietarios", async () => {
+    await loadFor(sesionSinPuente(OWNER_B));
+    for (const name of OWNER_SCOPED) expect(calls[name]?.[0], name).toBe(OWNER_B);
   });
 
-  it("funciona con cuenta SIN firebase_uid — el defecto que se corrige", async () => {
-    sessionMock.mockResolvedValue(sesionSinPuente(OWNER_A));
-    const data = await getTodayData();
-    expect(getFullCrmDataMock).toHaveBeenCalledWith(OWNER_A);
-    expect(data?.clients).toHaveLength(2);
+  it("sin sesión no hay tablero (la página redirige a /login)", async () => {
+    await expect(loadFor(null)).resolves.toBeNull();
+    expect(Object.keys(calls)).toEqual([]);
   });
 
-  it("con y sin puente devuelve exactamente los mismos datos", async () => {
-    sessionMock.mockResolvedValue(sesionConPuente(OWNER_A));
-    const conPuente = await getTodayData();
-    sessionMock.mockResolvedValue(sesionSinPuente(OWNER_A));
-    const sinPuente = await getTodayData();
-    expect(sinPuente?.clients).toEqual(conPuente?.clients);
-  });
-
-  it("sin sesión devuelve null", async () => {
-    sessionMock.mockResolvedValue(null);
-    await expect(getTodayData()).resolves.toBeNull();
-  });
-
-  it("no cruza datos entre propietarios", async () => {
-    sessionMock.mockResolvedValue(sesionSinPuente(OWNER_B));
-    const data = await getTodayData();
-    expect(data?.clients.map((c) => c.id)).toEqual(["cli-b1"]);
+  it("las consultas de /hoy no mencionan firebase_uid ni getFullCrmData", () => {
+    const root = resolve(__dirname, "..", "..");
+    for (const file of ["lib/hoy/queries/snapshot-queries.ts", "lib/hoy/dashboard.ts", "app/(admin)/hoy/page.tsx"]) {
+      const src = readFileSync(resolve(root, file), "utf8");
+      expect(src, file).not.toMatch(/firebase_?uid|firebaseUid/i);
+      expect(src, file).not.toContain("getFullCrmData(");
+    }
   });
 });
-
-// El describe "Proyectos — getAllActiveProjects" se retiró junto con las 3
-// fuentes viejas (WO-2026-00132): los proyectos ahora salen de
-// `@/lib/projects/queries` (tabla `projects` real, no CRM blob).
 
 describe("código muerto retirado", () => {
   it("el módulo de sesión ya no exporta requireAdmin", () => {

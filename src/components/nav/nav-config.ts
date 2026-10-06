@@ -1,6 +1,6 @@
 import { PALETTE_NAV_ITEMS, type PaletteNavItem } from "./command-palette-items";
 import { isRestrictedRole, REVIEWER_PAGE_ROOT } from "@/lib/routes/reviewer-access";
-import { isModuleVisible } from "@/lib/modules/registry";
+import { getModulesByState, isModuleVisible, type ModuleId } from "@/lib/modules/registry";
 import type { CRMClient, CRMTask } from "@/types/crm";
 
 /**
@@ -24,24 +24,43 @@ export type NavArea =
   | "usuarios"
   | "seo";
 
-/** Orden completo. */
+/**
+ * Orden completo. WO-2026-00515 (mockup «Centro Comercial»): primero el grupo
+ * comercial del mockup (Inicio · Conversaciones · Clientes · Cotizaciones ·
+ * Cobros) y luego, tras el separador «Más», las áreas que el mockup no
+ * muestra pero que no pueden ocultarse sin 404.
+ */
 export const NAV_AREA_ORDER: NavArea[] = [
   "hoy",
-  "crm",
   "whatsapp",
-  "finanzas",
+  "crm",
   "cotizaciones",
+  "finanzas",
   "proyectos",
   "blog",
   "seo",
   "usuarios",
 ];
 
+/** Grupo principal (mockup). El resto de NAV_AREA_ORDER va bajo «Más». */
+export const NAV_PRIMARY_AREAS: ReadonlySet<NavArea> = new Set<NavArea>([
+  "hoy",
+  "whatsapp",
+  "crm",
+  "cotizaciones",
+  "finanzas",
+]);
+
+/**
+ * Etiquetas visibles. WO-2026-00515: `whatsapp → «Conversaciones»` y
+ * `finanzas → «Cobros»` (solo UI; las rutas /whatsapp y /cobros y los slugs
+ * internos no cambian).
+ */
 export const NAV_AREA_LABELS: Record<NavArea, string> = {
   hoy: "Inicio",
   crm: "Clientes",
-  whatsapp: "WhatsApp",
-  finanzas: "Finanzas",
+  whatsapp: "Conversaciones",
+  finanzas: "Cobros",
   cotizaciones: "Cotizaciones",
   proyectos: "Trabajo",
   blog: "Blog",
@@ -197,6 +216,31 @@ export function getVisibleNavAreas(role: string | undefined): NavArea[] {
   const areas = NAV_AREA_ORDER.filter(isAreaVisible);
   if (role === undefined) return areas;
   return isRestrictedRole(role) ? [] : areas;
+}
+
+/** Áreas del grupo principal (mockup), en orden, para un rol. */
+export function getPrimaryNavAreas(role: string | undefined): NavArea[] {
+  return getVisibleNavAreas(role).filter((a) => NAV_PRIMARY_AREAS.has(a));
+}
+
+/** Áreas fuera del mockup, bajo el separador «Más». */
+export function getMoreNavAreas(role: string | undefined): NavArea[] {
+  return getVisibleNavAreas(role).filter((a) => !NAV_PRIMARY_AREAS.has(a));
+}
+
+export interface PlannedNavItem {
+  module: ModuleId;
+  label: string;
+}
+
+/**
+ * Módulos `planned` del registro (WO-2026-00515): filas deshabilitadas
+ * «Pronto» en el sidebar. Sin `href` a propósito: no existen rutas. El
+ * reviewer no los ve (no ve áreas).
+ */
+export function getPlannedNavItems(role: string | undefined): PlannedNavItem[] {
+  if (role !== undefined && isRestrictedRole(role)) return [];
+  return getModulesByState("planned").map((m) => ({ module: m.id, label: m.label }));
 }
 
 /**

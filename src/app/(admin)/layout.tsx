@@ -47,27 +47,16 @@ function Shell({
   }, [activeArea]);
 
   return (
-    <div className="flex h-dvh w-full flex-col overflow-hidden bg-background text-foreground font-sans">
-      {/* Ambient gradient: glow azul/violeta sutil, marca PixelTEC. La misma
-          intensidad que se ve bien sobre el fondo casi negro del dark
-          "lava" un fondo claro (dos overlays translúcidos apilados sobre
-          blanco leen como una mancha gris) — se reduce a la mitad en claro. */}
-      <div
-        aria-hidden
-        className={cn(
-          "pointer-events-none fixed inset-0",
-          resolvedTheme === "light"
-            ? "bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.035),transparent_50%),radial-gradient(ellipse_at_bottom,rgba(139,92,246,0.025),transparent_50%)]"
-            : "bg-[radial-gradient(ellipse_at_top,rgba(59,130,246,0.08),transparent_50%),radial-gradient(ellipse_at_bottom,rgba(139,92,246,0.06),transparent_50%)]"
-        )}
-      />
-
+    // WO-2026-00515: `.crm` acota los tokens del Centro Comercial (globals.css)
+    // al panel — el sitio público conserva su `:root` intacto. Se retiró el
+    // ambient gradient: el mockup es plano (sin glows ni blur).
+    <div className="crm flex h-dvh w-full flex-col overflow-hidden bg-background font-sans text-foreground">
       <div className="relative z-10 flex h-full min-h-0 flex-1">
         {/* Sidebar flotante — solo desktop (`lg:` y superior). El mobile
             conserva TopNavigation completo, sin cambios (ver más abajo). */}
         <AppSidebar activeArea={activeArea} className="hidden lg:flex" />
 
-        <div className="flex h-full min-h-0 flex-1 flex-col">
+        <div className="flex h-full min-h-0 min-w-0 flex-1 flex-col">
           {/* Mobile: rail horizontal original, intacto. */}
           <div className="lg:hidden">
             <TopNavigation />
@@ -113,8 +102,7 @@ function Shell({
         theme={(resolvedTheme as "light" | "dark" | "system" | undefined) ?? "dark"}
         toastOptions={{
           classNames: {
-            toast:
-              "border border-border bg-card/95 backdrop-blur-xl text-card-foreground",
+            toast: "border border-border bg-card text-card-foreground",
           },
         }}
       />

@@ -1,27 +1,23 @@
 "use client";
 
+import { Suspense } from "react";
+import { usePathname } from "next/navigation";
 import { Search } from "lucide-react";
 import { useCmdK } from "@/components/cmd-k/CmdKProvider";
+import { HoyViewTabs } from "@/components/hoy/hoy-view-tabs";
+import { NuevaCotizacionButton } from "@/components/hoy/nueva-cotizacion-button";
+import { useUserProfile } from "@/hooks/use-user-profile";
+import { isRestrictedRole } from "@/lib/routes/reviewer-access";
 import { cn } from "@/lib/utils";
 import { NotificationsMenu } from "./notifications-menu";
 import { UserMenu } from "./user-menu";
-import { NAV_AREA_LABELS, type NavArea } from "./nav-config";
-
-function OnlineDot() {
-  return (
-    <span className="relative hidden h-2 w-2 flex-shrink-0 sm:flex">
-      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-75" />
-      <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
-    </span>
-  );
-}
+import type { NavArea } from "./nav-config";
 
 /**
- * Topbar delgado — desktop (`lg:` y superior), compañero de AppSidebar. La
- * marca y las áreas L1 viven ahora en el sidebar; esta barra solo conserva
- * los controles globales (buscar ⌘K, estado online, notificaciones, usuario)
- * que antes vivían en TopNavigation. El mobile sigue usando TopNavigation
- * completo — ver Shell en layout.tsx.
+ * Topbar — desktop (`lg:` y superior), compañero de AppSidebar.
+ * WO-2026-00515 (mockup «Centro Comercial»): buscador ancho (abre el ⌘K
+ * existente), vistas de Inicio solo en /hoy, «Nueva cotización», campana y
+ * usuario. El mobile sigue usando TopNavigation — ver Shell en layout.tsx.
  */
 export function AdminTopbar({
   activeArea,
@@ -31,41 +27,41 @@ export function AdminTopbar({
   className?: string;
 }) {
   const { setOpen } = useCmdK();
+  const pathname = usePathname();
+  const { userProfile } = useUserProfile();
+  const canQuote = !userProfile?.role || !isRestrictedRole(userProfile.role);
+  const onHoy = activeArea === "hoy" || pathname === "/hoy";
 
   return (
     <header
       className={cn(
-        "h-16 w-full flex-shrink-0 items-center justify-between border-b border-border bg-background/80 px-6 backdrop-blur-lg lg:px-8",
+        "h-16 w-full flex-shrink-0 items-center gap-4 border-b border-border bg-card px-6",
         className
       )}
     >
-      {/* Miguel (2026-08-26): el producto siempre visible — con varios
-          proyectos abiertos, el nombre del área solo no dice dónde estás. */}
-      <span className="flex min-w-0 items-center gap-2 text-sm">
-        <span className="font-semibold tracking-tight text-foreground">PIXELTEC CRM</span>
-        {activeArea ? (
-          <>
-            <span aria-hidden className="text-muted-foreground/50">·</span>
-            <span className="truncate font-medium text-muted-foreground">{NAV_AREA_LABELS[activeArea]}</span>
-          </>
-        ) : null}
-      </span>
+      <button
+        type="button"
+        onClick={() => setOpen(true)}
+        aria-label="Abrir buscador"
+        className="flex h-10 min-w-[180px] max-w-[440px] flex-1 items-center gap-2.5 rounded-lg border border-border bg-muted/50 px-3 text-left text-muted-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+      >
+        <Search className="h-4 w-4 flex-shrink-0" aria-hidden />
+        <span className="min-w-0 flex-1 truncate text-[13px]">Buscar clientes, conversaciones, cotizaciones...</span>
+        <kbd className="hidden flex-shrink-0 items-center rounded border border-border bg-card px-1.5 py-0.5 font-mono text-[10px] text-muted-foreground xl:inline-flex">
+          ⌘K
+        </kbd>
+      </button>
 
-      <div className="flex flex-shrink-0 items-center gap-3">
-        <button
-          type="button"
-          onClick={() => setOpen(true)}
-          aria-label="Abrir buscador"
-          className="flex h-9 items-center gap-2 rounded-full border border-border bg-secondary/60 px-3 text-muted-foreground backdrop-blur-md transition-all duration-200 hover:bg-secondary hover:text-foreground"
-        >
-          <Search className="h-4 w-4" />
-          <span className="text-xs">Buscar</span>
-          <kbd className="inline-flex items-center rounded border border-border bg-background/40 px-1.5 py-0.5 text-[10px] font-mono text-muted-foreground">
-            ⌘K
-          </kbd>
-        </button>
+      <div className="flex min-w-0 flex-shrink-0 justify-center xl:mx-auto">
+        {onHoy && (
+          <Suspense fallback={null}>
+            <HoyViewTabs className="hidden xl:block" />
+          </Suspense>
+        )}
+      </div>
 
-        <OnlineDot />
+      <div className="ml-auto flex flex-shrink-0 items-center gap-3">
+        {canQuote && <NuevaCotizacionButton />}
         <NotificationsMenu />
         <UserMenu />
       </div>

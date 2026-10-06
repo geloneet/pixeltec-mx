@@ -85,6 +85,74 @@
     --sidebar-border: 240 3.7% 15.9%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
+
+  /* ── Panel «Centro Comercial» (WO-2026-00515) ────────────────────────────
+     Tokens ACOTADOS al admin: la clase `.crm` vive en el <div> raíz del Shell
+     de src/app/(admin)/layout.tsx. `:root`/`.dark` (sitio público) no cambian.
+     Contraste AA medido (WCAG 2.x, `node scripts/wo515-contrast-check.mjs`):
+       claro  foreground/background 17.6 · muted-fg/card 5.6 · muted-fg/bg 5.2
+              blanco/primary 5.5 · primary/card 5.5 · primary/sidebar-accent 5.0
+       oscuro foreground/background 18.2 · muted-fg/card 7.1
+              primary-fg/primary 5.8 · primary/card 5.7 · primary/sidebar-accent 4.8 */
+  .crm {
+    --background: 220 20% 97%;
+    --foreground: 224 40% 8%;
+    --card: 0 0% 100%;
+    --card-foreground: 224 40% 8%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 224 40% 8%;
+    --primary: 222 80% 52%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 16% 95%;
+    --secondary-foreground: 224 40% 10%;
+    --muted: 220 16% 95%;
+    --muted-foreground: 220 9% 42%;
+    --accent: 220 16% 95%;
+    --accent-foreground: 224 40% 10%;
+    --border: 220 14% 91%;
+    --input: 220 14% 91%;
+    --ring: 222 80% 52%;
+    --focus: 222 80% 52%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 224 40% 8%;
+    --sidebar-primary: 222 80% 52%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 226 100% 97%;
+    --sidebar-accent-foreground: 222 80% 52%;
+    --sidebar-border: 220 14% 91%;
+    --sidebar-ring: 222 80% 52%;
+    --crm-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+  }
+
+  .dark .crm {
+    --background: 222 30% 7%;
+    --foreground: 210 40% 98%;
+    --card: 220 24% 11%;
+    --card-foreground: 210 40% 98%;
+    --popover: 220 24% 11%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 219 90% 66%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 220 20% 15%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 220 20% 15%;
+    --muted-foreground: 220 10% 66%;
+    --accent: 220 20% 15%;
+    --accent-foreground: 210 40% 98%;
+    --border: 220 16% 19%;
+    --input: 220 16% 19%;
+    --ring: 219 90% 66%;
+    --focus: 219 90% 66%;
+    --sidebar-background: 220 24% 11%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-primary: 219 90% 66%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-accent-foreground: 219 90% 66%;
+    --sidebar-border: 220 16% 19%;
+    --sidebar-ring: 219 90% 66%;
+    --crm-shadow: none;
+  }
 }
 
 @layer base {

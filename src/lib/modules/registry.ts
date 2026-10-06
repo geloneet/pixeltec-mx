@@ -24,9 +24,12 @@
  *               tablas y datos siguen existiendo.
  * - `legacy`    igual que `hidden` y además superado por otro módulo
  *               (`supersededBy`).
+ * - `planned`   anunciado pero aún NO construido (WO-2026-00515): `routes: []`,
+ *               se muestra en el sidebar como fila deshabilitada «Pronto» y
+ *               queda fuera de ⌘K, del 404, de los submenús y de Inicio.
  */
 
-export type ModuleState = "active" | "protected" | "hidden" | "legacy";
+export type ModuleState = "active" | "protected" | "hidden" | "legacy" | "planned";
 
 export type ModuleId =
   // Navegación aprobada (WO-2026-00132, Funcional·Simple·Único):
@@ -45,7 +48,11 @@ export type ModuleId =
   | "notificaciones"
   | "perfil"
   // Vistas sin entrada de navegación (se alcanzan por enlace contextual)
-  | "smilemore-respuestas";
+  | "smilemore-respuestas"
+  // Anunciados en el sidebar como «Pronto» (WO-2026-00515, estado `planned`)
+  | "calendario"
+  | "reportes"
+  | "automatizaciones";
 // WO-2026-00132: PixelForge, Definición, Marketing/Growth Suite completo
 // (Contenido/Campañas/Calendario/Publicaciones/Brand Brain), Infraestructura,
 // Plantillas, Documentos, Accesos (base de conocimiento del CRM) y el Blog
@@ -157,6 +164,31 @@ const REGISTRY = [
     state: "active",
     routes: ["/cotizaciones"],
     note: "WO-2026-00132: vista dedicada (vencidas/próximas a vencer) — antes solo se veían dentro de cada cliente.",
+  },
+  // ── Planeados (WO-2026-00515, mockup «Centro Comercial», D-1 opción B) ─────
+  // Sin rutas ni páginas: solo una fila deshabilitada «Pronto» en el sidebar.
+  // Construirlos = crear la ruta, cambiar a `active` y añadir su destino a
+  // PALETTE_NAV_ITEMS/AREA_ITEMS (ver docs/dashboard-modules.md).
+  {
+    id: "calendario",
+    label: "Calendario",
+    state: "planned",
+    routes: [],
+    note: "WO-2026-00515: aparece en el mockup del Centro Comercial; no existe todavía. Fila «Pronto» sin enlace.",
+  },
+  {
+    id: "reportes",
+    label: "Reportes",
+    state: "planned",
+    routes: [],
+    note: "WO-2026-00515: aparece en el mockup del Centro Comercial; no existe todavía. Fila «Pronto» sin enlace.",
+  },
+  {
+    id: "automatizaciones",
+    label: "Automatizaciones",
+    state: "planned",
+    routes: [],
+    note: "WO-2026-00515: aparece en el mockup del Centro Comercial; no existe todavía. Fila «Pronto» sin enlace.",
   },
 ] as const satisfies readonly ModuleDefinition[];
 

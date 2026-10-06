@@ -192,3 +192,5 @@ El asterisco de Perspectivas en portada ES/EN se sustituye por un gráfico 3D co
 ## WhatsApp flotante · 2026-10-05
 
 CTA compartido ES/EN en todas las rutas, incluido 404. Cuatro sugerencias rotativas abren el WhatsApp corporativo con texto preparado; no envían mensajes automáticamente ni simulan respuestas de un agente. Burbuja descartable, enlace utilizable sin JavaScript, animación pausada al interactuar o esconder la pestaña y compatible con movimiento reducido. Implementación local CSS/TypeScript sin dependencias externas. Validación: verify, revisión visual desktop/móvil 390 px, rotación observada y cierre de burbuja. Evidencia: work/portfolio-20261005/whatsapp-float.png.
+
+Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del footer, con relleno sólido y sin stroke para evitar contornos dobles.

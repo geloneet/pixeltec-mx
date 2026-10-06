@@ -1,3 +1,4 @@
+import publicPages from '@/components/public-site/generated/pages.json';
 import { getSettings } from '@/lib/settings/queries';
 import { SEO_TOOLS } from '@/lib/seo/tools';
 import { PageSchemaJsonLd } from './page-schema-jsonld';
@@ -25,6 +26,17 @@ export async function PublishedStructuredData() {
       SETTING_PAGE_SCHEMA,
     ]);
     pageSchema = parsePageSchemaMap(stored[SETTING_PAGE_SCHEMA]);
+    // Route templates own their populated schema; avoid duplicate generic nodes.
+    for (const [path, page] of Object.entries(publicPages)) {
+      const types = new Set(page.schemas.flatMap(schema => {
+        const graph = schema as Record<string, unknown>;
+        return (Array.isArray(graph['@graph']) ? graph['@graph'] : [graph])
+          .flatMap((node: Record<string, unknown>) => node['@type'] ?? []);
+      }));
+      if (pageSchema[path]) pageSchema[path] = pageSchema[path].filter(type => !types.has(type));
+    }
+    // The service hub is a collection, not a single generic Service/empty ItemList.
+    delete pageSchema['/services'];
     blocks = tools
       .filter((t) => stored[t.enabledKey] === '1')
       .map((t) => (stored[t.settingKey] ?? '').trim())

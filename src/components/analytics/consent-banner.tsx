@@ -30,22 +30,23 @@ export function ConsentBanner() {
   const { status, mounted } = useConsent();
   const pathname = usePathname();
 
+  const english = pathname?.startsWith('/en');
+
   if (!mounted || status !== 'unknown') return null;
   if (isNoindexPath(pathname)) return null;
 
   return (
     <div
       role="region"
-      aria-label="Aviso de cookies y seguimiento"
+      aria-label={english ? "Cookie and tracking preferences" : "Aviso de cookies y seguimiento"}
       data-cookie-banner=""
       className="fixed inset-x-0 bottom-0 z-[100] border-t border-border bg-background/95 p-4 backdrop-blur-md sm:p-5"
     >
       <div className="mx-auto flex max-w-5xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <p className="text-sm leading-relaxed text-muted-foreground">
-          Usamos herramientas de medición de terceros (Meta) para entender qué contenido
-          resulta útil. No se carga nada hasta que lo aceptes.{' '}
-          <Link href="/aviso-de-privacidad" className="text-brand underline underline-offset-4">
-            Aviso de privacidad
+          {english ? 'We only use Meta analytics if you accept.' : 'Solo usamos medición de Meta si la aceptas.'}{' '}
+          <Link href="/aviso-de-privacidad" className="text-foreground underline underline-offset-4">
+            {english ? 'Privacy notice' : 'Aviso de privacidad'}
           </Link>
           .
         </p>
@@ -55,14 +56,14 @@ export function ConsentBanner() {
             onClick={() => writeConsent('denied')}
             className="inline-flex h-11 items-center rounded-full border border-border px-5 text-sm font-semibold text-foreground transition-colors hover:bg-accent focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           >
-            Rechazar
+            {english ? 'Reject' : 'Rechazar'}
           </button>
           <button
             type="button"
             onClick={() => writeConsent('granted')}
-            className="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
+            className="inline-flex h-11 items-center rounded-full bg-[#1466ff] px-5 text-sm font-semibold text-white transition-colors hover:bg-[#0750dc] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus"
           >
-            Aceptar
+            {english ? 'Accept' : 'Aceptar'}
           </button>
         </div>
       </div>

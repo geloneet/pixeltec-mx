@@ -21,7 +21,7 @@ export const SITE = {
     'Estudio de desarrollo de software en Puerto Vallarta, Jalisco: desarrollo web y apps, software a la medida y automatización con IA y WhatsApp para pymes y empresas de Bahía de Banderas, Guadalajara y todo México.',
   locale: 'es-MX',
   ogLocale: 'es_MX',
-  logoPath: '/ptlogox.png',
+  logoPath: '/assets/brand/pixeltec-circuit-cube.png',
   defaultOgImage: '/og-image.png',
   email: 'contacto@pixeltec.mx',
   phone: {

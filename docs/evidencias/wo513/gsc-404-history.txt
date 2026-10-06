@@ -1,0 +1,260 @@
+- banner:
+  - button "Menú principal":
+  - link "Google Search Console":
+    - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+  - search:
+    - textbox [disabled]: Inspeccionar las URL de "pixeltec.mx"
+    - combobox "Inspeccionar cualquier URL en pipastondoroque.com"
+    - button "Búsqueda":
+  - button "Ayuda":
+    - generic: help_outline
+  - tooltip: Ayuda
+  - button "Configuración de usuario":
+    - generic: manage_accounts
+  - tooltip: Configuración de usuario
+  - 'button "Mensajes sin leer: 9"':
+    - generic: notifications
+  - tooltip: Mensajes
+  - generic: "9"
+  - button "Aplicaciones de Google":
+  - 'button "Cuenta de Google: Miguel Robles ([cuenta omitida])"':
+- dialog "navigational drawer":
+  - navigation "Principal":
+    - button "Buscar una propiedad":
+      - img "icono de página"
+      - combobox "pixeltec.mx"
+      - generic: 
+    - link "Descripción general":
+      - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+      - generic: home
+      - generic: Descripción general
+    - link "Estadísticas":
+      - /url: ./search-console/performance/insights?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lightbulb_2
+      - generic: Estadísticas
+    - link "Rendimiento":
+      - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trending_up
+      - generic: Rendimiento
+    - button "Sección de informe Rendimiento":
+      - generic: keyboard_arrow_down
+    - button "Inspección de URLs":
+      - generic: search
+      - generic: Inspección de URLs
+    - generic: Indexación
+    - button "Sección de informe Indexación" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Páginas":
+      - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx
+      - generic: file_copy
+      - generic: Páginas
+    - link "Sitemaps":
+      - /url: ./search-console/sitemaps?resource_id=sc-domain%3Apixeltec.mx
+      - generic: account_tree
+      - generic: Sitemaps
+    - link "Retirada de URLs":
+      - /url: ./search-console/removals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: visibility_off
+      - generic: Retirada de URLs
+    - generic: Experiencia
+    - button "Sección de informe Experiencia" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Core Web Vitals":
+      - /url: ./search-console/core-web-vitals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: speed
+      - generic: Core Web Vitals
+    - link "HTTPS":
+      - /url: ./search-console/https?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lock
+      - generic: HTTPS
+    - generic: Mejoras
+    - button "Sección de informe Mejoras" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Rutas de exploración":
+      - /url: ./search-console/r/breadcrumbs?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Rutas de exploración
+    - link "Página de perfil":
+      - /url: ./search-console/r/profile-page?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Página de perfil
+    - generic: Seguridad y Acciones manuales
+    - button "Sección de informe Seguridad y Acciones manuales":
+      - generic: keyboard_arrow_down
+    - link "Informe \"Enlaces\"":
+      - /url: ./search-console/links?resource_id=sc-domain%3Apixeltec.mx
+      - generic: link_2
+      - generic: Enlaces
+    - link "Logros":
+      - /url: ./search-console/achievements?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trophy
+      - generic: Logros
+    - link "Ajustes":
+      - /url: ./search-console/settings?resource_id=sc-domain%3Apixeltec.mx
+      - generic: settings
+      - generic: Ajustes
+    - button "Enviar comentarios":
+      - generic: feedback
+      - generic: Enviar comentarios
+    - button "Acerca de Search Console":
+      - generic: info
+      - generic: Acerca de Search Console
+    - link "Privacidad":
+      - /url: https://myaccount.google.com/privacypolicy?hl=es
+    - link "Términos":
+      - /url: https://myaccount.google.com/termsofservice?hl=es
+- navigation "Rutas de exploración":
+  - link "Indexación de páginas":
+    - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx&pages=ALL_URLS
+  - generic: 
+  - heading "No se ha encontrado (404)" [level=1]
+- button "EXPORTAR":
+  - generic: 
+  - generic: EXPORTAR
+- button "Obtener un enlace para compartir":
+  - generic: 
+  - generic: COMPARTIR
+- listbox:
+  - option "Todas las páginas conocidas" [selected]
+  - option "Todas las páginas enviadas"
+  - option "Solo páginas sin enviar"
+  - option "https://pixeltec.mx/sitemap.xml"
+- generic: "Última actualización: 20/9/26"
+- main:
+  - generic: info
+  - generic: No se ha encontrado (404)
+  - generic: Estas páginas no se indexan ni aparecen en Google
+  - link "Enlazar con documentación más exhaustiva":
+    - /url: https://support.google.com/webmasters/answer/7440203#not_found_404
+    - generic: Más información
+  - generic: "Fecha de la primera detección: 27/4/26"
+  - generic: ¿Has terminado de corregir?
+  - button "Validar corrección":
+    - generic: Validar corrección
+  - generic "Páginas afectadas"
+  - generic "15"
+  - generic: Ejemplos
+  - button "null":
+    - generic: 
+  - button "Filtrar las filas de una tabla":
+    - generic: 
+  - table:
+    - rowgroup:
+      - row "URL Último rastreo":
+        - columnheader "URL":
+          - generic: URL
+        - columnheader "Último rastreo":
+          - generic: Último rastreo
+    - rowgroup:
+      - row "https://www.pixeltec.mx/cdn-cgi/l/email-protection 20 sept 2026":
+        - cell "https://www.pixeltec.mx/cdn-cgi/l/email-protection":
+          - generic "https://www.pixeltec.mx/cdn-cgi/l/email-protection":
+            - generic: https://www.pixeltec.mx/cdn-cgi/l/email-protection
+        - cell "20 sept 2026":
+          - generic: 20 sept 2026
+      - row "https://encino.pixeltec.mx/blog/carpinteria-de-alta-calidad-vs-baja-calidad/ 28 ago 2026":
+        - cell "https://encino.pixeltec.mx/blog/carpinteria-de-alta-calidad-vs-baja-calidad/":
+          - generic "https://encino.pixeltec.mx/blog/carpinteria-de-alta-calidad-vs-baja-calidad/":
+            - generic: https://encino.pixeltec.mx/blog/carpinteria-de-alta-calidad-vs-baja-calidad/
+        - cell "28 ago 2026":
+          - generic: 28 ago 2026
+      - row "https://encino.pixeltec.mx/en/blog/maderas-para-muebles-calidad-precio-y-durabilidad/ 28 ago 2026":
+        - cell "https://encino.pixeltec.mx/en/blog/maderas-para-muebles-calidad-precio-y-durabilidad/":
+          - generic "https://encino.pixeltec.mx/en/blog/maderas-para-muebles-calidad-precio-y-durabilidad/":
+            - generic: https://encino.pixeltec.mx/en/blog/maderas-para-muebles-calidad-precio-y-durabilidad/
+        - cell "28 ago 2026":
+          - generic: 28 ago 2026
+      - row "https://encino.pixeltec.mx/contacto-Contacto 28 ago 2026":
+        - cell "https://encino.pixeltec.mx/contacto-Contacto":
+          - generic "https://encino.pixeltec.mx/contacto-Contacto":
+            - generic: https://encino.pixeltec.mx/contacto-Contacto
+        - cell "28 ago 2026":
+          - generic: 28 ago 2026
+      - row "https://encino.pixeltec.mx/blog-Blog 28 ago 2026":
+        - cell "https://encino.pixeltec.mx/blog-Blog":
+          - generic "https://encino.pixeltec.mx/blog-Blog":
+            - generic: https://encino.pixeltec.mx/blog-Blog
+        - cell "28 ago 2026":
+          - generic: 28 ago 2026
+      - row "https://encino.pixeltec.mx/resenas-Reseñas 27 ago 2026":
+        - cell "https://encino.pixeltec.mx/resenas-Reseñas":
+          - generic "https://encino.pixeltec.mx/resenas-Reseñas":
+            - generic: https://encino.pixeltec.mx/resenas-Reseñas
+        - cell "27 ago 2026":
+          - generic: 27 ago 2026
+      - row "https://encino.pixeltec.mx/portafolio-Portafolio 26 ago 2026":
+        - cell "https://encino.pixeltec.mx/portafolio-Portafolio":
+          - generic "https://encino.pixeltec.mx/portafolio-Portafolio":
+            - generic: https://encino.pixeltec.mx/portafolio-Portafolio
+        - cell "26 ago 2026":
+          - generic: 26 ago 2026
+      - row "https://encino.pixeltec.mx/cdn-cgi/l/email-protection 24 ago 2026":
+        - cell "https://encino.pixeltec.mx/cdn-cgi/l/email-protection":
+          - generic "https://encino.pixeltec.mx/cdn-cgi/l/email-protection":
+            - generic: https://encino.pixeltec.mx/cdn-cgi/l/email-protection
+        - cell "24 ago 2026":
+          - generic: 24 ago 2026
+      - row "https://encino.pixeltec.mx/blog/laca-o-aceite/ 24 ago 2026":
+        - cell "https://encino.pixeltec.mx/blog/laca-o-aceite/":
+          - generic "https://encino.pixeltec.mx/blog/laca-o-aceite/":
+            - generic: https://encino.pixeltec.mx/blog/laca-o-aceite/
+        - cell "24 ago 2026":
+          - generic: 24 ago 2026
+      - row "https://pixeltec.mx/wp-*.php    25 jul 2026":
+        - cell "https://pixeltec.mx/wp-*.php   ":
+          - generic "https://pixeltec.mx/wp-*.php":
+            - text: https://pixeltec.mx/wp-*.php
+            - generic "Copiar URL en el portapapeles": 
+            - generic "Abrir en una pestaña nueva": 
+            - generic "Inspeccionar URL": 
+        - cell "25 jul 2026":
+          - generic: 25 jul 2026
+      - row "http://pixeltec.mx/tag/windows/ 18 jul 2026":
+        - cell "http://pixeltec.mx/tag/windows/":
+          - generic "http://pixeltec.mx/tag/windows/":
+            - generic: http://pixeltec.mx/tag/windows/
+        - cell "18 jul 2026":
+          - generic: 18 jul 2026
+      - row "https://pixeltec.mx/$ 10 jun 2026":
+        - cell "https://pixeltec.mx/$":
+          - generic "https://pixeltec.mx/$":
+            - generic: https://pixeltec.mx/$
+        - cell "10 jun 2026":
+          - generic: 10 jun 2026
+      - row "https://pixeltec.mx/seo-services/ 16 may 2026":
+        - cell "https://pixeltec.mx/seo-services/":
+          - generic "https://pixeltec.mx/seo-services/":
+            - generic: https://pixeltec.mx/seo-services/
+        - cell "16 may 2026":
+          - generic: 16 may 2026
+      - row "https://pixeltec.mx/wp-includes/js/wp-emoji-release.min.js?ver=6.9 15 may 2026":
+        - cell "https://pixeltec.mx/wp-includes/js/wp-emoji-release.min.js?ver=6.9":
+          - generic "https://pixeltec.mx/wp-includes/js/wp-emoji-release.min.js?ver=6.9":
+            - generic: https://pixeltec.mx/wp-includes/js/wp-emoji-release.min.js?ver=6.9
+        - cell "15 may 2026":
+          - generic: 15 may 2026
+      - row "http://pixeltec.mx/tag/windows/feed/ 20 abr 2026":
+        - cell "http://pixeltec.mx/tag/windows/feed/":
+          - generic "http://pixeltec.mx/tag/windows/feed/":
+            - generic: http://pixeltec.mx/tag/windows/feed/
+        - cell "20 abr 2026":
+          - generic: 20 abr 2026
+  - generic: "Filas por página:"
+  - listbox "Número de filas por página":
+    - option "5"
+    - option "10"
+    - option "25" [active] [selected]
+    - option "50"
+    - option "100"
+    - option "250"
+    - option "500"
+    - option: "5"
+    - option [selected]: "10"
+    - option: "25"
+    - option: "50"
+    - option: "100"
+    - option: "250"
+    - option: "500"
+  - generic: 1-15 de 15
+  - generic: 
+  - generic: 

@@ -1,0 +1,485 @@
+- banner:
+  - link "PageSpeed Insights logo PageSpeed Insights":
+    - /url: ./
+    - img "PageSpeed Insights logo"
+    - generic: PageSpeed Insights
+  - button "Copiar vínculo":
+    - generic: Copiar vínculo
+  - generic: Documentos
+  - link "Documentos":
+    - /url: https://developers.google.com/speed/docs/insights/v5/about
+- generic: Este sitio utiliza cookies de Google para brindar sus servicios y analizar el tráfico.
+- generic: Obtén más información.
+- link "Obtén más información.":
+  - /url: https://policies.google.com/technologies/cookies
+- button "Entendido":
+  - generic: Entendido
+- generic: Informe desde el 6 oct 2026, 1:42:14 p.m.
+- textbox:
+  - /placeholder: Ingresar la URL de una página web
+  - text: https://pixeltec.mx/
+- paragraph: Ingresa una URL válida
+- button "Analizar":
+  - generic: Analizar
+- tablist:
+  - tab "Celulares" [selected]:
+    - generic: smartphone
+    - generic: Celulares
+  - tab "Escritorio":
+    - generic: computer
+    - generic: Escritorio
+- tabpanel "Celulares":
+  - generic: Descubre lo que experimentan tus usuarios reales
+  - button "button":
+  - generic: No hay datos
+  - separator
+  - generic: Diagnostica problemas de rendimiento
+  - article:
+    - link "56 Rendimiento":
+      - /url: "#performance"
+      - generic: "56"
+      - generic: Rendimiento
+    - link "93 Accesibilidad":
+      - /url: "#accessibility"
+      - generic: "93"
+      - generic: Accesibilidad
+    - link "100 Recomendaciones":
+      - /url: "#best-practices"
+      - generic: "100"
+      - generic: Recomendaciones
+    - link "100 SEO":
+      - /url: "#seo"
+      - generic: "100"
+      - generic: SEO
+    - link "2/3 Navegación con agentes":
+      - /url: "#agentic-browsing"
+      - generic: 2/3
+      - generic: Navegación con agentes
+    - text: Los valores son estimados y pueden variar. La
+    - link "medición del rendimiento se calcula":
+      - /url: https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/?utm_source=lighthouse&utm_medium=lr
+    - text: directamente a partir de estas métricas.
+    - link "Consulta la calculadora.":
+      - /url: https://googlechrome.github.io/lighthouse/scorecalc/#FCP=1685&LCP=4276&TBT=2139&CLS=0&SI=2738&TTI=7645&device=mobile&version=13.5.0
+    - generic: 0–49
+    - generic: 50–89
+    - generic: 90–100
+    - img "Final Screenshot"
+    - checkbox "Toggle the display of metric descriptions"
+    - generic: Métricas
+    - generic: Expandir vista
+    - generic: First Contentful Paint
+    - generic: 1.7 s
+    - generic: Largest Contentful Paint
+    - generic: 4.3 s
+    - generic: Total Blocking Time
+    - generic: 2,140 ms
+    - generic: Cumulative Layout Shift
+    - generic: "0"
+    - generic: Speed Index
+    - generic: 2.7 s
+    - list:
+      - listitem: Captured at 6 oct 2026, 1:42 p.m. GMT-6
+      - listitem: Moto G Power emulado with Lighthouse 13.5.0
+      - listitem: Sesión de una sola página
+      - listitem: Carga inicial de la página
+      - listitem: Limitación de la red 4G lenta
+      - listitem: Using HeadlessChromium 153.0.8010.36 with lr
+    - button "Ver diagrama de árbol"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - img "Screenshot"
+    - generic: "Mostrar las auditorías relevantes para la métrica:"
+    - radio "All" [checked]
+    - generic: All
+    - radio "FCP"
+    - generic "First Contentful Paint": FCP
+    - radio "LCP"
+    - generic "Largest Contentful Paint": LCP
+    - radio "TBT"
+    - generic "Total Blocking Time": TBT
+    - generic: Estadísticas
+    - generic "Usa tiempos de almacenamiento en caché eficientes —Ahorro estimado de 104 KiB":
+      - generic: Usa tiempos de almacenamiento en caché eficientes
+      - text: —Ahorro estimado de 104 KiB
+    - generic "Solicitudes de bloqueo de renderización —Ahorro estimado de 150 ms":
+      - generic: Solicitudes de bloqueo de renderización
+      - text: —Ahorro estimado de 150 ms
+    - generic "Mejora la entrega de imágenes —Ahorro estimado de 19 KiB":
+      - generic: Mejora la entrega de imágenes
+      - text: —Ahorro estimado de 19 KiB
+    - generic "JavaScript heredado —Ahorro estimado de 22 KiB":
+      - generic: JavaScript heredado
+      - text: —Ahorro estimado de 22 KiB
+    - generic "Reprocesamiento forzado":
+      - generic: Reprocesamiento forzado
+    - generic "Árbol de dependencias de red":
+      - generic: Árbol de dependencias de red
+    - generic "Desglose de LCP" [active]:
+      - generic: Desglose de LCP
+    - text: Cada
+    - link "subparte tiene estrategias de mejora específicas":
+      - /url: https://developer.chrome.com/docs/performance/insights/lcp-breakdown?utm_source=lighthouse&utm_medium=lr
+    - text: . Lo ideal es que la mayor parte del tiempo de LCP se dedique a cargar los recursos, no a los retrasos.
+    - generic "Relevant to Largest Contentful Paint": LCP
+    - generic "Esta auditoría no contribuye a la puntuación general de la categoría.": Sin puntuación
+    - table:
+      - rowgroup:
+        - row "Subparte Duración":
+          - columnheader "Subparte":
+            - generic: Subparte
+          - columnheader "Duración":
+            - generic: Duración
+      - rowgroup:
+        - row "Time to First Byte 60 ms":
+          - cell "Time to First Byte":
+            - generic: Time to First Byte
+          - cell "60 ms":
+            - generic: 60 ms
+        - row "Retraso en la renderización del elemento 950 ms":
+          - cell "Retraso en la renderización del elemento":
+            - generic: Retraso en la renderización del elemento
+          - cell "950 ms":
+            - generic: 950 ms
+    - generic "body.font-body > div.fixed > div.mx-auto > p.text-sm":
+      - generic: Usamos herramientas de medición de terceros (Meta) para entender qué contenido …
+      - generic: <p class="text-sm leading-relaxed text-muted-foreground">
+    - generic "Terceros":
+      - generic: Terceros
+    - text: "Estas estadísticas también están disponibles en el panel de rendimiento de las Herramientas para desarrolladores de Chrome:"
+    - link "graba un registro":
+      - /url: https://developer.chrome.com/docs/devtools/performance/reference?utm_source=lighthouse&utm_medium=lr
+    - text: para ver información más detallada.
+    - generic: Diagnóstico
+    - generic "Minimiza el trabajo del hilo principal —4.0 s":
+      - generic: Minimiza el trabajo del hilo principal
+      - text: —4.0 s
+    - text: Te recomendamos que reduzcas el tiempo de análisis, compilación y ejecución de JS. Para ello, puedes entregar cargas útiles de JS más pequeñas.
+    - link "Más información para minimizar el trabajo del subproceso principal":
+      - /url: https://developer.chrome.com/docs/lighthouse/performance/mainthread-work-breakdown/?utm_source=lighthouse&utm_medium=lr
+    - generic "Relevant to Total Blocking Time": TBT
+    - generic "Esta auditoría no contribuye a la puntuación general de la categoría.": Sin puntuación
+    - table:
+      - rowgroup:
+        - row "Categoría Tiempo de uso":
+          - columnheader "Categoría":
+            - generic: Categoría
+          - columnheader "Tiempo de uso":
+            - generic: Tiempo de uso
+      - rowgroup:
+        - row "Other 2,743 ms":
+          - cell "Other":
+            - generic: Other
+          - cell "2,743 ms":
+            - generic: 2,743 ms
+        - row "Script Evaluation 884 ms":
+          - cell "Script Evaluation":
+            - generic: Script Evaluation
+          - cell "884 ms":
+            - generic: 884 ms
+        - row "Style & Layout 202 ms":
+          - cell "Style & Layout":
+            - generic: Style & Layout
+          - cell "202 ms":
+            - generic: 202 ms
+        - row "Script Parsing & Compilation 123 ms":
+          - cell "Script Parsing & Compilation":
+            - generic: Script Parsing & Compilation
+          - cell "123 ms":
+            - generic: 123 ms
+        - row "Rendering 29 ms":
+          - cell "Rendering":
+            - generic: Rendering
+          - cell "29 ms":
+            - generic: 29 ms
+        - row "Parse HTML & CSS 21 ms":
+          - cell "Parse HTML & CSS":
+            - generic: Parse HTML & CSS
+          - cell "21 ms":
+            - generic: 21 ms
+        - row "Garbage Collection 19 ms":
+          - cell "Garbage Collection":
+            - generic: Garbage Collection
+          - cell "19 ms":
+            - generic: 19 ms
+    - generic "Reduce el código CSS sin usar —Ahorro estimado de 42 KiB":
+      - generic: Reduce el código CSS sin usar
+      - text: —Ahorro estimado de 42 KiB
+    - generic "Reduce el código JavaScript sin usar —Ahorro estimado de 57 KiB":
+      - generic: Reduce el código JavaScript sin usar
+      - text: —Ahorro estimado de 57 KiB
+    - generic "Evita tareas largas en el subproceso principal —Se encontraron 5 tareas largas":
+      - generic: Evita tareas largas en el subproceso principal
+      - text: —Se encontraron 5 tareas largas
+    - text: Se muestran las tareas más largas en el subproceso principal (permite identificar las tareas que más contribuyen al mayor retraso de entrada).
+    - link "Más información para evitar tareas largas en el subproceso principal":
+      - /url: https://web.dev/articles/optimize-long-tasks?utm_source=lighthouse&utm_medium=lr
+    - generic "Relevant to Total Blocking Time": TBT
+    - generic "Esta auditoría no contribuye a la puntuación general de la categoría.": Sin puntuación
+    - table:
+      - rowgroup:
+        - row "URL Hora de inicio Duración":
+          - columnheader "URL":
+            - generic: URL
+          - columnheader "Hora de inicio":
+            - generic: Hora de inicio
+          - columnheader "Duración":
+            - generic: Duración
+      - rowgroup:
+        - row "pixeltec.mx Propio 2,464 ms":
+          - cell "pixeltec.mx Propio":
+            - generic: pixeltec.mx
+            - generic: Propio
+          - cell
+          - cell "2,464 ms":
+            - generic: 2,464 ms
+        - row "…chunks/4bd1b696-100b9d70ed4e49c1.js(pixeltec.mx) 6,141 ms 1,571 ms":
+          - cell "…chunks/4bd1b696-100b9d70ed4e49c1.js(pixeltec.mx)":
+            - generic "https://pixeltec.mx/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js":
+              - link "…chunks/4bd1b696-100b9d70ed4e49c1.js":
+                - /url: https://pixeltec.mx/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js
+              - text: (pixeltec.mx)
+          - cell "6,141 ms":
+            - generic: 6,141 ms
+          - cell "1,571 ms":
+            - generic: 1,571 ms
+        - row "…chunks/1890.f47a96fe79a6a209.js(pixeltec.mx) 5,482 ms 659 ms":
+          - cell "…chunks/1890.f47a96fe79a6a209.js(pixeltec.mx)":
+            - generic "https://pixeltec.mx/_next/static/chunks/1890.f47a96fe79a6a209.js":
+              - link "…chunks/1890.f47a96fe79a6a209.js":
+                - /url: https://pixeltec.mx/_next/static/chunks/1890.f47a96fe79a6a209.js
+              - text: (pixeltec.mx)
+          - cell "5,482 ms":
+            - generic: 5,482 ms
+          - cell "659 ms":
+            - generic: 659 ms
+        - row "…chunks/1890.f47a96fe79a6a209.js(pixeltec.mx) 5,401 ms 81 ms":
+          - cell "…chunks/1890.f47a96fe79a6a209.js(pixeltec.mx)":
+            - generic "https://pixeltec.mx/_next/static/chunks/1890.f47a96fe79a6a209.js":
+              - link "…chunks/1890.f47a96fe79a6a209.js":
+                - /url: https://pixeltec.mx/_next/static/chunks/1890.f47a96fe79a6a209.js
+              - text: (pixeltec.mx)
+          - cell "5,401 ms":
+            - generic: 5,401 ms
+          - cell "81 ms":
+            - generic: 81 ms
+        - row "…chunks/webpack-e38d5d7594dbc574.js(pixeltec.mx) 3,001 ms 79 ms":
+          - cell "…chunks/webpack-e38d5d7594dbc574.js(pixeltec.mx)":
+            - generic "https://pixeltec.mx/_next/static/chunks/webpack-e38d5d7594dbc574.js":
+              - link "…chunks/webpack-e38d5d7594dbc574.js":
+                - /url: https://pixeltec.mx/_next/static/chunks/webpack-e38d5d7594dbc574.js
+              - text: (pixeltec.mx)
+          - cell "3,001 ms":
+            - generic: 3,001 ms
+          - cell "79 ms":
+            - generic: 79 ms
+        - row "…chunks/1255-8dc91b756d944555.js(pixeltec.mx) 4,051 ms 74 ms":
+          - cell "…chunks/1255-8dc91b756d944555.js(pixeltec.mx)":
+            - generic "https://pixeltec.mx/_next/static/chunks/1255-8dc91b756d944555.js":
+              - link "…chunks/1255-8dc91b756d944555.js":
+                - /url: https://pixeltec.mx/_next/static/chunks/1255-8dc91b756d944555.js
+              - text: (pixeltec.mx)
+          - cell "4,051 ms":
+            - generic: 4,051 ms
+          - cell "74 ms":
+            - generic: 74 ms
+    - text: Obtén más información sobre el rendimiento de tu app. Estos números no
+    - link "afectan directamente":
+      - /url: https://developer.chrome.com/docs/lighthouse/performance/performance-scoring/?utm_source=lighthouse&utm_medium=lr
+    - text: la medición del rendimiento.
+    - generic "Auditorías aprobadas (15) Mostrar":
+      - generic: Auditorías aprobadas (15)
+      - generic: Mostrar
+    - text: — —
+    - heading "93 Accesibilidad" [level=2]:
+      - generic: "93"
+      - generic: Accesibilidad
+    - text: Estas comprobaciones destacan las oportunidades para
+    - link "mejorar la accesibilidad de tu app web":
+      - /url: https://developer.chrome.com/docs/lighthouse/accessibility/?utm_source=lighthouse&utm_medium=lr
+    - text: . La detección automática solo puede detectar un subconjunto de problemas y no garantiza la accesibilidad de tu app web, por lo que también se recomienda hacer
+    - link "pruebas manuales":
+      - /url: https://web.dev/articles/how-to-review?utm_source=lighthouse&utm_medium=lr
+    - text: .
+    - generic: ARIA
+    - generic "Los elementos usan atributos de ARIA prohibidos":
+      - generic: Los elementos usan atributos de ARIA prohibidos
+    - text: Si usas atributos de ARIA en roles en los que están prohibidos, es posible que no se les comunique información importante a los usuarios de tecnologías de accesibilidad.
+    - link "Obtén más información sobre los roles de ARIA prohibidos":
+      - /url: https://dequeuniversity.com/rules/axe/4.13/aria-prohibited-attr
+    - text: .
+    - table:
+      - rowgroup:
+        - row "Elementos con errores":
+          - columnheader "Elementos con errores":
+            - generic: Elementos con errores
+      - rowgroup:
+        - row "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+          - cell "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+            - generic "div.home-testimonial-window > div.home-testimonial-track > article > div":
+              - generic: 5 de 5 estrellas
+              - generic: <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">
+        - row "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+          - cell "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+            - generic "div.home-testimonial-window > div.home-testimonial-track > article > div":
+              - generic: 5 de 5 estrellas
+              - generic: <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">
+        - row "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+          - cell "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+            - generic "div.home-testimonial-window > div.home-testimonial-track > article > div":
+              - generic: 5 de 5 estrellas
+              - generic: <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">
+        - row "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+          - cell "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+            - generic "div.home-testimonial-window > div.home-testimonial-track > article > div":
+              - generic: 5 de 5 estrellas
+              - generic: <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">
+        - row "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+          - cell "5 de 5 estrellas <div style=\"display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px\" aria-label=\"5 de 5 estrellas\">":
+            - generic "div.home-testimonial-window > div.home-testimonial-track > article > div":
+              - generic: 5 de 5 estrellas
+              - generic: <div style="display:flex;gap:4px;color:#1466ff;font-size:18px;letter-spacing:1px" aria-label="5 de 5 estrellas">
+    - generic: A continuación, se indican consejos para optimizar el uso de ARIA en tu app, lo que puede mejorar la experiencia de los usuarios de tecnologías de asistencia, como los lectores de pantalla.
+    - generic: Contraste
+    - generic "Los colores de fondo y de primer plano no tienen una relación de contraste adecuada.":
+      - generic: Los colores de fondo y de primer plano no tienen una relación de contraste adecuada.
+    - text: Los textos con poco contraste resultan difíciles o imposibles de leer para muchos usuarios.
+    - link "Obtén información para proporcionar suficiente contraste de color":
+      - /url: https://dequeuniversity.com/rules/axe/4.13/color-contrast
+    - text: .
+    - table:
+      - rowgroup:
+        - row "Elementos con errores":
+          - columnheader "Elementos con errores":
+            - generic: Elementos con errores
+      - rowgroup:
+        - row "TEC <span style=\"color:#2196f3\">":
+          - cell "TEC <span style=\"color:#2196f3\">":
+            - generic "header.site-header > a.brand > span.brand-wordmark > span":
+              - generic: TEC
+              - generic: <span style="color:#2196f3">
+        - row "PIXELTEC EN ↗ <header class=\"site-header\">":
+          - cell "PIXELTEC EN ↗ <header class=\"site-header\">":
+            - generic "body.font-body > div.public-website > div.header-shell > header.site-header":
+              - generic: PIXELTEC EN ↗
+              - generic: <header class="site-header">
+        - row "Aceptar <button type=\"button\" class=\"inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-se…\">":
+          - cell "Aceptar <button type=\"button\" class=\"inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-se…\">":
+            - generic "div.fixed > div.mx-auto > div.flex > button.inline-flex":
+              - generic: Aceptar
+              - generic: <button type="button" class="inline-flex h-11 items-center rounded-full bg-primary px-5 text-sm font-se…">
+    - generic: A continuación, se indican consejos para facilitar la lectura del contenido.
+    - generic "Elementos adicionales que se deben comprobar manualmente (10) Mostrar":
+      - generic: Elementos adicionales que se deben comprobar manualmente (10)
+      - generic: Mostrar
+    - text: Estos elementos abarcan áreas que las herramientas de prueba automáticas no contemplan. Obtén más información en nuestra guía sobre
+    - link "cómo revisar los aspectos de accesibilidad":
+      - /url: https://web.dev/articles/how-to-review?utm_source=lighthouse&utm_medium=lr
+    - text: .
+    - generic "Auditorías aprobadas (23) Mostrar":
+      - generic: Auditorías aprobadas (23)
+      - generic: Mostrar
+    - generic "No aplicable (38) Mostrar":
+      - generic: No aplicable (38)
+      - generic: Mostrar
+    - heading "100 Recomendaciones" [level=2]:
+      - generic: "100"
+      - generic: Recomendaciones
+    - generic: Confianza y seguridad
+    - generic "Asegúrate de que la CSP sea eficaz contra los ataques XSS":
+      - generic: Asegúrate de que la CSP sea eficaz contra los ataques XSS
+    - generic "Mitiga el XSS basado en DOM con Trusted Types":
+      - generic: Mitiga el XSS basado en DOM con Trusted Types
+    - generic: Compatibilidad del navegador
+    - generic "Funciones de Baseline":
+      - generic: Funciones de Baseline
+    - generic "Auditorías aprobadas (13) Mostrar":
+      - generic: Auditorías aprobadas (13)
+      - generic: Mostrar
+    - generic "No aplicable (5) Mostrar":
+      - generic: No aplicable (5)
+      - generic: Mostrar
+    - heading "100 SEO" [level=2]:
+      - generic: "100"
+      - generic: SEO
+    - text: Estas comprobaciones aseguran que tu página esté siguiendo la sugerencia básica de optimización por motores de búsqueda. Existen muchos factores adicionales que Lighthouse no registra y que pueden afectar su clasificación en la búsqueda, como el rendimiento en las
+    - link "Métricas web esenciales":
+      - /url: https://web.dev/explore/vitals?utm_source=lighthouse&utm_medium=lr
+    - text: .
+    - link "Obtén más información sobre los conceptos básicos de la Búsqueda de Google":
+      - /url: https://support.google.com/webmasters/answer/35769
+    - text: .
+    - generic "Elementos adicionales que se deben comprobar manualmente (1) Ocultar":
+      - generic: Elementos adicionales que se deben comprobar manualmente (1)
+      - generic: Ocultar
+    - generic "Los datos estructurados son válidos":
+      - generic: Los datos estructurados son válidos
+    - generic: Ejecuta estos validadores adicionales en tu sitio web para comprobar más prácticas recomendadas de SEO.
+    - generic "Auditorías aprobadas (10) Mostrar":
+      - generic: Auditorías aprobadas (10)
+      - generic: Mostrar
+    - heading "2/3 Navegación con agentes" [level=2]:
+      - generic: 2/3
+      - generic: Navegación con agentes
+    - text: Estas verificaciones garantizan
+    - link "sitios web de alta calidad y navegables para los agentes de IA":
+      - /url: https://goo.gle/lighthouse-agentic-web
+    - text: ", y validan la exactitud de las integraciones de WebMCP. Esta categoría aún está en desarrollo y está sujeta a cambios."
+    - generic: Accesibilidad del agente
+    - generic "El árbol de accesibilidad no tiene un formato correcto":
+      - generic: El árbol de accesibilidad no tiene un formato correcto
+    - generic: Estas auditorías destacan las prácticas recomendadas para mejorar la accesibilidad del sitio web para los agentes de IA.
+    - generic "Auditorías aprobadas (2) Mostrar":
+      - generic: Auditorías aprobadas (2)
+      - generic: Mostrar
+    - text: —
+    - generic "No aplicable (4) Mostrar":
+      - generic: No aplicable (4)
+      - generic: Mostrar
+- text: — — — — — — — — — — —
+- contentinfo:
+  - generic: Más información acerca de PageSpeed Insights
+  - link "Novedades":
+    - /url: https://developers.google.com/speed/docs/insights/release_notes
+  - link "Documentación":
+    - /url: https://developers.google.com/speed/docs/insights/v5/about
+  - link "Más información sobre el rendimiento de la Web":
+    - /url: https://developers.google.com/speed
+  - link "Haz preguntas en Stack Overflow":
+    - /url: https://stackoverflow.com/questions/tagged/pagespeed-insights
+  - link "Lista de distribución":
+    - /url: https://groups.google.com/g/pagespeed-insights-discuss
+  - generic: Contenido relacionado
+  - link "Actualizaciones":
+    - /url: https://developer.chrome.com/blog
+  - link "Fundamentos de la Web":
+    - /url: https://developers.google.com/focus/web-development
+  - link "Casos de éxito":
+    - /url: https://web.dev/case-studies
+  - link "Podcasts":
+    - /url: https://web.dev/shows
+  - generic: Conectar
+  - link "Twitter":
+    - /url: https://twitter.com/ChromiumDev
+  - link "YouTube":
+    - /url: https://www.youtube.com/user/ChromeDevelopers
+  - link "Google Developers Logo":
+    - /url: https://developers.google.com/
+    - img "Google Developers Logo"
+  - link "Chrome":
+    - /url: https://developer.chrome.com/
+  - link "Firebase":
+    - /url: https://firebase.google.com/
+  - link "Todos los productos":
+    - /url: https://developers.google.com/products/
+  - link "Condiciones y Política de Privacidad":
+    - /url: https://policies.google.com/
+  - text: Para obtener más detalles, consulta las
+  - link "Políticas del Sitio de Google Developers":
+    - /url: https://developers.google.com/terms/site-policies
+  - text: .

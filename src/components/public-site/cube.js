@@ -74,7 +74,9 @@ export async function mountCube(stage, { variant = 'A', services, autoOpen = 0, 
   canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;display:block';
   stage.appendChild(canvas);
 
-  const renderer = new THREE.WebGLRenderer({ canvas, antialias: !compact, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: false });
+  let renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas, antialias: !compact, alpha: bg === null, powerPreference: 'low-power', preserveDrawingBuffer: false }); }
+  catch (error) { canvas.remove(); throw error; }
   renderer.setPixelRatio(Math.min(devicePixelRatio, compact ? 1 : 1.25));
   renderer.shadowMap.enabled = false; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
   renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.3;

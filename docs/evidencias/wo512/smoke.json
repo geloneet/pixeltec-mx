@@ -1,0 +1,817 @@
+{
+  "checkedAt": "2026-10-06T19:31:03.476Z",
+  "origin": "https://pixeltec.mx",
+  "passed": true,
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "ok": true,
+      "bytes": 135996
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "ok": true,
+      "bytes": 63317
+    },
+    {
+      "path": "/services/automatizacion",
+      "status": 200,
+      "ok": true,
+      "bytes": 61533
+    },
+    {
+      "path": "/services/ecosistemas-web",
+      "status": 200,
+      "ok": true,
+      "bytes": 64763
+    },
+    {
+      "path": "/services/consultoria",
+      "status": 200,
+      "ok": true,
+      "bytes": 61190
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "ok": true,
+      "bytes": 56421
+    },
+    {
+      "path": "/equipo",
+      "status": 200,
+      "ok": true,
+      "bytes": 52433
+    },
+    {
+      "path": "/metodologia",
+      "status": 200,
+      "ok": true,
+      "bytes": 54458
+    },
+    {
+      "path": "/casos-de-exito",
+      "status": 200,
+      "ok": true,
+      "bytes": 71757
+    },
+    {
+      "path": "/casos-de-exito/villa-nogal",
+      "status": 200,
+      "ok": true,
+      "bytes": 51593
+    },
+    {
+      "path": "/casos-de-exito/pipas-tondoroque",
+      "status": 200,
+      "ok": true,
+      "bytes": 53343
+    },
+    {
+      "path": "/casos-de-exito/barro-stock",
+      "status": 200,
+      "ok": true,
+      "bytes": 51283
+    },
+    {
+      "path": "/casos-de-exito/smile-more",
+      "status": 200,
+      "ok": true,
+      "bytes": 51383
+    },
+    {
+      "path": "/casos-de-exito/materiales-de-barro",
+      "status": 200,
+      "ok": true,
+      "bytes": 51604
+    },
+    {
+      "path": "/casos-de-exito/dalk",
+      "status": 200,
+      "ok": true,
+      "bytes": 50078
+    },
+    {
+      "path": "/casos-de-exito/velank",
+      "status": 200,
+      "ok": true,
+      "bytes": 50129
+    },
+    {
+      "path": "/casos-de-exito/transportes-sanchez-jr",
+      "status": 200,
+      "ok": true,
+      "bytes": 50830
+    },
+    {
+      "path": "/casos-de-exito/subsify",
+      "status": 200,
+      "ok": true,
+      "bytes": 56385
+    },
+    {
+      "path": "/industrias",
+      "status": 200,
+      "ok": true,
+      "bytes": 57677
+    },
+    {
+      "path": "/industrias/clinicas-dentales",
+      "status": 200,
+      "ok": true,
+      "bytes": 62251
+    },
+    {
+      "path": "/industrias/hoteles",
+      "status": 200,
+      "ok": true,
+      "bytes": 60950
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "ok": true,
+      "bytes": 54744
+    },
+    {
+      "path": "/diagnostico",
+      "status": 200,
+      "ok": true,
+      "bytes": 65348
+    },
+    {
+      "path": "/automatizacion-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 60732
+    },
+    {
+      "path": "/automatizacion-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 58416
+    },
+    {
+      "path": "/automatizacion-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 58557
+    },
+    {
+      "path": "/automatizacion-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 58746
+    },
+    {
+      "path": "/desarrollo-web-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 60253
+    },
+    {
+      "path": "/desarrollo-web-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 57974
+    },
+    {
+      "path": "/desarrollo-web-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 60115
+    },
+    {
+      "path": "/desarrollo-web-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 60391
+    },
+    {
+      "path": "/consultoria-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 58350
+    },
+    {
+      "path": "/consultoria-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 57850
+    },
+    {
+      "path": "/consultoria-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 58297
+    },
+    {
+      "path": "/consultoria-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 58540
+    },
+    {
+      "path": "/empresas-de-desarrollo-de-software",
+      "status": 200,
+      "ok": true,
+      "bytes": 76272
+    },
+    {
+      "path": "/empresas-de-desarrollo-de-software-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 73602
+    },
+    {
+      "path": "/programador-de-software",
+      "status": 200,
+      "ok": true,
+      "bytes": 73086
+    },
+    {
+      "path": "/programador-de-software-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 72114
+    },
+    {
+      "path": "/sistemas-a-medida",
+      "status": 200,
+      "ok": true,
+      "bytes": 72181
+    },
+    {
+      "path": "/sistemas-a-medida-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 71592
+    },
+    {
+      "path": "/software-a-medida-para-empresas",
+      "status": 200,
+      "ok": true,
+      "bytes": 73382
+    },
+    {
+      "path": "/software-a-medida-para-empresas-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 71959
+    },
+    {
+      "path": "/sistema-personalizado-para-empresas",
+      "status": 200,
+      "ok": true,
+      "bytes": 72407
+    },
+    {
+      "path": "/sistema-personalizado-para-empresas-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 72260
+    },
+    {
+      "path": "/automatiza-tu-negocio",
+      "status": 200,
+      "ok": true,
+      "bytes": 70212
+    },
+    {
+      "path": "/automatiza-tu-negocio-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 70275
+    },
+    {
+      "path": "/automatizar-mensajes-de-whatsapp",
+      "status": 200,
+      "ok": true,
+      "bytes": 70397
+    },
+    {
+      "path": "/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 71216
+    },
+    {
+      "path": "/automatizar-whatsapp-business",
+      "status": 200,
+      "ok": true,
+      "bytes": 71566
+    },
+    {
+      "path": "/automatizar-whatsapp-business-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 71130
+    },
+    {
+      "path": "/automatizacion-de-mensajes-en-whatsapp",
+      "status": 200,
+      "ok": true,
+      "bytes": 71392
+    },
+    {
+      "path": "/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 71785
+    },
+    {
+      "path": "/desarrolladores-de-app",
+      "status": 200,
+      "ok": true,
+      "bytes": 76669
+    },
+    {
+      "path": "/desarrolladores-de-app-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 73708
+    },
+    {
+      "path": "/desarrollo-de-app",
+      "status": 200,
+      "ok": true,
+      "bytes": 70015
+    },
+    {
+      "path": "/desarrollo-de-app-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 72373
+    },
+    {
+      "path": "/desarrolladores-de-apps",
+      "status": 200,
+      "ok": true,
+      "bytes": 69716
+    },
+    {
+      "path": "/desarrolladores-de-apps-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 72690
+    },
+    {
+      "path": "/desarrollo-de-aplicaciones-moviles",
+      "status": 200,
+      "ok": true,
+      "bytes": 70980
+    },
+    {
+      "path": "/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 73242
+    },
+    {
+      "path": "/guias-transformacion",
+      "status": 200,
+      "ok": true,
+      "bytes": 62936
+    },
+    {
+      "path": "/mapa",
+      "status": 200,
+      "ok": true,
+      "bytes": 76032
+    },
+    {
+      "path": "/en/services",
+      "status": 200,
+      "ok": true,
+      "bytes": 59467
+    },
+    {
+      "path": "/en/services/automatizacion",
+      "status": 200,
+      "ok": true,
+      "bytes": 58424
+    },
+    {
+      "path": "/en/services/ecosistemas-web",
+      "status": 200,
+      "ok": true,
+      "bytes": 61541
+    },
+    {
+      "path": "/en/services/consultoria",
+      "status": 200,
+      "ok": true,
+      "bytes": 58219
+    },
+    {
+      "path": "/en/about",
+      "status": 200,
+      "ok": true,
+      "bytes": 52779
+    },
+    {
+      "path": "/en/equipo",
+      "status": 200,
+      "ok": true,
+      "bytes": 50224
+    },
+    {
+      "path": "/en/metodologia",
+      "status": 200,
+      "ok": true,
+      "bytes": 51462
+    },
+    {
+      "path": "/en/casos-de-exito",
+      "status": 200,
+      "ok": true,
+      "bytes": 69682
+    },
+    {
+      "path": "/en/casos-de-exito/villa-nogal",
+      "status": 200,
+      "ok": true,
+      "bytes": 49803
+    },
+    {
+      "path": "/en/casos-de-exito/pipas-tondoroque",
+      "status": 200,
+      "ok": true,
+      "bytes": 51500
+    },
+    {
+      "path": "/en/casos-de-exito/barro-stock",
+      "status": 200,
+      "ok": true,
+      "bytes": 49609
+    },
+    {
+      "path": "/en/casos-de-exito/smile-more",
+      "status": 200,
+      "ok": true,
+      "bytes": 49749
+    },
+    {
+      "path": "/en/casos-de-exito/materiales-de-barro",
+      "status": 200,
+      "ok": true,
+      "bytes": 49912
+    },
+    {
+      "path": "/en/casos-de-exito/dalk",
+      "status": 200,
+      "ok": true,
+      "bytes": 48313
+    },
+    {
+      "path": "/en/casos-de-exito/velank",
+      "status": 200,
+      "ok": true,
+      "bytes": 48294
+    },
+    {
+      "path": "/en/casos-de-exito/transportes-sanchez-jr",
+      "status": 200,
+      "ok": true,
+      "bytes": 48874
+    },
+    {
+      "path": "/en/casos-de-exito/subsify",
+      "status": 200,
+      "ok": true,
+      "bytes": 54493
+    },
+    {
+      "path": "/en/industrias",
+      "status": 200,
+      "ok": true,
+      "bytes": 55190
+    },
+    {
+      "path": "/en/industrias/clinicas-dentales",
+      "status": 200,
+      "ok": true,
+      "bytes": 59799
+    },
+    {
+      "path": "/en/industrias/hoteles",
+      "status": 200,
+      "ok": true,
+      "bytes": 58290
+    },
+    {
+      "path": "/en/contact",
+      "status": 200,
+      "ok": true,
+      "bytes": 51609
+    },
+    {
+      "path": "/en/diagnostico",
+      "status": 200,
+      "ok": true,
+      "bytes": 62297
+    },
+    {
+      "path": "/en/automatizacion-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 48716
+    },
+    {
+      "path": "/en/automatizacion-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 48608
+    },
+    {
+      "path": "/en/automatizacion-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 48886
+    },
+    {
+      "path": "/en/automatizacion-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 48824
+    },
+    {
+      "path": "/en/desarrollo-web-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 50508
+    },
+    {
+      "path": "/en/desarrollo-web-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 50322
+    },
+    {
+      "path": "/en/desarrollo-web-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 50671
+    },
+    {
+      "path": "/en/desarrollo-web-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 50483
+    },
+    {
+      "path": "/en/consultoria-guadalajara",
+      "status": 200,
+      "ok": true,
+      "bytes": 48718
+    },
+    {
+      "path": "/en/consultoria-zapopan",
+      "status": 200,
+      "ok": true,
+      "bytes": 48523
+    },
+    {
+      "path": "/en/consultoria-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 48748
+    },
+    {
+      "path": "/en/consultoria-bahia-de-banderas",
+      "status": 200,
+      "ok": true,
+      "bytes": 48764
+    },
+    {
+      "path": "/en/empresas-de-desarrollo-de-software",
+      "status": 200,
+      "ok": true,
+      "bytes": 50855
+    },
+    {
+      "path": "/en/empresas-de-desarrollo-de-software-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 52039
+    },
+    {
+      "path": "/en/programador-de-software",
+      "status": 200,
+      "ok": true,
+      "bytes": 50647
+    },
+    {
+      "path": "/en/programador-de-software-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51831
+    },
+    {
+      "path": "/en/sistemas-a-medida",
+      "status": 200,
+      "ok": true,
+      "bytes": 50677
+    },
+    {
+      "path": "/en/sistemas-a-medida-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51861
+    },
+    {
+      "path": "/en/software-a-medida-para-empresas",
+      "status": 200,
+      "ok": true,
+      "bytes": 50831
+    },
+    {
+      "path": "/en/software-a-medida-para-empresas-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 52015
+    },
+    {
+      "path": "/en/sistema-personalizado-para-empresas",
+      "status": 200,
+      "ok": true,
+      "bytes": 50821
+    },
+    {
+      "path": "/en/sistema-personalizado-para-empresas-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 52005
+    },
+    {
+      "path": "/en/automatiza-tu-negocio",
+      "status": 200,
+      "ok": true,
+      "bytes": 48934
+    },
+    {
+      "path": "/en/automatiza-tu-negocio-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 50118
+    },
+    {
+      "path": "/en/automatizar-mensajes-de-whatsapp",
+      "status": 200,
+      "ok": true,
+      "bytes": 49028
+    },
+    {
+      "path": "/en/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 50212
+    },
+    {
+      "path": "/en/automatizar-whatsapp-business",
+      "status": 200,
+      "ok": true,
+      "bytes": 49034
+    },
+    {
+      "path": "/en/automatizar-whatsapp-business-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 50218
+    },
+    {
+      "path": "/en/automatizacion-de-mensajes-en-whatsapp",
+      "status": 200,
+      "ok": true,
+      "bytes": 49214
+    },
+    {
+      "path": "/en/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 50397
+    },
+    {
+      "path": "/en/desarrolladores-de-app",
+      "status": 200,
+      "ok": true,
+      "bytes": 50633
+    },
+    {
+      "path": "/en/desarrolladores-de-app-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51817
+    },
+    {
+      "path": "/en/desarrollo-de-app",
+      "status": 200,
+      "ok": true,
+      "bytes": 50469
+    },
+    {
+      "path": "/en/desarrollo-de-app-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51627
+    },
+    {
+      "path": "/en/desarrolladores-de-apps",
+      "status": 200,
+      "ok": true,
+      "bytes": 50533
+    },
+    {
+      "path": "/en/desarrolladores-de-apps-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51717
+    },
+    {
+      "path": "/en/desarrollo-de-aplicaciones-moviles",
+      "status": 200,
+      "ok": true,
+      "bytes": 50687
+    },
+    {
+      "path": "/en/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+      "status": 200,
+      "ok": true,
+      "bytes": 51871
+    },
+    {
+      "path": "/en/guias-transformacion",
+      "status": 200,
+      "ok": true,
+      "bytes": 60721
+    },
+    {
+      "path": "/en/mapa",
+      "status": 200,
+      "ok": true,
+      "bytes": 74631
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "ok": true,
+      "bytes": 108285
+    },
+    {
+      "path": "/aviso-de-privacidad",
+      "status": 200,
+      "ok": true,
+      "bytes": 54500
+    },
+    {
+      "path": "/terminos-de-servicio",
+      "status": 200,
+      "ok": true,
+      "bytes": 53465
+    },
+    {
+      "path": "/pixelbot",
+      "status": 200,
+      "ok": true,
+      "bytes": 285892
+    },
+    {
+      "path": "/login",
+      "status": 200,
+      "ok": true,
+      "bytes": 21755
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "ok": true,
+      "bytes": 81
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "ok": true,
+      "bytes": 12431
+    },
+    {
+      "path": "/api/health",
+      "status": 200,
+      "ok": true,
+      "bytes": 54
+    },
+    {
+      "path": "/proyectos",
+      "status": 307,
+      "location": "https://pixeltec.mx/login?redirect=%2Fproyectos",
+      "ok": true
+    },
+    {
+      "path": "/not-a-real-wo509-route",
+      "status": 404,
+      "location": null,
+      "ok": true
+    }
+  ]
+}

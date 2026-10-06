@@ -2,7 +2,7 @@
   "date": "2026-10-05",
   "scope": "Static built HTML audit; not Lighthouse, field Web Vitals or a production release certification",
   "routes": 152,
-  "images": 102,
+  "images": 108,
   "issues": [],
   "editorialPending": [
     "/en/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico/",

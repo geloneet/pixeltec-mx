@@ -1,0 +1,244 @@
+- banner:
+  - button "Menú principal":
+  - link "Google Search Console":
+    - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+  - search:
+    - textbox [disabled]: Inspeccionar las URL de "pixeltec.mx"
+    - combobox "Inspeccionar cualquier URL en pipastondoroque.com"
+    - button "Búsqueda":
+  - button "Ayuda":
+    - generic: help_outline
+  - tooltip: Ayuda
+  - button "Configuración de usuario":
+    - generic: manage_accounts
+  - tooltip: Configuración de usuario
+  - 'button "Mensajes sin leer: 9"':
+    - generic: notifications
+  - tooltip: Mensajes
+  - generic: "9"
+  - button "Aplicaciones de Google":
+  - 'button "Cuenta de Google: Miguel Robles ([cuenta omitida])"':
+- dialog "navigational drawer":
+  - navigation "Principal":
+    - button "Buscar una propiedad":
+      - img "icono de página"
+      - combobox "pixeltec.mx"
+      - generic: 
+    - link "Descripción general":
+      - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+      - generic: home
+      - generic: Descripción general
+    - link "Estadísticas":
+      - /url: ./search-console/performance/insights?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lightbulb_2
+      - generic: Estadísticas
+    - link "Rendimiento":
+      - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trending_up
+      - generic: Rendimiento
+    - button "Sección de informe Rendimiento":
+      - generic: keyboard_arrow_down
+    - button "Inspección de URLs":
+      - generic: search
+      - generic: Inspección de URLs
+    - generic: Indexación
+    - button "Sección de informe Indexación" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Páginas":
+      - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx
+      - generic: file_copy
+      - generic: Páginas
+    - link "Sitemaps":
+      - /url: ./search-console/sitemaps?resource_id=sc-domain%3Apixeltec.mx
+      - generic: account_tree
+      - generic: Sitemaps
+    - link "Retirada de URLs":
+      - /url: ./search-console/removals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: visibility_off
+      - generic: Retirada de URLs
+    - generic: Experiencia
+    - button "Sección de informe Experiencia" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Core Web Vitals":
+      - /url: ./search-console/core-web-vitals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: speed
+      - generic: Core Web Vitals
+    - link "HTTPS":
+      - /url: ./search-console/https?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lock
+      - generic: HTTPS
+    - generic: Mejoras
+    - button "Sección de informe Mejoras" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Rutas de exploración":
+      - /url: ./search-console/r/breadcrumbs?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Rutas de exploración
+    - link "Página de perfil":
+      - /url: ./search-console/r/profile-page?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Página de perfil
+    - generic: Seguridad y Acciones manuales
+    - button "Sección de informe Seguridad y Acciones manuales":
+      - generic: keyboard_arrow_down
+    - link "Informe \"Enlaces\"":
+      - /url: ./search-console/links?resource_id=sc-domain%3Apixeltec.mx
+      - generic: link_2
+      - generic: Enlaces
+    - link "Logros":
+      - /url: ./search-console/achievements?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trophy
+      - generic: Logros
+    - link "Ajustes":
+      - /url: ./search-console/settings?resource_id=sc-domain%3Apixeltec.mx
+      - generic: settings
+      - generic: Ajustes
+    - button "Enviar comentarios":
+      - generic: feedback
+      - generic: Enviar comentarios
+    - button "Acerca de Search Console":
+      - generic: info
+      - generic: Acerca de Search Console
+    - link "Privacidad":
+      - /url: https://myaccount.google.com/privacypolicy?hl=es
+    - link "Términos":
+      - /url: https://myaccount.google.com/termsofservice?hl=es
+- navigation "Rutas de exploración":
+  - heading "Descripción general" [level=1]
+- main:
+  - generic: lightbulb_outline
+  - generic: Consulta estadísticas sobre el rendimiento de tu sitio en la Búsqueda
+  - generic: chevron_right
+  - generic: Descubrir tus estadísticas
+  - link "Descubrir tus estadísticas":
+    - /url: ./search-console/performance/insights?resource_id=sc-domain%3Apixeltec.mx
+  - generic: Rendimiento
+  - generic: chevron_right
+  - generic: Informe completo
+  - link "Informe completo":
+    - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx
+  - generic: 118 clics en total en la búsqueda web
+  - generic: Recomendaciones
+  - button "null":
+    - generic: 
+  - button "Enviar comentarios":
+    - generic: feedback
+    - generic: Enviar comentarios
+  - generic: lightbulb
+  - generic: Recientemente, una página ha recibido menos impresiones de lo habitual
+  - text: Comprueba el rendimiento de esta página para descubrir más sobre ella
+  - generic: https://pixeltec.mx/about
+  - generic: arrow_downward
+  - generic: 83 %
+  - generic: Comprobar rendimiento de la página
+  - link "Comprobar rendimiento de la página":
+    - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx&page=!https%3A%2F%2Fpixeltec.mx%2Fabout&start_date=20260927&end_date=20261003&compare_start_date=20260920&compare_end_date=20260926&metrics=IMPRESSIONS
+  - button "Dejar comentarios positivos":
+    - generic: thumb_up_filled
+    - generic: thumb_up
+  - button "Dejar comentarios negativos":
+    - generic: thumb_down_filled
+    - generic: thumb_down
+  - generic: lightbulb
+  - generic: Se han encontrado 1 tokens de verificación no utilizados en tu propiedad
+  - text: Los tokens no utilizados permiten a los usuarios asociados volver a verificar la propiedad y recuperar el acceso a ella.
+  - link "Más información sobre cómo quitar tokens de verificación de propiedad no utilizados":
+    - /url: https://support.google.com/webmasters/answer/7687615?hl=es
+  - text: .
+  - generic: Consultar informe
+  - link "Consultar informe":
+    - /url: ./search-console/users/leftover-tokens?resource_id=sc-domain%3Apixeltec.mx
+  - button "Dejar comentarios positivos":
+    - generic: thumb_up_filled
+    - generic: thumb_up
+  - button "Dejar comentarios negativos":
+    - generic: thumb_down_filled
+    - generic: thumb_down
+  - generic: Indexación
+  - generic: chevron_right
+  - generic: Informe completo
+  - link "Informe completo":
+    - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx
+  - generic: 204 páginas no indexadas
+  - generic: 75 páginas indexadas
+  - generic: Experiencia
+  - table:
+    - rowgroup:
+      - row "Tipo Buena Necesita mejorar Deficiente Tendencia":
+        - columnheader "Tipo"
+        - columnheader
+        - columnheader "Buena"
+        - columnheader "Necesita mejorar"
+        - columnheader "Deficiente"
+        - columnheader "Tendencia"
+        - columnheader
+    - rowgroup:
+      - row "Core Web Vitals Móviles Ordenador Sin datos Sin datos Sin datos Sin datos Sin datos Sin datos":
+        - cell "Core Web Vitals":
+          - generic: Core Web Vitals
+        - cell "Móviles Ordenador":
+          - generic: Móviles
+          - generic: Ordenador
+        - cell "Sin datos Sin datos":
+          - generic: Sin datos
+          - generic: Sin datos
+        - cell "Sin datos Sin datos":
+          - generic: Sin datos
+          - generic: Sin datos
+        - cell "Sin datos Sin datos":
+          - generic: Sin datos
+          - generic: Sin datos
+        - cell
+      - row "HTTPS No HTTPS":
+        - columnheader
+        - columnheader
+        - columnheader "HTTPS"
+        - columnheader
+        - columnheader "No HTTPS"
+        - columnheader
+        - columnheader
+      - row "HTTPS 26 0 Abrir informe":
+        - cell "HTTPS":
+          - generic: HTTPS
+        - cell
+        - cell "26":
+          - generic: "26"
+        - cell
+        - cell "0":
+          - generic: "0"
+        - cell:
+        - cell "Abrir informe":
+          - button "Abrir informe":
+            - generic: chevron_right
+  - generic: Mejoras
+  - table:
+    - rowgroup:
+      - row "Tipo Válidas No válidas Tendencia":
+        - columnheader "Tipo"
+        - columnheader "Válidas"
+        - columnheader "No válidas"
+        - columnheader "Tendencia"
+        - columnheader
+    - rowgroup:
+      - row "Rutas de exploración 26 0 Abrir informe":
+        - cell "Rutas de exploración":
+          - generic: Rutas de exploración
+        - cell "26":
+          - generic: "26"
+        - cell "0":
+          - generic: "0"
+        - cell:
+        - cell "Abrir informe":
+          - button "Abrir informe":
+            - generic: chevron_right
+      - row "Página de perfil 0 0 Abrir informe":
+        - cell "Página de perfil":
+          - generic: Página de perfil
+        - cell "0":
+          - generic: "0"
+        - cell "0":
+          - generic: "0"
+        - cell:
+        - cell "Abrir informe":
+          - button "Abrir informe":
+            - generic: chevron_right

@@ -1,0 +1,249 @@
+- banner:
+  - button "Menú principal":
+  - link "Google Search Console":
+    - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+  - search:
+    - textbox [disabled]: Inspeccionar las URL de "pixeltec.mx"
+    - combobox "Inspeccionar cualquier URL en pipastondoroque.com"
+    - button "Búsqueda":
+  - button "Ayuda":
+    - generic: help_outline
+  - tooltip: Ayuda
+  - button "Configuración de usuario":
+    - generic: manage_accounts
+  - tooltip: Configuración de usuario
+  - 'button "Mensajes sin leer: 9"':
+    - generic: notifications
+  - tooltip: Mensajes
+  - generic: "9"
+  - button "Aplicaciones de Google":
+  - 'button "Cuenta de Google: Miguel Robles ([cuenta omitida])"':
+- dialog "navigational drawer":
+  - navigation "Principal":
+    - button "Buscar una propiedad":
+      - img "icono de página"
+      - combobox "pixeltec.mx"
+      - generic: 
+    - link "Descripción general":
+      - /url: ./search-console?resource_id=sc-domain%3Apixeltec.mx
+      - generic: home
+      - generic: Descripción general
+    - link "Estadísticas":
+      - /url: ./search-console/performance/insights?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lightbulb_2
+      - generic: Estadísticas
+    - link "Rendimiento":
+      - /url: ./search-console/performance/search-analytics?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trending_up
+      - generic: Rendimiento
+    - button "Sección de informe Rendimiento":
+      - generic: keyboard_arrow_down
+    - button "Inspección de URLs":
+      - generic: search
+      - generic: Inspección de URLs
+    - generic: Indexación
+    - button "Sección de informe Indexación" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Páginas" [active]:
+      - /url: ./search-console/index?resource_id=sc-domain%3Apixeltec.mx
+      - generic: file_copy
+      - generic: Páginas
+    - link "Sitemaps":
+      - /url: ./search-console/sitemaps?resource_id=sc-domain%3Apixeltec.mx
+      - generic: account_tree
+      - generic: Sitemaps
+    - link "Retirada de URLs":
+      - /url: ./search-console/removals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: visibility_off
+      - generic: Retirada de URLs
+    - generic: Experiencia
+    - button "Sección de informe Experiencia" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Core Web Vitals":
+      - /url: ./search-console/core-web-vitals?resource_id=sc-domain%3Apixeltec.mx
+      - generic: speed
+      - generic: Core Web Vitals
+    - link "HTTPS":
+      - /url: ./search-console/https?resource_id=sc-domain%3Apixeltec.mx
+      - generic: lock
+      - generic: HTTPS
+    - generic: Mejoras
+    - button "Sección de informe Mejoras" [expanded]:
+      - generic: keyboard_arrow_up
+    - link "Rutas de exploración":
+      - /url: ./search-console/r/breadcrumbs?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Rutas de exploración
+    - link "Página de perfil":
+      - /url: ./search-console/r/profile-page?resource_id=sc-domain%3Apixeltec.mx
+      - generic: layers
+      - generic: Página de perfil
+    - generic: Seguridad y Acciones manuales
+    - button "Sección de informe Seguridad y Acciones manuales":
+      - generic: keyboard_arrow_down
+    - link "Informe \"Enlaces\"":
+      - /url: ./search-console/links?resource_id=sc-domain%3Apixeltec.mx
+      - generic: link_2
+      - generic: Enlaces
+    - link "Logros":
+      - /url: ./search-console/achievements?resource_id=sc-domain%3Apixeltec.mx
+      - generic: trophy
+      - generic: Logros
+    - link "Ajustes":
+      - /url: ./search-console/settings?resource_id=sc-domain%3Apixeltec.mx
+      - generic: settings
+      - generic: Ajustes
+    - button "Enviar comentarios":
+      - generic: feedback
+      - generic: Enviar comentarios
+    - button "Acerca de Search Console":
+      - generic: info
+      - generic: Acerca de Search Console
+    - link "Privacidad":
+      - /url: https://myaccount.google.com/privacypolicy?hl=es
+    - link "Términos":
+      - /url: https://myaccount.google.com/termsofservice?hl=es
+- navigation "Rutas de exploración":
+  - heading "Indexación de páginas" [level=1]
+- button "EXPORTAR":
+  - generic: 
+  - generic: EXPORTAR
+- listbox:
+  - option "Todas las páginas conocidas" [selected]
+  - option "Todas las páginas enviadas"
+  - option "Solo páginas sin enviar"
+  - option "https://pixeltec.mx/sitemap.xml"
+- generic: "Última actualización: 20/9/26"
+- main:
+  - button "Sin indexar 204 6 motivos":
+    - generic "Sin indexar":
+      - generic: 
+      - generic: Sin indexar
+    - generic "204"
+    - generic: 6 motivos
+  - button "null":
+    - generic: 
+  - button "Indexadas 75":
+    - generic "Indexadas":
+      - generic: 
+      - generic: Indexadas
+    - generic "75"
+  - button "null":
+    - generic: 
+  - checkbox "Impresiones"
+  - generic: Impresiones
+  - generic: Páginas
+  - link "Ver datos sobre páginas indexadas":
+    - /url: ./search-console/index/drilldown?resource_id=sc-domain%3Apixeltec.mx&pages=ALL_URLS
+    - generic: check_circle
+    - generic: Ver datos sobre páginas indexadas
+    - generic: 
+  - generic: info_filled
+  - generic: ¿Por qué hay páginas que no se indexan?
+  - generic: Las páginas no indexadas no pueden aparecer en Google
+  - button "Filtrar las filas de una tabla":
+    - generic: 
+  - table:
+    - rowgroup:
+      - row "Motivo Fuente null Validación Tendencia Páginas":
+        - columnheader "Motivo":
+          - generic: Motivo
+        - columnheader "Fuente null":
+          - text: Fuente
+          - button "null":
+            - generic: 
+        - columnheader "Validación":
+          - generic: Validación
+        - columnheader "Tendencia":
+          - generic: Tendencia
+        - columnheader "Páginas":
+          - generic: Páginas
+    - rowgroup:
+      - row "Página con redirección Sitio web No iniciada 62":
+        - cell "Página con redirección":
+          - generic "Página con redirección"
+        - cell "Sitio web":
+          - generic: Sitio web
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "62":
+          - generic: "62"
+      - row "Página alternativa con etiqueta canónica adecuada Sitio web No iniciada 39":
+        - cell "Página alternativa con etiqueta canónica adecuada":
+          - generic "Página alternativa con etiqueta canónica adecuada"
+        - cell "Sitio web":
+          - generic: Sitio web
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "39":
+          - generic: "39"
+      - row "No se ha encontrado (404) Sitio web No iniciada 15":
+        - cell "No se ha encontrado (404)":
+          - generic "No se ha encontrado (404)"
+        - cell "Sitio web":
+          - generic: Sitio web
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "15":
+          - generic: "15"
+      - row "Excluida por una etiqueta \"noindex\" Sitio web No iniciada 5":
+        - cell "Excluida por una etiqueta \"noindex\"":
+          - generic "Excluida por una etiqueta \"noindex\""
+        - cell "Sitio web":
+          - generic: Sitio web
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "5":
+          - generic: "5"
+      - 'row "Rastreada: actualmente sin indexar Sistemas de Google No iniciada 67"':
+        - 'cell "Rastreada: actualmente sin indexar"':
+          - 'generic "Rastreada: actualmente sin indexar"'
+        - cell "Sistemas de Google":
+          - generic: Sistemas de Google
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "67":
+          - generic: "67"
+      - 'row "Descubierta: actualmente sin indexar Sistemas de Google No iniciada 16"':
+        - 'cell "Descubierta: actualmente sin indexar"':
+          - 'generic "Descubierta: actualmente sin indexar"'
+        - cell "Sistemas de Google":
+          - generic: Sistemas de Google
+        - cell "No iniciada":
+          - generic: 
+          - text: No iniciada
+        - cell:
+        - cell "16":
+          - generic: "16"
+      - 'row "Duplicada: el usuario no ha indicado ninguna versión canónica Sitio web N/D 0"':
+        - 'cell "Duplicada: el usuario no ha indicado ninguna versión canónica"':
+          - 'generic "Duplicada: el usuario no ha indicado ninguna versión canónica"'
+        - cell "Sitio web":
+          - generic: Sitio web
+        - cell "N/D":
+          - generic: N/D
+        - cell:
+        - cell "0":
+          - generic: "0"
+  - generic: "Filas por página:"
+  - listbox "Número de filas por página":
+    - option "5"
+    - option "10" [selected]
+    - option "25"
+    - option "50"
+    - option "100"
+    - option "250"
+    - option "500"
+  - generic: 1-7 de 7
+  - generic: 
+  - generic: 

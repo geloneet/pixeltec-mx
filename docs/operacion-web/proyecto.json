@@ -4,7 +4,7 @@
     "nombre": "PixelTEC · publicación del nuevo sitio",
     "objetivo": "Integrar el diseño aprobado en Next.js y reemplazar pixeltec.mx con recuperación verificable.",
     "supervisor": "Codex · WO-2026-00509",
-    "lede": "Candidato Next verificado: build, TypeScript y 2,143 pruebas PASS; 133 rutas revisadas. Pendiente activación productiva."
+    "lede": "Publicado en pixeltec.mx: release fef4f95d. Build y salud PASS; contraste Inicio, scroll nativo y WhatsApp EN verificados."
   },
   "parametros": [
     {
@@ -44,13 +44,13 @@
       "titulo": "Acceso y estado actual del despliegue",
       "quien": "Codex",
       "estado": "ok",
-      "nota": "SSH verificado; SHA activo 39a8faed5df16a8d336b6d302a47e98de40185dc, wrapper presente, DB sana."
+      "nota": "Wrapper verificado, release fef4f95d activa; rollback afcfc883 disponible, DB preservada."
     }
   ],
   "hero": {
     "pill": {
-      "tono": "warn",
-      "texto": "Integración en curso"
+      "tono": "ok",
+      "texto": "Publicado y verificado"
     },
     "titulo": "Del diseño aprobado al sitio productivo.",
     "texto": "Se conserva CMS, diagnóstico, administración y seguridad. Activación sólo con candidato validado.",
@@ -61,7 +61,7 @@
       },
       {
         "k": "Producción",
-        "v": "39a8faed (actual)"
+        "v": "fef4f95d (activo)"
       }
     ]
   },

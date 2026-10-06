@@ -101,3 +101,56 @@ document.addEventListener('visibilitychange', syncServiceArt);
 reduced.addEventListener('change', syncServiceArt);
 window.addEventListener('pagehide', () => serviceArt.forEach(art => art.classList.remove('art-active')));
 window.addEventListener('pageshow', syncServiceArt);
+
+// Scroll-linked depth for official service images; no continuous idle render loop.
+const parallaxCards = new Set<HTMLElement>();
+const visibleCards = new Set<HTMLElement>();
+let parallaxFrame = 0;
+function paintParallax(): void {
+  parallaxFrame = 0;
+  if (document.hidden || reduced.matches) return;
+  const positions = Array.from(visibleCards, card => {
+    const rect = card.getBoundingClientRect();
+    const progress = Math.max(-1, Math.min(1, (innerHeight / 2 - rect.top - rect.height / 2) / ((innerHeight + rect.height) / 2)));
+    return { card, offset: progress * 4 };
+  });
+  for (const { card, offset } of positions) card.style.setProperty('--service-depth', `${offset.toFixed(3)}%`);
+}
+function queueParallax(): void {
+  if (!parallaxFrame && !reduced.matches && !document.hidden && visibleCards.size) parallaxFrame = requestAnimationFrame(paintParallax);
+}
+const parallaxObserver = typeof IntersectionObserver === 'function' ? new IntersectionObserver(entries => {
+  for (const entry of entries) {
+    const card = entry.target as HTMLElement;
+    if (entry.isIntersecting) visibleCards.add(card);
+    else visibleCards.delete(card);
+  }
+  queueParallax();
+}) : null;
+function discoverParallax(): void {
+  document.querySelectorAll<HTMLElement>('.home-service-image, .service-detail-visual').forEach(card => {
+    if (card.closest('x-dc') || parallaxCards.has(card) || !parallaxObserver) return;
+    parallaxCards.add(card);
+    card.classList.add('service-parallax');
+    parallaxObserver.observe(card);
+  });
+}
+discoverParallax();
+if (document.body.hasAttribute('data-pixel-home')) {
+  const homeParallaxMount = new MutationObserver(() => {
+    discoverParallax();
+    if (parallaxCards.size) homeParallaxMount.disconnect();
+  });
+  if (!parallaxCards.size) homeParallaxMount.observe(document.body, { childList: true, subtree: true });
+}
+window.addEventListener('scroll', queueParallax, { passive: true });
+window.addEventListener('resize', queueParallax, { passive: true });
+window.addEventListener('pageshow', queueParallax);
+function resetParallax(): void {
+  cancelAnimationFrame(parallaxFrame);
+  parallaxFrame = 0;
+  for (const card of parallaxCards) card.style.removeProperty('--service-depth');
+}
+reduced.addEventListener('change', () => { resetParallax(); queueParallax(); });
+document.addEventListener('visibilitychange', () => { if (document.hidden) resetParallax(); else queueParallax(); });
+window.addEventListener('pagehide', resetParallax);

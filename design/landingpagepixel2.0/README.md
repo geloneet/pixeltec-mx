@@ -212,3 +212,6 @@ Ajuste visual 2026-10-05: ícono flotante reutiliza el trazado de WhatsApp del f
 2026-10-05 — Corrección de destello: el reveal diferido ya no oculta contenido inicialmente visible (también en recargas/enlaces directos). Se retira el fundido global entre documentos, manteniendo animación de secciones al desplazarse. No equivale a router SPA.
 
 2026-10-05 — Decisión de Miguel: las tres imágenes 3D de Inicio son las oficiales de Automatización con IA, Desarrollo Web & Apps y Consultoría & Soporte TI. Índice y detalles ES/EN reutilizan los mismos archivos; no sustituir por ilustraciones CSS antiguas.
+
+### Parallax de servicios — 2026-10-05
+Las imágenes oficiales de Inicio, Servicios y detalles ES/EN comparten profundidad al scroll en `motion.ts`: desplazamiento máximo 4%, overscan 10%, un frame por evento y solo tarjetas visibles. Sin bucle continuo; respeta movimiento reducido y pausa al ocultar la pestaña. Sin JS conserva la imagen estática. Verificar las tres superficies al cambiar estos selectores.

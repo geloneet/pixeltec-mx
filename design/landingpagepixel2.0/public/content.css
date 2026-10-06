@@ -145,3 +145,7 @@
 .contact-diagnostic{margin-top:28px}.contact-diagnostic>summary{cursor:pointer;list-style:none;width:fit-content}.contact-diagnostic>summary::-webkit-details-marker{display:none}.contact-diagnostic>summary span{display:inline-block;margin-left:20px}.contact-diagnostic[open]>summary{margin-bottom:32px}.contact-diagnostic[open]>summary span{transform:rotate(90deg)}.contact-diagnostic .wizard{padding:0;background:transparent;min-width:0}.contact-diagnostic .wizard-options{grid-template-columns:1fr}.contact-diagnostic .wizard legend{font-size:clamp(24px,3vw,36px)}.contact-diagnostic>summary:focus-visible{outline:3px solid #1466ff;outline-offset:6px}
 
 .service-detail-visual{overflow:hidden;border-radius:20px;background:#080b12;aspect-ratio:8/5}.service-detail-visual img{display:block;width:100%;height:100%;object-fit:cover}.detail-art .service-art{display:block}
+
+/* Image overscan keeps the card filled throughout the scroll-linked movement. */
+@media(prefers-reduced-motion:no-preference){.service-parallax img,.home-service-image.service-parallax:hover img{transform:translate3d(0,var(--service-depth,0%),0) scale(1.1);transition:transform .18s ease-out}}
+@media(prefers-reduced-motion:reduce){.service-parallax img{transform:none!important;transition:none!important}}

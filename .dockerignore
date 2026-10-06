@@ -27,3 +27,6 @@ Dockerfile
 docker-compose*.yml
 .dockerignore
 nginx/ssl/
+
+# Prototype has its own build/dependencies; production uses compiled src/public assets.
+design/

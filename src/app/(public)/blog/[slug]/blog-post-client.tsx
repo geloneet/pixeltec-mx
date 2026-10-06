@@ -3,7 +3,7 @@
 import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowLeft, ArrowRight, CalendarDays, RefreshCw } from 'lucide-react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { formatEditorialDate } from '@/lib/blog/format-date';
 import type { PublicBlogPost } from '@/lib/blog/public-post';
 import type { HeadingEntry } from '@/lib/blog/heading-utils';
@@ -77,35 +77,18 @@ export default function BlogPostClient({
 
         <div className="lg:grid lg:grid-cols-[1fr_280px] lg:items-start lg:gap-12">
         <div className="min-w-0">
-        <header className="relative mb-12 h-64 sm:h-80 md:h-96 w-full overflow-hidden rounded-2xl md:rounded-3xl shadow-[0_12px_40px_-20px_rgba(12,17,29,0.25)] dark:shadow-[0_0_30px_rgba(0,240,255,0.05)]">
-          {/* L4 (WO-2026-00345): la columna del artículo no supera ~768 px en
-              desktop; `sizes=100vw` pedía una imagen del ancho de la pantalla.
-              `priority` se mantiene (es el LCP del artículo). */}
-          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 768px" priority />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 lg:p-12">
-            <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-2">
-              {post.category && (
-                <span className="rounded-full bg-primary/5 dark:bg-cyan-950/50 px-3 py-1.5 text-xs font-bold uppercase tracking-wide text-brand">
-                  {post.category}
-                </span>
-              )}
-              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-foreground/85 dark:text-zinc-300">
-                <CalendarDays className="h-4 w-4" aria-hidden />
-                {publishedStr} • {readTime}
-              </span>
-              {updatedStr && (
-                <span className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground dark:text-zinc-400">
-                  <RefreshCw className="h-3.5 w-3.5" aria-hidden />
-                  Actualizado el {updatedStr}
-                </span>
-              )}
-            </div>
-            <h1 className="text-3xl font-extrabold leading-tight text-foreground dark:text-white md:text-4xl lg:text-5xl">
-              {post.title}
-            </h1>
+        <header className="editorial-heading">
+          <div className="editorial-meta">
+            {post.category && <span>{post.category}</span>}
+            <span>{publishedStr} · {readTime}</span>
+            {updatedStr && <span>Actualizado el {updatedStr}</span>}
           </div>
+          <h1>{post.title}</h1>
+          <p className="editorial-byline">Por {post.authorName} · PixelTEC</p>
         </header>
+        <div className="editorial-cover">
+          <Image src={coverImage} alt={coverAlt} fill className="object-cover" sizes="(max-width: 1024px) 100vw, 768px" priority />
+        </div>
 
         {headings.length >= 3 && (
           <nav

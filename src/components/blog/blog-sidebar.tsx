@@ -25,7 +25,7 @@ export function BlogSidebar({
   if (recentPosts.length === 0 && categories.length === 0 && tags.length === 0) return null;
 
   return (
-    <aside className="space-y-8 rounded-xl border border-border dark:border-white/10 bg-card dark:bg-white/[0.03] p-6">
+    <aside className="blog-sidebar space-y-8 rounded-xl border border-border dark:border-white/10 bg-card dark:bg-white/[0.03] p-6">
       {recentPosts.length > 0 && (
         <section>
           <h2 className="text-xs font-bold tracking-[0.2em] text-muted-foreground dark:text-zinc-400 uppercase">

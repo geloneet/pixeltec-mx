@@ -1,3 +1,4 @@
+import './editorial.css';
 import { ContentTracker } from '@/components/analytics/content-tracker';
 
 // Sin export de metadata a propósito: un `title` string plano aquí reseteaba
@@ -10,7 +11,7 @@ import { ContentTracker } from '@/components/analytics/content-tracker';
 // era el mayor agujero de linking interno del sitio (P0-3).
 export default function BlogLayout({ children }: { children: React.ReactNode }) {
   return (
-    <>
+    <div className="blog-editorial">
       {/* WO-2026-00214: mide lectura y clics de CTA en el contenido público.
           Vive aquí y no en el layout raíz porque sólo el blog y las landings
           de keyword son "contenido" para el módulo SEO & Contenido. */}
@@ -18,6 +19,6 @@ export default function BlogLayout({ children }: { children: React.ReactNode }) 
       
       {children}
       
-    </>
+    </div>
   );
 }

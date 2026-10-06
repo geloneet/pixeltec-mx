@@ -1,0 +1,28 @@
+/* Editorial hierarchy is independent from marketing-page display headings. */
+.public-website .blog-editorial{background:#faf9f6;color:#191919}
+.public-website .blog-editorial main{background:#faf9f6;color:#191919;padding-top:clamp(36px,5vw,72px)}
+.public-website .blog-editorial h1{font-size:clamp(32px,4.2vw,58px);line-height:1.1;letter-spacing:-.04em;text-transform:none;text-wrap:pretty;margin:20px 0}
+.public-website .blog-editorial h2{font-size:clamp(25px,2.5vw,34px);line-height:1.25;letter-spacing:-.025em;text-transform:none;margin:1.5em 0 .65em}
+.public-website .blog-editorial h3{font-size:22px;line-height:1.35;letter-spacing:-.015em;margin:1.25em 0 .6em}
+.public-website .blog-editorial p{margin:0 0 1.2em;line-height:1.75}
+.public-website .blog-editorial :is(h1,h2,h3,h4,p,li,span,a,dt,dd){color:inherit}
+.public-website .blog-editorial a:hover{color:#1466ff}
+.public-website .blog-editorial .editorial-heading{margin-bottom:30px}
+.public-website .blog-editorial .editorial-meta{display:flex;flex-wrap:wrap;gap:10px 20px;font-size:12px;color:#61615b}
+.public-website .blog-editorial .editorial-meta>span:first-child{color:#1466ff;font-weight:700}
+.public-website .blog-editorial .editorial-byline{font-size:14px;color:#61615b}
+.public-website .blog-editorial .editorial-cover{position:relative;aspect-ratio:16/10;overflow:hidden;border-radius:18px;margin-bottom:36px}
+.public-website .blog-editorial .blog-sidebar{background:#f0eee8;border:1px solid #dedcd5;box-shadow:none}
+.public-website .blog-editorial .blog-sidebar h2{font-size:12px;line-height:1.5;letter-spacing:.12em;text-transform:uppercase;margin:0 0 16px;color:#65655e}
+.public-website .blog-editorial .blog-sidebar li{font-size:14px;line-height:1.6;margin-bottom:12px}
+.public-website .blog-editorial article.prose{font-size:18px;line-height:1.85;color:#333;overflow-wrap:anywhere}
+.public-website .blog-editorial article.prose :is(h2,h3)[id]{scroll-margin-top:130px}
+.public-website .blog-editorial article.prose a{color:#1466ff;text-decoration:underline;text-underline-offset:3px}
+.public-website .blog-editorial article.prose pre{color:#f5f5f5;overflow:auto}
+.public-website .blog-editorial :is(nav[aria-label="Tabla de contenidos"],article.group){background:#fff;border:1px solid #dedcd5;box-shadow:none}
+.public-website .blog-editorial footer{view-transition-name:none}
+.public-website .blog-editorial article.group h3{font-size:24px;line-height:1.3;margin:0 0 16px}
+.public-website .blog-editorial article.group p{font-size:14px}
+@media(max-width:600px){.public-website .blog-editorial article.prose{font-size:17px}.public-website .blog-editorial .editorial-cover{border-radius:12px}}
+
+.public-website .blog-editorial .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}

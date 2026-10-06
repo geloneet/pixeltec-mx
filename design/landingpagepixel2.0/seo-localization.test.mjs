@@ -39,6 +39,7 @@ test('release gate rejects client-only home even with a decorative H2 and preser
  for(const home of report.homes){assert.equal(home.h1,1);assert.equal(home.h2,8);assert.equal(home.status,'PASS');assert.equal(home.clientOnlyTemplate,false);}
  assert.throws(()=>assertReleaseReady(report),/RELEASE BLOCKED.*NEXT_INTEGRATION/);
  assert.equal(inspectHome('<h1>Title</h1><h2>Decorative</h2>').status,'FAIL');
+ assert.equal(inspectHome('<h1>Title</h1><dialog><h2>Project</h2></dialog>').h2,0,'closed dialogs do not count as visible home sections');
  assert.equal(inspectHome('<main><h1>Title</h1><h2>Service</h2><p>Approved service content</p></main>').status,'FAIL');
  const attempt=spawnSync(process.execPath,['build.mjs'],{encoding:'utf8',env:{...process.env,SEO_ENV:'public'}});
  assert.notEqual(attempt.status,0);assert.match(attempt.stderr,/RELEASE BLOCKED/);

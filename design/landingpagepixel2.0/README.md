@@ -224,3 +224,6 @@ CTA compartido de interiores abre dialog nativo con diagnosticWidget existente E
 
 ### Scroll uniforme — 2026-10-05
 `src/smooth-scroll.ts` es el único controlador Lenis para Inicio e interiores, con los parámetros originales de Inicio. Build elimina solo la inicialización duplicada en la copia generada, preservando home.dc.html. Motion importa el controlador y el parallax compartido responde al scroll real. Diálogos usan scroll nativo; movimiento reducido desactiva Lenis; suspende en pestaña oculta y restaura con pageshow.
+
+### Proyectos de Inicio — 2026-10-05
+Tarjetas destacadas ES/EN abren dialog con imagen, descripción y alcance del catálogo canónico, más enlace al detalle. Eventos delegados compatibles con montaje DC; cerrar/Escape devuelve foco. Sin JS se conserva navegación normal; no se duplican datos editoriales.

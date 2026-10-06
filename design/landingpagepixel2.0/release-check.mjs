@@ -6,9 +6,11 @@ import {parseHTML} from 'linkedom';
 // This is a prototype gate, not a Google ranking rule or a deployment approval.
 export function inspectHome(html){
  const initial=html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi,'').replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi,'');
- const h1=(initial.match(/<h1\b/gi)??[]).length;
- const h2=(initial.match(/<h2\b/gi)??[]).length;
- const doc=parseHTML(initial).document;
+ // Closed project dialogs are supplemental, not initially visible page sections.
+ const visible=initial.replace(/<dialog\b[^>]*>[\s\S]*?<\/dialog>/gi,'');
+ const h1=(visible.match(/<h1\b/gi)??[]).length;
+ const h2=(visible.match(/<h2\b/gi)??[]).length;
+ const doc=parseHTML(visible).document;
  const minimums={'#nosotros h3':3,'#servicios h3':3,'#por-que h3':4,'#proyectos a[href]':6,'#blog a[href]':5,'#contacto a[href]':1,'footer a[href]':10};
  const missingContent=Object.entries(minimums).filter(([selector,n])=>doc.querySelectorAll(selector).length<n).map(([selector])=>selector);
  const contentComplete=h1===1&&h2>=7&&missingContent.length===0&&!/\{\{|<sc-for\b|sc-placeholder/.test(initial);

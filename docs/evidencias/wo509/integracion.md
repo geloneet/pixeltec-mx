@@ -4,7 +4,7 @@
 
 ## Estado real
 
-Candidato Next integrado, todavía sin activación productiva. El prototipo aprobado permanece en `design/landingpagepixel2.0`; el archivo original `src/home.dc.html` se conserva. El portafolio público usa `/casos-de-exito`; `/proyectos` sigue perteneciendo al panel privado.
+Candidato Next integrado y fusionado en main por PR158; despliegue iniciado, activación todavía pendiente de salud. El prototipo aprobado permanece en `design/landingpagepixel2.0`; el archivo original `src/home.dc.html` se conserva. El portafolio público usa `/casos-de-exito`; `/proyectos` sigue perteneciendo al panel privado.
 
 ## Implementación
 
@@ -47,3 +47,14 @@ Camino único: SHA completo aprobado y ancestro de `origin/main`, `deploy-pixelt
 Auditoría de dependencias productivas: 0 críticas, 6 altas, 35 moderadas y 2 bajas. No se declara seguridad absoluta. Las altas remanentes pertenecen a la cadena de compilación Tailwind 3/braces/glob y PostCSS anidado en Next; requieren cambio mayor u override que no se introduce sin validación específica. El editor privado Tiptap 2 conserva alertas moderadas; su actualización a v3 es deuda explícita, al igual que Mermaid/KaTeX. Responsable: Ingeniería; siguiente mantenimiento antes de ampliar entradas de CSS/editor o exponerlas públicamente.
 
 Fuentes: https://github.com/advisories/GHSA-2xp9-vwfh-vxw4 y https://github.com/advisories/GHSA-rgj7-g3m4-5g8c. Informe completo reproducible: `npm audit --omit=dev`; snapshot `dependency-audit.json`.
+
+## Activación en curso
+
+- PR158 fusionado, release `f11c5778546f472529f324addeeffd318d27db05` (árbol probado `91ffc4e`). Build posterior al parche PASS; navegador ES/EN sin errores observados.
+- Wrapper `--check-only` PASS, 2026-10-06 04:35:18 UTC. Contrato E0 válido; log VPS `/home/ubuntu/deploy-logs/pixeltec-mx-20261006T043512Z-f11c5778546f-check.log`.
+- Publicación autorizada por Miguel «haz todas las fases y logralo», registrada en gate publish de WO509. Ejecución en tmux `pixeltec-wo509-deploy`; no se considera publicado hasta terminar salud y smoke.
+- SEO local final: canonical pixeltec.mx en ES, EN noindex, robots/sitemap 200 y casos incluidos.
+
+### Primer intento detenido antes de activar
+
+El build de `f11c577` falló en `npm ci --ignore-scripts` con `EUSAGE: Missing esbuild@0.28.2 from lock file` (y paquetes opcionales de plataforma). npm moderno en Mac había omitido el árbol opcional anidado de Vitest; npm10 del Dockerfile lo exige. Producción confirmó imagen anterior 39a8faed, running; no hubo sustitución ni cambio de datos. Corrección: regenerar sólo lockfile con npm10.8.2 y verificar instalación limpia en Linux Node20; no eliminar validación `npm ci`.

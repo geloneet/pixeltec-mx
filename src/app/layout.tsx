@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import { SessionProvider } from 'next-auth/react';
 import { ThemeProvider } from '@/components/theme-provider';
-import { Poppins, Roboto, League_Spartan } from 'next/font/google';
+import { Poppins, League_Spartan } from 'next/font/google';
+import localFont from 'next/font/local';
 import { OrganizationStructuredData } from '@/components/seo/structured-data';
 import { PublishedStructuredData } from '@/components/seo/published-structured-data';
 import { MetaPixel } from '@/components/analytics/meta-pixel';
@@ -26,9 +27,10 @@ const poppins = Poppins({
 // REN-05: `font-roboto` sólo aparece en pantallas del CRM/admin (stat-card,
 // cobros, PortalTab). Sin `preload` el navegador no reserva ancho de banda por
 // ella en las páginas públicas; se descarga sólo donde de verdad se usa.
-const roboto = Roboto({
-  subsets: ['latin'],
-  weight: ['400', '500', '700'],
+// WO-511: preserve the deployed Latin font without a Google build-time fetch.
+const roboto = localFont({
+  src: '../../public/fonts/roboto-latin.woff2',
+  weight: '100 900',
   variable: '--font-roboto',
   display: 'swap',
   preload: false,

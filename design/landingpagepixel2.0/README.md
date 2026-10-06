@@ -160,3 +160,5 @@ Las cards `.service-art` animan órbitas, piezas, gráficos y conversación con 
 Segunda dirección visual solicitada por Miguel: órbitas tridimensionales con nodos luminosos, núcleo con volumen, panel con perspectiva y gráficas secuenciales, mensajes progresivos y mosaico con elevación escalonada. Reutiliza la pausa por visibilidad y la alternativa estática; ningún cambio de contenido o dependencias.
 
 2026-10-05: por decisión de Miguel, WhatsAgent deja de ser una card independiente en Servicios ES/EN y se presenta dentro de Automatización con IA. Se conserva /pixelbot/ y su equivalente EN para continuidad de URLs; esta modificación no elimina páginas.
+
+2026-10-05: Industrias usa seis ilustraciones SVG conceptuales específicas (salud, hotel, rutas, agua, comercio y solar), sin métricas ni datos ficticios. industry-art.css se carga solo en el índice ES/EN. Comparte pausa por visibilidad y reduced-motion con Servicios.

@@ -1,5 +1,6 @@
 import type { WidgetResult } from "@/lib/hoy/types";
 import type { HoySnapshot, SnapClient, SnapQuote } from "@/lib/hoy/snapshot";
+import { isCurrency } from "@/lib/quotes/terms";
 import { toDayKey, zonedDayKey } from "./date-windows";
 
 /** Desenvuelve las piezas que un widget necesita; si alguna falló, el widget falla. */
@@ -40,6 +41,14 @@ export function formatPesosWithCode(amount: number, currency = "MXN"): string {
 
 export function formatCents(cents: number, currency = "MXN"): string {
   return formatPesosWithCode(cents / 100, currency);
+}
+
+/**
+ * Importe en centavos solo si es real (WO-2026-00519): finito, > 0 y moneda
+ * conocida (`isCurrency` de quotes/terms). Si no, `null` — nunca «$0».
+ */
+export function formatRealCents(cents: number, currency: string): string | null {
+  return Number.isFinite(cents) && cents > 0 && isCurrency(currency) ? formatCents(cents, currency) : null;
 }
 
 export function indexClients(clients: SnapClient[]): Map<string, SnapClient> {

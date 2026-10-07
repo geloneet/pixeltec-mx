@@ -1,7 +1,7 @@
 import type { PipelineCard, PipelineColumn, PipelineStageId, Tone, WidgetResult } from "@/lib/hoy/types";
 import type { HoySnapshot } from "@/lib/hoy/snapshot";
 import { diffDayKeys, toDayKey, zonedDayKey } from "./date-windows";
-import { UNPAID_BILLING, clientHref, followUpState, formatCents, formatPesosWithCode, indexClients, need, rows } from "./common";
+import { UNPAID_BILLING, clientHref, followUpState, formatPesosWithCode, formatRealCents, indexClients, need, rows } from "./common";
 
 /**
  * Pipeline comercial DERIVADO (D-4, sin migración ni columna de etapa):
@@ -68,7 +68,7 @@ export function derivePipeline(
     const card = {
       id: `q:${q.id}`,
       name: name(q.clientPgId),
-      amountText: formatCents(q.totalCents, q.currency),
+      amountText: formatRealCents(q.totalCents, q.currency),
       href: clientHref(clients.get(q.clientPgId), "cotizaciones"),
     };
     if (state === "vencido" || state === "hoy") buckets.negociacion.push(card);
@@ -77,18 +77,18 @@ export function derivePipeline(
 
   for (const s of sales) {
     if (s.status === "pendiente_anticipo") {
-      buckets.pago_pendiente.push({ id: `s:${s.id}`, name: name(s.clientPgId), amountText: formatCents(s.totalCents, s.currency), href: "/cobros" });
+      buckets.pago_pendiente.push({ id: `s:${s.id}`, name: name(s.clientPgId), amountText: formatRealCents(s.totalCents, s.currency), href: "/cobros" });
     } else if (s.status === "activa" || s.status === "completada") {
       const key = toDayKey(s.acceptedAt);
       if (key && diffDayKeys(today, key) <= CLOSED_WINDOW_DAYS) {
-        buckets.cerrado.push({ id: `s:${s.id}`, name: name(s.clientPgId), amountText: formatCents(s.totalCents, s.currency), href: clientHref(clients.get(s.clientPgId)) });
+        buckets.cerrado.push({ id: `s:${s.id}`, name: name(s.clientPgId), amountText: formatRealCents(s.totalCents, s.currency), href: clientHref(clients.get(s.clientPgId)) });
       }
     }
   }
 
   for (const b of rows(snap.billing)) {
     if (!UNPAID_BILLING.has(b.status)) continue;
-    buckets.pago_pendiente.push({ id: `b:${b.id}`, name: name(b.clientPgId), amountText: formatPesosWithCode(b.amount, b.currency), href: "/cobros" });
+    buckets.pago_pendiente.push({ id: `b:${b.id}`, name: name(b.clientPgId), amountText: Number.isFinite(b.amount) && b.amount > 0 ? formatPesosWithCode(b.amount, b.currency) : null, href: "/cobros" });
   }
 
   const columns = PIPELINE_STAGES.map((stage): PipelineColumn => {

@@ -119,18 +119,21 @@ export function ActivityFeed({
                     <span className={cn("flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full", TONE_TILE[k.tone])}>
                       <Icon className="h-4 w-4" aria-hidden />
                     </span>
+                    {/* WO-2026-00519 (polish): el título envuelve completo y la hora va
+                        debajo — a la derecha competía con el título y lo recortaba
+                        («Cotización e…») en el grid de 4 columnas. */}
                     <span className="min-w-0 flex-1">
-                      <span className="block truncate text-[13px] font-semibold text-foreground">{row.title}</span>
+                      <span className="block break-words text-[13px] font-semibold leading-snug text-foreground">{row.title}</span>
                       {row.subtitle && <span className="block truncate text-xs text-muted-foreground">{row.subtitle}</span>}
                       {row.amount && (
                         <span className="block truncate text-xs font-medium tabular-nums text-foreground">{row.amount}</span>
                       )}
-                    </span>
-                    <span className="flex flex-shrink-0 items-center gap-1.5 pt-0.5 text-xs text-muted-foreground">
-                      <time dateTime={row.at} title={formatAbsolute(row.at, row.precision === "day")}>
-                        {row.precision === "day" ? formatDayEs(row.at, now) : formatRelativeEs(row.at, now)}
-                      </time>
-                      <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-primary" />
+                      <span className="mt-0.5 flex items-center gap-1.5 text-xs text-muted-foreground">
+                        <span aria-hidden className="h-1.5 w-1.5 flex-shrink-0 rounded-full bg-primary" />
+                        <time dateTime={row.at} title={formatAbsolute(row.at, row.precision === "day")}>
+                          {row.precision === "day" ? formatDayEs(row.at, now) : formatRelativeEs(row.at, now)}
+                        </time>
+                      </span>
                     </span>
                   </Link>
                 </li>

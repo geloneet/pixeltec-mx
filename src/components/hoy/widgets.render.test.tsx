@@ -194,4 +194,14 @@ describe("Actividad · cotizaciones (WO-2026-00519)", () => {
     const time = screen.getByText("Hace 3 horas").closest("time")!;
     expect(time.getAttribute("title")).toMatch(/\d{1,2}:\d{2}/);
   });
+
+  it("el título se lee completo: sin truncate/line-clamp y sin la hora compitiendo en su fila", () => {
+    const title = "Cotización rechazada por Smile More Dental";
+    render(<ActivityFeed result={{ ok: true, data: [row({ title })] }} nowIso="2026-10-06T21:00:00.000Z" filter="cotizaciones" />);
+    const el = screen.getByText(title);
+    expect(el.className).not.toMatch(/\btruncate\b|line-clamp|whitespace-nowrap/);
+    // La hora va debajo, dentro de la misma columna de texto (no a la derecha del título).
+    const time = document.querySelector("time")!;
+    expect(el.parentElement!.contains(time)).toBe(true);
+  });
 });

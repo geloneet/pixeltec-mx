@@ -87,3 +87,20 @@ Capturas: `01-refresh-conserva-cotizaciones.jpg`, `02-atras-desde-cobros-restaur
 - `workspace-url.test.ts`: ida y vuelta clic → URL → refresh para las 3 pestañas visibles, `nueva=1`
   no sobrevive al cambio, se conservan los parámetros ajenos (y `sub` en Comercial),
   `workspaceTabHref` y `consumeNuevaOnTabChange`.
+
+## Verificación sobre main actualizada (2026-10-07)
+
+La rama se actualizó contra main (merge `1e509a8`, que incluye #180 y #182). La verificación se
+repitió solo en el navegador, sin cambios de código: Chrome real, `http://wo519a.localhost:4326`,
+dev server y BD local `wo515-local-db`, cliente PixelState. Decisión de Miguel: `replace`.
+
+| Paso | Resultado | Captura |
+|---|---|---|
+| (a) Pestañas visibles: Resumen, Cotizaciones y Finanzas. Clics en Cotizaciones, Finanzas, Resumen y Cotizaciones ⇒ `?tab=cotizaciones`, `?tab=finanzas`, `?tab=resumen` y `?tab=cotizaciones`; `history.length` fijo en 5 | PASS | `post-merge-01-clic-cotizaciones.jpg` (spinner del loader recién montado) |
+| (b) Refresh (cmd+R, `navigation.type=reload`) en `?tab=finanzas` ⇒ sigue en Finanzas | PASS | `post-merge-02-refresh-conserva-finanzas.jpg` |
+| (c) /hoy → Clientes → PixelState → pestañas → Cobros. Atrás ⇒ `?tab=finanzas` con Finanzas activa; atrás ⇒ `/clientes`; adelante ⇒ `?tab=finanzas` con Finanzas; adelante ⇒ `/cobros`; atrás ⇒ `?tab=finanzas` con Finanzas | PASS | `post-merge-03-atras-desde-cobros-restaura-finanzas.jpg` |
+| (d) /hoy → «+ Nueva cotización» → PixelState ⇒ `?tab=cotizaciones&nueva=1` con el formulario abierto. Clic en Cotizaciones (activa) ⇒ sigue abierto. Refresh ⇒ lista, sin formulario e intención consumida. De nuevo desde /hoy: Finanzas ⇒ `?tab=finanzas` e intención consumida; volver a Cotizaciones ⇒ lista; atrás ⇒ /hoy; adelante ⇒ lista | PASS | `post-merge-04…`, `-05-formulario-abierto`, `-06-refresh-no-reabre`, `-07-cambiar-pestana-y-volver-sin-formulario` |
+| (e) /hoy → Actividad reciente → filtro Cotizaciones ⇒ 4 eventos que coinciden con los timestamps reales de `quotes`. COT-0107 enviada sin monto (sin «$0»); COT-0105 rechazada $92,000; COT-0101 enviada $48,000; COT-0104 aceptada $125,000. COT-0106, sin timestamps, no genera evento | PASS | `post-merge-08-actividad-cotizaciones.jpg` |
+
+Atrás/adelante se ejecutaron con `history.back()`/`history.forward()` en la página, igual que en la
+primera fase.

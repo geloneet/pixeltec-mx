@@ -131,4 +131,17 @@ describe("deriveActivity · cotizaciones reales", () => {
     expect(onlyQuotes.every((r) => r.kind === "cotizacion")).toBe(true);
     expect(all.some((r) => r.kind !== "cotizacion")).toBe(true);
   });
+
+  it("aceptada se muestra con precisión de día (accepted_at guarda mediodía, la hora no es real)", () => {
+    const rows = rowsOf(
+      snapWith([
+        quote({ id: "p", status: "rechazada", sentAt: "2026-10-01T17:00:00.000Z", rejectedAt: "2026-10-03T17:00:00.000Z" }),
+        quote({ id: "a", status: "aceptada", sentAt: "2026-10-02T17:00:00.000Z", acceptedAt: "2026-10-04T18:00:00.000Z" }),
+      ]),
+    );
+    const byId = Object.fromEntries(rows.map((r) => [r.id, r]));
+    expect(byId["q:a:cotizacion_aceptada"].precision).toBe("day");
+    expect(byId["q:a:cotizacion_enviada"].precision).toBeUndefined();
+    expect(byId["q:p:cotizacion_rechazada"].precision).toBeUndefined();
+  });
 });

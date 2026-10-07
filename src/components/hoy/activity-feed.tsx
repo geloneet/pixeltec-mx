@@ -6,7 +6,7 @@ import { ArrowRight, FileText, Mail, Receipt, UserPlus, Users, type LucideIcon }
 import { SiWhatsapp } from "@icons-pack/react-simple-icons";
 import type { ActivityFilter, ActivityKind, ActivityRow, Tone, WidgetResult } from "@/lib/hoy/types";
 import { ACTIVITY_FILTERS } from "@/lib/hoy/derive/activity";
-import { formatRelativeEs } from "@/lib/hoy/derive/date-windows";
+import { formatDayEs, formatRelativeEs } from "@/lib/hoy/derive/date-windows";
 import { cn } from "@/lib/utils";
 import { CARD, TONE_TILE } from "./tones";
 import { EmptyState, WidgetError } from "./states";
@@ -35,11 +35,13 @@ const absolute = new Intl.DateTimeFormat("es-MX", {
   timeStyle: "short",
   timeZone: "America/Mexico_City",
 });
+const absoluteDay = new Intl.DateTimeFormat("es-MX", { dateStyle: "medium", timeZone: "America/Mexico_City" });
 
-/** Fecha completa (CDMX) para el tooltip; solo con un timestamp válido. */
-function formatAbsolute(iso: string): string | undefined {
+/** Fecha (CDMX) para el tooltip; con hora solo si la hora es real. */
+function formatAbsolute(iso: string, dayOnly: boolean): string | undefined {
   const d = new Date(iso);
-  return Number.isNaN(d.getTime()) ? undefined : absolute.format(d);
+  if (Number.isNaN(d.getTime())) return undefined;
+  return (dayOnly ? absoluteDay : absolute).format(d);
 }
 
 /** Actividad reciente: filtros `?actividad=` (enlaces) y despliegue local. */
@@ -125,8 +127,8 @@ export function ActivityFeed({
                       )}
                     </span>
                     <span className="flex flex-shrink-0 items-center gap-1.5 pt-0.5 text-xs text-muted-foreground">
-                      <time dateTime={row.at} title={formatAbsolute(row.at)}>
-                        {formatRelativeEs(row.at, now)}
+                      <time dateTime={row.at} title={formatAbsolute(row.at, row.precision === "day")}>
+                        {row.precision === "day" ? formatDayEs(row.at, now) : formatRelativeEs(row.at, now)}
                       </time>
                       <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-primary" />
                     </span>

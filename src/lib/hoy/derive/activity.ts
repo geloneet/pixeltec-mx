@@ -55,7 +55,8 @@ function quoteAmount(q: SnapQuote): string | null {
  * (`sent_at`, `accepted_at`, `rejected_at`). Sin timestamp no hay evento — el
  * estado por sí solo no reconstruye historia que el modelo no conserva.
  * OJO: `accepted_at` se captura como día (mediodía de la fecha que elige
- * Miguel), así que su hora no es la del clic.
+ * Miguel), así que su hora no es la del clic: esos eventos van con
+ * `precision: "day"` y el feed muestra solo el día.
  */
 export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): WidgetResult<ActivityRow[]> {
   const check = need(snap, "clients", "quotes", "payments", "leads", "activity");
@@ -82,7 +83,8 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
     ];
     for (const [at, type, title] of events) {
       if (!at || loggedQuoteEvents.has(`${q.clientPgId}:${type}:${at.slice(0, 16)}`)) continue;
-      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle, amount, at, href });
+      const precision = type === "cotizacion_aceptada" ? ("day" as const) : undefined;
+      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle, amount, at, href, ...(precision && { precision }) });
     }
   }
 

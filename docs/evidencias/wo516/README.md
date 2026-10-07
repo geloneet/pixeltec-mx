@@ -57,3 +57,35 @@ Datos añadidos solo a la BD local para probar la actividad:
 2. `npm run dev -- -p 4326` y abrir `http://wo516.localhost:4326/hoy`.
 3. «+ Nueva cotización» → elegir cliente → refresh → atrás → adelante.
 4. /hoy → «Actividad reciente» → filtro «Cotizaciones» (claro y oscuro).
+
+## Polish de cierre (2026-10-07)
+
+Misma BD local y host `wo516.localhost:4326`. Medido con JS en la página
+(ancho del título vs. su contenido, líneas, scroll horizontal) y capturado en
+claro y oscuro.
+
+| Ancho | Títulos recortados | Líneas máx. del título | Scroll horizontal | Capturas |
+|---|---|---|---|---|
+| 1440 | 0 / 8 | 2 | no | `polish-1440-{oscuro,claro}.jpg` |
+| 1280 | 0 / 8 | 2 | no | `polish-1280-{oscuro,claro}.jpg` |
+| 1024 | 0 / 8 | 1 | no | `polish-1024-{oscuro,claro}.jpg` |
+| 500* | 0 / 8 | 1 | no | `polish-500-{oscuro,claro}.jpg` |
+
+\* Chrome no deja la ventana por debajo de 500 px y la app bloquea el iframe
+(CSP), así que 390 no se midió directamente. 500 y 390 caen en el mismo
+breakpoint (< `sm` = 640 px, una columna).
+
+1. **Pipeline sin «$0».** Una tarjeta solo muestra importe si es real: finito,
+   > 0 y moneda MXN/USD (`formatRealCents` en `derive/common.ts`; en cobros,
+   monto > 0). COT-2026-0107 (sin conceptos, PixelState en Negociación) queda
+   solo con el nombre. Antes mostraba «PixelState $0 MXN».
+2. **Títulos completos en «Actividad reciente».** El título envuelve
+   (`break-words`, sin `truncate`) y la hora relativa pasa debajo del texto. Antes,
+   a la derecha, competía con el título («Cotización e…», «Cotización rech…»). Hay
+   un test que falla si vuelven `truncate`, `line-clamp` o la hora en la fila del título.
+3. **«Aceptada» con precisión de día.** `quotes.accepted_at` se guarda a las
+   12:00 de la fecha que se elige al marcarla aceptada (`acceptQuoteAction`):
+   el día es real, la hora no. Esos eventos llevan `precision: "day"` y el
+   feed muestra solo «Hoy», «Ayer» o la fecha corta (p. ej. «3 oct»), con un
+   tooltip de solo fecha. Enviada y rechazada sí tienen la hora real del clic y
+   conservan «Hace N horas» y el tooltip con hora.

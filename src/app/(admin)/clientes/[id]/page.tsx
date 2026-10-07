@@ -3,26 +3,10 @@
 import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useCRM } from "@/components/crm/CRMContextCore";
 import { useCRMShell } from "@/components/crm/CRMShellProvider";
-import { ClientWorkspace, type WorkspaceTab } from "@/components/crm/ClientWorkspace";
-import type { ComercialSub } from "@/components/crm/workspace-tabs/ComercialTab";
+import { ClientWorkspace } from "@/components/crm/ClientWorkspace";
 import { Spinner } from "@/components/ui/spinner";
 import { isClientSectionVisible } from "@/lib/modules/client-workspace";
-
-const VALID_TABS: WorkspaceTab[] = ["resumen", "proyectos", "comercial", "documentos", "portal"];
-
-const VALID_SUBS: ComercialSub[] = ["propuestas", "contratos", "facturacion"];
-
-/** Deep-links previos a ADR-0035 (emails, notificaciones, enlaces guardados):
- *  jamás 404 — cada tab viejo cae en su nuevo hogar. OJO: `documentos` viejo
- *  era facturación; el tab `documentos` nuevo (expediente) solo se alcanza
- *  desde la UI. */
-const TAB_MIGRATION: Record<string, { tab: WorkspaceTab; sub?: ComercialSub }> = {
-  propuesta: { tab: "comercial", sub: "propuestas" },
-  contratos: { tab: "comercial", sub: "contratos" },
-  documentos: { tab: "comercial", sub: "facturacion" },
-  discovery: { tab: "resumen" },
-  estrategia: { tab: "resumen" },
-};
+import { resolveWorkspaceUrl } from "./workspace-url";
 
 export default function ClienteDetailPage() {
   const params = useParams<{ id: string }>();
@@ -31,14 +15,9 @@ export default function ClienteDetailPage() {
   const crm = useCRM();
   const shell = useCRMShell();
 
-  const tabParam = searchParams.get("tab");
-  const subParam = searchParams.get("sub");
-  const migrated = tabParam ? TAB_MIGRATION[tabParam] : undefined;
-  const requestedTab = migrated?.tab ?? VALID_TABS.find((t) => t === tabParam);
-  // Deep-link a una sección oculta por el registro (WO-2026-00088): jamás
-  // 404 ni pantalla vacía — cae en Resumen.
-  const initialTab = requestedTab && isClientSectionVisible(requestedTab) ? requestedTab : undefined;
-  const initialSub = migrated?.sub ?? VALID_SUBS.find((s) => s === subParam);
+  // La pestaña vive en la URL (?tab=, WO-2026-00519): refresh/atrás/adelante
+  // la conservan. Deep-links legacy y secciones ocultas: ver workspace-url.ts.
+  const { tab: initialTab, sub: initialSub } = resolveWorkspaceUrl(searchParams, isClientSectionVisible);
 
   if (crm.loading) {
     return (
@@ -66,6 +45,9 @@ export default function ClienteDetailPage() {
 
   return (
     <ClientWorkspace
+      // Atrás/adelante entre URLs con distinta ?tab= reutilizan esta página:
+      // la key remonta el workspace para que tome la pestaña de la URL.
+      key={`${client.id}:${initialTab ?? "resumen"}:${initialSub ?? ""}`}
       client={client}
       onBack={() => router.push("/clientes")}
       navigateToProject={(_cid, pid) => router.push(`/proyectos/${pid}`)}

@@ -9,7 +9,7 @@
  * Ninguna de las tres calcula importes por su cuenta: todo viene de
  * `@/lib/quotes/money` y `@/lib/quotes/terms` (§30, fuente única).
  */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -43,10 +43,22 @@ export function CotizacionesTab({
 }: Props) {
   // WO-2026-00515 (D-7): «+ Nueva cotización» del topbar llega con
   // `?nueva=1` y abre directo el formulario de una cotización nueva.
+  // WO-2026-00519: el parámetro es de un solo uso — se consume (se quita de
+  // la URL con `replaceState`, sin nueva entrada de historial y conservando
+  // `?tab=cotizaciones`), así refresh/atrás/adelante vuelven a la pestaña sin
+  // reabrir el formulario. Si la pestaña ya estaba montada (mismo cliente),
+  // un nuevo `?nueva=1` también abre el formulario.
   const searchParams = useSearchParams();
-  const [view, setView] = useState<View>(() =>
-    searchParams?.get("nueva") === "1" ? { kind: "form", quote: null } : { kind: "list" }
-  );
+  const nueva = searchParams?.get("nueva") === "1";
+  const [view, setView] = useState<View>(() => (nueva ? { kind: "form", quote: null } : { kind: "list" }));
+
+  useEffect(() => {
+    if (!nueva) return;
+    setView((v) => (v.kind === "form" && v.quote === null ? v : { kind: "form", quote: null }));
+    const url = new URL(window.location.href);
+    url.searchParams.delete("nueva");
+    window.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  }, [nueva]);
 
   if (view.kind === "form") {
     return (

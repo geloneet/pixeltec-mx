@@ -139,6 +139,8 @@ export interface ActivityRow {
   kind: ActivityKind;
   title: string;
   subtitle: string | null;
+  /** Importe ya formateado, solo con dato real (WO-2026-00519); si no, ausente/null. */
+  amount?: string | null;
   at: string;
   href: string;
 }

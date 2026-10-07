@@ -139,3 +139,34 @@ describe("widget caído", () => {
     expect(tile.textContent).not.toContain("$0");
   });
 });
+
+describe("Actividad · cotizaciones (WO-2026-00519)", () => {
+  const row = (over: Partial<import("@/lib/hoy/types").ActivityRow>) => ({
+    id: "q:1:cotizacion_aceptada",
+    kind: "cotizacion" as const,
+    title: "Cotización aceptada por DALK",
+    subtitle: "COT-2026-0100 · Tienda",
+    at: "2026-10-05T18:00:00.000Z",
+    href: "/clientes/dalk?tab=cotizaciones",
+    ...over,
+  });
+
+  it("muestra el importe real en su propia línea y la fecha real como <time>", () => {
+    render(<ActivityFeed result={{ ok: true, data: [row({ amount: "$48,000.00 MXN" })] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />);
+    expect(screen.getByText("$48,000.00 MXN")).toBeInTheDocument();
+    const time = screen.getByText("Hace 1 día").closest("time");
+    expect(time).toHaveAttribute("datetime", "2026-10-05T18:00:00.000Z");
+  });
+
+  it("sin importe no pinta línea de importe (ni «$0»)", () => {
+    const { container } = render(
+      <ActivityFeed result={{ ok: true, data: [row({ amount: null })] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />,
+    );
+    expect(container.textContent).not.toMatch(/\$0|NaN|undefined/);
+  });
+
+  it("filtro de cotizaciones vacío ⇒ estado vacío honesto", () => {
+    render(<ActivityFeed result={{ ok: true, data: [] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />);
+    expect(screen.getByText("Aún no hay cotizaciones enviadas, aceptadas ni rechazadas.")).toBeInTheDocument();
+  });
+});

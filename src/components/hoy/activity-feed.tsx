@@ -22,6 +22,26 @@ const KIND: Record<ActivityKind, { icon: LucideIcon | typeof SiWhatsapp; tone: T
 
 const COLLAPSED = 4;
 
+const EMPTY: Record<ActivityFilter, string> = {
+  todas: "Aún no hay actividad.",
+  whatsapp: "Aún no hay mensajes de WhatsApp.",
+  correo: "Aún no hay correos registrados.",
+  cotizaciones: "Aún no hay cotizaciones enviadas, aceptadas ni rechazadas.",
+  cobros: "Aún no hay pagos registrados.",
+};
+
+const absolute = new Intl.DateTimeFormat("es-MX", {
+  dateStyle: "medium",
+  timeStyle: "short",
+  timeZone: "America/Mexico_City",
+});
+
+/** Fecha completa (CDMX) para el tooltip; solo con un timestamp válido. */
+function formatAbsolute(iso: string): string | undefined {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? undefined : absolute.format(d);
+}
+
 /** Actividad reciente: filtros `?actividad=` (enlaces) y despliegue local. */
 export function ActivityFeed({
   result,
@@ -82,7 +102,7 @@ export function ActivityFeed({
         {!result.ok ? (
           <WidgetError what="la actividad" />
         ) : rows.length === 0 ? (
-          <EmptyState>Aún no hay actividad.</EmptyState>
+          <EmptyState>{EMPTY[filter]}</EmptyState>
         ) : (
           <ul className="grid grid-cols-1 gap-x-6 gap-y-3 sm:grid-cols-2 xl:grid-cols-4">
             {shown.map((row) => {
@@ -90,16 +110,24 @@ export function ActivityFeed({
               const Icon = k.icon;
               return (
                 <li key={row.id} className="min-w-0">
-                  <Link href={row.href} className="flex items-start gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
+                  <Link
+                    href={row.href}
+                    title={[row.title, row.subtitle, row.amount].filter(Boolean).join(" · ")}
+                    className="flex items-start gap-3 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">
                     <span className={cn("flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-full", TONE_TILE[k.tone])}>
                       <Icon className="h-4 w-4" aria-hidden />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[13px] font-semibold text-foreground">{row.title}</span>
                       {row.subtitle && <span className="block truncate text-xs text-muted-foreground">{row.subtitle}</span>}
+                      {row.amount && (
+                        <span className="block truncate text-xs font-medium tabular-nums text-foreground">{row.amount}</span>
+                      )}
                     </span>
                     <span className="flex flex-shrink-0 items-center gap-1.5 pt-0.5 text-xs text-muted-foreground">
-                      {formatRelativeEs(row.at, now)}
+                      <time dateTime={row.at} title={formatAbsolute(row.at)}>
+                        {formatRelativeEs(row.at, now)}
+                      </time>
                       <span aria-hidden className="h-1.5 w-1.5 rounded-full bg-primary" />
                     </span>
                   </Link>

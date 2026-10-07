@@ -30,17 +30,19 @@ export function parseActivityFilter(raw: string | string[] | undefined | null): 
 const EMAIL_ACTIVITY = new Set(["propuesta_enviada"]);
 const QUOTE_ACTIVITY = new Set(["cotizacion_enviada", "cotizacion_aceptada", "cotizacion_rechazada"]);
 
-/**
- * «COT-2026-0001 · Sitio web · $48,000.00 MXN». El importe solo aparece con un
- * total real (> 0 y moneda conocida): una cotización sin conceptos no se
- * presenta como «$0» (WO-2026-00519).
- */
+/** «COT-2026-0001 · Sitio web» (sin piezas vacías). */
 function quoteSubtitle(q: SnapQuote): string {
-  const parts = [q.folio, q.title?.trim()];
-  if (Number.isFinite(q.totalCents) && q.totalCents > 0 && isCurrency(q.currency)) {
-    parts.push(formatAmountWithCode(q.totalCents, q.currency));
-  }
-  return parts.filter((p): p is string => !!p).join(" · ");
+  return [q.folio, q.title?.trim()].filter((p): p is string => !!p).join(" · ");
+}
+
+/**
+ * «$48,000.00 MXN» solo con un total real (> 0 y moneda conocida): una
+ * cotización sin conceptos no se presenta como «$0» (WO-2026-00519).
+ */
+function quoteAmount(q: SnapQuote): string | null {
+  return Number.isFinite(q.totalCents) && q.totalCents > 0 && isCurrency(q.currency)
+    ? formatAmountWithCode(q.totalCents, q.currency)
+    : null;
 }
 
 /**
@@ -71,6 +73,8 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
 
   for (const q of rows(snap.quotes)) {
     const href = clientHref(clients.get(q.clientPgId), "cotizaciones");
+    const subtitle = quoteSubtitle(q);
+    const amount = quoteAmount(q);
     const events: [string | null, string, string][] = [
       [q.sentAt, "cotizacion_enviada", `Cotización enviada a ${name(q.clientPgId)}`],
       [q.acceptedAt, "cotizacion_aceptada", `Cotización aceptada por ${name(q.clientPgId)}`],
@@ -78,7 +82,7 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
     ];
     for (const [at, type, title] of events) {
       if (!at || loggedQuoteEvents.has(`${q.clientPgId}:${type}:${at.slice(0, 16)}`)) continue;
-      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle: quoteSubtitle(q), at, href });
+      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle, amount, at, href });
     }
   }
 

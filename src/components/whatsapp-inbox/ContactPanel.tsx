@@ -380,7 +380,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
             className={cn(
               "relative px-3 py-2 text-xs font-medium transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40",
-              activeTab === tab.id ? "text-cyan-300" : "text-muted-foreground hover:text-foreground"
+              activeTab === tab.id ? "text-cyan-700 dark:text-cyan-300" : "text-muted-foreground hover:text-foreground"
             )}
           >
             {tab.label}
@@ -512,7 +512,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
                     </button>
                   </Badge>
                 ))}
-                {!(contact?.tags ?? []).length && <span className="text-xs text-muted-foreground/60">Sin etiquetas</span>}
+                {!(contact?.tags ?? []).length && <span className="text-xs text-muted-foreground dark:text-muted-foreground/60">Sin etiquetas</span>}
               </div>
               <Input
                 value={tagInput}
@@ -590,7 +590,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
                       </Button>
                     </div>
                   ) : (
-                    <p className="text-xs text-muted-foreground/60">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">
                       Vincula un cliente con proyecto para crear seguimientos
                     </p>
                   )}
@@ -667,7 +667,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
             <WhatsAppSection title="Memoria del bot" description="Lo que el bot recuerda de este contacto">
               <div className="space-y-1.5">
                 {memory.length === 0 && (
-                  <p className="text-xs text-muted-foreground/60">
+                  <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">
                     El bot aún no recuerda datos de este contacto.
                   </p>
                 )}
@@ -691,7 +691,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
                           "flex-shrink-0 font-normal",
                           entry.source === "customer"
                             ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
-                            : "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300"
+                            : "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300"
                         )}
                       >
                         {entry.source === "customer" ? "del cliente" : "inferido"}
@@ -710,7 +710,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
             {canUseCRM && (
               <WhatsAppSection title="Notas recientes">
                 <div className="space-y-1.5">
-                  {recentNotes.length === 0 && <p className="text-xs text-muted-foreground/60">Sin notas aún</p>}
+                  {recentNotes.length === 0 && <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">Sin notas aún</p>}
                   {recentNotes.map((note) => (
                     <p key={note.id} className="rounded-md border border-violet-500/20 bg-violet-500/5 px-2 py-1.5 text-xs text-violet-700 dark:text-violet-200">
                       {note.text}
@@ -742,7 +742,7 @@ export function ContactPanel({ phone, conv, contact, onClose, refetchContacts }:
 
             <WhatsAppSection title="Historial">
               <div className="space-y-1">
-                {recentHistory.length === 0 && <p className="text-xs text-muted-foreground/60">Sin actividad registrada</p>}
+                {recentHistory.length === 0 && <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">Sin actividad registrada</p>}
                 {recentHistory.map((entry, idx) => (
                   <p key={`${entry.at}-${idx}`} className="text-xs text-muted-foreground">
                     {entry.action} · {formatHistoryDate(entry.at)}

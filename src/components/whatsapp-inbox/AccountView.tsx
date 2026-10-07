@@ -37,7 +37,7 @@ function NotConfiguredCard({ missing }: { missing: string[] }) {
           missing.map((env) => (
             <li
               key={env}
-              className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-1 font-mono text-xs text-amber-700 dark:text-amber-300"
+              className="rounded-md border border-amber-500/30 bg-amber-500/10 px-2 py-1 font-mono text-xs text-amber-800 dark:text-amber-300"
             >
               {env}
             </li>

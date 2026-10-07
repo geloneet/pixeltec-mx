@@ -46,8 +46,8 @@ export const MODE_META: Record<
     label: "Bot pausado",
     shortLabel: "Pausa",
     icon: PauseCircle,
-    className: "text-amber-700 dark:text-amber-400 bg-amber-500/10 border-amber-500/30",
-    activeClassName: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/40",
+    className: "text-amber-800 dark:text-amber-400 bg-amber-500/10 border-amber-500/30",
+    activeClassName: "bg-amber-500/15 text-amber-800 dark:text-amber-300 border-amber-500/40",
   },
 };
 
@@ -79,7 +79,7 @@ export const VERSION_STATUS_META: Record<
   "draft" | "active" | "archived",
   { label: string; className: string }
 > = {
-  draft: { label: "Borrador", className: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300" },
+  draft: { label: "Borrador", className: "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300" },
   active: { label: "Activa", className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" },
   archived: { label: "Archivada", className: "border-border bg-muted text-muted-foreground" },
 };

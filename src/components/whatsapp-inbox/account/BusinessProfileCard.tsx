@@ -53,7 +53,7 @@ export function BusinessProfileCard({ profile }: BusinessProfileCardProps) {
               ))}
             </ul>
           ) : (
-            <span className="text-muted-foreground/60">Sin datos</span>
+            <span className="text-muted-foreground dark:text-muted-foreground/60">Sin datos</span>
           )}
         </Field>
         <Field label="Categoría" value={verticalLabel(profile.vertical)} />

@@ -206,7 +206,7 @@ export function ConfigVersionsPanel() {
             className={cn(
               "relative flex items-center gap-1.5 px-3 py-2.5 text-xs font-medium transition-colors",
               "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40",
-              activeTab === id ? "text-cyan-300" : "text-muted-foreground hover:text-foreground"
+              activeTab === id ? "text-cyan-700 dark:text-cyan-300" : "text-muted-foreground hover:text-foreground"
             )}
           >
             <Icon aria-hidden className="h-3.5 w-3.5 opacity-80" />
@@ -288,14 +288,14 @@ export function ConfigVersionsPanel() {
                         </Badge>
                       )}
                       {simulateResult.fuera_de_horario && (
-                        <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-xs font-normal text-amber-700 dark:text-amber-300">
+                        <Badge variant="outline" className="border-amber-500/30 bg-amber-500/10 text-xs font-normal text-amber-800 dark:text-amber-300">
                           Fuera de horario
                         </Badge>
                       )}
                       {simulateResult.escalaria && (
                         <Badge
                           variant="outline"
-                          className="border-amber-500/30 bg-amber-500/10 text-xs font-normal text-amber-700 dark:text-amber-300"
+                          className="border-amber-500/30 bg-amber-500/10 text-xs font-normal text-amber-800 dark:text-amber-300"
                         >
                           Transferiría a una persona
                           {simulateResult.razon_escalamiento ? ` — ${simulateResult.razon_escalamiento}` : ""}
@@ -387,7 +387,7 @@ export function ConfigVersionsPanel() {
                         </Badge>
                         <span className="truncate text-xs text-muted-foreground">{v.created_by}</span>
                         {(v.published_at ?? v.created_at) && (
-                          <span className="text-xs text-muted-foreground/60">
+                          <span className="text-xs text-muted-foreground dark:text-muted-foreground/60">
                             {formatVersionDate(v.published_at ?? v.created_at)}
                           </span>
                         )}

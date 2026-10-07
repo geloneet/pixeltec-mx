@@ -265,7 +265,7 @@ export function ConversationList({
             <button
               type="button"
               onClick={clearFilters}
-              className="flex-shrink-0 text-xs text-muted-foreground transition-colors hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
+              className="flex-shrink-0 text-xs text-muted-foreground transition-colors hover:text-cyan-700 dark:hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
             >
               Limpiar
             </button>
@@ -331,7 +331,7 @@ export function ConversationList({
             <PopoverContent align="end" className="w-64 border-border bg-popover/95 p-3 backdrop-blur-xl">
               <div className="space-y-3">
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground dark:text-muted-foreground/70">
                     Categoría
                   </p>
                   <div className="mt-1.5 grid grid-cols-2 gap-1">
@@ -353,7 +353,7 @@ export function ConversationList({
                           )}
                         >
                           <span className="truncate">{cat.label}</span>
-                          <span className="flex-shrink-0 text-xs tabular-nums text-muted-foreground/60">
+                          <span className="flex-shrink-0 text-xs tabular-nums text-muted-foreground dark:text-muted-foreground/60">
                             {categoryCounts.get(cat.id) ?? 0}
                           </span>
                         </button>
@@ -363,7 +363,7 @@ export function ConversationList({
                 </div>
 
                 <div>
-                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground/70">
+                  <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground dark:text-muted-foreground/70">
                     Estado
                   </p>
                   <div className="mt-1.5 flex flex-wrap gap-1">
@@ -445,7 +445,7 @@ export function ConversationList({
               <button
                 type="button"
                 onClick={clearFilters}
-                className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-border hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
+                className="rounded-md border border-border px-2.5 py-1 text-xs text-muted-foreground transition-colors hover:border-border hover:text-cyan-700 dark:hover:text-cyan-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40"
               >
                 Limpiar filtros
               </button>

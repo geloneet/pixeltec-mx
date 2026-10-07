@@ -17,7 +17,7 @@ export function Field({ label, value, children }: FieldProps) {
     <div className="flex flex-col gap-0.5 border-b border-border/50 py-2 last:border-b-0 sm:flex-row sm:items-baseline sm:gap-3">
       <dt className="text-xs text-muted-foreground sm:w-44 sm:flex-shrink-0">{label}</dt>
       <dd className="min-w-0 break-words text-sm text-foreground">
-        {children ?? (value ? value : <span className="text-muted-foreground/60">Sin datos</span>)}
+        {children ?? (value ? value : <span className="text-muted-foreground dark:text-muted-foreground/60">Sin datos</span>)}
       </dd>
     </div>
   );

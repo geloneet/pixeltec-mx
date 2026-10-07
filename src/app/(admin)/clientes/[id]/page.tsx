@@ -1,24 +1,26 @@
 "use client";
 
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useCRM } from "@/components/crm/CRMContextCore";
 import { useCRMShell } from "@/components/crm/CRMShellProvider";
 import { ClientWorkspace } from "@/components/crm/ClientWorkspace";
 import { Spinner } from "@/components/ui/spinner";
 import { isClientSectionVisible } from "@/lib/modules/client-workspace";
-import { resolveWorkspaceUrl } from "./workspace-url";
+import { browserSessionStorage } from "@/components/hoy/nueva-cotizacion-intent";
+import { consumeNuevaOnTabChange, resolveWorkspaceUrl, workspaceTabHref } from "./workspace-url";
 
 export default function ClienteDetailPage() {
   const params = useParams<{ id: string }>();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const pathname = usePathname();
   const crm = useCRM();
   const shell = useCRMShell();
 
   // La pestaña vive en la URL (?tab=, WO-2026-00519): refresh/atrás/adelante
-  // la conservan (un cambio de search params remonta esta página en el App
-  // Router, así que el workspace siempre arranca con la pestaña de la URL).
-  // Deep-links legacy y secciones ocultas: ver workspace-url.ts.
+  // la conservan. Si la URL cambia sin remontar (atrás/adelante dentro de la
+  // página), ClientWorkspace sigue a `initialTab`. Deep-links legacy y
+  // secciones ocultas: ver workspace-url.ts.
   const { tab: initialTab, sub: initialSub } = resolveWorkspaceUrl(searchParams, isClientSectionVisible);
 
   if (crm.loading) {
@@ -54,6 +56,14 @@ export default function ClienteDetailPage() {
       deleteClient={crm.deleteClient}
       initialTab={initialTab}
       initialSub={initialSub}
+      // WO-2026-00526: el clic de pestaña escribe `?tab=` con `replace` (no
+      // `push`): no ensucia el historial y no deja una entrada con `?nueva=1`
+      // a la que volver con atrás. Salir de `?nueva=1` consume la intención
+      // del formulario nuevo. Ver docs/evidencias/wo519a/README.md.
+      onTabChange={(tab) => {
+        consumeNuevaOnTabChange(searchParams, client.id, browserSessionStorage());
+        router.replace(workspaceTabHref(pathname, searchParams, tab), { scroll: false });
+      }}
     />
   );
 }

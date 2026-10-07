@@ -9,6 +9,7 @@
 import type { WorkspaceTab } from "@/components/crm/ClientWorkspace";
 import type { ComercialSub } from "@/components/crm/workspace-tabs/ComercialTab";
 import type { ClientWorkspaceSection } from "@/lib/modules/client-workspace";
+import { consumeNuevaIntent } from "@/components/hoy/nueva-cotizacion-intent";
 
 /** Todas las secciones del workspace; la visibilidad la decide el registro. */
 const VALID_TABS: readonly WorkspaceTab[] = [
@@ -61,8 +62,7 @@ export function resolveWorkspaceUrl(
 /**
  * Query string para cambiar de pestaña: fija `tab`, descarta `nueva` (la
  * intención de formulario nuevo no viaja a otras pestañas) y `sub` fuera de Comercial; conserva lo demás.
- * Listo para cablear el clic de pestaña → URL (requiere un `onTabChange` en
- * `ClientWorkspace`, fuera del alcance de WO-2026-00519).
+ * La usa el clic de pestaña → URL (WO-2026-00526, vía `workspaceTabHref`).
  */
 export function workspaceTabSearch(current: URLSearchParams, tab: WorkspaceTab): string {
   const next = new URLSearchParams(current);
@@ -72,4 +72,27 @@ export function workspaceTabSearch(current: URLSearchParams, tab: WorkspaceTab):
   // `tab` primero: URLs legibles y estables.
   const ordered = new URLSearchParams([["tab", tab], ...[...next].filter(([k]) => k !== "tab")]);
   return `?${ordered.toString()}`;
+}
+
+/** href completo (pathname + query) para `router.replace` al cambiar de pestaña (WO-2026-00526). */
+export function workspaceTabHref(
+  pathname: string,
+  current: URLSearchParams | null,
+  tab: WorkspaceTab,
+): string {
+  return pathname + workspaceTabSearch(new URLSearchParams(current ?? undefined), tab);
+}
+
+/**
+ * Cambiar de pestaña con `?nueva=1` en la URL abandona el formulario nuevo:
+ * consume la intención de un solo uso (WO-2026-00526). Hace falta porque
+ * CotizacionesTab se desmonta antes de que `router.replace` cambie la URL y su
+ * limpieza («desmontarse con otra URL») aún ve la URL vieja (medido en navegador).
+ */
+export function consumeNuevaOnTabChange(
+  current: Pick<URLSearchParams, "get"> | null,
+  clientId: string,
+  storage: Storage | null | undefined,
+): void {
+  if (current?.get("nueva") === "1") consumeNuevaIntent(clientId, storage);
 }

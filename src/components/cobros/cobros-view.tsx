@@ -33,7 +33,7 @@ const STATUS_CLASSES: Record<BillingStatus, string> = {
   pendiente: "bg-muted text-muted-foreground",
   pagado: "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400",
   vencido: "bg-red-500/10 text-red-700 dark:text-red-400",
-  parcial: "bg-amber-500/10 text-amber-700 dark:text-amber-400",
+  parcial: "bg-amber-500/10 text-amber-800 dark:text-amber-400",
   cancelado: "bg-muted text-muted-foreground",
 };
 
@@ -320,21 +320,21 @@ export function CobrosView() {
                       <tr className="transition-colors hover:bg-secondary/40">
                         <td className="px-4 py-3">
                           <span className="font-medium text-foreground">{item.concept}</span>
-                          {item.contractTitle && <p className="text-[10px] text-muted-foreground/60">{item.contractTitle}</p>}
+                          {item.contractTitle && <p className="text-[10px] text-muted-foreground dark:text-muted-foreground/60">{item.contractTitle}</p>}
                         </td>
                         <td className="px-4 py-3 text-muted-foreground">{item.clientName ?? "—"}</td>
                         <td className="px-4 py-3 text-right font-medium tabular-nums text-foreground">
                           {formatCurrency(item.amount)}
                         </td>
                         <td className="px-4 py-3 text-center">
-                          <span className="inline-flex items-center rounded-md bg-[#0EA5E9]/10 px-2 py-0.5 text-[11px] font-medium text-[#0EA5E9]">
+                          <span className="inline-flex items-center rounded-md bg-[#0EA5E9]/10 px-2 py-0.5 text-[11px] font-medium text-sky-700 dark:text-[#0EA5E9]">
                             {BILLING_FREQUENCY_LABELS[item.frequency]}
                           </span>
                         </td>
                         <td className="px-4 py-3 text-xs text-muted-foreground">
                           {formatDateES(item.dueDate)}
                           {item.nextDueDate && (
-                            <p className="text-[10px] text-muted-foreground/60">Próximo: {formatDateES(item.nextDueDate)}</p>
+                            <p className="text-[10px] text-muted-foreground dark:text-muted-foreground/60">Próximo: {formatDateES(item.nextDueDate)}</p>
                           )}
                         </td>
                         <td className="px-4 py-3 text-center">
@@ -346,12 +346,12 @@ export function CobrosView() {
                           {item.status !== "pagado" && item.status !== "cancelado" ? (
                             <button
                               onClick={() => setPaymentItem(item)}
-                              className="rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-medium text-cyan-300 transition-all hover:bg-cyan-500/20"
+                              className="rounded-lg border border-cyan-500/20 bg-cyan-500/10 px-2.5 py-1 text-[11px] font-medium text-cyan-800 dark:text-cyan-300 transition-all hover:bg-cyan-500/20"
                             >
                               Registrar pago
                             </button>
                           ) : (
-                            <span className="text-[11px] text-muted-foreground/70">—</span>
+                            <span className="text-[11px] text-muted-foreground dark:text-muted-foreground/70">—</span>
                           )}
                         </td>
                       </tr>
@@ -388,7 +388,7 @@ export function CobrosView() {
                     {item.status !== "pagado" && item.status !== "cancelado" && (
                       <button
                         onClick={() => setPaymentItem(item)}
-                        className="w-full rounded-lg border border-cyan-500/20 bg-cyan-500/10 py-1.5 text-xs font-medium text-cyan-300 transition-all hover:bg-cyan-500/20"
+                        className="w-full rounded-lg border border-cyan-500/20 bg-cyan-500/10 py-1.5 text-xs font-medium text-cyan-800 dark:text-cyan-300 transition-all hover:bg-cyan-500/20"
                       >
                         Registrar pago
                       </button>

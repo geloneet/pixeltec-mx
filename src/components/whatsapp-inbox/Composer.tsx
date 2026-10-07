@@ -215,7 +215,7 @@ export function Composer({ phone, mode, windowOpen, onSent, onNoteSaved, onModeC
               {isNoteMode ? "Guardar nota" : "Enviar"}
             </button>
           </div>
-          <p className="mt-1 text-right text-[11px] text-muted-foreground/60">
+          <p className="mt-1 text-right text-[11px] text-muted-foreground dark:text-muted-foreground/60">
             Enter envía · Shift+Enter salto de línea
           </p>
         </>

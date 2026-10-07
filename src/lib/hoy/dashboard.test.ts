@@ -48,6 +48,13 @@ describe("scoping por dueño (ADR-0036: nunca datos de otro owner)", () => {
     expect(buildSalesQuery(OWNER, NOW).toSQL().sql).toMatch(/inner join "clients"/i);
   });
 
+  it("quotes lee los timestamps reales de actividad (WO-2026-00519)", () => {
+    const sql = buildQuotesQuery(OWNER, NOW).toSQL().sql;
+    expect(sql).toMatch(/"quotes"\."sent_at"/);
+    expect(sql).toMatch(/"quotes"\."accepted_at"/);
+    expect(sql).toMatch(/"quotes"\."rejected_at"/);
+  });
+
   it("leads es el feed global (sin owner_id), igual que /clientes/leads", () => {
     expect(buildLeadsQuery(NOW).toSQL().sql).not.toMatch(/owner_id/);
   });

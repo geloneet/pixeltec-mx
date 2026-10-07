@@ -1,5 +1,6 @@
 import type { ActivityFilter, ActivityKind, ActivityRow, WidgetResult } from "@/lib/hoy/types";
-import type { HoySnapshot } from "@/lib/hoy/snapshot";
+import type { HoySnapshot, SnapQuote } from "@/lib/hoy/snapshot";
+import { formatAmountWithCode, isCurrency } from "@/lib/quotes/terms";
 import { clientHref, formatPesosWithCode, indexClients, need, rows } from "./common";
 
 const MAX_ROWS = 12;
@@ -30,10 +31,29 @@ const EMAIL_ACTIVITY = new Set(["propuesta_enviada"]);
 const QUOTE_ACTIVITY = new Set(["cotizacion_enviada", "cotizacion_aceptada", "cotizacion_rechazada"]);
 
 /**
+ * «COT-2026-0001 · Sitio web · $48,000.00 MXN». El importe solo aparece con un
+ * total real (> 0 y moneda conocida): una cotización sin conceptos no se
+ * presenta como «$0» (WO-2026-00519).
+ */
+function quoteSubtitle(q: SnapQuote): string {
+  const parts = [q.folio, q.title?.trim()];
+  if (Number.isFinite(q.totalCents) && q.totalCents > 0 && isCurrency(q.currency)) {
+    parts.push(formatAmountWithCode(q.totalCents, q.currency));
+  }
+  return parts.filter((p): p is string => !!p).join(" · ");
+}
+
+/**
  * Actividad reciente: UNION derivado de client_activity, cotizaciones
  * (enviada/aceptada/rechazada), pagos, leads y conversaciones entrantes.
  * Los eventos de cotización ya registrados en `client_activity` (A7b) no se
  * duplican con los de la tabla `quotes`.
+ *
+ * Cotizaciones (WO-2026-00519): un evento por timestamp real de `quotes`
+ * (`sent_at`, `accepted_at`, `rejected_at`). Sin timestamp no hay evento — el
+ * estado por sí solo no reconstruye historia que el modelo no conserva.
+ * OJO: `accepted_at` se captura como día (mediodía de la fecha que elige
+ * Miguel), así que su hora no es la del clic.
  */
 export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): WidgetResult<ActivityRow[]> {
   const check = need(snap, "clients", "quotes", "payments", "leads", "activity");
@@ -58,7 +78,7 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
     ];
     for (const [at, type, title] of events) {
       if (!at || loggedQuoteEvents.has(`${q.clientPgId}:${type}:${at.slice(0, 16)}`)) continue;
-      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle: `${q.folio} · ${q.title}`, at, href });
+      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle: quoteSubtitle(q), at, href });
     }
   }
 

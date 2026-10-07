@@ -23,7 +23,7 @@ const NEUTRAL = "border-border bg-muted text-muted-foreground";
 /** Calidad del número según Meta. Verde/ámbar/rojo, con etiqueta explícita. */
 export const QUALITY_META: Record<string, VisualMeta> = {
   GREEN: { label: "Alta", className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" },
-  YELLOW: { label: "Media", className: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300" },
+  YELLOW: { label: "Media", className: "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300" },
   RED: { label: "Baja", className: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300" },
   UNKNOWN: { label: "Sin datos", className: NEUTRAL },
 };
@@ -95,7 +95,7 @@ export const verticalLabel = (v: string | null) => translate(VERTICAL_LABELS, v)
 /** Estado de una plantilla. El que Meta devuelve tras crearla es `PENDING`. */
 export const TEMPLATE_STATUS_META: Record<string, VisualMeta> = {
   APPROVED: { label: "Aprobada", className: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300" },
-  PENDING: { label: "En revisión", className: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300" },
+  PENDING: { label: "En revisión", className: "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300" },
   REJECTED: { label: "Rechazada", className: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300" },
   PAUSED: { label: "Pausada", className: "border-orange-500/30 bg-orange-500/10 text-orange-700 dark:text-orange-300" },
   DISABLED: { label: "Deshabilitada", className: NEUTRAL },

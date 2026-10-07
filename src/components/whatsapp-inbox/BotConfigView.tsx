@@ -85,7 +85,7 @@ const ACCENT_CLASSES: Record<ListAccent, string> = {
   default: "border-border bg-muted text-muted-foreground",
   emerald: "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300",
   red: "border-red-500/30 bg-red-500/10 text-red-700 dark:text-red-300",
-  amber: "border-amber-500/30 bg-amber-500/10 text-amber-700 dark:text-amber-300",
+  amber: "border-amber-500/30 bg-amber-500/10 text-amber-800 dark:text-amber-300",
 };
 
 interface ListEditorProps {
@@ -129,11 +129,11 @@ function ListEditor({ label, hint, items, onChange, accent = "default", numbered
   return (
     <div className="space-y-2">
       {label && <p className="text-xs font-medium text-muted-foreground">{label}</p>}
-      {hint && <p className="text-xs text-muted-foreground/80">{hint}</p>}
+      {hint && <p className="text-xs text-muted-foreground dark:text-muted-foreground/80">{hint}</p>}
       {numbered ? (
         <ol className="space-y-1">
           {items.length === 0 && (
-            <li className="list-none text-xs text-muted-foreground/60">{emptyText ?? "Sin elementos"}</li>
+            <li className="list-none text-xs text-muted-foreground dark:text-muted-foreground/60">{emptyText ?? "Sin elementos"}</li>
           )}
           {items.map((item, idx) => (
             <li
@@ -156,7 +156,7 @@ function ListEditor({ label, hint, items, onChange, accent = "default", numbered
       ) : (
         <div className="flex flex-wrap gap-1.5">
           {items.length === 0 && (
-            <span className="text-xs text-muted-foreground/60">{emptyText ?? "Sin elementos"}</span>
+            <span className="text-xs text-muted-foreground dark:text-muted-foreground/60">{emptyText ?? "Sin elementos"}</span>
           )}
           {items.map((item, idx) => (
             <Badge
@@ -192,7 +192,7 @@ function ListEditor({ label, hint, items, onChange, accent = "default", numbered
           maxLength={MAX_ITEM_LEN}
           className="h-8 border-border bg-secondary/40 text-sm text-foreground"
         />
-        <span className="flex-shrink-0 text-xs text-muted-foreground/60">
+        <span className="flex-shrink-0 text-xs text-muted-foreground dark:text-muted-foreground/60">
           {items.length}/{MAX_ITEMS}
         </span>
       </div>
@@ -426,7 +426,7 @@ export function BotConfigView() {
     return (
       <div className="flex h-full min-h-0 flex-1 flex-col items-center justify-center gap-3 p-8 text-center">
         <p className="text-sm font-medium text-foreground">No se pudo cargar la configuración del bot</p>
-        {error && <p className="max-w-md text-xs text-muted-foreground/60">{error}</p>}
+        {error && <p className="max-w-md text-xs text-muted-foreground dark:text-muted-foreground/60">{error}</p>}
         <Button
           type="button"
           variant="outline"
@@ -450,7 +450,7 @@ export function BotConfigView() {
       <div className="flex flex-shrink-0 flex-wrap items-center gap-x-3 gap-y-1 border-b border-border bg-card px-4 py-2.5">
         <h2 className="text-sm font-semibold text-foreground">Configuración de {config.bot_name || "el bot"}</h2>
         {dirty && (
-          <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-700 dark:text-amber-300">
+          <span className="rounded-full border border-amber-500/30 bg-amber-500/10 px-2 py-0.5 text-xs font-medium text-amber-800 dark:text-amber-300">
             Cambios sin guardar
           </span>
         )}
@@ -505,7 +505,7 @@ export function BotConfigView() {
                     placeholder="PixelBot"
                     className="h-8 border-border bg-secondary/40 text-sm text-foreground"
                   />
-                  <p className="text-xs text-muted-foreground/60">
+                  <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">
                     {config.bot_name.length}/{BOT_NAME_MAX}
                   </p>
                 </div>
@@ -519,7 +519,7 @@ export function BotConfigView() {
                       placeholder="Equipo PixelTEC"
                       className="h-8 border-border bg-secondary/40 text-sm text-foreground"
                     />
-                    <p className="text-xs text-muted-foreground/60">
+                    <p className="text-xs text-muted-foreground dark:text-muted-foreground/60">
                       Nunca puede afirmar ser Miguel ni una persona real — debe ser una identidad de equipo.
                     </p>
                   </div>

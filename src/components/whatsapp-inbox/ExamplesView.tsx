@@ -385,7 +385,7 @@ export function ExamplesView() {
                 maxLength={CUSTOMER_MSG_MAX}
                 className="min-h-[60px] border-border bg-secondary/40 text-sm text-foreground"
               />
-              <p className="text-right text-xs text-muted-foreground/60">
+              <p className="text-right text-xs text-muted-foreground dark:text-muted-foreground/60">
                 {form.customerMsg.length}/{CUSTOMER_MSG_MAX}
               </p>
             </div>
@@ -401,7 +401,7 @@ export function ExamplesView() {
                 maxLength={IDEAL_REPLY_MAX}
                 className="min-h-[80px] border-border bg-secondary/40 text-sm text-foreground"
               />
-              <p className="text-right text-xs text-muted-foreground/60">
+              <p className="text-right text-xs text-muted-foreground dark:text-muted-foreground/60">
                 {form.idealReply.length}/{IDEAL_REPLY_MAX}
               </p>
             </div>

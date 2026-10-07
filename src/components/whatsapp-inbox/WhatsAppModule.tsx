@@ -70,7 +70,7 @@ export function WhatsAppModule({ tenantId }: WhatsAppModuleProps) {
               className={cn(
                 "relative flex flex-shrink-0 items-center gap-1.5 px-4 py-3 text-sm font-medium transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40",
-                activeTab === id ? "text-cyan-300" : "text-muted-foreground hover:text-foreground"
+                activeTab === id ? "text-cyan-700 dark:text-cyan-300" : "text-muted-foreground hover:text-foreground"
               )}
             >
               <Icon aria-hidden className="h-4 w-4 opacity-80" />

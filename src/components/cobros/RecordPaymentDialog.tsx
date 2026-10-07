@@ -116,7 +116,7 @@ export function RecordPaymentDialog({ item, onClose, onRecorded }: Props) {
           </div>
         </div>
 
-        {error && <p className="mt-3 text-xs text-red-400">{error}</p>}
+        {error && <p className="mt-3 text-xs text-red-700 dark:text-red-400">{error}</p>}
 
         {item.paymentHistory.length > 0 && (
           <div className="mt-4 border-t border-border pt-3">
@@ -136,7 +136,7 @@ export function RecordPaymentDialog({ item, onClose, onRecorded }: Props) {
           <button
             onClick={handleSubmit}
             disabled={saving || !(amount > 0)}
-            className="flex-1 rounded-lg border border-cyan-500/20 bg-cyan-500/10 py-2 text-sm font-medium text-cyan-300 transition-all hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-40"
+            className="flex-1 rounded-lg border border-cyan-500/20 bg-cyan-500/10 py-2 text-sm font-medium text-cyan-800 dark:text-cyan-300 transition-all hover:bg-cyan-500/20 disabled:cursor-not-allowed disabled:opacity-40"
           >
             {saving ? "Registrando..." : "Registrar pago"}
           </button>

@@ -84,7 +84,7 @@ breakpoint (< `sm` = 640 px, una columna).
    a la derecha, competía con el título («Cotización e…», «Cotización rech…»). Hay
    un test que falla si vuelven `truncate`, `line-clamp` o la hora en la fila del título.
 3. **«Aceptada» con precisión de día.** `quotes.accepted_at` se guarda a las
-   12:00 de la fecha que se elige al marcarla aceptada (`acceptQuoteAction`):
+   12:00 de la fecha que se elige al marcarla aceptada (`acceptQuote` en `src/lib/quotes/actions.ts`):
    el día es real, la hora no. Esos eventos llevan `precision: "day"` y el
    feed muestra solo «Hoy», «Ayer» o la fecha corta (p. ej. «3 oct»), con un
    tooltip de solo fecha. Enviada y rechazada sí tienen la hora real del clic y

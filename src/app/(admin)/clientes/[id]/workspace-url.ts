@@ -3,8 +3,8 @@
  *
  * WO-2026-00519: la pestaña vive en la URL para que refresh, atrás y adelante
  * la conserven. «+ Nueva cotización» (/hoy) llega con
- * `?tab=cotizaciones&nueva=<token>`; `nueva` lo consume la propia pestaña de
- * Cotizaciones (token de un solo uso), aquí solo se ignora.
+ * `?tab=cotizaciones&nueva=1`; `nueva` lo resuelve la propia pestaña de
+ * Cotizaciones (intención de un solo uso), aquí solo se ignora.
  */
 import type { WorkspaceTab } from "@/components/crm/ClientWorkspace";
 import type { ComercialSub } from "@/components/crm/workspace-tabs/ComercialTab";

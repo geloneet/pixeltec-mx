@@ -20,8 +20,9 @@ Datos añadidos solo a la BD local para probar la actividad:
   pestaña **Cotizaciones** con el formulario nuevo abierto (después del remontaje
   que provoca el `AnimatePresence` del shell).
 - `04-refresh-y-adelante-conservan-cotizaciones.jpg`: refresh conserva la pestaña
-  Cotizaciones y muestra el listado (el formulario no se reabre). Atrás → /hoy;
-  adelante → otra vez Cotizaciones con el listado.
+  Cotizaciones y muestra el listado (el formulario no se reabre). Verificado
+  también: abrir → atrás (sin refresh) → /hoy con la intención ya consumida →
+  adelante → Cotizaciones con el listado.
 - `01-actividad-cotizaciones-oscuro.jpg` / `02-actividad-cotizaciones-claro.jpg`:
   «Actividad reciente» con el filtro Cotizaciones. Eventos enviada / aceptada /
   rechazada salen de timestamps reales; el importe solo aparece si hay total real.
@@ -32,13 +33,18 @@ Datos añadidos solo a la BD local para probar la actividad:
 - **Pestaña en la URL:** `?tab=cotizaciones` y `?tab=finanzas` ahora se respetan
   (antes caían en Resumen). Un cambio de search params remonta la página en el
   App Router, así que atrás/adelante y refresh siempre arrancan con la pestaña de la URL.
-- **`nueva` de un solo uso:** el botón navega con `?nueva=<token>` (uno nuevo por
-  clic). La pestaña abre el formulario si el token no está consumido. Se consume
-  en sessionStorage al salir del formulario (cancelar/guardar), en `pagehide`
-  (refresh/cierre) o al desmontarse con otra URL. No se consume al montar ni se
-  quita de la URL: ambos rompían el flujo (verificado en navegador), porque el
-  `AnimatePresence` del shell remonta la página al terminar la entrada y porque
-  cambiar la URL remonta la página.
+- **`nueva=1` de un solo uso:** la URL sigue siendo `?tab=cotizaciones&nueva=1`
+  (contrato fijado por `src/components/nav/admin-topbar.render.test.tsx`). Antes
+  de navegar, el botón guarda en sessionStorage una intención `{clientId}`. La
+  pestaña abre el formulario solo si hay `nueva=1` **y** una intención pendiente
+  para ese cliente. La intención se consume al salir del formulario (cancelar o
+  guardar), en `pagehide` (refresh o cierre) o al desmontarse con otra URL (se
+  navegó a otra parte). Nunca al montar, y `nueva` nunca se quita de la URL:
+  ambas cosas rompían el flujo (verificado en navegador), porque el
+  `AnimatePresence` del shell remonta la página al terminar la animación de
+  entrada y porque cambiar los search params remonta la página. Un enlace con
+  `?nueva=1` pegado a mano (sin intención) abre el listado. Sin sessionStorage
+  disponible se abre el formulario, como antes.
 - **Límite (fuera de alcance):** hacer clic en otra pestaña del workspace NO
   actualiza la URL todavía; el estado vive en `useState` de
   `src/components/crm/ClientWorkspace.tsx`, que no está en los allowed_paths.

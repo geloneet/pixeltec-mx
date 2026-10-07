@@ -17,7 +17,7 @@ import { displayStatus, followUpLabel, formatAmount, formatShortDate, totalsFor 
 import { QuoteForm } from "./quote-form";
 import { QuoteDetail } from "./quote-detail";
 import { StatusBadge, type QuoteView } from "./quote-shared";
-import { browserSessionStorage, isNuevaConsumed, markNuevaConsumed } from "@/components/hoy/nueva-cotizacion-intent";
+import { browserSessionStorage, consumeNuevaIntent, hasNuevaIntent } from "@/components/hoy/nueva-cotizacion-intent";
 
 export type { QuoteView } from "./quote-shared";
 
@@ -43,36 +43,37 @@ export function CotizacionesTab({
   onChanged,
 }: Props) {
   // WO-2026-00515 (D-7): «+ Nueva cotización» del topbar llega con
-  // `?nueva=<token>` y abre directo el formulario de una cotización nueva.
-  // WO-2026-00519: el token es de un solo uso (sessionStorage; la URL no se
-  // toca — ver nueva-cotizacion-intent.ts). Se consume al salir del
-  // formulario nuevo, en `pagehide` (refresh/cierre) o al desmontarse con otra
-  // URL (se navegó a otra parte). NO al montar: el `AnimatePresence` del shell
-  // remonta la página al terminar la animación de entrada, y ese segundo
-  // montaje (misma URL) debe seguir mostrando el formulario.
+  // `?nueva=1` y abre directo el formulario de una cotización nueva.
+  // WO-2026-00519: solo si el botón dejó una intención pendiente para este
+  // cliente (sessionStorage; ver nueva-cotizacion-intent.ts). Se consume al
+  // salir del formulario nuevo, en `pagehide` (refresh/cierre) o al
+  // desmontarse con otra URL (se navegó a otra parte). NO al montar: el
+  // `AnimatePresence` del shell remonta la página al terminar la animación de
+  // entrada, y ese segundo montaje (misma URL) debe seguir en el formulario.
   const searchParams = useSearchParams();
-  const nuevaToken = searchParams?.get("nueva") ?? null;
+  const nueva = searchParams?.get("nueva") === "1";
   const [view, setView] = useState<View>(() =>
-    nuevaToken && !isNuevaConsumed(nuevaToken, browserSessionStorage()) ? { kind: "form", quote: null } : { kind: "list" }
+    nueva && (hasNuevaIntent(clientId, browserSessionStorage()) ?? true) ? { kind: "form", quote: null } : { kind: "list" }
   );
 
   useEffect(() => {
-    if (!nuevaToken) return;
+    if (!nueva) return;
     const storage = browserSessionStorage();
-    if (isNuevaConsumed(nuevaToken, storage)) return;
-    const consume = () => markNuevaConsumed(nuevaToken, storage);
+    if (hasNuevaIntent(clientId, storage) !== true) return;
+    const here = window.location.pathname + window.location.search;
+    const consume = () => consumeNuevaIntent(clientId, storage);
     window.addEventListener("pagehide", consume);
     return () => {
       window.removeEventListener("pagehide", consume);
-      if (new URLSearchParams(window.location.search).get("nueva") !== nuevaToken) consume();
+      if (window.location.pathname + window.location.search !== here) consume();
     };
-  }, [nuevaToken]);
+  }, [nueva, clientId]);
 
-  // Salir del formulario nuevo (cancelar, guardar → detalle) también lo consume.
+  // Salir del formulario nuevo (cancelar, guardar → detalle) también la consume.
   const leftNewForm = view.kind !== "form";
   useEffect(() => {
-    if (nuevaToken && leftNewForm) markNuevaConsumed(nuevaToken, browserSessionStorage());
-  }, [nuevaToken, leftNewForm]);
+    if (nueva && leftNewForm) consumeNuevaIntent(clientId, browserSessionStorage());
+  }, [nueva, leftNewForm, clientId]);
 
   if (view.kind === "form") {
     return (

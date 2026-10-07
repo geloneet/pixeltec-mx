@@ -12,13 +12,14 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
-import { newNuevaToken } from "./nueva-cotizacion-intent";
+import { browserSessionStorage, markNuevaIntent } from "./nueva-cotizacion-intent";
 
 /**
  * «+ Nueva cotización» (D-7): una cotización siempre pertenece a un cliente,
  * así que primero se elige el cliente y se abre su pestaña de cotizaciones
- * con el formulario nuevo (`?tab=cotizaciones&nueva=<token>`; el token es de
- * un solo uso — ver `nueva-cotizacion-intent.ts`, WO-2026-00519).
+ * con el formulario nuevo (`?tab=cotizaciones&nueva=1`). WO-2026-00519: antes
+ * de navegar deja una intención de un solo uso para que refresh/atrás/adelante
+ * no reabran el formulario (ver `nueva-cotizacion-intent.ts`).
  *
  * La lista sale del CRM ya cargado en el shell (`useCRM`, clientes del owner):
  * no se añade otro endpoint de servidor para esto.
@@ -37,7 +38,8 @@ export function NuevaCotizacionButton({ className }: { className?: string }) {
 
   const choose = (id: string) => {
     setOpen(false);
-    router.push(`/clientes/${encodeURIComponent(id)}?tab=cotizaciones&nueva=${newNuevaToken()}`);
+    markNuevaIntent(id, browserSessionStorage());
+    router.push(`/clientes/${encodeURIComponent(id)}?tab=cotizaciones&nueva=1`);
   };
 
   return (

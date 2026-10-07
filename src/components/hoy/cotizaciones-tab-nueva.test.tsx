@@ -4,13 +4,14 @@ import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom/vitest";
 
 /**
- * WO-2026-00515 (D-7) + WO-2026-00519: «+ Nueva cotización» del topbar lleva a
- * `/clientes/[id]?tab=cotizaciones&nueva=<token>`; la pestaña abre el
- * formulario nuevo y el token se consume (sessionStorage) cuando el usuario
- * sale del formulario (cancelar/guardar), en `pagehide` (refresh/cierre) o al
- * desmontarse con otra URL (navegó a otra parte). Un remontaje en la MISMA URL
- * — el `AnimatePresence` del shell remonta la página al terminar la animación
- * de entrada — vuelve a mostrar el formulario. La URL nunca se toca: cambiarla
+ * WO-2026-00515 (D-7) + WO-2026-00519: «+ Nueva cotización» del topbar deja
+ * una intención de un solo uso (sessionStorage, por cliente) y lleva a
+ * `/clientes/[id]?tab=cotizaciones&nueva=1`. La pestaña abre el formulario
+ * nuevo si la intención está pendiente, y la consume al salir del formulario
+ * (cancelar/guardar), en `pagehide` (refresh/cierre) o al desmontarse con otra
+ * URL (navegó a otra parte). Un remontaje en la MISMA URL — el
+ * `AnimatePresence` del shell remonta la página al terminar la animación de
+ * entrada — vuelve a mostrar el formulario. La URL nunca se toca: cambiarla
  * remonta la página en el App Router.
  */
 let search = "";
@@ -26,6 +27,7 @@ vi.mock("@/components/crm/workspace-tabs/quote-form", () => ({
 vi.mock("@/components/crm/workspace-tabs/quote-detail", () => ({ QuoteDetail: () => <div data-testid="quote-detail" /> }));
 
 import { CotizacionesTab } from "@/components/crm/workspace-tabs/CotizacionesTab";
+import { markNuevaIntent } from "./nueva-cotizacion-intent";
 
 afterEach(() => {
   cleanup();
@@ -50,23 +52,29 @@ const props = {
   onChanged: () => {},
 };
 
-describe("CotizacionesTab ?nueva=<token>", () => {
+/** Lo que hace el botón del topbar antes de navegar. */
+const clickNueva = () => markNuevaIntent("cli-1", window.sessionStorage);
+
+describe("CotizacionesTab ?nueva=1 + intención", () => {
   it("abre el formulario de cotización nueva", () => {
-    at("tab=cotizaciones&nueva=k1");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     expect(screen.getByTestId("quote-form")).toHaveTextContent("nueva");
   });
 
   it("no cambia la URL", () => {
     const replaceState = vi.spyOn(window.history, "replaceState");
-    at("tab=cotizaciones&nueva=k2");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     expect(replaceState).not.toHaveBeenCalled();
     replaceState.mockRestore();
   });
 
   it("remontaje en la MISMA URL (animación del shell / StrictMode) ⇒ el formulario sigue abierto", () => {
-    at("tab=cotizaciones&nueva=k3");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     cleanup();
     render(<CotizacionesTab {...props} />);
@@ -74,7 +82,8 @@ describe("CotizacionesTab ?nueva=<token>", () => {
   });
 
   it("refresh (pagehide) ⇒ al volver a cargar, listado", () => {
-    at("tab=cotizaciones&nueva=k4");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     window.dispatchEvent(new Event("pagehide"));
     cleanup();
@@ -83,17 +92,19 @@ describe("CotizacionesTab ?nueva=<token>", () => {
   });
 
   it("navegar a otra parte y volver con atrás/adelante ⇒ listado", () => {
-    at("tab=cotizaciones&nueva=k5");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     window.history.pushState(null, "", "/hoy"); // la URL cambia antes de desmontar
     cleanup();
-    at("tab=cotizaciones&nueva=k5"); // atrás
+    at("tab=cotizaciones&nueva=1"); // atrás
     render(<CotizacionesTab {...props} />);
     expect(screen.queryByTestId("quote-form")).toBeNull();
   });
 
   it("cancelar el formulario nuevo lo consume", () => {
-    at("tab=cotizaciones&nueva=k6");
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     fireEvent.click(screen.getByText("Cancelar"));
     expect(screen.queryByTestId("quote-form")).toBeNull();
@@ -102,17 +113,32 @@ describe("CotizacionesTab ?nueva=<token>", () => {
     expect(screen.queryByTestId("quote-form")).toBeNull();
   });
 
-  it("un nuevo clic (token nuevo) vuelve a abrir el formulario", () => {
-    at("tab=cotizaciones&nueva=k7");
+  it("un nuevo clic vuelve a abrir el formulario", () => {
+    clickNueva();
+    at("tab=cotizaciones&nueva=1");
     render(<CotizacionesTab {...props} />);
     window.dispatchEvent(new Event("pagehide"));
     cleanup();
-    at("tab=cotizaciones&nueva=k8");
+    clickNueva();
     render(<CotizacionesTab {...props} />);
     expect(screen.getByTestId("quote-form")).toHaveTextContent("nueva");
   });
 
+  it("?nueva=1 sin intención (enlace pegado) ⇒ listado", () => {
+    at("tab=cotizaciones&nueva=1");
+    render(<CotizacionesTab {...props} />);
+    expect(screen.queryByTestId("quote-form")).toBeNull();
+  });
+
+  it("intención de OTRO cliente ⇒ listado", () => {
+    markNuevaIntent("cli-otro", window.sessionStorage);
+    at("tab=cotizaciones&nueva=1");
+    render(<CotizacionesTab {...props} />);
+    expect(screen.queryByTestId("quote-form")).toBeNull();
+  });
+
   it("sin el parámetro muestra el listado", () => {
+    clickNueva();
     at("tab=cotizaciones");
     render(<CotizacionesTab {...props} />);
     expect(screen.queryByTestId("quote-form")).toBeNull();

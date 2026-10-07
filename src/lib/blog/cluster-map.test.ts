@@ -73,8 +73,14 @@ describe('relatedResourcesFor', () => {
   });
 });
 
-describe('blog-post-client.tsx — bloque «Recursos de PixelTEC mencionados» con fallback', () => {
-  const src = readFileSync(resolve(__dirname, '..', '..', 'app', '(public)', 'blog', '[slug]', 'blog-post-client.tsx'), 'utf8');
+/**
+ * Consumidor real del mapa en la ficha del artículo. WO-2026-00513 renombró
+ * `blog-post-client.tsx` → `blog-post-content.tsx` (ahora `server-only`), con el
+ * mismo bloque; WO-2026-00521 reapunta aquí sin relajar ninguna aserción. Si el
+ * archivo vuelve a moverse, este test debe seguir al consumidor, no borrarse.
+ */
+describe('blog-post-content.tsx — bloque «Recursos de PixelTEC mencionados» con fallback', () => {
+  const src = readFileSync(resolve(__dirname, '..', '..', 'app', '(public)', 'blog', '[slug]', 'blog-post-content.tsx'), 'utf8');
 
   it('usa relatedResourcesFor cuando el post no trae internalLinks y conserva el tracking', () => {
     expect(src).toMatch(/from ['"]@\/lib\/blog\/cluster-map['"]/);

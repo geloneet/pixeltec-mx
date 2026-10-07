@@ -16,7 +16,9 @@ export default function ClienteDetailPage() {
   const shell = useCRMShell();
 
   // La pestaña vive en la URL (?tab=, WO-2026-00519): refresh/atrás/adelante
-  // la conservan. Deep-links legacy y secciones ocultas: ver workspace-url.ts.
+  // la conservan (un cambio de search params remonta esta página en el App
+  // Router, así que el workspace siempre arranca con la pestaña de la URL).
+  // Deep-links legacy y secciones ocultas: ver workspace-url.ts.
   const { tab: initialTab, sub: initialSub } = resolveWorkspaceUrl(searchParams, isClientSectionVisible);
 
   if (crm.loading) {
@@ -45,9 +47,6 @@ export default function ClienteDetailPage() {
 
   return (
     <ClientWorkspace
-      // Atrás/adelante entre URLs con distinta ?tab= reutilizan esta página:
-      // la key remonta el workspace para que tome la pestaña de la URL.
-      key={`${client.id}:${initialTab ?? "resumen"}:${initialSub ?? ""}`}
       client={client}
       onBack={() => router.push("/clientes")}
       navigateToProject={(_cid, pid) => router.push(`/proyectos/${pid}`)}

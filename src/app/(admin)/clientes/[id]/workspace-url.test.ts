@@ -15,8 +15,8 @@ describe("resolveWorkspaceUrl", () => {
     expect(resolveWorkspaceUrl(new URLSearchParams("tab=cotizaciones"), onlyActive).tab).toBe("cotizaciones");
   });
 
-  it("?tab=cotizaciones&nueva=1 conserva la pestaña (nueva=1 lo consume la propia pestaña)", () => {
-    expect(resolveWorkspaceUrl(new URLSearchParams("tab=cotizaciones&nueva=1"), onlyActive).tab).toBe("cotizaciones");
+  it("?tab=cotizaciones&nueva=<token> conserva la pestaña (nueva lo consume la propia pestaña)", () => {
+    expect(resolveWorkspaceUrl(new URLSearchParams("tab=cotizaciones&nueva=k1"), onlyActive).tab).toBe("cotizaciones");
   });
 
   it("?tab=finanzas también es una pestaña válida", () => {
@@ -44,8 +44,8 @@ describe("resolveWorkspaceUrl", () => {
 });
 
 describe("workspaceTabSearch (cambio de pestaña → URL)", () => {
-  it("pone la pestaña y descarta nueva=1 para no reabrir el formulario", () => {
-    expect(workspaceTabSearch(new URLSearchParams("tab=cotizaciones&nueva=1"), "resumen")).toBe("?tab=resumen");
+  it("pone la pestaña y descarta nueva (la intención no viaja a otra pestaña)", () => {
+    expect(workspaceTabSearch(new URLSearchParams("tab=cotizaciones&nueva=k1"), "resumen")).toBe("?tab=resumen");
   });
 
   it("conserva parámetros ajenos y descarta sub fuera de Comercial", () => {

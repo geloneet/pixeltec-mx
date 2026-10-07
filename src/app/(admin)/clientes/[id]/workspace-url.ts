@@ -3,8 +3,8 @@
  *
  * WO-2026-00519: la pestaña vive en la URL para que refresh, atrás y adelante
  * la conserven. «+ Nueva cotización» (/hoy) llega con
- * `?tab=cotizaciones&nueva=1`; `nueva=1` lo consume la propia pestaña de
- * Cotizaciones (abre el formulario y lo quita de la URL), aquí solo se ignora.
+ * `?tab=cotizaciones&nueva=<token>`; `nueva` lo consume la propia pestaña de
+ * Cotizaciones (token de un solo uso), aquí solo se ignora.
  */
 import type { WorkspaceTab } from "@/components/crm/ClientWorkspace";
 import type { ComercialSub } from "@/components/crm/workspace-tabs/ComercialTab";
@@ -59,8 +59,8 @@ export function resolveWorkspaceUrl(
 }
 
 /**
- * Query string para cambiar de pestaña: fija `tab`, descarta `nueva` (no debe
- * reabrir el formulario) y `sub` fuera de Comercial; conserva lo demás.
+ * Query string para cambiar de pestaña: fija `tab`, descarta `nueva` (la
+ * intención de formulario nuevo no viaja a otras pestañas) y `sub` fuera de Comercial; conserva lo demás.
  * Listo para cablear el clic de pestaña → URL (requiere un `onTabChange` en
  * `ClientWorkspace`, fuera del alcance de WO-2026-00519).
  */

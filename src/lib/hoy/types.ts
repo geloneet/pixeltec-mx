@@ -139,6 +139,10 @@ export interface ActivityRow {
   kind: ActivityKind;
   title: string;
   subtitle: string | null;
+  /** Importe ya formateado, solo con dato real (WO-2026-00519); si no, ausente/null. */
+  amount?: string | null;
+  /** `"day"`: el día de `at` es real pero la hora no (aceptada) ⇒ mostrar solo el día. */
+  precision?: "day";
   at: string;
   href: string;
 }

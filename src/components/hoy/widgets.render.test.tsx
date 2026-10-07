@@ -139,3 +139,69 @@ describe("widget caído", () => {
     expect(tile.textContent).not.toContain("$0");
   });
 });
+
+describe("Actividad · cotizaciones (WO-2026-00519)", () => {
+  const row = (over: Partial<import("@/lib/hoy/types").ActivityRow>) => ({
+    id: "q:1:cotizacion_aceptada",
+    kind: "cotizacion" as const,
+    title: "Cotización aceptada por DALK",
+    subtitle: "COT-2026-0100 · Tienda",
+    at: "2026-10-05T18:00:00.000Z",
+    href: "/clientes/dalk?tab=cotizaciones",
+    ...over,
+  });
+
+  it("muestra el importe real en su propia línea y la fecha real como <time>", () => {
+    render(<ActivityFeed result={{ ok: true, data: [row({ amount: "$48,000.00 MXN" })] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />);
+    expect(screen.getByText("$48,000.00 MXN")).toBeInTheDocument();
+    const time = screen.getByText("Hace 1 día").closest("time");
+    expect(time).toHaveAttribute("datetime", "2026-10-05T18:00:00.000Z");
+  });
+
+  it("sin importe no pinta línea de importe (ni «$0»)", () => {
+    const { container } = render(
+      <ActivityFeed result={{ ok: true, data: [row({ amount: null })] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />,
+    );
+    expect(container.textContent).not.toMatch(/\$0|NaN|undefined/);
+  });
+
+  it("filtro de cotizaciones vacío ⇒ estado vacío honesto", () => {
+    render(<ActivityFeed result={{ ok: true, data: [] }} nowIso="2026-10-06T18:00:00.000Z" filter="cotizaciones" />);
+    expect(screen.getByText("Aún no hay cotizaciones enviadas, aceptadas ni rechazadas.")).toBeInTheDocument();
+  });
+
+  it("aceptada: solo el día real («Hoy»), sin «Hace N horas» y tooltip sin hora", () => {
+    render(
+      <ActivityFeed
+        result={{ ok: true, data: [row({ id: "acc", at: "2026-10-06T18:00:00.000Z", precision: "day" })] }}
+        nowIso="2026-10-06T21:00:00.000Z"
+        filter="cotizaciones"
+      />,
+    );
+    expect(screen.queryByText(/Hace \d+ hora/)).toBeNull();
+    const time = screen.getByText("Hoy").closest("time")!;
+    expect(time.getAttribute("title")).not.toMatch(/\d{1,2}:\d{2}/);
+  });
+
+  it("enviada/rechazada con timestamp real conservan la hora relativa y el tooltip con hora", () => {
+    render(
+      <ActivityFeed
+        result={{ ok: true, data: [row({ id: "env", title: "Cotización enviada a DALK", at: "2026-10-06T18:00:00.000Z" })] }}
+        nowIso="2026-10-06T21:00:00.000Z"
+        filter="cotizaciones"
+      />,
+    );
+    const time = screen.getByText("Hace 3 horas").closest("time")!;
+    expect(time.getAttribute("title")).toMatch(/\d{1,2}:\d{2}/);
+  });
+
+  it("el título se lee completo: sin truncate/line-clamp y sin la hora compitiendo en su fila", () => {
+    const title = "Cotización rechazada por Smile More Dental";
+    render(<ActivityFeed result={{ ok: true, data: [row({ title })] }} nowIso="2026-10-06T21:00:00.000Z" filter="cotizaciones" />);
+    const el = screen.getByText(title);
+    expect(el.className).not.toMatch(/\btruncate\b|line-clamp|whitespace-nowrap/);
+    // La hora va debajo, dentro de la misma columna de texto (no a la derecha del título).
+    const time = document.querySelector("time")!;
+    expect(el.parentElement!.contains(time)).toBe(true);
+  });
+});

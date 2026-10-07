@@ -9,6 +9,7 @@ import {
   formatLongDateEs,
   formatTimeEs,
   formatRelativeEs,
+  formatDayEs,
   startOfZonedMonth,
 } from "./date-windows";
 
@@ -54,5 +55,22 @@ describe("ventanas de fecha en America/Mexico_City", () => {
     expect(formatRelativeEs("2026-10-04T18:00:00Z", now)).toBe("Hace 2 días");
     expect(formatRelativeEs("2026-10-06T17:59:40Z", now)).toBe("Hace un momento");
     expect(formatRelativeEs("no-es-fecha", now)).toBeNull();
+  });
+});
+
+describe("formatDayEs (solo día, WO-2026-00519)", () => {
+  const now = new Date("2026-10-06T18:00:00Z"); // martes 6 oct, 12:00 CDMX
+  it("mismo día CDMX ⇒ «Hoy»; día anterior ⇒ «Ayer»; más viejo ⇒ fecha corta", () => {
+    expect(formatDayEs("2026-10-06T18:00:00Z", now)).toBe("Hoy");
+    expect(formatDayEs("2026-10-05T18:00:00Z", now)).toBe("Ayer");
+    expect(formatDayEs("2026-10-03T18:00:00Z", now)).toBe("3 oct");
+  });
+  it("usa el día de CDMX, no el UTC", () => {
+    // 2026-10-06 03:00 UTC = 5 oct 21:00 CDMX ⇒ «Ayer»
+    expect(formatDayEs("2026-10-06T03:00:00Z", now)).toBe("Ayer");
+  });
+  it("valor inválido o ausente ⇒ null", () => {
+    expect(formatDayEs("no-es-fecha", now)).toBeNull();
+    expect(formatDayEs(null, now)).toBeNull();
   });
 });

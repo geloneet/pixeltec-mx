@@ -157,3 +157,58 @@ describe("ClientWorkspace — pestaña Cotizaciones (WO-2026-00102)", () => {
     expect(screen.queryByTestId("tab-comercial")).not.toBeInTheDocument();
   });
 });
+
+/**
+ * WO-2026-00526 — la pestaña elegida con un clic se publica hacia fuera
+ * (`onTabChange`) para que la página la escriba en la URL (`?tab=`) y
+ * refresh/atrás/adelante la conserven.
+ */
+describe("ClientWorkspace — clic de pestaña → onTabChange (WO-2026-00526)", () => {
+  it("clic en otra pestaña cambia el contenido y avisa con su id", () => {
+    const onTabChange = vi.fn();
+    renderWorkspace(buildClient({ portalAccessEnabled: false }), { onTabChange });
+
+    fireEvent.click(screen.getByRole("button", { name: "Finanzas" }));
+    expect(screen.getByTestId("tab-finanzas")).toBeInTheDocument();
+    expect(onTabChange).toHaveBeenCalledTimes(1);
+    expect(onTabChange).toHaveBeenCalledWith("finanzas");
+
+    fireEvent.click(screen.getByRole("button", { name: "Cotizaciones" }));
+    expect(onTabChange).toHaveBeenLastCalledWith("cotizaciones");
+  });
+
+  it("la pestaña inicial sale de initialTab (la que trae la URL)", () => {
+    renderWorkspace(buildClient({ portalAccessEnabled: false }), { initialTab: "finanzas" });
+    expect(screen.getByTestId("tab-finanzas")).toBeInTheDocument();
+    expect(screen.queryByTestId("tab-resumen")).not.toBeInTheDocument();
+  });
+
+  it("clic en la pestaña ya activa NO avisa (no tira ?nueva=1 ni remonta un formulario abierto)", () => {
+    const onTabChange = vi.fn();
+    renderWorkspace(buildClient({ portalAccessEnabled: false }), { initialTab: "cotizaciones", onTabChange });
+
+    fireEvent.click(screen.getByRole("button", { name: "Cotizaciones" }));
+    expect(screen.getByTestId("tab-cotizaciones")).toBeInTheDocument();
+    expect(onTabChange).not.toHaveBeenCalled();
+  });
+
+  it("sin onTabChange el clic sigue funcionando (prop opcional)", () => {
+    renderWorkspace(buildClient({ portalAccessEnabled: false }));
+    fireEvent.click(screen.getByRole("button", { name: "Finanzas" }));
+    expect(screen.getByTestId("tab-finanzas")).toBeInTheDocument();
+  });
+
+  it("si initialTab cambia sin remontar (atrás/adelante), la pestaña la sigue", () => {
+    const client = buildClient({ portalAccessEnabled: false });
+    const { rerender } = renderWorkspace(client, { initialTab: "finanzas" });
+    expect(screen.getByTestId("tab-finanzas")).toBeInTheDocument();
+
+    rerender(
+      <ClientWorkspace client={client} onBack={noop} navigateToProject={noop} setModal={noop} deleteClient={noop} initialTab="cotizaciones" />
+    );
+    expect(screen.getByTestId("tab-cotizaciones")).toBeInTheDocument();
+
+    rerender(<ClientWorkspace client={client} onBack={noop} navigateToProject={noop} setModal={noop} deleteClient={noop} />);
+    expect(screen.getByTestId("tab-resumen")).toBeInTheDocument();
+  });
+});

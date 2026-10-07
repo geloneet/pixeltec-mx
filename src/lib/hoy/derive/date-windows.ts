@@ -139,3 +139,17 @@ export function formatRelativeEs(value: string | Date | null, now: Date): string
   const days = Math.floor(hours / 24);
   return `Hace ${days} ${days === 1 ? "día" : "días"}`;
 }
+
+/**
+ * Solo el día (CDMX): «Hoy», «Ayer» o «3 oct». Para timestamps cuyo día es
+ * real pero la hora no (p. ej. `quotes.accepted_at`, que se guarda a mediodía
+ * de la fecha elegida — WO-2026-00519).
+ */
+export function formatDayEs(value: string | Date | null, now: Date): string | null {
+  const key = toDayKey(value);
+  if (!key) return null;
+  const diff = diffDayKeys(zonedDayKey(now), key);
+  if (diff === 0) return "Hoy";
+  if (diff === 1) return "Ayer";
+  return shortDayFormatter.format(keyToZonedStart(key)).replace(".", "");
+}

@@ -45,10 +45,26 @@ interface Props {
   initialTab?: WorkspaceTab;
   /** Sub-sección de Comercial (?sub=) — también destino de deep-links legacy. */
   initialSub?: ComercialSub;
+  /** WO-2026-00526: el usuario eligió otra pestaña; la página la escribe en
+   *  la URL (`?tab=`) para que refresh/atrás/adelante la conserven. No se
+   *  llama al pulsar la pestaña ya activa (no tira `?nueva=1`). */
+  onTabChange?: (tab: WorkspaceTab) => void;
 }
 
-export function ClientWorkspace({ client, onBack, navigateToProject, setModal, deleteClient, initialTab, initialSub }: Props) {
+export function ClientWorkspace({ client, onBack, navigateToProject, setModal, deleteClient, initialTab, initialSub, onTabChange }: Props) {
   const [activeTab, setActiveTab] = useState<WorkspaceTab>(initialTab ?? "resumen");
+  // Si la URL cambia sin remontar el workspace (atrás/adelante), la pestaña la
+  // sigue (ajuste de estado en render, sin efecto ni parpadeo).
+  const [syncedInitialTab, setSyncedInitialTab] = useState(initialTab);
+  if (initialTab !== syncedInitialTab) {
+    setSyncedInitialTab(initialTab);
+    setActiveTab(initialTab ?? "resumen");
+  }
+  const selectTab = (tab: WorkspaceTab) => {
+    if (tab === activeTab) return;
+    setActiveTab(tab);
+    onTabChange?.(tab);
+  };
   // Gate del tab Portal (dictamen 2026-08-05): solo aparece cuando el acceso
   // está habilitado. El blob ya trae portalAccessEnabled; para blobs cargados
   // antes del cambio (undefined) se consulta una vez al montar. Habilitarlo
@@ -88,7 +104,7 @@ export function ClientWorkspace({ client, onBack, navigateToProject, setModal, d
             <button
               key={tab.id}
               type="button"
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => selectTab(tab.id)}
               className={cn(
                 "relative flex-shrink-0 px-4 py-3 text-sm font-medium transition-colors",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/40",
@@ -128,9 +144,9 @@ export function ClientWorkspace({ client, onBack, navigateToProject, setModal, d
             portalEnabled={portalEnabled}
             onPortalEnabledChange={(enabled) => {
               setPortalEnabled(enabled);
-              if (enabled && isClientSectionVisible("portal")) setActiveTab("portal");
+              if (enabled && isClientSectionVisible("portal")) selectTab("portal");
             }}
-            onOpenComercial={() => setActiveTab("comercial")}
+            onOpenComercial={() => selectTab("comercial")}
           />
         )}
         {activeTab === "cotizaciones" && (

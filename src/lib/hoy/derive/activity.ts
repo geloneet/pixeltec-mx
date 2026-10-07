@@ -1,5 +1,6 @@
 import type { ActivityFilter, ActivityKind, ActivityRow, WidgetResult } from "@/lib/hoy/types";
-import type { HoySnapshot } from "@/lib/hoy/snapshot";
+import type { HoySnapshot, SnapQuote } from "@/lib/hoy/snapshot";
+import { formatAmountWithCode, isCurrency } from "@/lib/quotes/terms";
 import { clientHref, formatPesosWithCode, indexClients, need, rows } from "./common";
 
 const MAX_ROWS = 12;
@@ -29,11 +30,33 @@ export function parseActivityFilter(raw: string | string[] | undefined | null): 
 const EMAIL_ACTIVITY = new Set(["propuesta_enviada"]);
 const QUOTE_ACTIVITY = new Set(["cotizacion_enviada", "cotizacion_aceptada", "cotizacion_rechazada"]);
 
+/** «COT-2026-0001 · Sitio web» (sin piezas vacías). */
+function quoteSubtitle(q: SnapQuote): string {
+  return [q.folio, q.title?.trim()].filter((p): p is string => !!p).join(" · ");
+}
+
+/**
+ * «$48,000.00 MXN» solo con un total real (> 0 y moneda conocida): una
+ * cotización sin conceptos no se presenta como «$0» (WO-2026-00519).
+ */
+function quoteAmount(q: SnapQuote): string | null {
+  return Number.isFinite(q.totalCents) && q.totalCents > 0 && isCurrency(q.currency)
+    ? formatAmountWithCode(q.totalCents, q.currency)
+    : null;
+}
+
 /**
  * Actividad reciente: UNION derivado de client_activity, cotizaciones
  * (enviada/aceptada/rechazada), pagos, leads y conversaciones entrantes.
  * Los eventos de cotización ya registrados en `client_activity` (A7b) no se
  * duplican con los de la tabla `quotes`.
+ *
+ * Cotizaciones (WO-2026-00519): un evento por timestamp real de `quotes`
+ * (`sent_at`, `accepted_at`, `rejected_at`). Sin timestamp no hay evento — el
+ * estado por sí solo no reconstruye historia que el modelo no conserva.
+ * OJO: `accepted_at` se captura como día (mediodía de la fecha que elige
+ * Miguel), así que su hora no es la del clic: esos eventos van con
+ * `precision: "day"` y el feed muestra solo el día.
  */
 export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): WidgetResult<ActivityRow[]> {
   const check = need(snap, "clients", "quotes", "payments", "leads", "activity");
@@ -51,6 +74,8 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
 
   for (const q of rows(snap.quotes)) {
     const href = clientHref(clients.get(q.clientPgId), "cotizaciones");
+    const subtitle = quoteSubtitle(q);
+    const amount = quoteAmount(q);
     const events: [string | null, string, string][] = [
       [q.sentAt, "cotizacion_enviada", `Cotización enviada a ${name(q.clientPgId)}`],
       [q.acceptedAt, "cotizacion_aceptada", `Cotización aceptada por ${name(q.clientPgId)}`],
@@ -58,7 +83,8 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
     ];
     for (const [at, type, title] of events) {
       if (!at || loggedQuoteEvents.has(`${q.clientPgId}:${type}:${at.slice(0, 16)}`)) continue;
-      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle: `${q.folio} · ${q.title}`, at, href });
+      const precision = type === "cotizacion_aceptada" ? ("day" as const) : undefined;
+      out.push({ id: `q:${q.id}:${type}`, kind: "cotizacion", title, subtitle, amount, at, href, ...(precision && { precision }) });
     }
   }
 

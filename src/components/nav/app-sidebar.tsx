@@ -147,7 +147,7 @@ export function AppSidebar({
             <span className="flex-1 truncate">{NAV_AREA_LABELS[area]}</span>
             {badge !== null && (
               <span
-                aria-label={`${badge} conversaciones sin leer`}
+                aria-label={`${badge} ${badge === 1 ? "conversación" : "conversaciones"} sin leer`}
                 className="inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1.5 text-[11px] font-semibold tabular-nums text-white"
               >
                 {badge > 99 ? "99+" : badge}

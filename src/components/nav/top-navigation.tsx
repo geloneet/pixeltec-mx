@@ -42,17 +42,17 @@ export function TopNavigation() {
   const openTasksCount = countOpenTasks(clients);
 
   return (
-    <header className="relative flex h-20 w-full flex-shrink-0 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-lg sm:px-6 lg:px-8">
+    <header className="relative flex h-16 w-full flex-shrink-0 items-center justify-between border-b border-border bg-background/80 px-4 backdrop-blur-lg sm:h-20 sm:px-6 lg:px-8">
       {/* ── LEFT: logo + área actual ─────────────────────────────────────── */}
-      <div className="flex flex-shrink-0 items-center gap-4">
+      <div className="flex flex-shrink-0 items-center gap-2 sm:gap-4">
         <Image
           src={process.env.NEXT_PUBLIC_LOGO_URL ?? SITE.logoPath}
           alt="PixelTEC Logo"
           width={32}
           height={32}
-          className="h-8 w-8"
+          className="h-7 w-7 sm:h-8 sm:w-8"
         />
-        <span className="font-logo whitespace-nowrap text-xl font-extrabold uppercase tracking-tight text-foreground">
+        <span className="font-logo whitespace-nowrap text-base font-extrabold uppercase tracking-tight text-foreground sm:text-xl">
           Pixel<span className="text-brand-blue">Tec</span>
           {activeArea && (
             <span className="ml-2 hidden font-sans text-lg normal-case text-muted-foreground lg:inline">
@@ -62,10 +62,10 @@ export function TopNavigation() {
         </span>
       </div>
 
-      {/* ── CENTER: pills (segmented control), scrollable en mobile ──────── */}
+      {/* En móvil las áreas se abren desde Menú; evita una pestaña recortada entre logo y acciones. */}
       <nav
         aria-label="Navegación principal"
-        className="scrollbar-none mx-2 flex flex-1 items-center justify-start overflow-x-auto lg:justify-center"
+        className="scrollbar-none mx-2 hidden flex-1 items-center justify-start overflow-x-auto sm:flex lg:justify-center"
       >
         <div className="flex items-center gap-1 rounded-full bg-secondary/60 p-1.5">
           {visibleAreas.map((area) => {

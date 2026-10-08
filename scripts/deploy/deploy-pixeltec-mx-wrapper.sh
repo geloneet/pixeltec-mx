@@ -54,6 +54,27 @@ done
 exec 9>"$LOCK_FILE"
 flock -n 9 || fail "otro deploy o check está en curso (lock: $LOCK_FILE)"
 
+# WO547: 8 GiB de crecimiento observados en WO544; conservar margen operativo.
+# En el wrapper instalado también protege SHAs anteriores al cambio.
+# Sin overrides por entorno: una lectura fallida nunca permite construir.
+capacity_preflight() {
+  local target sample available used extra
+  for target in "$APP_DIR" /var/lib/docker; do
+    sample="$(LC_ALL=C df -Pk "$target")" || fail "no se pudo medir capacidad: $target"
+    sample="$(printf '%s\n' "$sample" | awk 'NR==2 {print $4, $5}')"
+    read -r available used extra <<< "$sample"
+    [[ "$available" =~ ^[0-9]+$ && "$used" =~ ^[0-9]+%$ && -z "$extra" ]] \
+      || fail "medición de capacidad inválida: $target"
+    used="${used%\%}"
+    [ "${#available}" -le 12 ] && [ "${#used}" -le 3 ] \
+      || fail "medición de capacidad fuera de rango: $target"
+    # 10# evita interpretar ceros iniciales como octal.
+    (( 10#$used <= 85 && 10#$available >= 20971520 )) \
+      || fail "capacidad insuficiente: $target usado=${used}% libre=${available}KiB; requiere <=85% y >=20GiB. Custodio: revisar capacidad antes de reintentar"
+  done
+}
+capacity_preflight
+
 [ -d "$APP_DIR/.git" ] || fail "no existe el repositorio en $APP_DIR"
 git -C "$APP_DIR" fetch origin --quiet || fail "git fetch origin falló"
 git -C "$APP_DIR" cat-file -e "$SHA^{commit}" 2>/dev/null || fail "el SHA no existe en origin"

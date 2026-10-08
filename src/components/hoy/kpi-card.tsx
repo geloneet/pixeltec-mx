@@ -69,10 +69,10 @@ export function KpiCardView({ card }: { card: KpiCard }) {
       data-kpi={card.id}
       className={cn(
         CARD,
-        "group flex w-full min-w-0 items-start gap-3 p-4 xl:gap-2.5 xl:p-3.5 2xl:gap-3 2xl:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+        "group flex w-full min-w-0 items-start gap-3 p-3 sm:p-4 xl:gap-2.5 xl:p-3.5 2xl:gap-3 2xl:p-4 transition-colors hover:border-primary/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
       )}
     >
-      <span className={cn("flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full xl:h-9 xl:w-9 2xl:h-10 2xl:w-10", TONE_TILE[card.tone])}>
+      <span className={cn("hidden h-10 w-10 flex-shrink-0 items-center justify-center rounded-full sm:flex xl:h-9 xl:w-9 2xl:h-10 2xl:w-10", TONE_TILE[card.tone])}>
         <Icon className="h-5 w-5" strokeWidth={2} aria-hidden />
       </span>
       <div className="min-w-0 flex-1">
@@ -81,9 +81,9 @@ export function KpiCardView({ card }: { card: KpiCard }) {
           <p className={cn("font-bold tabular-nums tracking-tight text-foreground", card.valueText ? "text-[26px] leading-8 xl:text-2xl 2xl:text-[26px]" : "text-sm leading-8 text-muted-foreground")}>
             {card.valueText ?? "Sin datos"}
           </p>
-          <Sparkline card={card} />
+          <span className="hidden sm:contents"><Sparkline card={card} /></span>
         </div>
-        <div className="mt-1">
+        <div className="sr-only sm:not-sr-only sm:mt-1">
           <Delta card={card} />
         </div>
         <p className="sr-only">{card.seriesLabel}</p>
@@ -103,7 +103,7 @@ export function KpiRow({ result, visible }: { result: WidgetResult<KpiCard[]>; v
   const cards = visible ? result.data.filter((c) => visible.has(c.id)) : result.data;
   if (cards.length === 0) return null;
   return (
-    <ul aria-label="Indicadores del día" className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 min-[1400px]:grid-cols-5">
+    <ul aria-label="Indicadores del día" className="grid grid-cols-2 gap-2 sm:gap-4 md:grid-cols-3 min-[1400px]:grid-cols-5">
       {cards.map((card) => (
         <li key={card.id} className="flex min-w-0">
           <KpiCardView card={card} />

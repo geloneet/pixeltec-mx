@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { MessageCircle, Settings2 } from "lucide-react";
 import { useInboxContacts } from "@/hooks/use-inbox-contacts";
 import { useInboxConversations } from "@/hooks/use-inbox-conversations";
@@ -12,6 +12,7 @@ import { EmptyState } from "./ui/EmptyState";
 
 interface InboxShellProps {
   tenantId: string;
+  initialConversation?: string | null;
   /** Cambia a la tab "Configuración del bot" del módulo. */
   onOpenConfig: () => void;
 }
@@ -23,7 +24,7 @@ interface InboxShellProps {
  * El estado de filtros vive aquí para que el empty state central pueda
  * activar filtros de la lista.
  */
-export function InboxShell({ tenantId, onOpenConfig }: InboxShellProps) {
+export function InboxShell({ tenantId, onOpenConfig, initialConversation }: InboxShellProps) {
   const [selectedPhone, setSelectedPhone] = useState<string | null>(null);
   const [panelOpen, setPanelOpen] = useState(true);
   const [category, setCategory] = useState<CategoryId>("todos");
@@ -39,6 +40,16 @@ export function InboxShell({ tenantId, onOpenConfig }: InboxShellProps) {
     error: conversationsError,
     refetch: refetchConversations,
   } = useInboxConversations();
+  const openedLink = useRef<string | null>(null);
+  // Validar contra la bandeja autorizada; no consultar IDs arbitrarios de la URL.
+  useEffect(() => {
+    if (!initialConversation) { openedLink.current = null; return; }
+    if (openedLink.current === initialConversation || conversationsError) return;
+    if (conversations.some((c) => c.id === initialConversation)) {
+      openedLink.current = initialConversation;
+      setSelectedPhone(initialConversation);
+    }
+  }, [initialConversation, conversations, conversationsError]);
   const selectedConv = conversations.find((c) => c.id === selectedPhone);
 
   // Al abrir un hilo con no leídos, avisamos al bot para que resetee el

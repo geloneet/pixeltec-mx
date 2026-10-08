@@ -14,6 +14,7 @@ import { ChecklistPanel } from "@/components/hoy/checklist-panel";
 import { CobrosPanel } from "@/components/hoy/cobros-panel";
 import { AlertsPanel } from "@/components/hoy/alerts-panel";
 import { PipelineBoard } from "@/components/hoy/pipeline-board";
+import { DetailsPanel } from "@/components/hoy/details-panel";
 import { ActivityFeed } from "@/components/hoy/activity-feed";
 
 export const metadata: Metadata = {
@@ -81,13 +82,13 @@ export default async function HoyPage({
           )}
           {show("pipeline") && (
             <div className="hidden xl:block">
-              <PipelineBoard result={d.pipeline} />
+              <DetailsPanel title="Ver pipeline comercial"><PipelineBoard result={d.pipeline} /></DetailsPanel>
             </div>
           )}
         </div>
         <div className="flex min-w-0 flex-col gap-5">
           {show("checklist") && <ChecklistPanel result={d.checklist} nowIso={d.nowIso} />}
-          {show("cobros") && <CobrosPanel result={d.cobros} />}
+          {show("cobros") && <DetailsPanel title="Ver cobros y pagos"><CobrosPanel result={d.cobros} /></DetailsPanel>}
           {show("alertas") && <AlertsPanel result={d.alertas} nowIso={d.nowIso} />}
         </div>
       </div>
@@ -95,7 +96,7 @@ export default async function HoyPage({
       {/* Bajo xl el pipeline va después de la columna lateral (una sola columna). */}
       {show("pipeline") && (
         <div className="xl:hidden">
-          <PipelineBoard result={d.pipeline} />
+          <DetailsPanel title="Ver pipeline comercial"><PipelineBoard result={d.pipeline} /></DetailsPanel>
         </div>
       )}
 

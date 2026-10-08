@@ -20,7 +20,7 @@ export function sumUnread(data: unknown): number {
   if (!Array.isArray(list)) return 0;
   return list.reduce((sum, c) => {
     const n = typeof c?.unreadCount === "number" && c.unreadCount > 0 ? c.unreadCount : 0;
-    return sum + n;
+    return sum + (n > 0 ? 1 : 0);
   }, 0);
 }
 
@@ -32,10 +32,11 @@ export function useUnreadConversations(): number | null {
   const refresh = useCallback(async () => {
     try {
       const res = await fetch("/api/whatsapp-inbox/conversations", { cache: "no-store" });
-      if (!res.ok) return;
+      if (!res.ok) { setCount(null); return; }
       setCount(sumUnread(await res.json()));
     } catch {
-      // silencioso: el badge simplemente no se muestra
+      setCount(null);
+      // Sin dato vigente no se conserva un contador antiguo.
     }
   }, []);
 

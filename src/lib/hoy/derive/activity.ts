@@ -104,9 +104,9 @@ export function deriveActivity(snap: HoySnapshot, filter: ActivityFilter): Widge
   }
 
   for (const c of snap.conversations.items) {
-    if (c.direction !== "inbound" || !c.lastMessageAt) continue;
+    if (!c.lastMessageAt) continue;
     const who = c.clientPgId ? name(c.clientPgId) : "un contacto";
-    out.push({ id: `w:${c.phone}`, kind: "whatsapp", title: `Nuevo mensaje de ${who}`, subtitle: c.preview, at: c.lastMessageAt, href: "/whatsapp" });
+    out.push({ id: `w:${c.phone}`, kind: "whatsapp", title: c.direction === "outbound" ? `Respuesta a ${who}` : c.direction === "inbound" ? `Mensaje de ${who}` : `Conversación con ${who}`, subtitle: c.preview, at: c.lastMessageAt, href: `/whatsapp?conversation=${encodeURIComponent(c.phone)}` });
   }
 
   const kinds = FILTER_KINDS[filter];

@@ -32,6 +32,7 @@ const REVIEWER_TABS: ModuleTab[] = ["inbox", "account"];
 
 interface WhatsAppModuleProps {
   tenantId: string;
+  initialConversation?: string | null;
 }
 
 /**
@@ -39,7 +40,7 @@ interface WhatsAppModuleProps {
  * (patrón ClientWorkspace, no shadcn Tabs) y el panel activo debajo.
  * No muestra estado de canal: no existe health real del lado de Meta (P1).
  */
-export function WhatsAppModule({ tenantId }: WhatsAppModuleProps) {
+export function WhatsAppModule({ tenantId, initialConversation }: WhatsAppModuleProps) {
   const [activeTab, setActiveTab] = useState<ModuleTab>("inbox");
   const isRestricted = useIsRestrictedRole();
 
@@ -89,7 +90,7 @@ export function WhatsAppModule({ tenantId }: WhatsAppModuleProps) {
       <ReviewerGuide />
 
       <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-        {activeTab === "inbox" && <InboxShell tenantId={tenantId} onOpenConfig={() => setActiveTab("config")} />}
+        {activeTab === "inbox" && <InboxShell initialConversation={initialConversation} tenantId={tenantId} onOpenConfig={() => setActiveTab("config")} />}
         {activeTab === "account" && <AccountView />}
         {activeTab === "config" && <BotConfigView />}
         {activeTab === "examples" && <ExamplesView />}

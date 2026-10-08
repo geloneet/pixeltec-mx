@@ -98,9 +98,10 @@ export function nextFollowUp(from: Date): Date {
 /** Fecha legible: «10 de septiembre de 2026». */
 export function formatDate(value: string | Date | null): string | null {
   if (!value) return null;
+  const civil = typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value);
   const date = value instanceof Date ? value : new Date(value);
   if (Number.isNaN(date.getTime())) return null;
-  return new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
+  return new Intl.DateTimeFormat('es-MX', { day: 'numeric', month: 'long', year: 'numeric', ...(civil ? { timeZone: 'UTC' } : {}) }).format(date);
 }
 
 /** Fecha corta para el listado: «10 sep». */

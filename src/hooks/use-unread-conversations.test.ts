@@ -26,17 +26,17 @@ function ok(body: unknown) {
 }
 
 describe("sumUnread", () => {
-  it("suma unreadCount válidos e ignora basura", () => {
-    expect(sumUnread({ conversations: [{ unreadCount: 2 }, { unreadCount: 1 }, { unreadCount: -3 }, {}] })).toBe(3);
+  it("cuenta conversaciones, no mensajes, e ignora basura", () => {
+    expect(sumUnread({ conversations: [{ unreadCount: 2 }, { unreadCount: 1 }, { unreadCount: -3 }, {}] })).toBe(2);
     expect(sumUnread(null)).toBe(0);
   });
 });
 
 describe("useUnreadConversations", () => {
-  it("admin: suma no leídos de la API del inbox", async () => {
+  it("admin: cuenta conversaciones no leídas de la API del inbox", async () => {
     fetchMock.mockResolvedValue(ok({ conversations: [{ unreadCount: 2 }, { unreadCount: 1 }] }));
     const { result } = renderHook(() => useUnreadConversations());
-    await waitFor(() => expect(result.current).toBe(3));
+    await waitFor(() => expect(result.current).toBe(2));
     expect(fetchMock).toHaveBeenCalledWith("/api/whatsapp-inbox/conversations", { cache: "no-store" });
   });
 

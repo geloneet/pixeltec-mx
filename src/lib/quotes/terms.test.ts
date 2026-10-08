@@ -249,3 +249,12 @@ describe('resumen de la renovación anual', () => {
     expect(texto).toContain('nivel de escalamiento del proyecto');
   });
 });
+
+describe('fecha civil de vigencia', () => {
+  it('no desplaza un día la fecha elegida en México', () => {
+    const previous = process.env.TZ;
+    process.env.TZ = 'America/Mexico_City';
+    try { expect(formatDate('2026-10-23')).toBe('23 de octubre de 2026'); }
+    finally { if (previous === undefined) delete process.env.TZ; else process.env.TZ = previous; }
+  });
+});

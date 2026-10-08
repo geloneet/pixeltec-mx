@@ -28,7 +28,7 @@ export function ChecklistPanel({ result, nowIso }: { result: WidgetResult<Checkl
       {!result.ok ? (
         <WidgetError what="los pendientes del día" />
       ) : items.length === 0 ? (
-        <EmptyState>Nada pendiente para hoy.</EmptyState>
+        <EmptyState>Sin tareas programadas para hoy. Revisa las prioridades y conversaciones.</EmptyState>
       ) : (
         <>
           <div

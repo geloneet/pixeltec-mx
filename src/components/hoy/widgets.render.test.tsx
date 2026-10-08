@@ -111,7 +111,7 @@ describe("BD vacía: estados vacíos honestos", () => {
     const { container } = render(<Board d={empty} theme="light" />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("¡Hola!");
     expect(screen.getByText("Sin prioridades por ahora.")).toBeTruthy();
-    expect(screen.getByText("Nada pendiente para hoy.")).toBeTruthy();
+    expect(screen.getByText("Sin tareas programadas para hoy. Revisa las prioridades y conversaciones.")).toBeTruthy();
     expect(screen.getByText("Sin cobros pendientes.")).toBeTruthy();
     expect(screen.getByText("Sin alertas.")).toBeTruthy();
     expect(screen.getByText("Aún no hay actividad.")).toBeTruthy();

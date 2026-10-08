@@ -90,7 +90,7 @@ describe("derivePipeline (derivado, sin migración)", () => {
 describe("deriveActivity", () => {
   it("une fuentes y ordena de la más reciente a la más vieja", () => {
     const rows = data(deriveActivity(fullSnapshot(), "todas"));
-    expect(rows[0]).toMatchObject({ kind: "whatsapp", title: "Nuevo mensaje de Smile More Dental" });
+    expect(rows[0]).toMatchObject({ kind: "whatsapp", title: "Mensaje de Smile More Dental" });
     const times = rows.map((r) => Date.parse(r.at));
     expect([...times].sort((a, b) => b - a)).toEqual(times);
   });

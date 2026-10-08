@@ -145,3 +145,13 @@ describe("deriveActivity · cotizaciones reales", () => {
     expect(byId["q:p:cotizacion_rechazada"].precision).toBeUndefined();
   });
 });
+
+describe('WhatsApp en Inicio', () => {
+  it('conserva respuestas recientes y abre la conversación exacta', () => {
+    const snap = fullSnapshot();
+    snap.conversations = { status: 'ok', items: [{ phone: '+5215550000000', clientPgId: null, lastMessageAt: NOW.toISOString(), preview: 'Respuesta', direction: 'outbound', unread: 0 }] };
+    const result = deriveActivity(snap, 'whatsapp');
+    expect(result.ok).toBe(true);
+    if (result.ok) expect(result.data).toEqual([expect.objectContaining({ title: 'Respuesta a un contacto', href: '/whatsapp?conversation=%2B5215550000000' })]);
+  });
+});

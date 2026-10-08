@@ -98,3 +98,14 @@ describe("InboxShell — modo revisor (WO-2026-00181)", () => {
     expect(screen.getByRole("button", { name: /Ver configuración del bot/ })).toBeInTheDocument();
   });
 });
+
+describe('apertura desde Inicio', () => {
+  it('selecciona únicamente una conversación disponible en la bandeja', async () => {
+    mockConversations = [{ id: '+5215550000000', unreadCount: 0 }];
+    const view = render(<InboxShell tenantId="pixeltec" initialConversation="+5215550000000" onOpenConfig={vi.fn()} />);
+    await waitFor(() => expect(screen.getByText('hilo: +5215550000000')).toBeInTheDocument());
+    view.unmount();
+    render(<InboxShell tenantId="pixeltec" initialConversation="no-autorizada" onOpenConfig={vi.fn()} />);
+    expect(screen.queryByText('hilo: no-autorizada')).not.toBeInTheDocument();
+  });
+});

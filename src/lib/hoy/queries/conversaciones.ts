@@ -13,12 +13,20 @@ import { inArray } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { whatsappContacts } from "@/lib/db/schema";
 import { fetchPixelbot } from "@/lib/whatsapp-inbox/pixelbot-client";
+import { parseCanonical } from "@/lib/whatsapp-inbox/time";
 import type { InboxConversation } from "@/types/whatsapp-inbox";
 import type { SnapClient, SnapConversation } from "@/lib/hoy/snapshot";
 import type { ConversationsStatus } from "@/lib/hoy/types";
 
 export const PIXELBOT_HOY_TIMEOUT_MS = 2_500;
 const MAX_CONVERSATIONS = 50;
+
+/** El bot entrega UTC sin sufijo; transportarlo como ISO evita que el navegador lo lea como hora local. */
+function messageTimestamp(value: string | undefined): string | null {
+  if (!value) return null;
+  const date = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value) ? parseCanonical(value) : new Date(value);
+  return Number.isFinite(date.getTime()) ? date.toISOString() : null;
+}
 
 /** Últimos 10 dígitos: iguala +52 1 322…, 52322… y 322…. */
 export function phoneKey(raw: string): string {
@@ -60,7 +68,7 @@ export function linkConversations(
   }
   return conversations
     .filter((c) => typeof c.id === "string" && c.id.length > 0)
-    .sort((a, b) => Date.parse(b.lastMessageAt ?? "") - Date.parse(a.lastMessageAt ?? "") || 0)
+    .sort((a, b) => Date.parse(messageTimestamp(b.lastMessageAt) ?? "") - Date.parse(messageTimestamp(a.lastMessageAt) ?? "") || 0)
     .slice(0, MAX_CONVERSATIONS)
     .map((c) => {
       const linkedId = linked.get(c.id);
@@ -68,7 +76,7 @@ export function linkConversations(
       return {
         phone: c.id,
         clientPgId,
-        lastMessageAt: c.lastMessageAt ?? null,
+        lastMessageAt: messageTimestamp(c.lastMessageAt),
         preview: c.lastMessagePreview?.trim() || null,
         direction: c.lastMessageDirection ?? null,
         unread: typeof c.unreadCount === "number" && c.unreadCount > 0 ? c.unreadCount : 0,

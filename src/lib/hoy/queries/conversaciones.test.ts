@@ -8,6 +8,7 @@ vi.mock("@/lib/db", () => ({ db: { select: () => ({ from: () => ({ where: whereM
 
 import { linkConversations, loadConversations, phoneKey, PIXELBOT_HOY_TIMEOUT_MS } from "./conversaciones";
 import { client } from "../__tests__/fixtures";
+import { formatRelativeEs } from "../derive/date-windows";
 
 const clients = [
   client({ pgId: "c-smile", name: "Smile", phones: ["+52 1 (322) 123-4567"] }),
@@ -21,6 +22,13 @@ afterEach(() => {
 });
 
 describe("vinculación de conversaciones", () => {
+  it("transporta el UTC canónico del bot sin reinterpretarlo en la zona del navegador", () => {
+    vi.stubEnv("TZ", "America/Mexico_City");
+    const [row] = linkConversations([{ id: "5213220000001", lastMessageAt: "2026-10-07 17:01:00" }], [], new Map());
+    expect(row.lastMessageAt).toBe("2026-10-07T17:01:00.000Z");
+    expect(formatRelativeEs(row.lastMessageAt, new Date("2026-10-08T07:30:00Z"))).toBe("Hace 14 horas");
+    expect(linkConversations([{ id: "unknown", lastMessageAt: "invalid" }], [], new Map())[0].lastMessageAt).toBeNull();
+  });
   it("normaliza teléfonos a 10 dígitos", () => {
     expect(phoneKey("5213221234567")).toBe("3221234567");
     expect(phoneKey("+52 1 (322) 123-4567")).toBe("3221234567");

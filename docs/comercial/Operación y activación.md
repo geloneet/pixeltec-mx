@@ -12,7 +12,7 @@ Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON de
 | COMMERCIAL_OWNER_ID | UUID de un admin activo responsable de la cartera; un tenant no se asigna a varios owners |
 | PORTAL_SESSION_SECRET | Secreto del portal existente; acceso OTP y portalAccessEnabled siguen obligatorios |
 | RESEND_API_KEY, RESEND_FROM_EMAIL | Permisos de envío y dominio remitente realmente verificado |
-| RESEND_WEBHOOK_SECRET | Secreto Svix del endpoint /api/commercial/email-webhook; validar cuerpo crudo |
+| RESEND_WEBHOOK_SECRET | Secreto Svix del endpoint /api/commercial/webhooks/email; validar cuerpo crudo |
 | COMMERCIAL_INBOUND_ADDRESSES | Lista de buzones receptores aprobados, separados por coma |
 | COMMERCIAL_EMAIL_RECEIVING_ENABLED | true únicamente tras configurar recepción, dominio/MX y prueba firmada |
 | COMMERCIAL_EMAIL_WEBHOOK_ENABLED | true permite recibos firmados de entrega sin habilitar recepción comercial |

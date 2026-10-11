@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+estado.json
+estado.json.tmp
+eventos.log
+export/

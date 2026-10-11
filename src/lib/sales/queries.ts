@@ -1,5 +1,5 @@
 import 'server-only';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { billingItems, clients, quotes, recurringCharges, sales } from '@/lib/db/schema';
 import { deriveSaleStatus, isSaleStatus, isRecurringStatus, type SaleStatus, type RecurringStatus } from './model';
@@ -61,22 +61,22 @@ function markDeposit(rows: Omit<SaleCharge, 'isDeposit'>[]): SaleCharge[] {
   return rows.map((r) => ({ ...r, isDeposit: r.id === first }));
 }
 
-export async function getSaleByQuotation(quotationId: string): Promise<SaleRecord | null> {
+export async function getSaleByQuotation(quotationId: string, ownerId?: string): Promise<SaleRecord | null> {
   const [row] = await db.select().from(sales).where(eq(sales.quotationId, quotationId)).limit(1);
-  return row ? hydrate(row.id) : null;
+  return row ? hydrate(row.id, ownerId) : null;
 }
 
-export async function getSaleById(id: string): Promise<SaleRecord | null> {
-  return hydrate(id);
+export async function getSaleById(id: string, ownerId?: string): Promise<SaleRecord | null> {
+  return hydrate(id, ownerId);
 }
 
-async function hydrate(saleId: string): Promise<SaleRecord | null> {
+async function hydrate(saleId: string, ownerId?: string): Promise<SaleRecord | null> {
   const [row] = await db
     .select({ sale: sales, clientName: clients.name, quoteFolio: quotes.folio })
     .from(sales)
     .innerJoin(clients, eq(clients.id, sales.clientId))
     .leftJoin(quotes, eq(quotes.id, sales.quotationId))
-    .where(eq(sales.id, saleId))
+    .where(and(eq(sales.id, saleId), ownerId ? eq(clients.ownerId, ownerId) : undefined))
     .limit(1);
   if (!row) return null;
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { and, eq, inArray, lte } from "drizzle-orm";
+import { and, eq, inArray, lte, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { billingItems, clients } from "@/lib/db/schema";
 import { assertCronExecutionAllowed, cronBlockedResponse } from "@/lib/cron-guard";
@@ -49,7 +49,7 @@ export async function GET(req: NextRequest) {
         remindedForDueDate: billingItems.remindedForDueDate,
       })
       .from(billingItems)
-      .where(and(inArray(billingItems.status, ["pendiente", "parcial"]), lte(billingItems.dueDate, horizonKey)));
+      .where(and(inArray(billingItems.status, ["pendiente", "parcial"]), lte(billingItems.dueDate, horizonKey),sql`not exists (select 1 from commercial_reminders r where r.billing_item_id=${billingItems.id} and r.due_period=${billingItems.dueDate})`, process.env.COMMERCIAL_REMINDERS_ENABLED === 'true' && process.env.COMMERCIAL_OWNER_ID ? sql`${billingItems.ownerId} <> ${process.env.COMMERCIAL_OWNER_ID}` : undefined));
 
     const notifications: string[] = [];
 

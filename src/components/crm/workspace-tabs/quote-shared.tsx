@@ -17,6 +17,7 @@ import {
 import { STATUS_LABEL, type QuoteStatus, type PaymentTerms, type Rejection, type Currency } from "@/lib/quotes/terms";
 
 export interface QuoteView {
+  version?: number;
   id: string;
   folio: string;
   title: string;
@@ -42,6 +43,7 @@ export interface QuoteView {
 }
 
 const BADGE: Record<QuoteStatus, string> = {
+  aceptacion_pendiente: "bg-blue-500/10 text-blue-600 dark:text-blue-400",
   borrador: "bg-muted text-muted-foreground",
   lista: "bg-violet-500/10 text-violet-500",
   enviada: "bg-sky-500/10 text-sky-500",

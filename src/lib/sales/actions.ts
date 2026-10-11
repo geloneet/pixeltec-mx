@@ -8,7 +8,7 @@
  * refactorizarlo. Aquí solo se reconcilia el estado de la Venta DESPUÉS de que
  * el sistema financiero haya hecho su trabajo.
  */
-import { and, eq, ne } from 'drizzle-orm';
+import { and, eq, ne, sql } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { db } from '@/lib/db';
@@ -61,7 +61,7 @@ export async function getSaleForQuoteAction(quotationId: string): Promise<Action
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
-    const sale = await getSaleByQuotation(quotationId);
+    const sale = await getSaleByQuotation(z.string().uuid().parse(quotationId), guard.uid);
     return { ok: true, data: { sale: sale ? await syncStatus(sale) : null } };
   } catch (err) {
     return fail(err, 'get_sale_failed', 'No se pudo cargar la venta.');
@@ -73,7 +73,7 @@ export async function getSaleAction(saleId: string): Promise<ActionResult<{ sale
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
-    const sale = await getSaleById(saleId);
+    const sale = await getSaleById(z.string().uuid().parse(saleId), guard.uid);
     if (!sale) return { ok: false, error: 'La venta ya no existe.' };
     return { ok: true, data: { sale: await syncStatus(sale) } };
   } catch (err) {
@@ -103,7 +103,7 @@ export async function activateRecurring(input: z.infer<typeof ActivateSchema>): 
     const [row] = await db
       .select({ id: recurringCharges.id, status: recurringCharges.status })
       .from(recurringCharges)
-      .where(eq(recurringCharges.id, data.recurringId))
+      .where(and(eq(recurringCharges.id, data.recurringId), sql`exists (select 1 from clients c where c.id=${recurringCharges.clientId} and c.owner_id=${guard.uid})`))
       .limit(1);
     if (!row) return { ok: false, error: 'El servicio recurrente ya no existe.' };
     if (row.status === 'active') return { ok: true };
@@ -117,7 +117,7 @@ export async function activateRecurring(input: z.infer<typeof ActivateSchema>): 
         // de Finanzas. Es derivado, no una segunda verdad.
         active: true,
       })
-      .where(eq(recurringCharges.id, data.recurringId));
+      .where(and(eq(recurringCharges.id, data.recurringId), sql`exists (select 1 from clients c where c.id=${recurringCharges.clientId} and c.owner_id=${guard.uid})`));
 
     revalidatePath('/clientes');
     revalidatePath('/cobros');
@@ -139,10 +139,11 @@ export async function setRecurringStatus(input: z.infer<typeof SetRecurringStatu
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
     const data = SetRecurringStatusSchema.parse(input);
-    await db
+    const [changed] = await db
       .update(recurringCharges)
       .set({ status: data.status, active: data.status === 'active' })
-      .where(eq(recurringCharges.id, data.recurringId));
+      .where(and(eq(recurringCharges.id, data.recurringId), sql`exists (select 1 from clients c where c.id=${recurringCharges.clientId} and c.owner_id=${guard.uid})`)).returning({ id: recurringCharges.id });
+    if (!changed) return { ok:false, error:'El servicio recurrente no está disponible.' };
 
     revalidatePath('/clientes');
     revalidatePath('/cobros');

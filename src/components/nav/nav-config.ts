@@ -15,6 +15,8 @@ import type { CRMClient, CRMTask } from "@/types/crm";
  */
 export type NavArea =
   | "hoy"
+  | "ventas"
+  | "ajustes"
   | "crm"
   | "whatsapp"
   | "finanzas"
@@ -31,24 +33,12 @@ export type NavArea =
  * muestra pero que no pueden ocultarse sin 404.
  */
 export const NAV_AREA_ORDER: NavArea[] = [
-  "hoy",
-  "whatsapp",
-  "crm",
-  "cotizaciones",
-  "finanzas",
-  "proyectos",
-  "blog",
-  "seo",
-  "usuarios",
+  "hoy", "ventas", "crm", "whatsapp", "proyectos", "finanzas", "ajustes", "cotizaciones", "blog", "seo", "usuarios",
 ];
 
 /** Grupo principal (mockup). El resto de NAV_AREA_ORDER va bajo «Más». */
 export const NAV_PRIMARY_AREAS: ReadonlySet<NavArea> = new Set<NavArea>([
-  "hoy",
-  "whatsapp",
-  "crm",
-  "cotizaciones",
-  "finanzas",
+  "hoy", "ventas", "crm", "whatsapp", "proyectos", "finanzas", "ajustes",
 ]);
 
 /**
@@ -58,11 +48,13 @@ export const NAV_PRIMARY_AREAS: ReadonlySet<NavArea> = new Set<NavArea>([
  */
 export const NAV_AREA_LABELS: Record<NavArea, string> = {
   hoy: "Inicio",
+  ventas: "Ventas",
+  ajustes: "Ajustes",
   crm: "Clientes",
   whatsapp: "Conversaciones",
   finanzas: "Cobros",
   cotizaciones: "Cotizaciones",
-  proyectos: "Trabajo",
+  proyectos: "Proyectos",
   blog: "Blog",
   seo: "SEO",
   usuarios: "Usuarios",
@@ -92,6 +84,8 @@ interface AreaItemRef {
  */
 const AREA_ITEMS: Record<NavArea, AreaItemRef[]> = {
   hoy: [{ href: "/hoy" }],
+  ventas: [{ href: "/ventas" }],
+  ajustes: [{ href: "/ajustes" }],
   crm: [
     { href: "/clientes", secondaryLabel: "Cuentas" },
     { href: "/clientes/leads", secondaryLabel: "Leads" },

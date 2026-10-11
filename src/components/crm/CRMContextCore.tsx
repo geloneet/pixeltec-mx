@@ -234,6 +234,33 @@ export function CRMProvider({ children }: { children: ReactNode }) {
     await doSave();
   }, [doSave]);
 
+  useEffect(() => {
+    if (!user || restricted) return;
+    let cancelled = false;
+    let refreshing = false;
+    let again = false;
+    const refresh = async () => {
+      if (refreshing) { again = true; return; }
+      refreshing = true;
+      try {
+        await flushSave();
+        const d = await getCrmDataAction();
+        if (!cancelled) {
+          dataRef.current = d;
+          setClients(d.clients); setTools(d.tools); setStreak(d.streak);
+          setServerLinks(d.serverLinks); setSessions(d.sessions);
+        }
+      } catch {
+        if (!cancelled) toast.error('La cartera cambió. Recarga antes de editar la ficha.');
+      } finally {
+        refreshing = false;
+        if (again && !cancelled) { again = false; void refresh(); }
+      }
+    };
+    window.addEventListener('commercial-data-changed', refresh);
+    return () => { cancelled = true; window.removeEventListener('commercial-data-changed', refresh); };
+  }, [user, restricted, flushSave]);
+
   const update = useCallback((newClients: CRMClient[], newStreak?: number) => {
     setClients(newClients);
     dataRef.current.clients = newClients;

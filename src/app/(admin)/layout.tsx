@@ -24,6 +24,8 @@ import { AdminTopbar } from "@/components/nav/admin-topbar";
 import { CommandPalette } from "@/components/nav/command-palette";
 import { RestrictedShellBoundary } from "@/components/nav/restricted-shell-boundary";
 import { getActiveArea, NAV_AREA_LABELS } from "@/components/nav/nav-config";
+import { CommercialShell } from '@/components/commercial/commercial-shell';
+import { useSession } from 'next-auth/react';
 
 // ─── Shell ────────────────────────────────────────────────────────────────────
 
@@ -38,13 +40,16 @@ function Shell({
   const pathname = usePathname();
   const activeArea = getActiveArea(pathname);
   const { resolvedTheme } = useTheme();
+  const { data: session } = useSession();
 
   // Título de la pestaña (Miguel, 2026-08-26): con varios proyectos abiertos,
   // el título por defecto del sitio público no dice cuál es esta ventana. Se
   // hace aquí y no con `metadata` porque este layout es un Client Component.
   useEffect(() => {
-    document.title = activeArea ? `PIXELTEC CRM · ${NAV_AREA_LABELS[activeArea]}` : "PIXELTEC CRM";
-  }, [activeArea]);
+    if (session?.user?.role === 'reviewer') document.title = activeArea ? `PIXELTEC CRM · ${NAV_AREA_LABELS[activeArea]}` : "PIXELTEC CRM";
+  }, [activeArea, session?.user?.role]);
+
+  if (session?.user?.role !== 'reviewer') return <CommercialShell>{children}<Toaster richColors position="top-right" theme={resolvedTheme === 'light' ? 'light' : 'dark'} /></CommercialShell>;
 
   return (
     // WO-2026-00515: `.crm` acota los tokens del Centro Comercial (globals.css)

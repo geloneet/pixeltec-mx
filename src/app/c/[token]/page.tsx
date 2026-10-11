@@ -2,12 +2,13 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getQuoteByToken } from '@/lib/quotes/queries';
 import { QuoteDocument } from '@/components/crm/workspace-tabs/quote-document';
+import { QuoteDecisionForm } from '@/components/crm/workspace-tabs/quote-decision-form';
 
 /**
  * Vista pública de una cotización (WO-2026-00102).
  *
- * Solo lectura, sin sesión y **sin acciones del cliente**: no hay aceptar, ni
- * comentar, ni formularios.
+ * Enlace protegido por token para un documento. La decisión guarda versión,
+ * nombre declarado y fecha; la venta exige confirmación administrativa.
  *
  * El documento lo pinta `QuoteDocument`, el MISMO componente que usa la vista
  * previa en pop-up del panel: así lo que Miguel revisa antes de enviar es
@@ -25,11 +26,12 @@ export const metadata: Metadata = {
 export default async function PublicQuotePage({ params }: { params: Promise<{ token: string }> }) {
   const { token } = await params;
   const quote = await getQuoteByToken(token);
-  if (!quote) notFound();
+  if (!quote || quote.status === 'borrador') notFound();
 
   return (
     <main className="mx-auto w-full max-w-2xl px-5 py-10 sm:py-16">
       <QuoteDocument quote={quote} clientName={quote.clientName} />
+      <QuoteDecisionForm token={token} version={quote.version} closed={['aceptada', 'aceptacion_pendiente'].includes(quote.status)} />
       <footer className="mt-12 border-t border-border pt-6 text-xs text-muted-foreground">
         ¿Dudas sobre esta cotización? Responde el correo o escríbenos por WhatsApp.
       </footer>

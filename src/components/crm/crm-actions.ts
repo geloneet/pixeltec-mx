@@ -5,7 +5,7 @@
  * directa a Firestore que hacía `CRMContextCore.tsx`. Ver `crm-sync.ts` para
  * la lógica de reconciliación real; este archivo solo autentica y delega.
  */
-import { auth } from "@/lib/auth/config";
+import { requireUserSession } from "@/lib/auth/session";
 import {
   getFullCrmData,
   syncCrmClients,
@@ -29,10 +29,9 @@ import type { WorkSession } from "@/types/session";
 import { toPublicFailure } from "@/lib/errors/public-failure";
 
 async function requireOwnerId(): Promise<string> {
-  const session = await auth();
-  const ownerId = session?.user?.id;
-  if (!ownerId) throw new Error("No autenticado");
-  return ownerId;
+  const session = await requireUserSession();
+  if (!session || !['admin', 'staff'].includes(session.role || '')) throw new Error("No autenticado");
+  return session.userId;
 }
 
 export async function getCrmDataAction() {
@@ -66,7 +65,7 @@ export async function syncCrmDataAction(payload: CrmSyncPayload): Promise<{ ok: 
     // Drizzle citaba aquí la consulta y los nombres de columna, y el
     // la conversión a texto arrastraba objetos enteros. `CRMContextCore` muestra
     // este campo directamente.
-    console.error("[syncCrmDataAction]", error);
+    console.error("[syncCrmDataAction] crm_sync_failed");
     return {
       ok: false,
       error: toPublicFailure(error, {

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { and, eq, isNotNull, ne } from "drizzle-orm";
+import { and, eq, isNotNull, ne, sql } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { billingItems, clients, recurringCharges, sales } from "@/lib/db/schema";
 import { assertCronExecutionAllowed, cronBlockedResponse } from "@/lib/cron-guard";
@@ -61,7 +61,7 @@ export async function GET(req: NextRequest) {
       }
 
       const [client] = await db
-        .select({ name: clients.name, email: clients.email })
+        .select({ name: clients.name, email: clients.email, ownerId: clients.ownerId })
         .from(clients)
         .where(eq(clients.id, charge.clientId))
         .limit(1);
@@ -75,12 +75,13 @@ export async function GET(req: NextRequest) {
       // `recordPayment` la hace avanzar sola en cada pago completo. Nunca se
       // inserta una segunda para el mismo `recurring_charge_id`.
       const [existing] = await db
-        .select({ id: billingItems.id, dueDate: billingItems.dueDate, currency: billingItems.currency })
+        .select({ id: billingItems.id, dueDate: billingItems.dueDate, currency: billingItems.currency,commercialManaged:sql<boolean>`exists (select 1 from commercial_reminders r where r.billing_item_id=${billingItems.id} and r.due_period=${billingItems.dueDate})` })
         .from(billingItems)
         .where(and(eq(billingItems.recurringChargeId, charge.id), ne(billingItems.status, "cancelado")))
         .limit(1);
 
       if (existing) {
+        if(existing.commercialManaged || (process.env.COMMERCIAL_REMINDERS_ENABLED === 'true' && client.ownerId === process.env.COMMERCIAL_OWNER_ID)) continue;
         const dueDate = new Date(`${existing.dueDate}T00:00:00`);
         const reminderState = {
           reminderCycleDue: charge.reminderCycleDue,
@@ -173,6 +174,7 @@ export async function GET(req: NextRequest) {
 
       // Aún no vence el primer período — evaluar avisos de checkpoint contra
       // la próxima fecha (aritmética del recurrente: todavía no hay fila real).
+      if (process.env.COMMERCIAL_REMINDERS_ENABLED === 'true' && client.ownerId === process.env.COMMERCIAL_OWNER_ID) continue;
       const dueDate = getNextChargeDate(charge.startDate, charge.frequency);
       const [saleRowForCurrency] = charge.saleId
         ? await db.select({ currency: sales.currency }).from(sales).where(eq(sales.id, charge.saleId)).limit(1)

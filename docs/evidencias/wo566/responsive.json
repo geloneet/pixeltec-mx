@@ -1,0 +1,93 @@
+[
+  {
+    "section": "Inicio",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Ventas",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Clientes",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Conversaciones",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Proyectos",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Cobros",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Ajustes",
+    "document": 390,
+    "headingTop": 83,
+    "mainScroll": 0,
+    "viewport": 390
+  },
+  {
+    "section": "Inicio",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Ventas",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Clientes",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Conversaciones",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Proyectos",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Cobros",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  },
+  {
+    "section": "Ajustes",
+    "document": 320,
+    "mainScroll": 0,
+    "viewport": 320
+  }
+]

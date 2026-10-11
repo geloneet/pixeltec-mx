@@ -1,5 +1,5 @@
 import 'server-only';
-import { desc, eq } from 'drizzle-orm';
+import { and, desc, eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { quotes, clients } from '@/lib/db/schema';
 import { isFirstYearFree, recurrenceOf, type QuoteItem } from './money';
@@ -12,6 +12,7 @@ import { parsePaymentTerms, type Currency, type PaymentTerms, type Rejection, is
 
 export interface QuoteRecord {
   id: string;
+  version: number;
   clientId: string;
   folio: string;
   title: string;
@@ -71,9 +72,10 @@ function toItems(raw: unknown): QuoteItem[] {
 
 type QuoteRow = typeof quotes.$inferSelect;
 
-function toRecord(row: QuoteRow): QuoteRecord {
+export function toQuoteRecord(row: QuoteRow): QuoteRecord {
   return {
     id: row.id,
+    version: row.version,
     clientId: row.clientId,
     folio: row.folio,
     title: row.title,
@@ -103,12 +105,20 @@ function toRecord(row: QuoteRow): QuoteRecord {
 /** Cotizaciones de un cliente, de la más reciente a la más antigua. */
 export async function listQuotesForClient(clientId: string): Promise<QuoteRecord[]> {
   const rows = await db.select().from(quotes).where(eq(quotes.clientId, clientId)).orderBy(desc(quotes.createdAt));
-  return rows.map(toRecord);
+  return rows.map(toQuoteRecord);
 }
 
 export async function getQuoteById(id: string): Promise<QuoteRecord | null> {
   const rows = await db.select().from(quotes).where(eq(quotes.id, id)).limit(1);
-  return rows[0] ? toRecord(rows[0]) : null;
+  return rows[0] ? toQuoteRecord(rows[0]) : null;
+}
+
+/** Frontera interna: un identificador no concede acceso a otra cartera. */
+export async function getOwnedQuoteById(id: string, ownerId: string): Promise<QuoteRecord | null> {
+  const [row] = await db.select({ quote: quotes }).from(quotes)
+    .innerJoin(clients, eq(clients.id, quotes.clientId))
+    .where(and(eq(quotes.id, id), eq(clients.ownerId, ownerId))).limit(1);
+  return row ? toQuoteRecord(row.quote) : null;
 }
 
 /** Para la vista pública: la cotización más el nombre del cliente. */
@@ -120,7 +130,7 @@ export async function getQuoteByToken(token: string): Promise<(QuoteRecord & { c
     .where(eq(quotes.publicToken, token))
     .limit(1);
   if (!rows[0]) return null;
-  return { ...toRecord(rows[0].quote), clientName: rows[0].clientName };
+  return { ...toQuoteRecord(rows[0].quote), clientName: rows[0].clientName };
 }
 
 /** Folios ya usados — alimenta `nextFolio`. */

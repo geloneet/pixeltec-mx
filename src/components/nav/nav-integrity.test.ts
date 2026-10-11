@@ -50,21 +50,7 @@ function extractRedirects(): Array<{ source: string; destination: string; perman
 describe("taxonomía visible (ADR-0030 · ADR-0039 · WO-2026-00088/ADR-0054 propuesta)", () => {
   it("navegación visible para admin/staff, en orden, con las etiquetas aprobadas", () => {
     expect(getVisibleNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual([
-      // WO-2026-00515 (mockup «Centro Comercial»): orden comercial y etiquetas
-      // «Conversaciones» (área whatsapp, ruta /whatsapp intacta) y «Cobros»
-      // (área finanzas, ruta /cobros intacta).
-      "Inicio",
-      "Conversaciones",
-      "Clientes",
-      // WO-2026-00132 (Funcional·Simple·Único): Cotizaciones y Trabajo
-      // reemplazan Proyectos/Definición/PixelForge.
-      "Cotizaciones",
-      "Cobros",
-      "Trabajo",
-      "Blog",
-      // «SEO» añadido por orden de Miguel (2026-08-26, WO-2026-00095).
-      "SEO",
-      "Usuarios",
+      "Inicio", "Ventas", "Clientes", "Conversaciones", "Proyectos", "Cobros", "Ajustes", "Cotizaciones", "Blog", "SEO", "Usuarios",
     ]);
     expect(getVisibleNavAreas("staff")).toEqual(getVisibleNavAreas("admin"));
     expect(getVisibleNavAreas(undefined)).toEqual(getVisibleNavAreas("admin"));
@@ -72,13 +58,9 @@ describe("taxonomía visible (ADR-0030 · ADR-0039 · WO-2026-00088/ADR-0054 pro
 
   it("WO-2026-00515: grupo principal del mockup y el resto tras «Más»", () => {
     expect(getPrimaryNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual([
-      "Inicio",
-      "Conversaciones",
-      "Clientes",
-      "Cotizaciones",
-      "Cobros",
+      "Inicio", "Ventas", "Clientes", "Conversaciones", "Proyectos", "Cobros", "Ajustes",
     ]);
-    expect(getMoreNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual(["Trabajo", "Blog", "SEO", "Usuarios"]);
+    expect(getMoreNavAreas("admin").map((a) => NAV_AREA_LABELS[a])).toEqual(["Cotizaciones", "Blog", "SEO", "Usuarios"]);
     expect(getPrimaryNavAreas("reviewer")).toEqual([]);
     expect(getMoreNavAreas("reviewer")).toEqual([]);
   });
@@ -107,7 +89,7 @@ describe("taxonomía visible (ADR-0030 · ADR-0039 · WO-2026-00088/ADR-0054 pro
     ];
     // "Trabajo" quedó fuera de la lista prohibida: es la etiqueta vigente del
     // área proyectos desde WO-2026-00132 (reemplaza Proyectos/PixelForge).
-    for (const prohibida of ["IA", "Infra", "CRM", "Ventas", "Tareas", "Hoy", "Conocimiento", "Marketing", "Sistema"]) {
+    for (const prohibida of ["IA", "Infra", "CRM", "Tareas", "Hoy", "Conocimiento", "Marketing", "Sistema"]) {
       expect(visibleLabels, `etiqueta prohibida: ${prohibida}`).not.toContain(prohibida);
     }
   });

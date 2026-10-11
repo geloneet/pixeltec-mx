@@ -7,6 +7,7 @@
  * en `sales/accept.ts`, que tampoco lo tiene.
  */
 import 'server-only';
+import { randomUUID } from 'node:crypto';
 import { eq } from 'drizzle-orm';
 import { db } from '@/lib/db';
 import { billingItems, projects, recurringCharges, sales } from '@/lib/db/schema';
@@ -73,7 +74,8 @@ export async function provisionProjectAndRecurrents(saleId: string, now: Date = 
     const recurringRows = await tx.select().from(recurringCharges).where(eq(recurringCharges.saleId, saleId));
 
     const draft = buildProjectDraft(saleRow, recurringRows);
-    const [project] = await tx.insert(projects).values(draft).returning({ id: projects.id });
+    const newId = randomUUID();
+    const [project] = await tx.insert(projects).values({ ...draft, id: newId, firestoreId: newId, commercialRevision: 1 }).returning({ id: projects.id });
 
     await tx.update(sales).set({ projectId: project.id, updatedAt: new Date() }).where(eq(sales.id, saleId));
     await tx.update(billingItems).set({ projectId: project.id }).where(eq(billingItems.saleId, saleId));

@@ -94,7 +94,7 @@ export async function isPortalAccessEnabled(clientPgId: string): Promise<boolean
 
 export interface PortalDashboardData {
   clientName: string;
-  projects: { id: string; name: string; status: string }[];
+  projects: { id: string; name: string; status: string; commercialStage?: string; clientNote?: string; nextStep?: string; nextStepDue?: string|null; commercialRevision?:number }[];
   invoices: { id: string; projectName: string | null; amount: string; status: string; date: string }[];
   contracts: { id: string; title: string; version: number; status: string }[];
   tickets: { id: string; ticketId: string; problema: string; estado: string }[];
@@ -132,7 +132,7 @@ export async function getPortalDashboardData(clientPgId: string): Promise<Portal
 
   const [projectRows, contractRows, invoiceRowsPg, financeRowsFallback, ticketRows, updateRows] = await Promise.all([
     db
-      .select({ id: projects.id, name: projects.name, status: projects.status })
+      .select({ id: projects.id, name: projects.name, status: projects.status, commercialStage:projects.commercialStage,clientNote:projects.clientNote,nextStep:projects.nextStep,nextStepDue:projects.nextStepDue,commercialRevision:projects.commercialRevision })
       .from(projects)
       .where(eq(projects.clientId, clientPgId))
       .orderBy(projects.name),

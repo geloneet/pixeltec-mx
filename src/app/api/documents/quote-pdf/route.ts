@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { requireUserSession } from "@/lib/auth/session";
-import { getQuoteById, getQuoteClient } from "@/lib/quotes/queries";
+import { getOwnedQuoteById, getQuoteClient } from "@/lib/quotes/queries";
+import { uuid } from "@/lib/commercial/schemas";
 import { renderQuotePdf } from "@/lib/quotes/pdf";
 
 /**
@@ -13,11 +14,12 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request): Promise<Response> {
   const session = await requireUserSession();
   if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (session.role !== 'admin' && session.role !== 'staff') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const id = new URL(request.url).searchParams.get("id");
-  if (!id) return NextResponse.json({ error: "Falta el id" }, { status: 400 });
+  if (!uuid.safeParse(id).success) return NextResponse.json({ error: "Id inválido" }, { status: 400 });
 
-  const quote = await getQuoteById(id);
+  const quote = await getOwnedQuoteById(id!, session.userId);
   if (!quote) return NextResponse.json({ error: "No encontrada" }, { status: 404 });
 
   const client = await getQuoteClient(quote.clientId);

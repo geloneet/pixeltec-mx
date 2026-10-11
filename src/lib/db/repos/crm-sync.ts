@@ -14,7 +14,10 @@
  * ~45 funciones, mismas firmas) — los 18 archivos que consumen `useCRM()` no
  * cambian. Solo cambia qué pasa "detrás" de `persist()`.
  */
-import { and, eq, inArray } from "drizzle-orm";
+import { and, eq, inArray, sql } from "drizzle-orm";
+import { SafeUserError } from "@/lib/ai/errors";
+import { crmClientTreeInput } from './crm-client-input';
+import type { AnyPgColumn, PgTable } from 'drizzle-orm/pg-core';
 import { db } from "@/lib/db";
 import {
   clients,
@@ -48,6 +51,10 @@ import type { WorkSession } from "@/types/session";
  * a mitad del loop dejaba el árbol del cliente medio-borrado/medio-actualizado
  * sin rollback, con el navegador creyendo que todo se guardó. */
 type Tx = Parameters<Parameters<typeof db.transaction>[0]>[0];
+async function assertParent(tx: Tx, table: PgTable, fs: AnyPgColumn, parent: AnyPgColumn, key: string, expected: string) {
+  const rows = await tx.execute(sql`select ${parent} as parent from ${table} where ${fs}=${key} for update`);
+  if (rows[0] && rows[0].parent !== expected) throw new SafeUserError('Registro no disponible en esta cuenta.', 'crm_record_not_owned');
+}
 
 function toIso(d: unknown): string {
   if (typeof d === "string") return d;
@@ -69,15 +76,23 @@ async function deleteMissing(
 // ── clients (source='crm_blob') + árbol completo de projects ──────────────
 
 export async function syncCrmClients(ownerId: string, payload: CRMClient[]): Promise<void> {
+  crmClientTreeInput.parse(payload);
   await db.transaction(async (tx) => {
   const existing = await tx
     .select({ id: clients.id, firestoreId: clients.firestoreId })
     .from(clients)
     .where(and(eq(clients.ownerId, ownerId), eq(clients.source, "crm_blob")));
   const payloadIds = new Set(payload.map((c) => c.id));
+  const missing = existing.filter(c => c.firestoreId && !payloadIds.has(c.firestoreId)).map(c => c.id);
+  if (missing.length) {
+    const [protectedClient] = await tx.select({ id: clients.id }).from(clients).where(and(inArray(clients.id, missing), sql`(exists (select 1 from commercial_opportunities o where o.client_id=${clients.id}) or exists (select 1 from commercial_conversations c where c.client_id=${clients.id}))`)).limit(1);
+    if (protectedClient) throw new SafeUserError('La cartera comercial cambió. Recarga; un contacto con historial se archiva, no se elimina.', 'crm_stale_commercial');
+  }
   await deleteMissing(existing, payloadIds, (ids) => tx.delete(clients).where(inArray(clients.id, ids)));
 
   for (const c of payload) {
+    const [collision] = await tx.select({ ownerId: clients.ownerId }).from(clients).where(eq(clients.firestoreId, c.id));
+    if (collision && collision.ownerId !== ownerId) throw new SafeUserError('Cliente no disponible.', 'crm_client_not_owned');
     const [row] = await tx
       .insert(clients)
       .values({
@@ -95,7 +110,7 @@ export async function syncCrmClients(ownerId: string, payload: CRMClient[]): Pro
         createdAt: new Date(toIso(c.createdAt)),
       })
       .onConflictDoUpdate({
-        target: clients.firestoreId,
+        target: clients.firestoreId, setWhere: eq(clients.ownerId, ownerId),
         set: {
           name: c.name,
           contactName: c.contactName ?? null,
@@ -108,6 +123,7 @@ export async function syncCrmClients(ownerId: string, payload: CRMClient[]): Pro
         },
       })
       .returning({ id: clients.id });
+    if (!row) throw new SafeUserError('Cliente no disponible.', 'crm_client_not_owned');
     await syncProjectsForClient(tx, row.id, c.projects ?? [], ownerId);
   }
   });
@@ -115,13 +131,19 @@ export async function syncCrmClients(ownerId: string, payload: CRMClient[]): Pro
 
 async function syncProjectsForClient(tx: Tx, clientPgId: string, payload: CRMProject[], ownerId: string): Promise<void> {
   const existing = await tx
-    .select({ id: projects.id, firestoreId: projects.firestoreId })
+    .select({ id: projects.id, firestoreId: projects.firestoreId, commercialRevision: projects.commercialRevision })
     .from(projects)
     .where(eq(projects.clientId, clientPgId));
   const payloadIds = new Set(payload.map((p) => p.id));
+  if (existing.some(p => p.commercialRevision > 0 && !payloadIds.has(p.firestoreId || p.id)))
+    throw new SafeUserError('La cartera comercial cambió. Recarga antes de editar proyectos.', 'crm_stale_commercial');
   await deleteMissing(existing, payloadIds, (ids) => tx.delete(projects).where(inArray(projects.id, ids)));
 
   for (const p of payload) {
+    const [collision] = await tx.select({ id: projects.id, clientId: projects.clientId }).from(projects).where(eq(projects.firestoreId, p.id));
+    if (collision && collision.clientId !== clientPgId) throw new SafeUserError('Proyecto no disponible.', 'crm_project_not_owned');
+    const legacy = existing.find(row => row.id === p.id && !row.firestoreId);
+    if (legacy) await tx.update(projects).set({ firestoreId: p.id }).where(eq(projects.id, legacy.id));
     const [row] = await tx
       .insert(projects)
       .values({
@@ -143,7 +165,7 @@ async function syncProjectsForClient(tx: Tx, clientPgId: string, payload: CRMPro
         createdAt: new Date(toIso(p.createdAt)),
       })
       .onConflictDoUpdate({
-        target: projects.firestoreId,
+        target: projects.firestoreId, setWhere: eq(projects.clientId, clientPgId),
         set: {
           name: p.name,
           domain: p.domain ?? "",
@@ -161,6 +183,7 @@ async function syncProjectsForClient(tx: Tx, clientPgId: string, payload: CRMPro
         },
       })
       .returning({ id: projects.id });
+    if (!row) throw new SafeUserError('Proyecto no disponible.', 'crm_project_not_owned');
     const projectPgId = row.id;
 
     // Secuencial a propósito: dentro de una transacción hay UNA conexión;
@@ -196,6 +219,7 @@ async function syncTasks(tx: Tx, projectPgId: string, payload: CRMTask[], ownerI
     : new Map<string | null, string>();
 
   for (const t of payload) {
+    await assertParent(tx, tasks, tasks.firestoreId, tasks.projectId, t.id, projectPgId);
     const sessionPgId = t.sessionId ? sessionFsToPg.get(t.sessionId) ?? null : null;
     await tx
       .insert(tasks)
@@ -211,7 +235,7 @@ async function syncTasks(tx: Tx, projectPgId: string, payload: CRMTask[], ownerI
         sessionId: sessionPgId,
       })
       .onConflictDoUpdate({
-        target: tasks.firestoreId,
+        target: tasks.firestoreId, setWhere: eq(tasks.projectId, projectPgId),
         set: { name: t.name, desc: t.desc ?? "", status: t.status, prio: t.prio, pomoSessions: t.pomoSessions ?? 0 },
       });
   }
@@ -226,6 +250,7 @@ async function syncCharges(tx: Tx, projectPgId: string, payload: RecurringCharge
   await deleteMissing(existing, payloadIds, (ids) => tx.delete(recurringCharges).where(inArray(recurringCharges.id, ids)));
 
   for (const c of payload) {
+    await assertParent(tx, recurringCharges, recurringCharges.firestoreId, recurringCharges.projectId, c.id, projectPgId);
     const amount = String(parseFloat(String(c.amount).replace(/[^0-9.-]/g, "")) || 0);
     await tx
       .insert(recurringCharges)
@@ -246,7 +271,7 @@ async function syncCharges(tx: Tx, projectPgId: string, payload: RecurringCharge
         createdAt: new Date(toIso(c.createdAt)),
       })
       .onConflictDoUpdate({
-        target: recurringCharges.firestoreId,
+        target: recurringCharges.firestoreId, setWhere: eq(recurringCharges.projectId, projectPgId),
         set: {
           concept: c.concept ?? "",
           amount,
@@ -273,10 +298,11 @@ async function syncKeys(tx: Tx, projectPgId: string, payload: CRMKey[]): Promise
   await deleteMissing(existing, payloadIds, (ids) => tx.delete(projectKeys).where(inArray(projectKeys.id, ids)));
 
   for (const k of payload) {
+    await assertParent(tx, projectKeys, projectKeys.firestoreId, projectKeys.projectId, k.id, projectPgId);
     await tx
       .insert(projectKeys)
       .values({ firestoreId: k.id, projectId: projectPgId, label: k.label, value: k.value })
-      .onConflictDoUpdate({ target: projectKeys.firestoreId, set: { label: k.label, value: k.value } });
+      .onConflictDoUpdate({ target: projectKeys.firestoreId, setWhere: eq(projectKeys.projectId, projectPgId), set: { label: k.label, value: k.value } });
   }
 }
 
@@ -289,6 +315,7 @@ async function syncLogEntries(tx: Tx, projectPgId: string, payload: ProjectLogEn
   await deleteMissing(existing, payloadIds, (ids) => tx.delete(projectLogEntries).where(inArray(projectLogEntries.id, ids)));
 
   for (const l of payload) {
+    await assertParent(tx, projectLogEntries, projectLogEntries.firestoreId, projectLogEntries.projectId, l.id, projectPgId);
     await tx
       .insert(projectLogEntries)
       .values({
@@ -299,7 +326,7 @@ async function syncLogEntries(tx: Tx, projectPgId: string, payload: ProjectLogEn
         authorName: l.authorName,
         createdAt: new Date(toIso(l.createdAt)),
       })
-      .onConflictDoUpdate({ target: projectLogEntries.firestoreId, set: { category: l.category, content: l.content } });
+      .onConflictDoUpdate({ target: projectLogEntries.firestoreId, setWhere: eq(projectLogEntries.projectId, projectPgId), set: { category: l.category, content: l.content } });
   }
 }
 
@@ -318,7 +345,7 @@ export async function syncCrmTools(ownerId: string, payload: Tool[]): Promise<vo
     const [row] = await tx
       .insert(tools)
       .values({ firestoreId: t.id, ownerId, name: t.name, icon: t.icon, color: t.color, createdAt: new Date(toIso(t.createdAt)) })
-      .onConflictDoUpdate({ target: tools.firestoreId, set: { name: t.name, icon: t.icon, color: t.color } })
+      .onConflictDoUpdate({ target: tools.firestoreId, setWhere: eq(tools.ownerId, ownerId), set: { name: t.name, icon: t.icon, color: t.color } })
       .returning({ id: tools.id });
     await syncTips(tx, row.id, t.tips ?? []);
   }
@@ -347,7 +374,7 @@ async function syncTips(tx: Tx, toolPgId: string, payload: KnowledgeTip[]): Prom
         updatedAt: new Date(toIso(t.updatedAt)),
       })
       .onConflictDoUpdate({
-        target: knowledgeTips.firestoreId,
+        target: knowledgeTips.firestoreId, setWhere: eq(knowledgeTips.toolId, toolPgId),
         set: { title: t.title, summary: t.summary, content: t.content, tags: t.tags ?? [], updatedAt: new Date(toIso(t.updatedAt)) },
       });
   }
@@ -452,7 +479,7 @@ export async function syncCrmSessions(ownerId: string, payload: WorkSession[]): 
         createdBy: s.createdBy,
       })
       .onConflictDoUpdate({
-        target: workSessions.firestoreId,
+        target: workSessions.firestoreId, setWhere: eq(workSessions.ownerId, ownerId),
         set: {
           endedAt: s.endedAt ? new Date(s.endedAt) : null,
           durationSeconds: s.durationSeconds ?? null,

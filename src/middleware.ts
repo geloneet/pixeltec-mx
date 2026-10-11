@@ -4,8 +4,6 @@ import { PROTECTED_PATHS, isNoindexPath } from '@/lib/routes/admin-routes';
 import { decideRestrictedAccess, isRestrictedRole } from '@/lib/routes/reviewer-access';
 import { cspForPath } from '@/lib/security/csp';
 
-export const runtime = 'nodejs';
-
 import crypto from 'node:crypto';
 
 function withSecurityHeaders(res: NextResponse, nonce: string, pathname: string): NextResponse {
@@ -127,6 +125,7 @@ export default auth(async (request) => {
 });
 
 export const config = {
+  runtime: 'nodejs',
   // Broad matcher so CSP nonce is injected on every page.
   // _next/static and _next/image are excluded to avoid unnecessary overhead on asset requests.
   matcher: ['/((?!_next/static|_next/image|favicon.ico).*)'],

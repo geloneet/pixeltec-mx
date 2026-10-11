@@ -1,0 +1,338 @@
+{
+  "schema": "pixeltec-cierre/v2",
+  "proyecto": {
+    "nombre": "Centro Comercial PixelTEC · WO566",
+    "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
+    "supervisor": "Codex · Ingeniería · Mac mini",
+    "lede": "Las siete pantallas trabajan sobre PostgreSQL. Egreso local bloqueado. Faltan pruebas externas autorizadas, capacidad productiva y gates de Miguel."
+  },
+  "parametros": [
+    {
+      "k": "CANDIDATO",
+      "v": "codex/wo566-centro-comercial · base 1aae1940b31e3e7011fa6c2b7239cea53684a785"
+    },
+    {
+      "k": "REPO",
+      "v": "/Users/pixeltec/Documents/ChatGPT/pt.mx/app · geloneet/pixeltec-mx"
+    },
+    {
+      "k": "QA",
+      "v": "http://wo566.localhost:4336/hoy · PostgreSQL 5454 centro_qa"
+    },
+    {
+      "k": "PRODUCCIÓN",
+      "v": "https://pixeltec.mx · sin despliegue WO566"
+    }
+  ],
+  "prerrequisitos": [
+    {
+      "id": "pr1",
+      "titulo": "Candidato local y pruebas críticas",
+      "quien": "Codex",
+      "estado": "ok"
+    },
+    {
+      "id": "pr2",
+      "titulo": "Destinatarios autorizados y secretos en gestor",
+      "quien": "Miguel",
+      "estado": "falta"
+    },
+    {
+      "id": "pr3",
+      "titulo": "Capacidad WO547 y GO productivo",
+      "quien": "Miguel y operador",
+      "estado": "en-espera",
+      "nota": "Última medición histórica bloqueó; requiere verificación nueva."
+    }
+  ],
+  "hero": {
+    "pill": {
+      "tono": "warn",
+      "texto": "Candidato QA; activación pendiente"
+    },
+    "titulo": "Verificar canales y aprobar el corte antes de enviar a clientes.",
+    "texto": "Los proveedores muestran requisitos reales. Transportes controlados y build no certifican recepción o envío externo.",
+    "tiles": [
+      {
+        "k": "Base",
+        "v": "1aae1940",
+        "verificado": "2026-10-10"
+      },
+      {
+        "k": "Producción",
+        "v": "Sin despliegue WO566",
+        "verificado": ""
+      }
+    ]
+  },
+  "fases": [
+    {
+      "id": "f0",
+      "titulo": "Candidato verificable",
+      "estimado_texto": "Según gates y pruebas",
+      "contexto": "WO566",
+      "gate_requiere": null,
+      "ruta_critica": true,
+      "why": "La fase previa aporta evidencia para autorizar la siguiente.",
+      "dod": {
+        "inicio": "Criterios previos verificables.",
+        "fin": "Pasos con evidencia real o bloqueo explícito."
+      },
+      "contingencia": "Mantener release anterior; detener nuevos emisores y conciliar resultados inciertos.",
+      "pasos": [
+        {
+          "id": "s0-1",
+          "tipo": "verificacion",
+          "titulo": "Verificar tipos, suite completa y PostgreSQL QA real",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Evidencia reproducible y exit 0 en docs/evidencias/wo566.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        },
+        {
+          "id": "s0-2",
+          "tipo": "verificacion",
+          "titulo": "Verificar navegador, portal, doble clic y restauración",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Evidencia reproducible y exit 0 en docs/evidencias/wo566.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        },
+        {
+          "id": "s0-3",
+          "tipo": "verificacion",
+          "titulo": "Publicar candidato, scope PASS y conocimiento",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Evidencia reproducible y exit 0 en docs/evidencias/wo566.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        }
+      ]
+    },
+    {
+      "id": "f1",
+      "titulo": "Canales reales de prueba",
+      "estimado_texto": "Según gates y pruebas",
+      "contexto": "WO566",
+      "gate_requiere": "f0",
+      "ruta_critica": true,
+      "why": "La fase previa aporta evidencia para autorizar la siguiente.",
+      "dod": {
+        "inicio": "Criterios previos verificables.",
+        "fin": "Pasos con evidencia real o bloqueo explícito."
+      },
+      "contingencia": "Mantener release anterior; detener nuevos emisores y conciliar resultados inciertos.",
+      "pasos": [
+        {
+          "id": "s1-1",
+          "tipo": "decision",
+          "titulo": "Autorizar destinatarios de correo y WhatsApp de prueba",
+          "dueno": "miguel",
+          "estimado_min": 10,
+          "gate": true,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "GO expreso de Miguel registrado en el gate correspondiente.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos.",
+          "opciones": [
+            "Autorizar únicamente el alcance explícito de este paso",
+            "Mantener el gate pendiente"
+          ]
+        },
+        {
+          "id": "s1-2",
+          "tipo": "verificacion",
+          "titulo": "Configurar Resend firmado y PixelBot/Meta con secretos fuera del repo",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        },
+        {
+          "id": "s1-3",
+          "tipo": "verificacion",
+          "titulo": "Probar ingreso real, respuesta, pausa, descuento y reintento",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        }
+      ]
+    },
+    {
+      "id": "f2",
+      "titulo": "Activación productiva",
+      "estimado_texto": "Según gates y pruebas",
+      "contexto": "WO566",
+      "gate_requiere": "f1",
+      "ruta_critica": true,
+      "why": "La fase previa aporta evidencia para autorizar la siguiente.",
+      "dod": {
+        "inicio": "Criterios previos verificables.",
+        "fin": "Pasos con evidencia real o bloqueo explícito."
+      },
+      "contingencia": "Mantener release anterior; detener nuevos emisores y conciliar resultados inciertos.",
+      "pasos": [
+        {
+          "id": "s2-1",
+          "tipo": "decision",
+          "titulo": "Aprobar SHA exacto para merge y despliegue",
+          "dueno": "miguel",
+          "estimado_min": 10,
+          "gate": true,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "GO expreso de Miguel registrado en el gate correspondiente.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos.",
+          "opciones": [
+            "Autorizar únicamente el alcance explícito de este paso",
+            "Mantener el gate pendiente"
+          ]
+        },
+        {
+          "id": "s2-2",
+          "tipo": "verificacion",
+          "titulo": "Verificar capacidad WO547, respaldo restaurado y migración 0053",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        },
+        {
+          "id": "s2-3",
+          "tipo": "verificacion",
+          "titulo": "Desplegar con automáticos apagados y validar salud y permisos",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        }
+      ]
+    },
+    {
+      "id": "f3",
+      "titulo": "Automatización y seguimiento",
+      "estimado_texto": "Según gates y pruebas",
+      "contexto": "WO566",
+      "gate_requiere": "f2",
+      "ruta_critica": true,
+      "why": "La fase previa aporta evidencia para autorizar la siguiente.",
+      "dod": {
+        "inicio": "Criterios previos verificables.",
+        "fin": "Pasos con evidencia real o bloqueo explícito."
+      },
+      "contingencia": "Mantener release anterior; detener nuevos emisores y conciliar resultados inciertos.",
+      "pasos": [
+        {
+          "id": "s3-1",
+          "tipo": "decision",
+          "titulo": "Aprobar política, cartera y traspaso de emisores",
+          "dueno": "miguel",
+          "estimado_min": 10,
+          "gate": true,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "GO expreso de Miguel registrado en el gate correspondiente.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos.",
+          "opciones": [
+            "Autorizar únicamente el alcance explícito de este paso",
+            "Mantener el gate pendiente"
+          ]
+        },
+        {
+          "id": "s3-2",
+          "tipo": "verificacion",
+          "titulo": "Quiescer jobs anteriores y activar un scheduler autenticado",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        },
+        {
+          "id": "s3-3",
+          "tipo": "verificacion",
+          "titulo": "Observar siete días y sincronizar los cuatro estados",
+          "dueno": "worker",
+          "estimado_min": 10,
+          "gate": false,
+          "detalle": "Consultar el procedimiento y los requisitos exactos en docs/comercial/Operación y activación.md; registrar referencia y fecha de la prueba.",
+          "comando": null,
+          "verifica": "Resultado real documentado; no inferir éxito de flags o configuración.",
+          "rollback": "Conservar release anterior, datos e historial; detener solamente emisores nuevos."
+        }
+      ]
+    }
+  ],
+  "decisiones": [
+    {
+      "id": "D1",
+      "texto": "Autorizar pruebas externas.",
+      "paso": "s1-1",
+      "estado": "pendiente"
+    },
+    {
+      "id": "D2",
+      "texto": "Aprobar SHA exacto para merge y despliegue.",
+      "paso": "s2-1",
+      "estado": "pendiente"
+    },
+    {
+      "id": "D3",
+      "texto": "Activar política y recordatorios.",
+      "paso": "s3-1",
+      "estado": "pendiente"
+    }
+  ],
+  "fuera": [
+    "No cambiar recordPayment, IVA ni anticipo canónico.",
+    "No eliminar recursos para forzar capacidad.",
+    "El checklist no autoriza envíos."
+  ],
+  "post_arranque": [
+    {
+      "id": "pa1",
+      "cuando": "Días 1–7",
+      "que": "Verificar salud, login, siete pantallas y SHA efectivo."
+    },
+    {
+      "id": "pa2",
+      "cuando": "Días 1–7",
+      "que": "Revisar outbox inciertos, errores, heartbeat y duplicados."
+    },
+    {
+      "id": "pa3",
+      "cuando": "Días 1–7",
+      "que": "Verificar saldos, proyecto único y respaldo restaurable."
+    },
+    {
+      "id": "pa4",
+      "cuando": "Día 7",
+      "que": "Revisar capacidad, incidencias y retro; cierre con cuatro estados."
+    }
+  ],
+  "fuentes": "docs/comercial · docs/evidencias/wo566 · WO566 · 00_KERNEL/reglas.md"
+}

@@ -47,6 +47,8 @@ import { PALETTE_NAV_ITEMS } from "./command-palette-items";
  */
 const AREA_ICONS: Record<NavArea, LucideIcon> = {
   hoy: Home,
+  ventas: CircleDollarSign,
+  ajustes: UserCog,
   crm: Users,
   whatsapp: MessageCircle,
   finanzas: CircleDollarSign,

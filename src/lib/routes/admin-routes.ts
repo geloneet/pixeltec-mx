@@ -11,6 +11,8 @@
  */
 export const ADMIN_ROUTES = [
   'hoy',
+  'ventas',
+  'ajustes',
   // WO-2026-00132: sustituye Proyectos/Definición/PixelForge — «Trabajo».
   'proyectos',
   'clientes',

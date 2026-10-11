@@ -72,6 +72,13 @@ export async function createLead(input: CreateLeadInput): Promise<string> {
       ...attributionValues(input),
     })
     .returning({ id: leads.id });
+  if(input.source==='contact_form' && process.env.COMMERCIAL_OWNER_ID) {
+    try {
+      const {commercialInboundOwner,ingestCommercialInbound}=await import('@/lib/commercial/inbound');
+      const [lead]=await db.select().from(leads).where(eq(leads.id,row.id));
+      await ingestCommercialInbound(await commercialInboundOwner(),{channel:'form',externalId:email,address:email,name:input.name||email,providerId:row.id,body:input.message||'Contacto desde el sitio web',subject:'Contacto desde el sitio web',identifierVerified:false,receivedAt:lead.createdAt});
+    } catch { console.error('[commercial] form_ingest_pending'); }
+  }
   return row.id;
 }
 

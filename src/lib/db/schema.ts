@@ -10,10 +10,8 @@
  * en producción ahí) — `pgTable`, `pgEnum`, `uuid().primaryKey().defaultRandom()`,
  * índices únicos/compuestos, `$inferSelect`/`$inferInsert` por tabla.
  *
- * IMPORTANTE: este schema NO está conectado a ninguna ruta/página real
- * todavía. Firebase/Firestore sigue siendo el único datastore en producción.
- * Es la Fase 1 (schema + capa de datos) del plan de 6 fases — construida en
- * paralelo, cero riesgo para lo que hoy sirve tráfico.
+ * Postgres es el datastore productivo. Los alias firestore_id conservan
+ * referencias históricas; no implican una segunda fuente de datos.
  *
  * Decisión de modelado: los tipos actuales (src/types/*.ts) que hoy viven
  * como sub-objetos anidados dentro de un blob JSON de Firestore se
@@ -551,6 +549,12 @@ export const projects = pgTable(
       .notNull()
       .references(() => clients.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
+    // WO566: etapa comercial independiente del progreso técnico y los cobros.
+    commercialStage: text("commercial_stage", { enum: ["arranque", "preparacion", "revision", "entregado"] }).notNull().default("arranque"),
+    clientNote: text("client_note").notNull().default(""),
+    nextStep: text("next_step").notNull().default(""),
+    nextStepDue: date("next_step_due"),
+    commercialRevision: integer("commercial_revision").notNull().default(0),
     domain: text("domain").notNull().default(""),
     budget: numeric("budget", { precision: 12, scale: 2 }).notNull().default("0"),
     annual: numeric("annual", { precision: 12, scale: 2 }).notNull().default("0"),
@@ -873,15 +877,16 @@ export const quotes = pgTable(
     /** Folio visible, único: COT-2026-0001. */
     folio: text("folio").notNull(),
     title: text("title").notNull(),
+    version: integer("version").notNull().default(1),
     /** Conceptos: [{ description, quantity, unitPriceCents }]. */
     items: jsonb("items").notNull().default([]),
     /** IVA del 16 % aplicado a esta cotización. */
     taxEnabled: boolean("tax_enabled").notNull().default(true),
     notes: text("notes").notNull().default(""),
     validUntil: timestamp("valid_until", { withTimezone: true }),
-    /** borrador | enviada. No hay «aceptada»: el cliente no actúa aquí. */
+    /** Estado comercial; la aceptación conserva su versión y evidencia. */
     status: text("status").notNull().default("borrador"),
-    /** Token del enlace público de solo lectura. */
+    /** Capacidad del enlace público: exclusivamente esta cotización. */
     publicToken: text("public_token").notNull(),
     sentAt: timestamp("sent_at", { withTimezone: true }),
     // ── MVP comercial (WO-2026-00104, migración 0046) ──────────────────────
@@ -2112,3 +2117,160 @@ export type WhatsappContactRow = typeof whatsappContacts.$inferSelect;
 export type NewWhatsappContactRow = typeof whatsappContacts.$inferInsert;
 export type WhatsappContactNoteRow = typeof whatsappContactNotes.$inferSelect;
 export type NewWhatsappContactNoteRow = typeof whatsappContactNotes.$inferInsert;
+
+// Centro Comercial — WO-2026-00566. Clientes, cotizaciones, ventas y dinero
+// siguen en sus tablas canónicas. Solo se modelan capacidades antes ausentes.
+export const commercialOpportunities = pgTable('commercial_opportunities', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  clientId: uuid('client_id').notNull().references(() => clients.id),
+  assignedTo: uuid('assigned_to').references(() => users.id),
+  source: text('source', { enum: ['manual', 'whatsapp', 'email', 'form'] }).notNull(),
+  need: text('need').notNull(),
+  stage: text('stage', { enum: ['nuevo', 'conversacion', 'cotizacion', 'cierre', 'ganado', 'pausado', 'perdido'] }).notNull().default('nuevo'),
+  nextAction: text('next_action').notNull().default(''),
+  nextActionDue: date('next_action_due'),
+  reason: text('reason').notNull().default(''),
+  quoteId: uuid('quote_id').references(() => quotes.id),
+  revision: integer('revision').notNull().default(0),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [index('commercial_opportunities_owner_idx').on(t.ownerId, t.stage),
+  uniqueIndex('commercial_opportunities_active_client_idx').on(t.ownerId, t.clientId).where(sql`${t.stage} NOT IN ('ganado','perdido')`)]);
+
+export const commercialIdentifiers = pgTable('commercial_identifiers', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  clientId: uuid('client_id').notNull().references(() => clients.id),
+  channel: text('channel', { enum: ['whatsapp', 'email'] }).notNull(),
+  value: text('value').notNull(),
+  verifiedAt: timestamp('verified_at', { withTimezone: true }),
+  verifiedBy: text('verified_by'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_identifier_verified_idx').on(t.ownerId, t.channel, t.value).where(sql`${t.verifiedAt} IS NOT NULL`)]);
+
+// WhatsApp: referencia y contexto comercial, sin copiar la conversación del bot.
+// Correo/formulario: esta tabla y commercial_messages son su historial canónico.
+export const commercialConversations = pgTable('commercial_conversations', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  clientId: uuid('client_id').references(() => clients.id),
+  opportunityId: uuid('opportunity_id').references(() => commercialOpportunities.id),
+  channel: text('channel', { enum: ['whatsapp', 'email', 'form'] }).notNull(),
+  externalId: text('external_id').notNull(),
+  address: text('address').notNull(),
+  subject: text('subject').notNull().default(''),
+  state: text('state', { enum: ['sin_atender', 'decision', 'esperando', 'humano'] }).notNull().default('sin_atender'),
+  mode: text('mode', { enum: ['BOT', 'HUMAN', 'PAUSED'] }).notNull().default('HUMAN'),
+  matchReview: boolean('match_review').notNull().default(false),
+  revision: integer('revision').notNull().default(0),
+  lastInboundAt: timestamp('last_inbound_at', { withTimezone: true }),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_conversation_external_idx').on(t.ownerId, t.channel, t.externalId)]);
+
+export const commercialMessages = pgTable('commercial_messages', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  conversationId: uuid('conversation_id').notNull().references(() => commercialConversations.id),
+  providerId: text('provider_id'),
+  direction: text('direction', { enum: ['inbound', 'outbound'] }).notNull(),
+  body: text('body').notNull(),
+  delivery: text('delivery', { enum: ['received', 'queued', 'sent', 'delivered', 'failed', 'unknown'] }).notNull(),
+  actorId: uuid('actor_id').references(() => users.id),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_message_provider_idx').on(t.conversationId, t.providerId), index('commercial_message_time_idx').on(t.conversationId, t.createdAt)]);
+
+export const commercialOutbox = pgTable('commercial_outbox', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  conversationId: uuid('conversation_id').notNull().references(() => commercialConversations.id),
+  idempotencyKey: uuid('idempotency_key').notNull(),
+  payloadHash: text('payload_hash').notNull(),
+  body: text('body').notNull(),
+  subject: text('subject').notNull().default(''),
+  status: text('status', { enum: ['queued', 'sending', 'sent', 'delivered', 'failed', 'unknown'] }).notNull().default('queued'),
+  providerId: text('provider_id'),
+  errorCode: text('error_code'),
+  attempts: integer('attempts').notNull().default(0),
+  actorId: uuid('actor_id').notNull().references(() => users.id),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_outbox_key_idx').on(t.ownerId, t.idempotencyKey)]);
+
+export const commercialWebhookEvents = pgTable('commercial_webhook_events', {
+  id: text('id').primaryKey(),
+  provider: text('provider').notNull(),
+  payloadHash: text('payload_hash').notNull(),
+  status: text('status', { enum: ['processing', 'done', 'failed'] }).notNull().default('processing'),
+  errorCode: text('error_code'),
+  providerMessageId: text('provider_message_id'),
+  delivery: text('delivery', { enum: ['sent', 'delivered', 'failed'] }),
+  occurredAt: timestamp('occurred_at', { withTimezone: true }),
+  receivedAt: timestamp('received_at', { withTimezone: true }).notNull().defaultNow(),
+  processedAt: timestamp('processed_at', { withTimezone: true }),
+});
+
+export const commercialPolicyVersions = pgTable('commercial_policy_versions', {
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  revision: integer('revision').notNull(),
+  snapshot: jsonb('snapshot').$type<{ automaticEnabled: boolean; tone: string; approvedAnswers: { question: string; answer: string }[] }>().notNull(),
+  updatedBy: uuid('updated_by').notNull().references(() => users.id),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_policy_version_idx').on(t.ownerId, t.revision)]);
+
+export const commercialPolicies = pgTable('commercial_policies', {
+  ownerId: uuid('owner_id').primaryKey().references(() => users.id),
+  automaticEnabled: boolean('automatic_enabled').notNull().default(false),
+  tone: text('tone', { enum: ['cercano', 'formal'] }).notNull().default('cercano'),
+  // Solo respuestas aprobadas explícitamente; jamás instrucciones del remitente.
+  approvedAnswers: jsonb('approved_answers').$type<{ question: string; answer: string }[]>().notNull().default([]),
+  revision: integer('revision').notNull().default(0),
+  updatedBy: uuid('updated_by').notNull().references(() => users.id),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const commercialReminders = pgTable('commercial_reminders', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  billingItemId: uuid('billing_item_id').notNull().references(() => billingItems.id),
+  conversationId: uuid('conversation_id').notNull().references(() => commercialConversations.id),
+  duePeriod: date('due_period').notNull(),
+  scheduledAt: timestamp('scheduled_at', { withTimezone: true }).notNull(),
+  status: text('status', { enum: ['scheduled', 'paused', 'sent', 'cancelled', 'failed'] }).notNull().default('scheduled'),
+  body: text('body').notNull(),
+  revision: integer('revision').notNull().default(0),
+  outboxId: uuid('outbox_id').references(() => commercialOutbox.id),
+  createdBy: uuid('created_by').notNull().references(() => users.id),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('commercial_reminder_period_idx').on(t.billingItemId, t.duePeriod)]);
+
+export const quoteVersions = pgTable('quote_versions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  quoteId: uuid('quote_id').notNull().references(() => quotes.id),
+  version: integer('version').notNull(),
+  snapshot: jsonb('snapshot').notNull(),
+  createdBy: uuid('created_by').references(() => users.id),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('quote_versions_number_idx').on(t.quoteId, t.version)]);
+
+export const quoteDecisions = pgTable('quote_decisions', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  quoteId: uuid('quote_id').notNull().references(() => quotes.id),
+  version: integer('version').notNull(),
+  decision: text('decision', { enum: ['accept', 'changes'] }).notNull(),
+  actorName: text('actor_name').notNull(),
+  comment: text('comment').notNull().default(''),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+}, (t) => [uniqueIndex('quote_decision_version_idx').on(t.quoteId, t.version)]);
+
+/** Deduplicación de comandos; dinero permanece en payment_records. */
+export const commercialCommands = pgTable('commercial_commands', {
+  id: uuid('id').primaryKey(),
+  ownerId: uuid('owner_id').notNull().references(() => users.id),
+  resourceId: uuid('resource_id').notNull(),
+  action: text('action').notNull(),
+  payloadHash: text('payload_hash').notNull(),
+  status: text('status', { enum: ['processing', 'done', 'unknown'] }).notNull(),
+  result: jsonb('result'),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});

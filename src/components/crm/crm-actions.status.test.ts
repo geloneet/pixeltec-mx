@@ -33,7 +33,7 @@ const activityMock = vi.hoisted(() => ({
   getClientActivityRows: vi.fn(async () => []),
 }));
 
-vi.mock("@/lib/auth/config", () => ({ auth: authMock }));
+vi.mock("@/lib/auth/session", () => ({ requireUserSession: async () => { const s = await authMock(); return s?.user?.id ? { userId: s.user.id, role: s.user.role || "admin", email: "qa@example.invalid" } : null; } }));
 vi.mock("@/lib/db", () => ({ db: { update: dbMock.update, select: dbMock.select } }));
 vi.mock("@/lib/documents/pg", () => pgMock);
 vi.mock("@/lib/db/repos/client-activity", () => activityMock);

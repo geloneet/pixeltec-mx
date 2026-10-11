@@ -33,13 +33,14 @@ export function formatAmountWithCode(cents: number, currency: Currency): string 
 
 // ── Estados (§14) ────────────────────────────────────────────────────────────
 
-export const QUOTE_STATUSES = ['borrador', 'lista', 'enviada', 'aceptada', 'rechazada', 'vencida'] as const;
+export const QUOTE_STATUSES = ['borrador', 'lista', 'enviada', 'aceptacion_pendiente', 'aceptada', 'rechazada', 'vencida'] as const;
 export type QuoteStatus = (typeof QUOTE_STATUSES)[number];
 
 export const STATUS_LABEL: Record<QuoteStatus, string> = {
   borrador: 'Borrador',
   lista: 'Lista',
   enviada: 'Enviada',
+  aceptacion_pendiente: 'Aceptación por confirmar',
   aceptada: 'Aceptada',
   rechazada: 'Rechazada',
   vencida: 'Vencida',

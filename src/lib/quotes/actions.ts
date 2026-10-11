@@ -9,13 +9,16 @@
  * porque un envío sale de la casa y llega a un cliente real. El envío nunca es
  * automático: siempre lo dispara una acción explícita.
  */
-import { eq } from 'drizzle-orm';
+import { and, eq, sql } from 'drizzle-orm';
+import { createInsertSchema } from 'drizzle-zod';
 import { randomUUID, randomBytes } from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
 import { db } from '@/lib/db';
 import { firstAnniversary } from '@/lib/sales/model';
-import { quotes } from '@/lib/db/schema';
+import { quotes, quoteVersions, commercialOpportunities, clientActivity, commercialCommands } from '@/lib/db/schema';
+import { eventKey } from '@/lib/commercial/inbox';
+import { requireCommercialAccess } from '@/lib/commercial/access';
 import { requireUserSession } from '@/lib/auth/session';
 import { requireAdmin } from '@/lib/auth-guards';
 import { toPublicFailure } from '@/lib/errors/public-failure';
@@ -52,8 +55,8 @@ import { acceptQuoteAndCreateSale } from '@/lib/sales/accept';
 import { ACCEPTED_VIA } from '@/lib/sales/model';
 import { nextFolio } from './folio';
 import { buildEmailSubject } from './share';
-import { getQuoteById, getQuoteClient, listFolios } from './queries';
-import { resolveClientPgId } from '@/lib/documents/pg';
+import { getOwnedQuoteById, getQuoteClient, listFolios } from './queries';
+import { resolveOwnedClientPgId } from '@/lib/documents/pg';
 import { renderQuoteEmailHtml } from './email-html';
 import { renderQuotePdf } from './pdf';
 
@@ -84,7 +87,7 @@ const ItemSchema = z.object({
   firstYearFree: z.boolean().optional(),
 });
 
-const SaveQuoteSchema = z.object({
+const SaveQuoteSchema = createInsertSchema(quotes, {
   id: z.string().uuid().optional(),
   // OJO: es el id PÚBLICO del cliente (ADR-0035), no el uuid de Postgres.
   // La pantalla de cliente vive en /clientes/<publicId>. Se resuelve abajo.
@@ -107,8 +110,7 @@ const SaveQuoteSchema = z.object({
   // de Miguel: quiere el botón separado de vuelta). `true` = "Crear
   // cotización" (avanza de borrador a lista); ausente/false = "Guardar
   // borrador" (se queda en borrador). Nunca retrocede un estado ya avanzado.
-  markReady: z.boolean().optional(),
-});
+}).pick({ id: true, clientId: true, title: true, items: true, taxEnabled: true, notes: true, validUntil: true, currency: true, problem: true, solution: true, scopeIncluded: true, exclusions: true, estimatedDelivery: true, paymentTerms: true }).extend({ markReady: z.boolean().optional(), expectedVersion: z.number().int().min(1).optional() }).strict();
 export type SaveQuoteInput = z.infer<typeof SaveQuoteSchema>;
 
 /**
@@ -124,11 +126,11 @@ function revalidateClient(_clientId: string) {
 /** Crea o actualiza una cotización. Devuelve su id. */
 export async function saveQuote(input: SaveQuoteInput): Promise<ActionResult<{ id: string }>> {
   try {
-    const session = await requireUserSession();
+    const session = await requireCommercialAccess();
     if (!session) return { ok: false, error: 'Necesitas iniciar sesión.' };
 
     const data = SaveQuoteSchema.parse(input);
-    const clientPgId = await resolveClientPgId(data.clientId);
+    const clientPgId = await resolveOwnedClientPgId(data.clientId, session.userId);
     if (!clientPgId) return { ok: false, error: 'No se encontró el cliente.' };
 
     const items: QuoteItem[] = usableItems(data.items);
@@ -139,21 +141,28 @@ export async function saveQuote(input: SaveQuoteInput): Promise<ActionResult<{ i
     const validUntil = data.validUntil ? new Date(data.validUntil) : null;
 
     if (data.id) {
-      const existing = await getQuoteById(data.id);
+      if (!data.expectedVersion) return {ok:false,error:'Recarga la cotización antes de editar: falta su versión.'};
+      const existing = await getOwnedQuoteById(data.id, session.userId);
       if (!existing) return { ok: false, error: 'La cotización ya no existe.' };
       // §2: una cotización aceptada es evidencia comercial de lo que el cliente
       // aceptó. No se edita en silencio; si hay que cambiar la propuesta, se
       // hace otra cotización.
-      if (existing.status === 'aceptada') {
+      if (['aceptada', 'aceptacion_pendiente'].includes(existing.status)) {
         return {
           ok: false,
           error:
             'Esta cotización ya fue aceptada: es el documento que aceptó el cliente. Crea una nueva si cambian las condiciones.',
         };
       }
-      await db
-        .update(quotes)
-        .set({
+      await db.transaction(async (tx) => {
+        const [locked] = await tx.select().from(quotes).where(eq(quotes.id, data.id!)).for('update');
+        if (locked.version !== (data.expectedVersion ?? existing.version) || ['aceptada', 'aceptacion_pendiente'].includes(locked.status)) {
+          throw new Error('quote_version_conflict');
+        }
+        if (locked.clientId !== clientPgId) throw new Error('quote_client_immutable');
+        await tx.insert(quoteVersions).values({ quoteId: locked.id, version: locked.version, snapshot: locked, createdBy: session.userId }).onConflictDoNothing();
+        const [updated] = await tx.update(quotes).set({
+          version: locked.version + 1,
           title: data.title.trim(),
           items,
           taxEnabled: data.taxEnabled,
@@ -171,16 +180,21 @@ export async function saveQuote(input: SaveQuoteInput): Promise<ActionResult<{ i
           ...(data.markReady && existing.status === 'borrador' ? { status: 'lista' as const } : {}),
           updatedAt: new Date(),
         })
-        .where(eq(quotes.id, data.id));
+        .where(eq(quotes.id, data.id!)).returning();
+        await tx.insert(quoteVersions).values({ quoteId: updated.id, version: updated.version, snapshot: updated, createdBy: session.userId });
+      });
       revalidateClient(existing.clientId);
       return { ok: true, data: { id: data.id } };
     }
 
     const id = randomUUID();
-    await db.insert(quotes).values({
+    await db.transaction(async (tx) => {
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended('pixeltec:quote-folio', 0))`);
+    const folios = await tx.select({ folio: quotes.folio }).from(quotes);
+    const [created] = await tx.insert(quotes).values({
       id,
       clientId: clientPgId,
-      folio: nextFolio(new Date().getFullYear(), await listFolios()),
+      folio: nextFolio(new Date().getFullYear(), folios.map((f) => f.folio)),
       title: data.title.trim(),
       items,
       taxEnabled: data.taxEnabled,
@@ -197,6 +211,8 @@ export async function saveQuote(input: SaveQuoteInput): Promise<ActionResult<{ i
       status: data.markReady ? 'lista' : 'borrador',
       publicToken: randomBytes(24).toString('base64url'),
       createdBy: session.userId,
+    }).returning();
+    await tx.insert(quoteVersions).values({ quoteId: id, version: 1, snapshot: created, createdBy: session.userId });
     });
     revalidateClient(data.clientId);
     return { ok: true, data: { id } };
@@ -211,10 +227,10 @@ export async function deleteQuote(id: string): Promise<ActionResult> {
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Borrar una cotización requiere rol administrador.' };
 
-    const existing = await getQuoteById(id);
+    const existing = await getOwnedQuoteById(id, guard.uid);
     if (!existing) return { ok: true };
 
-    await db.delete(quotes).where(eq(quotes.id, id));
+    await db.delete(quotes).where(and(eq(quotes.id, id),eq(quotes.version,existing.version),sql`${quotes.status} not in ('aceptada','aceptacion_pendiente','rechazada')`));
     revalidateClient(existing.clientId);
     return { ok: true };
   } catch (err) {
@@ -233,19 +249,21 @@ export async function sendQuoteByEmail(id: string, to?: string): Promise<ActionR
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Enviar una cotización requiere rol administrador.' };
 
-    const quote = await getQuoteById(id);
+    const quote = await getOwnedQuoteById(id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
 
     const client = await getQuoteClient(quote.clientId);
     if (!client) return { ok: false, error: 'El cliente ya no existe.' };
 
-    const recipient = (to ?? client.email ?? '').trim();
+    const recipient = z.string().email().max(254).parse((to ?? client.email ?? '').trim());
     if (!recipient) return { ok: false, error: 'Este cliente no tiene correo. Escribe uno para enviar.' };
 
     const blocking = missingToSend(quote);
     if (blocking.length > 0) {
       return { ok: false, error: `Antes de enviarla falta ${blocking.join(', ')}.` };
     }
+
+    if (['aceptada','aceptacion_pendiente','rechazada'].includes(quote.status)) return {ok:false,error:'Esta cotización ya tiene una decisión. Conserva su evidencia.'};
 
     // El importe que se comunica es el de la inversión inicial: sumarle una
     // mensualidad daría un número que no significa nada.
@@ -262,10 +280,23 @@ export async function sendQuoteByEmail(id: string, to?: string): Promise<ActionR
       validUntil: formatDate(quote.validUntil),
     });
 
+    const commandId = eventKey('quote-email:' + guard.uid + ':' + quote.id + ':' + quote.version + ':' + recipient.toLowerCase());
+    const providerKey = 'quote/' + commandId + '/' + randomUUID();
+    const claimed = await db.transaction(async tx => {
+      await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended(${commandId},0))`);
+      const [prior] = await tx.select().from(commercialCommands).where(eq(commercialCommands.id, commandId));
+      if (prior?.status === 'done') return 'done';
+      if (prior && !(prior.result as { retryable?: boolean } | null)?.retryable) return 'uncertain';
+      await tx.insert(commercialCommands).values({ id: commandId, ownerId: guard.uid, resourceId: quote.id, action: 'quote_email', payloadHash: commandId, status: 'processing', result: { providerKey } }).onConflictDoUpdate({ target: commercialCommands.id, set: { status: 'processing', result: { providerKey }, updatedAt: new Date() } });
+      return 'claimed';
+    });
+    if (claimed === 'done') return { ok: true, data: { to: recipient } };
+    if (claimed === 'uncertain') return { ok: false, error: 'Este envío está pendiente de conciliación. Comprueba su recibo antes de repetirlo.' };
     const result = await sendEmail(recipient, buildEmailSubject(quote), html, [
       { filename: `${quote.folio}.pdf`, content: pdf },
-    ]);
-    if (!result.success) return { ok: false, error: 'El correo no salió. Revisa el destinatario.' };
+    ], { idempotencyKey: providerKey });
+    await db.update(commercialCommands).set({ status: result.success ? 'done' : 'unknown', result: { providerKey, providerId: result.id || null, retryable: !result.success && result.error !== 'email_unknown_failure', error: result.error || null }, updatedAt: new Date() }).where(eq(commercialCommands.id, commandId));
+    if (!result.success) return { ok: false, error: result.error === 'email_unknown_failure' ? 'El proveedor no confirmó el envío. Comprueba su recibo antes de repetirlo.' : 'El correo no salió. Revisa el destinatario o la conexión y vuelve a intentar.' };
 
     const sentAt = new Date();
     await db
@@ -277,7 +308,7 @@ export async function sendQuoteByEmail(id: string, to?: string): Promise<ActionR
         nextFollowUpAt: firstFollowUp(sentAt),
         updatedAt: sentAt,
       })
-      .where(eq(quotes.id, id));
+      .where(and(eq(quotes.id, id),eq(quotes.version,quote.version),sql`${quotes.status} not in ('aceptada','aceptacion_pendiente','rechazada')`));
     revalidateClient(quote.clientId);
 
     return { ok: true, data: { to: recipient } };
@@ -297,8 +328,9 @@ export async function markQuoteShared(id: string): Promise<ActionResult> {
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
-    const quote = await getQuoteById(id);
+    const quote = await getOwnedQuoteById(id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
+    if (['aceptada', 'aceptacion_pendiente'].includes(quote.status)) return { ok: false, error: 'Esta versión tiene una aceptación. Conserva su evidencia y confirma la venta.' };
 
     const blocking = missingToSend(quote);
     if (blocking.length > 0) {
@@ -309,7 +341,7 @@ export async function markQuoteShared(id: string): Promise<ActionResult> {
     await db
       .update(quotes)
       .set({ status: 'enviada', sentAt, nextFollowUpAt: firstFollowUp(sentAt), updatedAt: new Date() })
-      .where(eq(quotes.id, id));
+      .where(and(eq(quotes.id, id),eq(quotes.version,quote.version),sql`${quotes.status} not in ('aceptada','aceptacion_pendiente','rechazada')`));
     revalidateClient(quote.clientId);
     return { ok: true };
   } catch (err) {
@@ -320,11 +352,11 @@ export async function markQuoteShared(id: string): Promise<ActionResult> {
 /** Lista para la pestaña del cliente (el workspace es un Client Component). */
 export async function listQuotesAction(clientId: string): Promise<ActionResult<{ quotes: unknown[] }>> {
   try {
-    const session = await requireUserSession();
+    const session = await requireCommercialAccess();
     if (!session) return { ok: false, error: 'Necesitas iniciar sesión.' };
     const { listQuotesForClient } = await import('./queries');
     // Igual que al guardar: llega el id público, la tabla usa el uuid.
-    const clientPgId = await resolveClientPgId(clientId);
+    const clientPgId = await resolveOwnedClientPgId(clientId, session.userId);
     if (!clientPgId) return { ok: true, data: { quotes: [] } };
     return { ok: true, data: { quotes: await listQuotesForClient(clientPgId) } };
   } catch (err) {
@@ -360,7 +392,7 @@ export async function acceptQuote(
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
     const data = AcceptSchema.parse(input);
-    const quote = await getQuoteById(data.id);
+    const quote = await getOwnedQuoteById(data.id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
     // «Lista» (borrador sin nada pendiente) se acepta igual que «Enviada»:
     // el mismo comentario de displayStatus() lo dice — una cotización
@@ -380,6 +412,7 @@ export async function acceptQuote(
 
     const sale = await acceptQuoteAndCreateSale({
       quoteId: quote.id,
+      expectedVersion: quote.version,
       clientId: quote.clientId,
       title: quote.title,
       folio: quote.folio,
@@ -394,16 +427,8 @@ export async function acceptQuote(
       actorId: guard.uid,
     });
 
-    await db
-      .update(quotes)
-      .set({
-        status: 'aceptada',
-        acceptedAt,
-        // §21: aceptada ⇒ deja de pedir seguimiento.
-        nextFollowUpAt: null,
-        updatedAt: new Date(),
-      })
-      .where(eq(quotes.id, data.id));
+    const won=await db.update(commercialOpportunities).set({stage:'ganado',revision:sql`${commercialOpportunities.revision}+1`,updatedAt:new Date()}).where(and(eq(commercialOpportunities.ownerId,guard.uid),eq(commercialOpportunities.quoteId,quote.id),sql`${commercialOpportunities.stage}<>'ganado'`)).returning({id:commercialOpportunities.id});
+    if(won.length) await db.insert(clientActivity).values({ownerId:guard.uid,clientId:quote.clientId,type:'commercial_sale_confirmed',actorName:guard.uid,message:'Venta confirmada desde la cotización '+quote.folio,metadata:{saleId:sale.saleId,version:quote.version}});
 
     revalidateClient(quote.clientId);
     revalidatePath('/cobros');
@@ -426,8 +451,9 @@ export async function rejectQuote(input: z.infer<typeof RejectSchema>): Promise<
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
     const data = RejectSchema.parse(input);
-    const quote = await getQuoteById(data.id);
+    const quote = await getOwnedQuoteById(data.id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
+    if (['aceptada', 'aceptacion_pendiente'].includes(quote.status)) return { ok: false, error: 'Esta versión tiene una aceptación. Conserva su evidencia y confirma la venta.' };
 
     await db
       .update(quotes)
@@ -438,7 +464,7 @@ export async function rejectQuote(input: z.infer<typeof RejectSchema>): Promise<
         nextFollowUpAt: null,
         updatedAt: new Date(),
       })
-      .where(eq(quotes.id, data.id));
+      .where(and(eq(quotes.id, data.id),eq(quotes.version,quote.version),sql`${quotes.status} not in ('aceptada','aceptacion_pendiente')`));
     revalidateClient(quote.clientId);
     return { ok: true };
   } catch (err) {
@@ -452,11 +478,12 @@ export async function snoozeFollowUp(id: string): Promise<ActionResult<{ nextFol
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Requiere rol administrador.' };
 
-    const quote = await getQuoteById(id);
+    const quote = await getOwnedQuoteById(id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
+    if (['aceptada', 'aceptacion_pendiente'].includes(quote.status)) return { ok: false, error: 'Esta versión tiene una aceptación. Conserva su evidencia y confirma la venta.' };
 
     const next = nextFollowUp(new Date());
-    await db.update(quotes).set({ nextFollowUpAt: next, updatedAt: new Date() }).where(eq(quotes.id, id));
+    await db.update(quotes).set({ nextFollowUpAt: next, updatedAt: new Date() }).where(and(eq(quotes.id, id),eq(quotes.version,quote.version),sql`${quotes.status} not in ('aceptada','aceptacion_pendiente','rechazada')`));
     revalidateClient(quote.clientId);
     return { ok: true, data: { nextFollowUpAt: next.toISOString() } };
   } catch (err) {
@@ -477,7 +504,7 @@ export async function createChargeForQuote(
     const guard = await requireAdmin();
     if (!guard.ok) return { ok: false, error: 'Crear un cobro requiere rol administrador.' };
 
-    const quote = await getQuoteById(id);
+    const quote = await getOwnedQuoteById(id, guard.uid);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
     if (quote.status !== 'aceptada') {
       return { ok: false, error: 'Solo se crea el cobro de una cotización aceptada.' };
@@ -563,9 +590,9 @@ export async function createChargeForQuote(
 /** Una cotización suelta, para la vista de detalle (§16). */
 export async function getQuoteAction(id: string): Promise<ActionResult<{ quote: unknown }>> {
   try {
-    const session = await requireUserSession();
+    const session = await requireCommercialAccess();
     if (!session) return { ok: false, error: 'Necesitas iniciar sesión.' };
-    const quote = await getQuoteById(id);
+    const quote = await getOwnedQuoteById(id, session.userId);
     if (!quote) return { ok: false, error: 'La cotización ya no existe.' };
     return { ok: true, data: { quote } };
   } catch (err) {

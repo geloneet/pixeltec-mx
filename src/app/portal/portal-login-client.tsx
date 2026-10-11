@@ -105,6 +105,9 @@ export function PortalLoginClient() {
                   <><Mail className="mr-2 h-4 w-4" />Enviar código por email</>
                 )}
               </Button>
+              <Button type="button" variant="ghost" className="w-full text-zinc-300" onClick={(e) => { const form = e.currentTarget.form; if (form?.reportValidity()) { setMessage(null); setPhase('code-sent'); } }}>
+                Ya tengo un código
+              </Button>
             </form>
           ) : (
             <form onSubmit={handleVerify} className="space-y-4">

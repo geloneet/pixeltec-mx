@@ -389,6 +389,7 @@ export function QuoteForm({
     start(async () => {
       const res = await saveQuote({
         id: quote?.id,
+        expectedVersion: quote?.version,
         clientId,
         title,
         items,

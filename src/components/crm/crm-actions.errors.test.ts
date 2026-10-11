@@ -21,7 +21,7 @@ const repo = vi.hoisted(() => ({
   syncCrmSessions: vi.fn(),
 }));
 
-vi.mock("@/lib/auth/config", () => ({ auth: authMock }));
+vi.mock("@/lib/auth/session", () => ({ requireUserSession: async () => { const s = await authMock(); return s?.user?.id ? { userId: s.user.id, role: s.user.role || "admin", email: "qa@example.invalid" } : null; } }));
 vi.mock("@/lib/db/repos/crm-sync", () => repo);
 
 import { syncCrmDataAction } from "./crm-actions";

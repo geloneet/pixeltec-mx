@@ -1,7 +1,7 @@
 import 'server-only';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { billingItems, clients, recurringCharges, sales } from '@/lib/db/schema';
+import { billingItems, clients, quotes, recurringCharges, sales } from '@/lib/db/schema';
 import { computeBreakdown, RECURRENCE_TOTAL_LABEL, type QuoteItem, type Recurrence } from '@/lib/quotes/money';
 import { paymentSchedule, type Currency, type PaymentTerms } from '@/lib/quotes/terms';
 import { firstAnniversary, nextSaleFolio, type AcceptedVia } from './model';
@@ -22,6 +22,7 @@ import { firstAnniversary, nextSaleFolio, type AcceptedVia } from './model';
 
 export interface AcceptQuoteInput {
   quoteId: string;
+  expectedVersion?: number;
   clientId: string;
   title: string;
   folio: string;
@@ -70,6 +71,11 @@ export async function acceptQuoteAndCreateSale(input: AcceptQuoteInput): Promise
   const dueDate = toDueDate(input.validUntil, input.acceptedAt);
 
   return db.transaction(async (tx) => {
+    // WO566: aceptar y editar usan el mismo bloqueo. El snapshot financiero
+    // debe proceder de la versión que revisó la persona, nunca de una lectura stale.
+    const [quote] = await tx.select({ version: quotes.version, clientId: quotes.clientId }).from(quotes).where(eq(quotes.id, input.quoteId)).for('update');
+    if (!quote || quote.clientId !== input.clientId || (input.expectedVersion !== undefined && quote.version !== input.expectedVersion)) throw new Error('quote_version_conflict');
+    await tx.execute(sql`select pg_advisory_xact_lock(hashtextextended('pixeltec:sale-folio', 0))`);
     // ── 1. La Venta, una y solo una ─────────────────────────────────────────
     const [owner] = await tx
       .select({ ownerId: clients.ownerId, email: clients.email })
@@ -119,6 +125,9 @@ export async function acceptQuoteAndCreateSale(input: AcceptQuoteInput): Promise
     }
 
     const sale = inserted[0];
+    // El estado aceptado queda en la misma transacción que la venta. Una
+    // edición concurrente no puede colarse antes de una actualización tardía.
+    await tx.update(quotes).set({ status: 'aceptada', acceptedAt: input.acceptedAt, nextFollowUpAt: null, updatedAt: new Date() }).where(eq(quotes.id, input.quoteId));
 
     // ── 2. Cobros del PAGO ÚNICO ────────────────────────────────────────────
     // El reparto se aplica SOLO al pago único: un «50 % de anticipo» sobre una

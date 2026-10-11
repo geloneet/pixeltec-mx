@@ -39,6 +39,30 @@ function getResend(): Resend {
   return _resend;
 }
 
+/** Recepción comercial: habilitación explícita, firma SDK sobre bytes crudos. */
+export function verifyCommercialEmailWebhook(payload: string, headers: { id: string; timestamp: string; signature: string }) {
+  const secret = process.env.RESEND_WEBHOOK_SECRET;
+  if (!secret || !process.env.RESEND_API_KEY || (process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED !== 'true' && process.env.COMMERCIAL_EMAIL_WEBHOOK_ENABLED !== 'true')) throw new Error('email_receiving_not_configured');
+  return getResend().webhooks.verify({ payload, headers, webhookSecret: secret });
+}
+export async function getCommercialReceivedEmail(id: string) {
+  if (process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED !== 'true' || !process.env.RESEND_API_KEY) throw new Error('email_receiving_not_configured');
+  const result = await getResend().emails.receiving.get(id);
+  if (result.error || !result.data) throw new Error('email_receiving_provider_failed');
+  return result.data;
+}
+export async function verifyCommercialEmailDomain() {
+  if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM_EMAIL) return { verified: false, reason: 'Configura RESEND_API_KEY y RESEND_FROM_EMAIL en el gestor de secretos.' };
+  const sender = process.env.RESEND_FROM_EMAIL.match(/@([^>\s]+)/)?.[1]?.toLowerCase();
+  if (!sender) return { verified: false, reason: 'RESEND_FROM_EMAIL debe pertenecer al dominio aprobado.' };
+  try {
+    const result = await getResend().domains.list();
+    if (result.error || !result.data) return { verified: false, reason: 'No se pudo comprobar el dominio. Verifica permisos de la clave en Resend.' };
+    const domain = result.data.data.find((d) => d.name.toLowerCase() === sender);
+    return { verified: domain?.status === 'verified', reason: domain?.status === 'verified' ? 'Dominio de envío verificado en Resend.' : 'Completa la verificación DNS del dominio en Resend.' };
+  } catch { return { verified: false, reason: 'Resend no respondió. Reintenta la comprobación.' }; }
+}
+
 const FROM = process.env.RESEND_FROM_EMAIL ?? 'PixelTEC <onboarding@resend.dev>';
 
 const EMAIL_FORMAT = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -102,7 +126,8 @@ export async function sendEmail(
   to: string | string[],
   subject: string,
   html: string,
-  attachments?: EmailAttachment[]
+  attachments?: EmailAttachment[],
+  options?: { idempotencyKey?: string; replyTo?: string }
 ): Promise<EmailResult> {
   // Fail-closed antes de tocar Resend. `sendEmail` solo expone `to`; si en el
   // futuro admite CC o BCC deben pasarse aquí también, porque la política exige
@@ -118,13 +143,17 @@ export async function sendEmail(
   }
 
   try {
-    const { data, error } = await getResend().emails.send({
+    const payload = {
       from: FROM,
       to: Array.isArray(to) ? to : [to],
       subject,
       html,
+      ...(options?.replyTo ? { replyTo: options.replyTo } : {}),
       ...(attachments && attachments.length > 0 ? { attachments } : {}),
-    });
+    };
+    const { data, error } = options?.idempotencyKey
+      ? await getResend().emails.send(payload, { idempotencyKey: options.idempotencyKey })
+      : await getResend().emails.send(payload);
 
     if (error) {
       // El objeto de error de Resend trae su `message` crudo (dominios, cuerpo
@@ -134,7 +163,7 @@ export async function sendEmail(
       return { success: false, error: 'email_provider_failed' };
     }
 
-    console.log(`[email] Sent "${subject}" → ${to} (id: ${data?.id})`);
+    console.log('[email] Envío aceptado por el proveedor', { id: data?.id });
     return { success: true, id: data?.id };
   } catch (err) {
     console.error('[email] Unexpected error:', err instanceof Error ? err.name : typeof err);

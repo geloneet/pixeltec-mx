@@ -49,9 +49,10 @@ export function PortalDashboard({ data }: { data: PortalDashboardData }) {
           <InfoCard icon={<FolderKanban className="h-6 w-6 text-cyan-400" />} title="Estado de Proyectos">
             {data.projects.length > 0 ? (
               data.projects.map((p) => (
-                <div key={p.id} className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                  <p className="font-medium text-zinc-200">{p.name}</p>
-                  <Badge variant="outline" className={cn('font-semibold', statusColors[p.status])}>{p.status}</Badge>
+                <div key={p.id} className="p-3 bg-white/5 rounded-lg">
+                  <div className="flex items-center justify-between gap-3"><p className="font-medium text-zinc-200">{p.name}</p><Badge variant="outline" className={cn('font-semibold', statusColors[p.status])}>{p.commercialRevision ? ({arranque:'Arranque',preparacion:'En preparación',revision:'Listo para revisar',entregado:'Entregado'}[p.commercialStage||'']||p.status) : p.status}</Badge></div>
+                  {p.clientNote&&<p className="text-sm text-zinc-300 mt-3 whitespace-pre-wrap">{p.clientNote}</p>}
+                  {p.nextStep&&<p className="text-xs text-zinc-400 mt-2">Próximo paso: {p.nextStep}{p.nextStepDue?' · '+format(new Date(p.nextStepDue+'T12:00:00Z'),'dd MMM, yyyy',{locale:es}):''}</p>}
                 </div>
               ))
             ) : (

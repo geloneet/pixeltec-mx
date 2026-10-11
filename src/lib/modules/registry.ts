@@ -84,7 +84,7 @@ const REGISTRY = [
     id: "inicio",
     label: "Inicio",
     state: "active",
-    routes: ["/hoy"],
+    routes: ["/hoy", "/ajustes"],
     note: "Etiqueta «Hoy» → «Inicio»; la ruta /hoy se conserva (orden §5).",
   },
   {
@@ -153,7 +153,7 @@ const REGISTRY = [
   },
   {
     id: "proyectos",
-    label: "Trabajo",
+    label: "Proyectos",
     state: "active",
     routes: ["/proyectos"],
     note: "WO-2026-00132: reemplaza Proyectos/Definición/PixelForge (borrados, no ocultos). Lista+detalle simple sobre la tabla `projects` real.",
@@ -162,7 +162,7 @@ const REGISTRY = [
     id: "cotizaciones",
     label: "Cotizaciones",
     state: "active",
-    routes: ["/cotizaciones"],
+    routes: ["/cotizaciones", "/ventas"],
     note: "WO-2026-00132: vista dedicada (vencidas/próximas a vencer) — antes solo se veían dentro de cada cliente.",
   },
   // ── Planeados (WO-2026-00515, mockup «Centro Comercial», D-1 opción B) ─────

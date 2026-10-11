@@ -43,6 +43,8 @@ export interface PaletteNavItem {
 }
 
 export const PALETTE_NAV_ITEMS: PaletteNavItem[] = [
+  { href: "/ventas", label: "Ventas", description: "Oportunidades, propuestas y seguimiento comercial", icon: LineChart, module: "cotizaciones" },
+  { href: "/ajustes", label: "Ajustes", description: "Apariencia, conexiones verificadas y política comercial", icon: Settings2, module: "inicio" },
   // ── Inicio ──────────────────────────────────────────────────────────────────
   {
     href: "/hoy",

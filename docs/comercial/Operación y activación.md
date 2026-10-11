@@ -57,6 +57,8 @@ Outbox queued/sending/sent/delivered/failed/unknown persiste antes de red. Un ti
 
 Un fallo confirmado permite reintento con la misma intención; editar cuerpo no reutiliza una clave con otro hash. Un recordatorio pausado/cancelado, ya pagado o con saldo cambiado no se reenvía. Para nuevo saldo: pausar, revisar y reprogramar con revisión nueva. El envío nunca llama recordPayment. Los pagos reclaman UUID duradero y reconciliación del registro canónico, incluso tras interrupción; no repetir manualmente una operación uncertain.
 
+Compartir un avance registra una sola actividad por outbox confirmado: el UUID del envío también identifica su recibo de actividad. Si se pierde la respuesta HTTP después del envío y el avance conserva su revisión, repetir la misma petición conserva el mensaje y repara el registro faltante; no añade otra entrada al historial. Esta corrección no borra ni consolida historia anterior.
+
 Rollback de aplicación: apagar flags nuevos y quiescer emisores; usar release anterior mediante wrapper si capacidad permite. Conservar tablas/columnas aditivas y todos los registros nuevos. No ejecutar DROP ni borrar quote_versions: son evidencia. Restaurar dump productivo exige GO separado, ventana sin escrituras y conciliación de operaciones posteriores; nunca sobrescribir dinero reciente para deshacer UI.
 
 ## Límites y deuda declarada

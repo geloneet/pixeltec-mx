@@ -50,6 +50,7 @@ let payment: typeof import("./payments");
 let decisions: typeof import("./quote-decisions");
 let quotes: typeof import("@/lib/quotes/actions");
 let snapshot: typeof import("./snapshot");
+let sharing: typeof import("./sharing");
 let owner: string;
 let other: string;
 let clientId: string;
@@ -75,6 +76,7 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     decisions = await import("./quote-decisions");
     quotes = await import("@/lib/quotes/actions");
     snapshot = await import("./snapshot");
+    sharing = await import("./sharing");
     owner = randomUUID();
     other = randomUUID();
     identity.id = owner;
@@ -522,6 +524,73 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
       .where(eq(schema.clientPortalUpdates.clientId, clientId));
     expect(portal.at(-1)?.text).toContain("Avance QA visible al cliente");
   }, 30000);
+  it("compartir un avance repetido envía y registra una sola comunicación", async () => {
+    const [sale] = await db
+      .select()
+      .from(schema.sales)
+      .where(eq(schema.sales.quotationId, quoteId));
+    const [project] = await db
+      .select()
+      .from(schema.projects)
+      .where(eq(schema.projects.id, sale.projectId!));
+    await db
+      .update(schema.clients)
+      .set({ portalAccessEnabled: true })
+      .where(
+        and(eq(schema.clients.id, clientId), eq(schema.clients.ownerId, owner)),
+      );
+    const [conversation] = await db
+      .select()
+      .from(schema.commercialConversations)
+      .where(eq(schema.commercialConversations.id, conversationId));
+    await inbox.setCommercialMode({
+      id: conversationId,
+      revision: conversation.revision,
+      mode: "HUMAN",
+    });
+    const input = {
+      id: project.id,
+      conversationId,
+      expectedRevision: project.commercialRevision,
+      idempotencyKey: randomUUID(),
+    };
+    transport.send.mockClear();
+    const first = await sharing.shareCommercialProject(input);
+    const replay = await sharing.shareCommercialProject(input);
+    await Promise.all([
+      sharing.shareCommercialProject(input),
+      sharing.shareCommercialProject(input),
+    ]);
+    expect(first.status).toBe("sent");
+    expect(replay.id).toBe(first.id);
+    expect(transport.send).toHaveBeenCalledTimes(1);
+    const history = await db
+      .select()
+      .from(schema.clientActivity)
+      .where(
+        and(
+          eq(schema.clientActivity.ownerId, owner),
+          eq(schema.clientActivity.clientId, clientId),
+          eq(schema.clientActivity.type, "commercial_project_shared"),
+          sql`${schema.clientActivity.metadata}->>'outboxId' = ${first.id}`,
+        ),
+      );
+    expect(history).toHaveLength(1);
+    expect(history[0].metadata).toMatchObject({
+      projectId: project.id,
+      revision: project.commercialRevision,
+      outboxId: first.id,
+    });
+    identity.id = other;
+    try {
+      await expect(sharing.shareCommercialProject(input)).rejects.toThrow(
+        "Proyecto no disponible",
+      );
+    } finally {
+      identity.id = owner;
+    }
+    expect(transport.send).toHaveBeenCalledTimes(1);
+  });
   it("recordatorio programado se cancela si el saldo ya está liquidado", async () => {
     const freshBill = randomUUID();
     await db.insert(schema.billingItems).values({

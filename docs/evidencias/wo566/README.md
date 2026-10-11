@@ -6,8 +6,8 @@ WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial
 
 | Verificación | Resultado |
 |---|---|
-| npm test | 189 archivos PASS,1 omitido;2338 pruebas PASS,13 de DB omitidas por defecto |
-| COMMERCIAL_DB_TESTS=1, suite comercial y auth CRM | 6 archivos,42 pruebas PASS;13 flujos ejecutados contra PostgreSQL real aislado |
+| npm test | Revisión 21:10: 189 archivos PASS,1 omitido;2338 pruebas PASS,14 de DB omitidas por defecto |
+| COMMERCIAL_DB_TESTS=1, suite comercial y auth CRM | Revisión de idempotencia: 6 archivos,43 pruebas PASS;14 flujos ejecutados contra PostgreSQL real aislado |
 | npm run typecheck | exit0, TypeScript estricto |
 | npm run lint | exit0; único warning heredado img de progressive-cube |
 | npm run build | exit0, Next15.5.27, generación208/208 |
@@ -18,6 +18,8 @@ WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial
 Comando crítico: cargar variables privadas de .env.local sin imprimirlas y ejecutar COMMERCIAL_DB_TESTS=1 NODE_OPTIONS=--no-experimental-webstorage npx vitest run src/lib/commercial src/components/crm/crm-actions.errors.test.ts src/components/crm/crm-actions.status.test.ts. La prueba rechaza DB distinta de localhost/centro_qa. Identidad y transportes se controlan en test; dinero, venta, aprovisionamiento y queries usan PostgreSQL real. SDK Resend valida firmas Svix reales con clave efímera, incluyendo cuerpo manipulado, expiración y falta de headers.
 
 Casos: ingreso/evento repetido, hash conflictivo, identidad dudosa, envío/doble clic, fallo/reintento, política rutinaria→humano→pausa/reactivación, ventana WhatsApp24h y emisor único, edición versión vieja, aceptación protegida y venta única, parcial/anticipo/proyecto/portal, deuda pagada sin transporte, recibo adelantado/fuera de orden, saldo cambiado, pausa/reprogramación, árbol CRM antiguo/cross-owner/input inválido, reviewer/staff financiero/sin sesión y sale ajena.
+
+Revisión 2026-10-10, 21:09: compartir un avance reutilizaba el outbox, pero añadía una actividad por petición repetida. Una regresión PostgreSQL reprodujo cuatro actividades para un solo envío (13 PASS/1 FAIL). La corrección identifica la actividad con el UUID duradero del outbox y hace el insert idempotente. La misma secuencia —dos peticiones sucesivas y dos concurrentes— ahora deja un envío y una actividad; una cartera ajena se rechaza. Suite crítica: 43 PASS, incluidos 14 flujos de DB; suite general, tipos, lint y build repetidos PASS. No requiere otra migración y no elimina actividades anteriores.
 
 ## Evidencia en navegador
 

@@ -74,18 +74,24 @@ export async function shareCommercialProject(raw: unknown) {
     subject: "Avance de " + p.name,
   });
   if (["sent", "delivered"].includes(result.status))
-    await db.insert(clientActivity).values({
-      ownerId: session.userId,
-      clientId: p.clientId,
-      type: "commercial_project_shared",
-      actorName: session.email,
-      message: "Avance compartido por " + c.channel,
-      metadata: {
-        projectId: p.id,
-        revision: p.commercialRevision,
-        outboxId: result.id,
-      },
-    });
+    await db
+      .insert(clientActivity)
+      .values({
+        // The durable outbox UUID also identifies its single activity receipt.
+        // A replay after a lost response repairs the receipt without adding history.
+        id: result.id,
+        ownerId: session.userId,
+        clientId: p.clientId,
+        type: "commercial_project_shared",
+        actorName: session.email,
+        message: "Avance compartido por " + c.channel,
+        metadata: {
+          projectId: p.id,
+          revision: p.commercialRevision,
+          outboxId: result.id,
+        },
+      })
+      .onConflictDoNothing({ target: clientActivity.id });
   return result;
 }
 export async function shareCommercialQuote(raw: unknown) {

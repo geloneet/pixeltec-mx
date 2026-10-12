@@ -41,4 +41,10 @@ Los conteos del respaldo corresponden al ensayo anterior al flujo de cotización
 
 Adaptación móvil: navegación en menú accesible reutilizando la estructura del producto, en vez de importar la barra demo. Se conservan las siete entradas y la composición del contenido. Los controles «Pagar en línea» y «Error de demo» del ZIP no se presentan como capacidades existentes: el producto reutiliza registro administrativo y errores/recibos reales.
 
-Pendientes externos: correo y WhatsApp entrantes y salientes reales autorizados, entrega real, dominio/secretos, traspaso de bot/schedulers y gates de merge/activación. Producción no fue modificada. Historial del proyecto no representa porcentaje técnico y no cambia dinero.
+## Comprobación autorizada de Resend — 2026-10-11
+
+Miguel respondió «autorizo» a usar la configuración de /Users/pixeltec/Desktop/PixelTECDEV/pixeltec-os/.env.local únicamente para comprobar el dominio remitente. Dos consultas GET /domains (con limit 100 y con parámetros predeterminados) retornaron validation_error; clasificación saneada de la segunda: invalid_api_key, a las 2026-10-12T00:21:26.904Z. No se imprimió respuesta cruda, clave ni valor del archivo; cero envíos y sin copiar credenciales al candidato.
+
+Miguel inició sesión en Resend y avisó «ready». CUA comprobó la fila exacta pixeltec.mx en https://resend.com/domains: estado Verified. La captura permanece privada/local; la revisión automática rechazó publicarla en GitHub por incluir información de cuenta y otros dominios. Este registro publica solo el resultado saneado del dominio objetivo. El dominio queda verificado desde el panel real; la clave del checkout anterior fue rechazada y requiere una credencial válida/configuración segura para conectar el candidato por API. No se crearon claves, ampliaron permisos ni alteraron DNS. Esta evidencia no acredita recepción, entrega ni envío desde el candidato.
+
+Pendientes externos: correo y WhatsApp entrantes y salientes reales autorizados, entrega real, credenciales válidas, dominio receptor/MX/webhook, traspaso de bot/schedulers y gates de merge/activación. El dominio remitente pixeltec.mx ya fue verificado en el panel. Producción no fue modificada. Historial del proyecto no representa porcentaje técnico y no cambia dinero.

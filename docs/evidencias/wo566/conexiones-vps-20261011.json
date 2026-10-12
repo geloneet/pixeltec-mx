@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-12T00:43:15.208Z",
+  "source": "VPS Pixeltec.mx .env.production, confirmado contra contenedor activo",
+  "privateFile": ".env.local (ignorado,0600)",
+  "importedVariables": [
+    "RESEND_API_KEY",
+    "RESEND_FROM_EMAIL",
+    "PIXELTEC_TEAM_EMAIL",
+    "WHATSAPP_ACCESS_TOKEN",
+    "WHATSAPP_PHONE_NUMBER_ID",
+    "WHATSAPP_BUSINESS_ACCOUNT_ID",
+    "WHATSAPP_API_VERSION",
+    "PIXELBOT_INTERNAL_URL",
+    "PIXELBOT_INTERNAL_SECRET",
+    "PIXELBOT_TENANT_ID"
+  ],
+  "qaDatabasePreserved": true,
+  "qaAuthenticationPreserved": true,
+  "egress": {
+    "email": "disabled",
+    "whatsapp": "disabled",
+    "internal": "disabled",
+    "cron": "disabled"
+  },
+  "email": {
+    "apiVerified": true,
+    "domain": "pixeltec.mx",
+    "status": "verified",
+    "sending": "enabled",
+    "receiving": "disabled"
+  },
+  "missing": [
+    "RESEND_WEBHOOK_SECRET",
+    "COMMERCIAL_REPLY_TO",
+    "COMMERCIAL_INBOUND_ADDRESSES"
+  ],
+  "externalMessagesSent": 0,
+  "productionModified": false,
+  "egressContractDev": "PASS",
+  "previewHealthHttp": 200,
+  "settingsBrowserVerification": "pending_browser_security_policy"
+}

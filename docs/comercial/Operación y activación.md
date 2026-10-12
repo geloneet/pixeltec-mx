@@ -4,7 +4,7 @@ WO-2026-00566 · 2026-10-10. Candidato en codex/wo566-centro-comercial, base 1aa
 
 ## Configuración segura
 
-Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. La configuración del candidato no incorpora secretos productivos.
+Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.
 
 | Variable | Requisito |
 |---|---|
@@ -30,10 +30,12 @@ Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON de
 
 Las conexiones se verifican desde Ajustes mediante API Resend/Meta/PixelBot, recepción firmada reciente y heartbeat de proceso. Una variable presente no prueba conexión. El asistente de WhatsApp mantiene estado pendiente hasta documentar prueba y emisor único; el flag de exclusividad es una declaración operativa, no una certificación técnica.
 
+Comprobación del 2026-10-11: Resend GET /domains respondió desde VPS y Mac; pixeltec.mx verified, sending enabled, receiving disabled. Las credenciales del archivo /home/ubuntu/pixeltec-mx/.env.production coinciden con el contenedor activo. La falta de una clave remitente válida quedó resuelta. Siguen pendientes RESEND_WEBHOOK_SECRET, buzón comercial/reply-to/MX aprobados y recibos reales; las claves de WhatsApp/PixelBot ya están disponibles, sin afirmar conexión ni habilitarla. [Recibo saneado](../evidencias/wo566/conexiones-vps-20261011.json).
+
 ## Migración y candidato
 
 1. Obtener GO de Miguel para el SHA exacto, merge y activación. No activar envíos automáticos como efecto del despliegue.
-2. Operador autorizado verifica capacidad con wrapper canónico: máximo85% ocupado y mínimo20GiB libres, datos legibles. WO547 fue la última evidencia histórica; esta tarea no inspeccionó ni modificó el VPS. No eludir el guard ni borrar recursos para forzar build.
+2. Operador autorizado verifica capacidad con wrapper canónico: máximo85% ocupado y mínimo20GiB libres, datos legibles. WO547 fue la última evidencia histórica de capacidad; la lectura de credenciales de WO566 no comprueba ese margen ni modifica el VPS. No eludir el guard ni borrar recursos para forzar build.
 3. Pausar escrituras y emisores de la cartera durante el corte. Tomar pg_dump -Fc privado0600, registrar SHA256 sin revelar contenido y ensayar pg_restore --exit-on-error en DB aislada. Registrar conteos y ledger previos.
 4. Aplicar drizzle/0053_centro_comercial.sql con psql -v ON_ERROR_STOP=1 -f. No usar db:push ni regenerar el journal: existe drift canónico en migraciones44–52. 0053 usa una transacción y backfill idempotente de quote_versions.
 5. Verificar columnas/tablas/índices, conteos del núcleo y versiones. Hash SQL: 35fea9dc5045571f1c051f2cac38ccbdbbdd23753f7cc543afe17d8455899caa. QA ensayó aplicación repetida y restauración; no certifica una migración productiva ya ejecutada.

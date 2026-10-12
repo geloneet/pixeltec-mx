@@ -28,6 +28,8 @@ const errors: Record<string, string> = {
     "La conversación de WhatsApp está fuera de la ventana permitida. Espera un mensaje nuevo o usa una plantilla aprobada desde WhatsApp.",
   whatsapp_original_receipt_unconfirmed:
     "WhatsApp conservó el intento, pero falta confirmar su envío. Revisa el recibo antes de repetir.",
+  whatsapp_pause_not_confirmed:
+    "No se confirmó la pausa del asistente. Activa atención humana y vuelve a comprobarla antes de enviar.",
   reminder_balance_changed:
     "El saldo cambió. Pausa y vuelve a preparar el recordatorio con el importe actual.",
   automatic_paused:

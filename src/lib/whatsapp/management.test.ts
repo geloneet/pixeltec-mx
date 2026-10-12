@@ -126,6 +126,7 @@ describe("getPhoneNumberInfo", () => {
         quality_rating: "GREEN",
         name_status: "APPROVED",
         code_verification_status: "VERIFIED",
+        status: "CONNECTED",
         messaging_limit_tier: "TIER_1K",
         platform_type: "CLOUD_API",
       })
@@ -136,7 +137,7 @@ describe("getPhoneNumberInfo", () => {
     expect(urlDeLaLlamada()).toBe(
       "https://graph.facebook.com/v21.0/111222333444" +
         "?fields=display_phone_number,verified_name,quality_rating,name_status," +
-        "code_verification_status,messaging_limit_tier,platform_type"
+        "code_verification_status,status,messaging_limit_tier,platform_type"
     );
     const init = initDeLaLlamada();
     expect(init.method).toBe("GET");
@@ -151,6 +152,7 @@ describe("getPhoneNumberInfo", () => {
       qualityRating: "GREEN",
       nameStatus: "APPROVED",
       codeVerificationStatus: "VERIFIED",
+      connectionStatus: "CONNECTED",
       messagingLimitTier: "TIER_1K",
       platformType: "CLOUD_API",
     });
@@ -166,6 +168,7 @@ describe("getPhoneNumberInfo", () => {
       qualityRating: null,
       nameStatus: null,
       codeVerificationStatus: null,
+      connectionStatus: null,
       messagingLimitTier: null,
       platformType: null,
     });

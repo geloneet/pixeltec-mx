@@ -307,6 +307,7 @@ const PHONE_FIELDS = [
   "quality_rating",
   "name_status",
   "code_verification_status",
+  "status",
   "messaging_limit_tier",
   "platform_type",
 ].join(",");
@@ -348,6 +349,7 @@ export async function getPhoneNumberInfo(): Promise<PhoneNumberInfo> {
     qualityRating: str(json.quality_rating),
     nameStatus: str(json.name_status),
     codeVerificationStatus: str(json.code_verification_status),
+    connectionStatus: str(json.status),
     messagingLimitTier: str(json.messaging_limit_tier),
     platformType: str(json.platform_type),
   };

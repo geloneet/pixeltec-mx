@@ -105,6 +105,13 @@ export const messageInput = createInsertSchema(commercialOutbox, {
   })
   .required()
   .strict();
+/** Permite una sincronización controlada de una conversación del tenant propio. */
+export const whatsappSyncInput = createInsertSchema(commercialConversations, {
+  address: z.string().regex(/^\+?[1-9]\d{7,14}$/),
+})
+  .pick({ address: true })
+  .partial()
+  .strict();
 export const policyInput = createInsertSchema(commercialPolicies, {
   approvedAnswers: z
     .array(

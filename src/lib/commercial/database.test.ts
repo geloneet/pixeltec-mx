@@ -5,6 +5,11 @@ import { eq, and, sql } from "drizzle-orm";
 import { config } from "dotenv";
 const identity = vi.hoisted(() => ({ id: "", role: "admin" as string | null }));
 const transport = vi.hoisted(() => ({ send: vi.fn(), pixelbot: vi.fn() }));
+const phoneConnection = vi.hoisted(() => ({
+  status: "CONNECTED" as string | null,
+  verification: "EXPIRED",
+  unavailable: false,
+}));
 vi.mock("server-only", () => ({}));
 vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }));
 vi.mock("@/lib/auth/session", () => ({
@@ -33,6 +38,15 @@ vi.mock("@/lib/email", () => ({
 }));
 vi.mock("@/lib/whatsapp-inbox/pixelbot-client", () => ({
   fetchPixelbot: transport.pixelbot,
+}));
+vi.mock("@/lib/whatsapp/management", () => ({
+  getPhoneNumberInfo: async () => {
+    if (phoneConnection.unavailable) throw new Error("provider_unavailable");
+    return {
+      connectionStatus: phoneConnection.status,
+      codeVerificationStatus: phoneConnection.verification,
+    };
+  },
 }));
 vi.mock("@/lib/documents/invoices", async (importOriginal) => ({
   ...(await importOriginal<typeof import("@/lib/documents/invoices")>()),
@@ -311,6 +325,7 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
   });
   it("WhatsApp preserva PixelBot, valida la ventana y utiliza una clave durable", async () => {
     process.env.PIXELBOT_TENANT_ID = "qa";
+    process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE = "false";
     process.env.EGRESS_WHATSAPP_MODE = "allowlist";
     process.env.EGRESS_WHATSAPP_ALLOWLIST = "+529990000566";
     const result = await inbound.ingestCommercialInbound(owner, {
@@ -355,18 +370,37 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
       .set({ lastInboundAt: new Date() })
       .where(eq(schema.commercialConversations.id, c.id));
     transport.pixelbot.mockClear();
-    const inside = await inbox.sendCommercialMessage({
+    const insideInput = {
       conversationId: c.id,
       idempotencyKey: randomUUID(),
       body: "Respuesta QA",
       subject: "",
-    });
+    };
+    const inside = await inbox.sendCommercialMessage(insideInput);
     expect(inside.status).toBe("sent");
+    expect((await inbox.sendCommercialMessage(insideInput)).id).toBe(inside.id);
+    expect(transport.pixelbot.mock.calls.filter(([path]) => path === "/internal/send")).toHaveLength(1);
     expect(
       transport.pixelbot.mock.calls.find(
         (call) => call[0] === "/internal/send",
       )?.[1].client_message_id,
     ).toBe(inside.id);
+    transport.pixelbot.mockClear().mockResolvedValue({ status: 200, data: { status: "ok", mode: "BOT" } });
+    const unpaused = await inbox.sendCommercialMessage({ ...insideInput, idempotencyKey: randomUUID() });
+    expect(unpaused.status).toBe("failed");
+    expect(transport.pixelbot.mock.calls.some(([path]) => path === "/internal/send")).toBe(false);
+    const [policy] = await db.select().from(schema.commercialPolicies).where(eq(schema.commercialPolicies.ownerId, owner));
+    await db.update(schema.commercialPolicies).set({ automaticEnabled: true }).where(eq(schema.commercialPolicies.ownerId, owner));
+    await db.update(schema.commercialConversations).set({ mode: "BOT" }).where(eq(schema.commercialConversations.id, c.id));
+    const [current] = await db.select().from(schema.commercialConversations).where(eq(schema.commercialConversations.id, c.id));
+    const [queued] = await db.insert(schema.commercialOutbox).values({ ownerId: owner, actorId: owner, conversationId: c.id, idempotencyKey: randomUUID(), body: "Respuesta automática QA", subject: "", payloadHash: "qa-auto-guard", status: "queued" }).returning();
+    transport.pixelbot.mockClear();
+    const blockedAuto = await inbox.dispatchCommercialOutbox(queued.id, owner, { automatic: true, inboundAt: current.lastInboundAt, policyRevision: policy.revision });
+    expect(blockedAuto.error).toBe("whatsapp_handoff_pending");
+    expect(transport.pixelbot).not.toHaveBeenCalled();
+    await db.update(schema.commercialPolicies).set({ automaticEnabled: policy.automaticEnabled }).where(eq(schema.commercialPolicies.ownerId, owner));
+    await db.update(schema.commercialConversations).set({ mode: "HUMAN" }).where(eq(schema.commercialConversations.id, c.id));
+    process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE = "true";
   });
   it("versiona la cotización, registra la decisión y crea una única venta", async () => {
     const input = {
@@ -793,6 +827,57 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
           .where(eq(schema.clients.id, clientId))
       )[0].name,
     ).not.toBe("Intento");
+  });
+  it("sincronización dirigida solo importa el destinatario solicitado y conserva aislamiento", async () => {
+    identity.id = owner;
+    identity.role = "admin";
+    const address = "15550000566";
+    transport.pixelbot.mockReset().mockImplementation(async (path: string) => ({
+      status: 200,
+      data: path.includes("/messages?")
+        ? { messages: [{ id: "targeted-inbound-qa", direction: "inbound", text: "Prueba controlada", createdAt: "2026-10-01 16:27:37" }] }
+        : { conversations: [{ id: address }, { id: "15550000999" }] },
+    }));
+    const a = await inbox.synchronizeCommercialWhatsApp(undefined, { address });
+    const b = await inbox.synchronizeCommercialWhatsApp(undefined, { address });
+    expect(a.imported).toBe(1);
+    expect(b.imported).toBe(0);
+    expect(transport.pixelbot.mock.calls.filter(([path]) => path.includes("/messages?")).every(([path]) => path.includes(address))).toBe(true);
+    const rows = await db.select().from(schema.commercialConversations).where(and(eq(schema.commercialConversations.ownerId, owner), eq(schema.commercialConversations.address, address)));
+    expect(rows).toHaveLength(1);
+    expect(rows[0].lastInboundAt?.toISOString()).toBe("2026-10-01T16:27:37.000Z");
+    await expect(inbox.synchronizeCommercialWhatsApp(undefined, { address, tenant_id: "another" })).rejects.toThrow();
+    identity.id = other;
+    await expect(inbox.synchronizeCommercialWhatsApp(undefined, { address })).rejects.toThrow("Tenant no asignado");
+    identity.id = owner;
+  });
+  it("conexión Meta activa no se confunde con el código expirado y falla cerrada", async () => {
+    identity.id = owner;
+    identity.role = "admin";
+    transport.pixelbot.mockResolvedValue({
+      data: { conversations: [] },
+      status: 200,
+    });
+    try {
+      phoneConnection.status = "CONNECTED";
+      phoneConnection.verification = "EXPIRED";
+      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(true);
+      phoneConnection.status = "DISCONNECTED";
+      phoneConnection.verification = "VERIFIED";
+      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      phoneConnection.status = null;
+      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      phoneConnection.status = "CONNECTED";
+      phoneConnection.unavailable = true;
+      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      identity.role = "staff";
+      await expect(inbox.verifyCommercialConnections()).rejects.toThrow("permiso");
+    } finally {
+      identity.role = "admin";
+      phoneConnection.status = "CONNECTED";
+      phoneConnection.verification = "EXPIRED";
+      phoneConnection.unavailable = false;
+    }
   });
   it("otra cartera, reviewer, staff financiero y sesión ausente no modifican datos", async () => {
     identity.id = other;

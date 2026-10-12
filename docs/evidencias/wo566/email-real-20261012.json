@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-12T16:55:19.779Z",
+  "authorizedRecipient": true,
+  "candidateAuthenticationVerified": true,
+  "senderDomainVerified": true,
+  "replyToExistingApprovedTeamMailbox": true,
+  "providerIdPresent": true,
+  "recipientMatchVerified": true,
+  "outboxRows": 1,
+  "outboxStatus": "sent",
+  "outboxAttempts": 1,
+  "persistedOutboundMessages": 1,
+  "replaySameOutbox": true,
+  "providerLastEvent": "delivered",
+  "receivingConfigured": false,
+  "privateRecipientAndProviderIdsOmitted": true
+}

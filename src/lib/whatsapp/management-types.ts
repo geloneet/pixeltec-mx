@@ -23,6 +23,8 @@ export interface PhoneNumberInfo {
   nameStatus: string | null;
   /** VERIFIED | NOT_VERIFIED | EXPIRED. */
   codeVerificationStatus: string | null;
+  /** CONNECTED | DISCONNECTED… — conexión real; no es el estado del código OTP. */
+  connectionStatus: string | null;
   /** TIER_50 | TIER_250 | TIER_1K… — límite de conversaciones iniciadas. */
   messagingLimitTier: string | null;
   /** CLOUD_API | ON_PREMISE | NOT_APPLICABLE. */

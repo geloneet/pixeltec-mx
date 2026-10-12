@@ -121,7 +121,7 @@ export async function POST(request: Request) {
     else if (input.action === "link")
       result = await linkCommercialConversation(input.data);
     else if (input.action === "sync_whatsapp")
-      result = await synchronizeCommercialWhatsApp();
+      result = await synchronizeCommercialWhatsApp(undefined, input.data);
     else if (input.action === "sync_forms")
       result = await synchronizeCommercialForms();
     else if (input.action === "connections")

@@ -28,7 +28,7 @@ import {
   assertWhatsAppEgressAllowed,
   EgressBlockedError,
 } from "@/lib/egress-guard";
-import { messageInput, modeInput, policyInput, uuid } from "./schemas";
+import { messageInput, modeInput, policyInput, uuid, whatsappSyncInput } from "./schemas";
 import { requireCommercialAccess, CommercialError } from "./access";
 import { commercialInboundOwner, ingestCommercialInbound } from "./inbound";
 import { approvedReply } from "./policy";
@@ -123,9 +123,11 @@ async function isolatePixelbot(c: Conversation, actorId: string) {
     mode: "PAUSED",
     changed_by_uid: actorId,
   });
-  z.object({ status: z.literal("ok"), mode: z.literal("PAUSED") })
+  const paused = z.object({ status: z.literal("ok"), mode: z.literal("PAUSED") })
     .passthrough()
-    .parse(data);
+    .safeParse(data);
+  if (!paused.success)
+    throw new CommercialError("whatsapp_pause_not_confirmed", 409);
 }
 export async function getCommercialThread(id: string) {
   const session = await requireCommercialAccess();
@@ -399,7 +401,9 @@ export async function dispatchCommercialOutbox(
         // Serializa con el pago y el scheduler anterior para este mismo período.
       }
       if (c.channel === "whatsapp") {
-        if (process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE !== "true")
+        // Automatización exige traspaso del tenant; una respuesta humana
+        // confirma PAUSED de su conversación antes de cada envío.
+        if (options.automatic && process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE !== "true")
           throw new CommercialError("whatsapp_handoff_pending", 409);
         if (
           !c.lastInboundAt ||
@@ -797,10 +801,11 @@ export async function linkCommercialConversation(raw: unknown) {
     return { ok: true };
   });
 }
-export async function synchronizeCommercialWhatsApp(ownerId?: string) {
+export async function synchronizeCommercialWhatsApp(ownerId?: string, raw: unknown = {}) {
   if (!ownerId) ownerId = (await requireCommercialAccess()).userId;
   if (ownerId !== (await commercialInboundOwner()))
     throw new CommercialError("Tenant no asignado a esta cartera.", 403);
+  const filter = whatsappSyncInput.parse(raw);
   const { data } = await fetchPixelbot(
     "/internal/conversations?tenant_id=" + encodeURIComponent(tenant()),
     undefined,
@@ -819,6 +824,7 @@ export async function synchronizeCommercialWhatsApp(ownerId?: string) {
     .parse(data);
   let imported = 0;
   for (const remote of list.conversations) {
+    if (filter.address && remote.id !== filter.address) continue;
     const { data: history } = await fetchPixelbot(
       "/internal/conversations/" +
         encodeURIComponent(remote.id) +
@@ -922,12 +928,13 @@ export async function verifyCommercialConnections() {
     );
     z.object({ conversations: z.array(z.unknown()) }).parse(data);
     const phone = await getPhoneNumberInfo();
+    const connected = phone.connectionStatus === "CONNECTED";
     whatsapp = {
-      verified: phone.codeVerificationStatus === "VERIFIED",
+      verified: connected,
       reason:
-        phone.codeVerificationStatus === "VERIFIED"
-          ? "Número verificado en Meta y API de historial de PixelBot disponible. El envío requiere permisos, destinatario autorizado y ventana vigente."
-          : "PixelBot responde; completa la verificación del número y los permisos en Meta.",
+        connected
+          ? "Número conectado en Meta y API de historial de PixelBot disponible. El envío requiere permisos, destinatario autorizado y ventana vigente."
+          : "PixelBot responde; comprueba la conexión del número y los permisos en Meta.",
     };
   } catch {
     /* Estado pendiente explícito; nunca conectado por presencia de env. */

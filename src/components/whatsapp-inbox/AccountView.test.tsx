@@ -25,6 +25,7 @@ const ACCOUNT_OK: AccountResponse = {
     qualityRating: "GREEN",
     nameStatus: "APPROVED",
     codeVerificationStatus: "VERIFIED",
+    connectionStatus: "CONNECTED",
     messagingLimitTier: "TIER_1K",
     platformType: "CLOUD_API",
   },

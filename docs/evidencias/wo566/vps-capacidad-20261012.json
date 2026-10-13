@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "work_order": "WO-2026-00566",
+  "completed_at_utc": "2026-10-13T00:04:51.839Z",
+  "operation_date_local": "2026-10-12",
+  "timezone": "America/Mexico_City",
+  "authorization_received": true,
+  "before": {
+    "total_bytes": 103865303040,
+    "used_bytes": 90473467904,
+    "free_bytes": 13375057920,
+    "percent": 88
+  },
+  "after": {
+    "total_bytes": 103865303040,
+    "used_bytes": 82034614272,
+    "free_bytes": 21813911552,
+    "percent": 79
+  },
+  "freed_bytes": 8438853632,
+  "free_gib_after": 20.31578826904297,
+  "floor_20_gib_verified": true,
+  "ceiling_85_percent_verified": true,
+  "services": {
+    "containers_total": 38,
+    "running": 34,
+    "container_metadata_identical": true,
+    "volumes": 27,
+    "volume_set_identical": true,
+    "pm2_processes": 5,
+    "pm2_metadata_identical": true
+  },
+  "retained_pixeltec_images": [
+    {
+      "ref": "pixeltec-mx-app:68c0bbae6f6b6621c8f4c5956097e924ea41c9ab",
+      "id": "sha256:526fab7ad269973115eaea91528ce55c2864548d9290dda72c21d8d08adb6881"
+    },
+    {
+      "ref": "pixeltec-mx-app:9e7320b306885526e7982be84e7b1c7d0c61219b",
+      "id": "sha256:22c888f14ad49268879943e9125032853ca872181eccaf53ba1a89808a1d0f3b"
+    }
+  ],
+  "removed_images": [
+    {
+      "reference": "pixeltec-mx-app:f07514261aa03d72f33ff4121b1562dea80c726b",
+      "id": "sha256:1b5820bb378a23bd09181ac1d43acee7a83009c994de12a2091d204d09258b59",
+      "restore_digest": "pixeltec-mx-app@sha256:1b5820bb378a23bd09181ac1d43acee7a83009c994de12a2091d204d09258b59"
+    },
+    {
+      "reference": "pixeltec-mx-app:a5e99292f78a71c4f9bc236dea4aa2996d4d29ab",
+      "id": "sha256:9365c8a400e2a5c50c53fd5dafebe206fdb4e6079131a25631df67c9fefb4241",
+      "restore_digest": "pixeltec-mx-app@sha256:9365c8a400e2a5c50c53fd5dafebe206fdb4e6079131a25631df67c9fefb4241"
+    },
+    {
+      "reference": "node:20",
+      "id": "sha256:8f693eaa7e0a8e71560c9a82b55fd54c2ae920a2ba5d2cde28bac7d1c01c9ba5",
+      "restore_digest": "node@sha256:8f693eaa7e0a8e71560c9a82b55fd54c2ae920a2ba5d2cde28bac7d1c01c9ba5"
+    },
+    {
+      "reference": "amazon/aws-cli:latest",
+      "id": "sha256:b6aeb95d19d7f5a8cae4eb814cb16739b6b2a4f2f46f427ada6a8c9a20d9881d",
+      "restore_digest": "amazon/aws-cli@sha256:b6aeb95d19d7f5a8cae4eb814cb16739b6b2a4f2f46f427ada6a8c9a20d9881d"
+    },
+    {
+      "reference": "moby/buildkit:buildx-stable-1",
+      "id": "sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8",
+      "restore_digest": "moby/buildkit@sha256:28a898719c18a33f4e8000685287fa36fd0dd9560c6440227d3a732d79bb41d8"
+    },
+    {
+      "reference": "curlimages/curl:8.11.1",
+      "id": "sha256:c1fe1679c34d9784c1b0d1e5f62ac0a79fca01fb6377cdd33e90473c6f9f9a69",
+      "restore_digest": "curlimages/curl@sha256:c1fe1679c34d9784c1b0d1e5f62ac0a79fca01fb6377cdd33e90473c6f9f9a69"
+    },
+    {
+      "reference": "curlimages/curl:8.10.1",
+      "id": "sha256:d9b4541e214bcd85196d6e92e2753ac6d0ea699f0af5741f8c6cccbfcf00ef4b",
+      "restore_digest": "curlimages/curl@sha256:d9b4541e214bcd85196d6e92e2753ac6d0ea699f0af5741f8c6cccbfcf00ef4b"
+    },
+    {
+      "reference": "curlimages/curl:latest",
+      "id": "sha256:7c12af72ceb38b7432ab85e1a265cff6ae58e06f95539d539b654f2cfa64bb13",
+      "restore_digest": "curlimages/curl@sha256:7c12af72ceb38b7432ab85e1a265cff6ae58e06f95539d539b654f2cfa64bb13"
+    },
+    {
+      "reference": "python:3.12-slim",
+      "id": "sha256:57cd7c3a7a273101a6485ba99423ee568157882804b1124b4dd04266317710de",
+      "restore_digest": "python@sha256:57cd7c3a7a273101a6485ba99423ee568157882804b1124b4dd04266317710de"
+    },
+    {
+      "reference": "alpine:3",
+      "id": "sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b",
+      "restore_digest": "alpine@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b"
+    }
+  ],
+  "removed_tool_caches": [
+    "/home/ubuntu/.cache/ms-playwright/ffmpeg-1011",
+    "/home/ubuntu/.cache/ms-playwright/webkit-2248",
+    "/home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1228",
+    "/home/ubuntu/.cache/ms-playwright/chromium-1228",
+    "/home/ubuntu/.cache/ms-playwright/firefox-1509",
+    "/home/ubuntu/.vscode-server/data/CachedExtensionVSIXs",
+    "/home/ubuntu/.local/share/claude/versions/2.1.261"
+  ],
+  "build_cache": "Only unused cache older than24h, under native cache flock; no image/container/volume global prune. Recurring policy unchanged.",
+  "preservation_check_pause": {
+    "immediate_discrepancy_paused_execution": true,
+    "later_original_metadata_identical": true,
+    "cause_not_established": true,
+    "confirmed_image_actions_replayed": false
+  },
+  "native_host_fences": [
+    649,
+    650
+  ],
+  "native_lock_released": true,
+  "temporary_workspace_removed": true,
+  "governed_receipt": "/home/ubuntu/prune-logs/wo566-capacity-20261012.json",
+  "governed_receipt_mode": "0600",
+  "governed_receipt_retention_days": 30,
+  "private_receipt_sha256": "f0b918c6cab0753218807e741d9134501f807a1758702d8e2d3fdbbbc0096a11",
+  "http_checks": {
+    "homepage": 200,
+    "api_health": 200,
+    "intranet_unauthenticated": 401
+  },
+  "changes": {
+    "production_deploy": false,
+    "service_restart": false,
+    "business_schema": false,
+    "business_data_writes": false,
+    "dns_or_cron": false
+  }
+}

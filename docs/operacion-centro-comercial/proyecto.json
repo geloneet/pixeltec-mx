@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "Las siete pantallas trabajan sobre PostgreSQL. WhatsApp probado en ida y vuelta; egreso local restaurado a bloqueado. Faltan correo, recibos completos, capacidad productiva y gates de Miguel."
+    "lede": "Las siete pantallas trabajan sobre PostgreSQL. WhatsApp ida y vuelta y correo saliente entregado comprobados; egreso local bloqueado. Capacidad recuperada:20.32GiB libres/79% al corte2026-10-12. Faltan recepción de correo, callbacks/recibos completos, traspaso y gates de Miguel."
   },
   "parametros": [
     {
@@ -309,7 +309,7 @@
   ],
   "fuera": [
     "No cambiar recordPayment, IVA ni anticipo canónico.",
-    "No eliminar recursos para forzar capacidad.",
+    "Limpieza solo autorizada, con inventario/retención y preservación de activos, rollback y datos; no eludir el guard de capacidad.",
     "El checklist no autoriza envíos."
   ],
   "post_arranque": [

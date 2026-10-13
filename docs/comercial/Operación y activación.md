@@ -82,3 +82,13 @@ Rollback de aplicación: apagar flags nuevos y quiescer emisores; usar release a
 - No se añadió procesador de pago en línea: se reutilizan pagos administrativos existentes. No hay evento de pasarela nuevo que contabilizar.
 
 Contratos consultados: [firma Resend](https://resend.com/docs/dashboard/webhooks/verify-webhooks-requests), [recepción](https://resend.com/docs/api-reference/emails/retrieve-received-email), [idempotencia24h](https://resend.com/docs/dashboard/emails/idempotency-keys), [middleware Node Next15.5](https://nextjs.org/docs/15/app/api-reference/file-conventions/middleware#runtime). La compatibilidad local se comprobó con Resend6.9.4, Drizzle-Zod0.7.1 y Next15.5.27.
+
+## Recuperación administrativa y callback temporal —2026-10-12 19:00
+
+POST /api/commercial action=sync_email, data={} o {after:UUID}, es admin y cartera configurada. Consulta una página de100 metadatos y solo obtiene cuerpos de receptores autorizados; cursor continúa historia anterior. Recibir correos en Conversaciones muestra número nuevo/fin/página siguiente. El pull no ejecuta respuestas aprobadas ni fabrica un recibo Svix; el callback conserva la misma deduplicación. Firma real del endpoint, filtro de receptor antes de obtener cuerpo, recibo processing/done y hash conflictivo409 son requisitos separados. Metadata del proveedor se valida con campos derivados de las tablas. Repetir o recuperarse de un fallo parcial conserva una sola copia. Resend429 espera Retry-After dentro de3intentos/≤5s por espera y falla saneado fuera del presupuesto.
+
+Prueba real: ingreso del receptor nativo autorizado→conversación/contacto/oportunidad e historial existente,1mensaje/replay0, HUMAN e identificador no verificado. Correo sin texto útil representado honestamente; ningún envío nuevo. [Evidencia](../evidencias/wo566/email-entrada-real-20261012.json).
+
+El receptor limitado [preparado para aprobación](Prueba%20temporal%20del%20receptor%20de%20correo.md) admite soloPOST en /api/commercial/webhooks/email y omite cookies/Authorization/respuestas privadas. Una eventual URL Cloudflare temporal transmite únicamente el callback; Resendemail.received y un secreto Svix nuevo requieren GO antes de abrirlo. No se instaló cloudflared ni se creó/publicó un endpoint. Recepción por pull está probada; callback automático y recibo de entrega firmado siguen pendientes.
+
+Fresh df posterior:19.064GiB libres/81%, frente a20.316GiB/79% al cerrar la limpieza. Causa del crecimiento no establecida; el guard20GiB debe cumplirse otra vez antes del deploy. El permiso de limpieza anterior no se amplía automáticamente.

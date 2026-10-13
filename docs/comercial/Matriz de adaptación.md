@@ -14,8 +14,10 @@ WO-2026-00566, 2026-10-10. Base efectiva 1aae1940; rama codex/wo566-centro-comer
 | Cobros | Billing y recordPayment congelados | Presentación y recordatorios pausables | Parcial correcto, pagado sin aviso, envío no es pago |
 | Ajustes | Egress y configuración proveedores | Comprobación real y requisitos sin secretos | Nunca conectar por presencia de variable |
 
-La activación mantiene la condición canónica de venta cobrable/anticipo (ADR-0057); la referencia visual no cambia esa condición. No se modifica recordPayment ni la aritmética. Producción conserva su release; WO547 bloquea despliegue sin margen de disco. No se autoriza merge, mensajes reales ni automatización productiva con esta orden.
+La activación mantiene la condición canónica de venta cobrable/anticipo (ADR-0057); la referencia visual no cambia esa condición. No se modifica recordPayment ni la aritmética. Producción conserva su release; La limpieza logró20.316GiB al corte; medición posterior19.064GiB vuelve a exigir margen20GiB antes del deploy. No se autoriza merge, mensajes reales ni automatización productiva con esta orden.
 
 Migración aditiva 0053 aplicada y repetida en PostgreSQL 16 aislado. Backup QA restaurado y comparado sin diferencias en pagos, cotizaciones, proyectos y conversaciones. Egreso local deshabilitado. Fixtures exclusivos de QA no representan clientes o dinero reales. [Evidencia](../evidencias/wo566/README.md) y [operación](Operación%20y%20activación.md).
 
 Decisión de alcance: esta solicitud autoriza la nueva interfaz y su adaptación, sin alterar el núcleo financiero congelado ni cambiar infraestructura/proveedores. El diseño utiliza datos reales del owner; no importa clientes ficticios del HTML. Los botones de simulación del prototipo se sustituyen por confirmación y estados de proveedor, sin debilitar CSP.
+
+2026-10-12: correo real entrante recuperado por API administrativa,1mensaje/replay0/HUMAN y vínculo a contacto/oportunidad existentes. Recibir correos es funcional; callback firmado pendiente. [Prueba temporal preparada](Prueba%20temporal%20del%20receptor%20de%20correo.md).

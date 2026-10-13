@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-10-13T00:53:48.934Z",
+  "source": "real_resend_receiving_api",
+  "recipientMatchedConfiguredReceiver": true,
+  "fromMatchedAuthorizedTestMailbox": true,
+  "authenticatedQaOwner": true,
+  "initialCheckedAt": "2026-10-13T00:52:50.924Z",
+  "firstImport": 1,
+  "replayImport": 0,
+  "subsequentReplayImport": 0,
+  "providerMessageMatched": true,
+  "persistedInboundCount": 1,
+  "contactLinked": true,
+  "opportunityCount": 1,
+  "mode": "HUMAN",
+  "matchReview": false,
+  "historyMatchesRealProviderContent": true,
+  "providerTextPresent": true,
+  "providerHtmlPresent": true,
+  "identifierVerified": false,
+  "signedCallbackProofCount": 0,
+  "recoveryAuditCount": 4,
+  "automaticSendingEnabled": false,
+  "productionChanged": false,
+  "visual": {
+    "browser": "CUA/IAB existente",
+    "replayNotice": "0 correos nuevos. Revisión terminada.",
+    "screenshot": "recuperacion-correo-control.png",
+    "privacy": "Solo control y resultado; contactos/historial completos permanecen privados",
+    "mobile": {
+      "width": 320,
+      "scrollWidth": 320,
+      "controlsFit": true
+    },
+    "desktop": {
+      "width": 1440,
+      "scrollWidth": 1440,
+      "receiveButtonVisible": true
+    },
+    "viewportReset": true
+  },
+  "limits": {
+    "signedCallbackVerified": false,
+    "providerTextUseful": false,
+    "providerHtmlUseful": false,
+    "note": "El proveedor devolvió contenido sin texto útil; el historial conserva el placeholder real."
+  },
+  "tests": {
+    "criticalPassed": 50,
+    "postgresCases": 22,
+    "generalPassed": 2349,
+    "generalSkippedPostgres": 22
+  }
+}

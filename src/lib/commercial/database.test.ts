@@ -5,6 +5,7 @@ import { eq, and, sql } from "drizzle-orm";
 import { config } from "dotenv";
 const identity = vi.hoisted(() => ({ id: "", role: "admin" as string | null }));
 const transport = vi.hoisted(() => ({ send: vi.fn(), pixelbot: vi.fn() }));
+const receivedTransport = vi.hoisted(() => ({ list: vi.fn(), get: vi.fn() }));
 const phoneConnection = vi.hoisted(() => ({
   status: "CONNECTED" as string | null,
   verification: "EXPIRED",
@@ -31,6 +32,8 @@ vi.mock("@/lib/auth-guards", () => ({
 }));
 vi.mock("@/lib/email", () => ({
   sendEmail: transport.send,
+  listCommercialReceivedEmails: receivedTransport.list,
+  getCommercialReceivedEmail: receivedTransport.get,
   verifyCommercialEmailDomain: async () => ({
     verified: false,
     reason: "Transporte controlado",
@@ -65,6 +68,7 @@ let decisions: typeof import("./quote-decisions");
 let quotes: typeof import("@/lib/quotes/actions");
 let snapshot: typeof import("./snapshot");
 let sharing: typeof import("./sharing");
+let emailEvents: typeof import("./email-events");
 let owner: string;
 let other: string;
 let clientId: string;
@@ -72,6 +76,15 @@ let conversationId: string;
 let quoteId: string;
 let quoteToken: string;
 let billId: string;
+const recoveredEmail = {
+  id: randomUUID(),
+  from: `Recuperación <${randomUUID()}@example.invalid>`,
+  to: ["Inbox <receiving-qa@example.invalid>"],
+  subject: "Correo recuperable QA",
+  text: "Necesito información",
+  html: null,
+  created_at: new Date().toISOString(),
+};
 describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
   beforeAll(async () => {
     const url = new URL(process.env.DATABASE_URL || "");
@@ -91,6 +104,7 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     quotes = await import("@/lib/quotes/actions");
     snapshot = await import("./snapshot");
     sharing = await import("./sharing");
+    emailEvents = await import("./email-events");
     owner = randomUUID();
     other = randomUUID();
     identity.id = owner;
@@ -379,27 +393,72 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     const inside = await inbox.sendCommercialMessage(insideInput);
     expect(inside.status).toBe("sent");
     expect((await inbox.sendCommercialMessage(insideInput)).id).toBe(inside.id);
-    expect(transport.pixelbot.mock.calls.filter(([path]) => path === "/internal/send")).toHaveLength(1);
+    expect(
+      transport.pixelbot.mock.calls.filter(
+        ([path]) => path === "/internal/send",
+      ),
+    ).toHaveLength(1);
     expect(
       transport.pixelbot.mock.calls.find(
         (call) => call[0] === "/internal/send",
       )?.[1].client_message_id,
     ).toBe(inside.id);
-    transport.pixelbot.mockClear().mockResolvedValue({ status: 200, data: { status: "ok", mode: "BOT" } });
-    const unpaused = await inbox.sendCommercialMessage({ ...insideInput, idempotencyKey: randomUUID() });
+    transport.pixelbot
+      .mockClear()
+      .mockResolvedValue({ status: 200, data: { status: "ok", mode: "BOT" } });
+    const unpaused = await inbox.sendCommercialMessage({
+      ...insideInput,
+      idempotencyKey: randomUUID(),
+    });
     expect(unpaused.status).toBe("failed");
-    expect(transport.pixelbot.mock.calls.some(([path]) => path === "/internal/send")).toBe(false);
-    const [policy] = await db.select().from(schema.commercialPolicies).where(eq(schema.commercialPolicies.ownerId, owner));
-    await db.update(schema.commercialPolicies).set({ automaticEnabled: true }).where(eq(schema.commercialPolicies.ownerId, owner));
-    await db.update(schema.commercialConversations).set({ mode: "BOT" }).where(eq(schema.commercialConversations.id, c.id));
-    const [current] = await db.select().from(schema.commercialConversations).where(eq(schema.commercialConversations.id, c.id));
-    const [queued] = await db.insert(schema.commercialOutbox).values({ ownerId: owner, actorId: owner, conversationId: c.id, idempotencyKey: randomUUID(), body: "Respuesta automática QA", subject: "", payloadHash: "qa-auto-guard", status: "queued" }).returning();
+    expect(
+      transport.pixelbot.mock.calls.some(([path]) => path === "/internal/send"),
+    ).toBe(false);
+    const [policy] = await db
+      .select()
+      .from(schema.commercialPolicies)
+      .where(eq(schema.commercialPolicies.ownerId, owner));
+    await db
+      .update(schema.commercialPolicies)
+      .set({ automaticEnabled: true })
+      .where(eq(schema.commercialPolicies.ownerId, owner));
+    await db
+      .update(schema.commercialConversations)
+      .set({ mode: "BOT" })
+      .where(eq(schema.commercialConversations.id, c.id));
+    const [current] = await db
+      .select()
+      .from(schema.commercialConversations)
+      .where(eq(schema.commercialConversations.id, c.id));
+    const [queued] = await db
+      .insert(schema.commercialOutbox)
+      .values({
+        ownerId: owner,
+        actorId: owner,
+        conversationId: c.id,
+        idempotencyKey: randomUUID(),
+        body: "Respuesta automática QA",
+        subject: "",
+        payloadHash: "qa-auto-guard",
+        status: "queued",
+      })
+      .returning();
     transport.pixelbot.mockClear();
-    const blockedAuto = await inbox.dispatchCommercialOutbox(queued.id, owner, { automatic: true, inboundAt: current.lastInboundAt, policyRevision: policy.revision });
+    const blockedAuto = await inbox.dispatchCommercialOutbox(queued.id, owner, {
+      automatic: true,
+      inboundAt: current.lastInboundAt,
+      policyRevision: policy.revision,
+    });
     expect(blockedAuto.error).toBe("whatsapp_handoff_pending");
     expect(transport.pixelbot).not.toHaveBeenCalled();
-    await db.update(schema.commercialPolicies).set({ automaticEnabled: policy.automaticEnabled }).where(eq(schema.commercialPolicies.ownerId, owner));
-    await db.update(schema.commercialConversations).set({ mode: "HUMAN" }).where(eq(schema.commercialConversations.id, c.id));
+    await db
+      .update(schema.commercialPolicies)
+      .set({ automaticEnabled: policy.automaticEnabled })
+      .where(eq(schema.commercialPolicies.ownerId, owner));
+    await db
+      .update(schema.commercialConversations)
+      .set({ mode: "HUMAN" })
+      .where(eq(schema.commercialConversations.id, c.id));
     process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE = "true";
   });
   it("versiona la cotización, registra la decisión y crea una única venta", async () => {
@@ -706,18 +765,16 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
   });
   it("saldo parcial, fallo, cambio de saldo y reprogramación no duplican recordatorios", async () => {
     const id = randomUUID();
-    await db
-      .insert(schema.billingItems)
-      .values({
-        id,
-        ownerId: owner,
-        clientId,
-        amount: "100.00",
-        currency: "MXN",
-        concept: "Parcial controlado",
-        frequency: "unico",
-        dueDate: "2026-10-10",
-      });
+    await db.insert(schema.billingItems).values({
+      id,
+      ownerId: owner,
+      clientId,
+      amount: "100.00",
+      currency: "MXN",
+      concept: "Parcial controlado",
+      frequency: "unico",
+      dueDate: "2026-10-10",
+    });
     const pay = (amount: string) =>
       payment.recordCommercialPayment({
         billingItemId: id,
@@ -835,21 +892,375 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     transport.pixelbot.mockReset().mockImplementation(async (path: string) => ({
       status: 200,
       data: path.includes("/messages?")
-        ? { messages: [{ id: "targeted-inbound-qa", direction: "inbound", text: "Prueba controlada", createdAt: "2026-10-01 16:27:37" }] }
+        ? {
+            messages: [
+              {
+                id: "targeted-inbound-qa",
+                direction: "inbound",
+                text: "Prueba controlada",
+                createdAt: "2026-10-01 16:27:37",
+              },
+            ],
+          }
         : { conversations: [{ id: address }, { id: "15550000999" }] },
     }));
     const a = await inbox.synchronizeCommercialWhatsApp(undefined, { address });
     const b = await inbox.synchronizeCommercialWhatsApp(undefined, { address });
     expect(a.imported).toBe(1);
     expect(b.imported).toBe(0);
-    expect(transport.pixelbot.mock.calls.filter(([path]) => path.includes("/messages?")).every(([path]) => path.includes(address))).toBe(true);
-    const rows = await db.select().from(schema.commercialConversations).where(and(eq(schema.commercialConversations.ownerId, owner), eq(schema.commercialConversations.address, address)));
+    expect(
+      transport.pixelbot.mock.calls
+        .filter(([path]) => path.includes("/messages?"))
+        .every(([path]) => path.includes(address)),
+    ).toBe(true);
+    const rows = await db
+      .select()
+      .from(schema.commercialConversations)
+      .where(
+        and(
+          eq(schema.commercialConversations.ownerId, owner),
+          eq(schema.commercialConversations.address, address),
+        ),
+      );
     expect(rows).toHaveLength(1);
-    expect(rows[0].lastInboundAt?.toISOString()).toBe("2026-10-01T16:27:37.000Z");
-    await expect(inbox.synchronizeCommercialWhatsApp(undefined, { address, tenant_id: "another" })).rejects.toThrow();
+    expect(rows[0].lastInboundAt?.toISOString()).toBe(
+      "2026-10-01T16:27:37.000Z",
+    );
+    await expect(
+      inbox.synchronizeCommercialWhatsApp(undefined, {
+        address,
+        tenant_id: "another",
+      }),
+    ).rejects.toThrow();
     identity.id = other;
-    await expect(inbox.synchronizeCommercialWhatsApp(undefined, { address })).rejects.toThrow("Tenant no asignado");
+    await expect(
+      inbox.synchronizeCommercialWhatsApp(undefined, { address }),
+    ).rejects.toThrow("Tenant no asignado");
     identity.id = owner;
+  });
+  it("recupera solo el receptor propio, deduplica concurrentes y no ejecuta respuestas", async () => {
+    identity.id = owner;
+    identity.role = "admin";
+    vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+    vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "receiving-qa@example.invalid");
+    vi.stubEnv("COMMERCIAL_AUTOMATION_ENABLED", "true");
+    const unrelated = {
+      ...recoveredEmail,
+      id: randomUUID(),
+      to: ["other-account@example.invalid"],
+    };
+    receivedTransport.list
+      .mockReset()
+      .mockResolvedValue({ data: [recoveredEmail, unrelated], has_more: true });
+    receivedTransport.get.mockReset().mockResolvedValue(recoveredEmail);
+    const reply = vi.spyOn(inbox, "runApprovedCommercialReply");
+    try {
+      const results = await Promise.all([
+        emailEvents.synchronizeCommercialEmail({}),
+        emailEvents.synchronizeCommercialEmail({}),
+      ]);
+      expect(results.map((r) => r.imported).sort()).toEqual([0, 1]);
+      expect(results.every((r) => r.nextCursor === unrelated.id)).toBe(true);
+      expect(
+        receivedTransport.get.mock.calls.every(
+          ([id]) => id === recoveredEmail.id,
+        ),
+      ).toBe(true);
+      expect(reply).not.toHaveBeenCalled();
+      const [message] = await db
+        .select()
+        .from(schema.commercialMessages)
+        .where(eq(schema.commercialMessages.providerId, recoveredEmail.id));
+      const rows = await db
+        .select()
+        .from(schema.commercialMessages)
+        .where(eq(schema.commercialMessages.providerId, recoveredEmail.id));
+      expect(rows).toHaveLength(1);
+      expect(message.delivery).toBe("received");
+      const [c] = await db
+        .select()
+        .from(schema.commercialConversations)
+        .where(eq(schema.commercialConversations.id, message.conversationId));
+      expect(c.ownerId).toBe(owner);
+      expect(c.mode).toBe("HUMAN");
+      expect(c.clientId).not.toBeNull();
+      expect(c.opportunityId).not.toBeNull();
+      const ids = await db
+        .select()
+        .from(schema.commercialIdentifiers)
+        .where(eq(schema.commercialIdentifiers.clientId, c.clientId!));
+      expect(ids).toHaveLength(1);
+      expect(ids[0].verifiedAt).toBeNull();
+      expect(
+        (
+          await db
+            .select()
+            .from(schema.clientActivity)
+            .where(eq(schema.clientActivity.clientId, c.clientId!))
+        ).filter((a) => a.type === "mensaje_entrante"),
+      ).toHaveLength(1);
+      expect(
+        (
+          await db
+            .select()
+            .from(schema.commercialWebhookEvents)
+            .where(
+              eq(
+                schema.commercialWebhookEvents.provider,
+                "resend_verified_inbound",
+              ),
+            )
+        ).filter((e) => e.providerMessageId === recoveredEmail.id),
+      ).toHaveLength(0);
+      receivedTransport.list.mockResolvedValue({ data: [], has_more: false });
+      expect(
+        await emailEvents.synchronizeCommercialEmail({ after: unrelated.id }),
+      ).toEqual({ ok: true, imported: 0, nextCursor: null });
+      expect(receivedTransport.list).toHaveBeenLastCalledWith(unrelated.id);
+    } finally {
+      reply.mockRestore();
+      vi.unstubAllEnvs();
+    }
+  });
+  it("el callback después del pull comparte deduplicación y acredita solo la cartera propia", async () => {
+    identity.id = owner;
+    identity.role = "admin";
+    vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+    vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "receiving-qa@example.invalid");
+    vi.stubEnv("RESEND_WEBHOOK_SECRET", "test-only-secret");
+    receivedTransport.get.mockResolvedValue(recoveredEmail);
+    try {
+      expect(
+        (await inbox.verifyCommercialConnections()).receiving.verified,
+      ).toBe(false);
+      const event = {
+        type: "email.received",
+        created_at: recoveredEmail.created_at,
+        data: { email_id: recoveredEmail.id, to: recoveredEmail.to },
+      };
+      const eventId = "controlled-qa-" + randomUUID();
+      expect(
+        await emailEvents.processCommercialEmailEvent(event, eventId),
+      ).toEqual({ ok: true, repeated: true });
+      expect(
+        await emailEvents.processCommercialEmailEvent(event, eventId),
+      ).toEqual({ ok: true, repeated: true });
+      expect(
+        await db
+          .select()
+          .from(schema.commercialMessages)
+          .where(eq(schema.commercialMessages.providerId, recoveredEmail.id)),
+      ).toHaveLength(1);
+      expect(
+        (await inbox.verifyCommercialConnections()).receiving.verified,
+      ).toBe(true);
+      identity.id = other;
+      expect(
+        (await inbox.verifyCommercialConnections()).receiving.verified,
+      ).toBe(false);
+      identity.id = owner;
+      vi.stubEnv("RESEND_WEBHOOK_SECRET", "");
+      expect(
+        (await inbox.verifyCommercialConnections()).receiving.verified,
+      ).toBe(false);
+    } finally {
+      identity.id = owner;
+      vi.unstubAllEnvs();
+    }
+  });
+  it("callback de otro receptor no lee cuerpos y evento repetido alterado se rechaza antes del proveedor", async () => {
+    vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+    vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "receiving-qa@example.invalid");
+    receivedTransport.get.mockClear();
+    const event = {
+      type: "email.received",
+      created_at: recoveredEmail.created_at,
+      data: {
+        email_id: recoveredEmail.id,
+        to: ["other-account@example.invalid"],
+      },
+    };
+    try {
+      expect(
+        await emailEvents.processCommercialEmailEvent(event, randomUUID()),
+      ).toEqual({ ignored: true });
+      await expect(
+        emailEvents.processCommercialEmailEvent(
+          { ...event, data: { email_id: recoveredEmail.id } },
+          randomUUID(),
+        ),
+      ).rejects.toThrow();
+      expect(receivedTransport.get).not.toHaveBeenCalled();
+      const ownEvent = {
+        ...event,
+        data: { email_id: recoveredEmail.id, to: recoveredEmail.to },
+      };
+      const id = randomUUID();
+      receivedTransport.get.mockResolvedValue(recoveredEmail);
+      await emailEvents.processCommercialEmailEvent(ownEvent, id);
+      receivedTransport.get.mockClear();
+      await expect(
+        emailEvents.processCommercialEmailEvent(
+          { ...ownEvent, data: { ...ownEvent.data, email_id: randomUUID() } },
+          id,
+        ),
+      ).rejects.toThrow("event_payload_conflict");
+      expect(receivedTransport.get).not.toHaveBeenCalled();
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+  it("un callback interrumpido se recupera sin certificar una recepción prematura", async () => {
+    vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+    vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "receiving-qa@example.invalid");
+    const email = { ...recoveredEmail, id: randomUUID() };
+    const id = randomUUID();
+    const event = {
+      type: "email.received",
+      created_at: email.created_at,
+      data: { email_id: email.id, to: email.to },
+    };
+    receivedTransport.get
+      .mockReset()
+      .mockRejectedValueOnce(new Error("controlled_provider_failure"))
+      .mockResolvedValue(email);
+    try {
+      await expect(
+        emailEvents.processCommercialEmailEvent(event, id),
+      ).rejects.toThrow("controlled_provider_failure");
+      const [pending] = await db
+        .select()
+        .from(schema.commercialWebhookEvents)
+        .where(eq(schema.commercialWebhookEvents.id, "resend-inbound:" + id));
+      expect(pending.status).toBe("processing");
+      expect(pending.processedAt).toBeNull();
+      expect(await emailEvents.processCommercialEmailEvent(event, id)).toEqual({
+        ok: true,
+        repeated: false,
+      });
+      expect(await emailEvents.processCommercialEmailEvent(event, id)).toEqual({
+        ok: true,
+        repeated: true,
+      });
+      expect(
+        await db
+          .select()
+          .from(schema.commercialMessages)
+          .where(eq(schema.commercialMessages.providerId, email.id)),
+      ).toHaveLength(1);
+      const [done] = await db
+        .select()
+        .from(schema.commercialWebhookEvents)
+        .where(eq(schema.commercialWebhookEvents.id, "resend-inbound:" + id));
+      expect(done.status).toBe("done");
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+  it("recuperación exige admin, owner, receptor e input válido antes de consultar el proveedor", async () => {
+    receivedTransport.list.mockClear();
+    try {
+      for (const role of ["staff", "reviewer", null]) {
+        identity.role = role;
+        await expect(
+          emailEvents.synchronizeCommercialEmail({}),
+        ).rejects.toThrow();
+      }
+      identity.role = "admin";
+      identity.id = other;
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "Tenant no asignado",
+      );
+      identity.id = owner;
+      await expect(
+        emailEvents.synchronizeCommercialEmail({ ownerId: other }),
+      ).rejects.toThrow();
+      await expect(
+        emailEvents.synchronizeCommercialEmail({ after: "invalid" }),
+      ).rejects.toThrow();
+      vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "false");
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "email_receiving_disabled",
+      );
+      vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+      vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "invalid");
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "email_receiving_addresses_not_configured",
+      );
+      expect(receivedTransport.list).not.toHaveBeenCalled();
+    } finally {
+      identity.id = owner;
+      identity.role = "admin";
+      vi.unstubAllEnvs();
+    }
+  });
+  it("provider inconsistente o fallo parcial no contamina otra cartera y el replay recupera una sola copia", async () => {
+    vi.stubEnv("COMMERCIAL_EMAIL_RECEIVING_ENABLED", "true");
+    vi.stubEnv("COMMERCIAL_INBOUND_ADDRESSES", "receiving-qa@example.invalid");
+    const second = {
+      ...recoveredEmail,
+      id: randomUUID(),
+      text: "Otro correo",
+      created_at: new Date().toISOString(),
+    };
+    receivedTransport.list
+      .mockReset()
+      .mockResolvedValue({ data: [recoveredEmail, second], has_more: false });
+    receivedTransport.get.mockReset().mockImplementation(async (id: string) => {
+      if (id === second.id) throw new Error("provider_unavailable");
+      return recoveredEmail;
+    });
+    try {
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "email_receiving_provider_failed",
+      );
+      expect(
+        await db
+          .select()
+          .from(schema.commercialMessages)
+          .where(eq(schema.commercialMessages.providerId, recoveredEmail.id)),
+      ).toHaveLength(1);
+      receivedTransport.get.mockImplementation(async (id: string) =>
+        id === second.id ? second : recoveredEmail,
+      );
+      expect(await emailEvents.synchronizeCommercialEmail({})).toEqual({
+        ok: true,
+        imported: 1,
+        nextCursor: null,
+      });
+      expect(await emailEvents.synchronizeCommercialEmail({})).toEqual({
+        ok: true,
+        imported: 0,
+        nextCursor: null,
+      });
+      receivedTransport.list.mockResolvedValue({
+        data: [second],
+        has_more: false,
+      });
+      receivedTransport.get.mockResolvedValue({ ...second, id: randomUUID() });
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "email_receiving_provider_failed",
+      );
+      receivedTransport.list.mockResolvedValue({ data: [], has_more: true });
+      await expect(emailEvents.synchronizeCommercialEmail({})).rejects.toThrow(
+        "email_receiving_provider_failed",
+      );
+      receivedTransport.list.mockResolvedValue({
+        data: [{ ...second, id: "invalid" }],
+        has_more: false,
+      });
+      await expect(
+        emailEvents.synchronizeCommercialEmail({}),
+      ).rejects.toThrow();
+      expect(
+        await db
+          .select()
+          .from(schema.commercialMessages)
+          .where(eq(schema.commercialMessages.providerId, second.id)),
+      ).toHaveLength(1);
+    } finally {
+      vi.unstubAllEnvs();
+    }
   });
   it("conexión Meta activa no se confunde con el código expirado y falla cerrada", async () => {
     identity.id = owner;
@@ -861,17 +1272,27 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     try {
       phoneConnection.status = "CONNECTED";
       phoneConnection.verification = "EXPIRED";
-      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(true);
+      expect(
+        (await inbox.verifyCommercialConnections()).whatsapp.verified,
+      ).toBe(true);
       phoneConnection.status = "DISCONNECTED";
       phoneConnection.verification = "VERIFIED";
-      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      expect(
+        (await inbox.verifyCommercialConnections()).whatsapp.verified,
+      ).toBe(false);
       phoneConnection.status = null;
-      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      expect(
+        (await inbox.verifyCommercialConnections()).whatsapp.verified,
+      ).toBe(false);
       phoneConnection.status = "CONNECTED";
       phoneConnection.unavailable = true;
-      expect((await inbox.verifyCommercialConnections()).whatsapp.verified).toBe(false);
+      expect(
+        (await inbox.verifyCommercialConnections()).whatsapp.verified,
+      ).toBe(false);
       identity.role = "staff";
-      await expect(inbox.verifyCommercialConnections()).rejects.toThrow("permiso");
+      await expect(inbox.verifyCommercialConnections()).rejects.toThrow(
+        "permiso",
+      );
     } finally {
       identity.role = "admin";
       phoneConnection.status = "CONNECTED";

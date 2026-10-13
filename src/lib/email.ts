@@ -38,6 +38,23 @@ function getResend(): Resend {
   if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY);
   return _resend;
 }
+/** Retry only authenticated reads throttled by Resend, within a bounded budget. */
+async function readCommercialEmailProvider<T>(read: () => Promise<{
+  data: T | null;
+  error: { name: string } | null;
+  headers?: Record<string, string> | null;
+}>): Promise<T> {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const result = await read();
+    if (!result.error && result.data) return result.data;
+    if (result.error?.name !== 'rate_limit_exceeded' || attempt === 2) break;
+    const retrySeconds = Number(result.headers?.['retry-after'] ?? 1);
+    const delay = Number.isFinite(retrySeconds) && retrySeconds > 0 ? Math.ceil(retrySeconds * 1000) : 1000;
+    if (delay > 5000) break; // Never retry before the provider's longer deadline.
+    await new Promise((resolve) => setTimeout(resolve, delay));
+  }
+  throw new Error('email_receiving_provider_failed');
+}
 
 /** Recepción comercial: habilitación explícita, firma SDK sobre bytes crudos. */
 export function verifyCommercialEmailWebhook(payload: string, headers: { id: string; timestamp: string; signature: string }) {
@@ -47,9 +64,12 @@ export function verifyCommercialEmailWebhook(payload: string, headers: { id: str
 }
 export async function getCommercialReceivedEmail(id: string) {
   if (process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED !== 'true' || !process.env.RESEND_API_KEY) throw new Error('email_receiving_not_configured');
-  const result = await getResend().emails.receiving.get(id);
-  if (result.error || !result.data) throw new Error('email_receiving_provider_failed');
-  return result.data;
+  return readCommercialEmailProvider(() => getResend().emails.receiving.get(id));
+}
+/** Recuperación autenticada y paginada; no envía correos ni fabrica callbacks. */
+export async function listCommercialReceivedEmails(after?: string) {
+  if (process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED !== 'true' || !process.env.RESEND_API_KEY) throw new Error('email_receiving_not_configured');
+  return readCommercialEmailProvider(() => getResend().emails.receiving.list({ limit: 100, ...(after ? { after } : {}) }));
 }
 export async function verifyCommercialEmailDomain() {
   if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM_EMAIL) return { verified: false, reason: 'Configura RESEND_API_KEY y RESEND_FROM_EMAIL en el gestor de secretos.' };

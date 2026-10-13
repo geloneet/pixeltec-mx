@@ -946,12 +946,13 @@ export async function verifyCommercialConnections() {
       and(
         eq(commercialWebhookEvents.provider, "resend_verified_inbound"),
         eq(commercialWebhookEvents.status, "done"),
+        sql`exists (select 1 from commercial_messages m join commercial_conversations c on c.id=m.conversation_id where m.provider_id=${commercialWebhookEvents.providerMessageId} and c.owner_id=${session.userId} and m.direction='inbound')`,
         sql`${commercialWebhookEvents.processedAt}>now()-interval '7 days'`,
       ),
     )
     .limit(1);
   const receivingVerified =
-    !!receipt && process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED === "true";
+    !!receipt && session.userId === process.env.COMMERCIAL_OWNER_ID && !!process.env.RESEND_WEBHOOK_SECRET && process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED === "true";
   const [worker] = await db
     .select({ createdAt: infraAuditLog.createdAt })
     .from(infraAuditLog)

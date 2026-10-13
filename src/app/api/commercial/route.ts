@@ -26,6 +26,7 @@ import {
   sendCommercialReminderNow,
 } from "@/lib/commercial/reminders";
 import { synchronizeCommercialForms } from "@/lib/commercial/worker";
+import { synchronizeCommercialEmail } from "@/lib/commercial/email-events";
 import {
   shareCommercialProject,
   shareCommercialQuote,
@@ -89,6 +90,7 @@ export async function POST(request: Request) {
           "link",
           "sync_whatsapp",
           "sync_forms",
+          "sync_email",
           "connections",
           "reminder",
           "pause_reminder",
@@ -124,6 +126,8 @@ export async function POST(request: Request) {
       result = await synchronizeCommercialWhatsApp(undefined, input.data);
     else if (input.action === "sync_forms")
       result = await synchronizeCommercialForms();
+    else if (input.action === "sync_email")
+      result = await synchronizeCommercialEmail(input.data);
     else if (input.action === "connections")
       result = await verifyCommercialConnections();
     else if (input.action === "reminder")

@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "Las siete pantallas trabajan sobre PostgreSQL. WhatsApp ida y vuelta y correo saliente entregado comprobados; egreso local bloqueado. Capacidad recuperada:20.32GiB libres/79% al corte2026-10-12. Faltan recepción de correo, callbacks/recibos completos, traspaso y gates de Miguel."
+    "lede": "WhatsApp ida/vuelta y correo saliente delivered comprobados. Correo real entrante recuperado en QA:1mensaje/replay0/contacto/oportunidad/HUMAN. Egreso y cron apagados; callback firmado, traspaso y gates pendientes. Limpieza logró20.32GiB; medición posterior19.06GiB/81% vuelve a exigir margen antes de deploy."
   },
   "parametros": [
     {
@@ -33,16 +33,17 @@
     },
     {
       "id": "pr2",
-      "titulo": "Destinatarios autorizados y secretos en gestor",
+      "titulo": "Destinatarios y claves existentes autorizados; falta secreto del callback",
       "quien": "Miguel",
-      "estado": "falta"
+      "estado": "en-espera",
+      "nota": "No volver a pedir claves ni destinatarios recibidos. Nuevo secreto/exposición temporal exige GO propio."
     },
     {
       "id": "pr3",
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "Última medición histórica bloqueó; requiere verificación nueva."
+      "nota": "Limpieza verificada20.316GiB/79%; medición posterior19.064GiB/81%, validar margen20GiB antes de deploy. GO productivo pendiente."
     }
   ],
   "hero": {

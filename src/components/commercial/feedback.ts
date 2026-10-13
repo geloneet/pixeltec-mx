@@ -22,6 +22,12 @@ const errors: Record<string, string> = {
   email_unknown_failure:
     "El proveedor no confirmó el resultado. Comprueba el recibo antes de repetir.",
   email_delivery_failed: "El correo no se entregó. Revisa el destinatario.",
+  email_receiving_disabled:
+    "La recepción de correo aún no está habilitada. Revisa la conexión en Ajustes.",
+  email_receiving_addresses_not_configured:
+    "Configura el buzón receptor autorizado antes de recuperar correos.",
+  email_receiving_provider_failed:
+    "No se pudo consultar el correo. Reintenta la revisión; los mensajes ya recuperados se conservarán sin duplicarse.",
   delivery_unconfirmed:
     "No hay un recibo confirmado. Revisa la conexión y el recibo antes de repetir.",
   whatsapp_window_closed:

@@ -112,6 +112,14 @@ export const whatsappSyncInput = createInsertSchema(commercialConversations, {
   .pick({ address: true })
   .partial()
   .strict();
+/** El cursor del proveedor nunca permite cambiar owner ni buzón receptor. */
+export const emailSyncInput = createInsertSchema(commercialMessages, {
+  providerId: uuid,
+})
+  .pick({ providerId: true })
+  .extend({ after: uuid.optional() })
+  .omit({ providerId: true })
+  .strict();
 export const policyInput = createInsertSchema(commercialPolicies, {
   approvedAnswers: z
     .array(

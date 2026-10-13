@@ -35,6 +35,7 @@ export function CommercialInbox({
   const [body, setBody] = useState("");
   const [notice, setNotice] = useState("");
   const [busy, setBusy] = useState(false);
+  const [emailCursor, setEmailCursor] = useState<string | null>(null);
   const saving = useRef(false);
   const [confirm, setConfirm] = useState(false);
   const [link, setLink] = useState(false);
@@ -77,7 +78,15 @@ export function CommercialInbox({
       const result = await commercialAction(action, input);
       await refresh();
       await refreshThread();
-      if (result.status && !["sent", "delivered"].includes(result.status))
+      if (action === "sync_email") {
+        setEmailCursor(result.nextCursor);
+        setNotice(
+          `${result.imported} correo${result.imported === 1 ? "" : "s"} nuevo${result.imported === 1 ? "" : "s"}.${result.nextCursor ? " Hay más correos anteriores por revisar." : " Revisión terminada."}`,
+        );
+      } else if (
+        result.status &&
+        !["sent", "delivered"].includes(result.status)
+      )
         setNotice(
           "Envío " +
             (deliveryLabel[result.status] || result.status) +
@@ -124,6 +133,17 @@ export function CommercialInbox({
           onChange={(e) => setSearch(e.target.value)}
         />
         <div className="cc-actions">
+          {d.user.role === "admin" && (
+            <button
+              className="cc-button"
+              disabled={busy}
+              onClick={() =>
+                run("sync_email", emailCursor ? { after: emailCursor } : {})
+              }
+            >
+              {emailCursor ? "Revisar correos anteriores" : "Recibir correos"}
+            </button>
+          )}
           <button
             className="cc-button"
             disabled={busy}

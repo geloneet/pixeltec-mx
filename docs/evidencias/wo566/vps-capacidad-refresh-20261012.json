@@ -1,0 +1,32 @@
+{
+  "wo": "WO-2026-00566",
+  "observedAt": "2026-10-13T02:47:34.856Z",
+  "authorization": "Autorizo esta limpieza de caché sin uso >1 hora",
+  "command": "docker builder prune --force --filter until=1h",
+  "hostFence": 654,
+  "before": {
+    "total_bytes": 103865303040,
+    "used_bytes": 83426725888,
+    "free_bytes": 20421799936,
+    "percent": 81
+  },
+  "after": {
+    "total_bytes": 103865303040,
+    "used_bytes": 82182160384,
+    "free_bytes": 21666365440,
+    "percent": 80
+  },
+  "freedBytes": 1244565504,
+  "goalMet": true,
+  "resourcesPreserved": true,
+  "containers": 38,
+  "volumes": 27,
+  "imagesPreserved": true,
+  "pm2Preserved": true,
+  "pixelbotConfigPreserved": true,
+  "productionDeployed": false,
+  "privateReceiptSha256": "e1bce0722a96de3519d8c71782547689cbceaf590e9b3c16f8101569dae8922b",
+  "retentionDays": 30,
+  "homepage": 200,
+  "health": 200
+}

@@ -7,6 +7,8 @@ Estado2026-10-12: correo firmado real recibido y entregado por el dashboard, rep
 WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelBot PR7](https://github.com/geloneet/pixelbot/pull/7), bbebf4d. Unir por owner/conversación/intención/cuerpo/actor; read refleja delivered en outbox y conserva read en el historial único de PixelBot. Los terminales no retroceden y los replays no crean envíos ni mensajes. ACK nuevo incompleto queda unknown; legacy sent sin wamid no acredita entrega. Sus gates históricos no conceden activación del dashboard. Prueba final WhatsApp autorizada espera activar ese servicio conservando config/prompts.yaml local y mounts originales.
 
 
+Capacidad fresh20.178GiB/80%, operación limitada autorizada yrecursos preservados; [recibo](../evidencias/wo566/vps-capacidad-refresh-20261012.json). Medir de nuevo antes de build/deploy; no repetir purgas con este permiso ya utilizado.
+
 ## Configuración segura
 
 Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.

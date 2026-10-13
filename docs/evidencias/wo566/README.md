@@ -16,6 +16,10 @@ Dashboard:55comercialesPASS/27PostgreSQLreal,2349generalesPASS/27PGomitidos por 
 VPS19.020GiB/81%, PixelBothealthy/restarts0 y config/prompts.yaml modificado localmente5/5líneas. Preparar código aislado conservando configuración, mounts, DB, backup verificado e imagen anterior. Purga limitada de cachéDocker sinuso>24h propuesta y pendiente confirmación, sin ejecutar. Gates merge/activación del dashboard, propietario productivo, traspaso/política/scheduler y observación operativa pendientes. No cierre global ni certificación CI remota.
 
 
+## Capacidad recuperada de nuevo —2026-10-12
+
+Nueva capacidad autorizada2026-10-12: cachéDockerrecuperable sinuso>1h, hostLock654/build-cacheflock,1.159GiB recuperados y20.178GiB libres/80%.38contenedores/27volúmenes/imágenes/PM2/configprompts preservados, homepage/health200. Sin despliegue. [Recibo](vps-capacidad-refresh-20261012.json). La propuesta>24h no bastaba (35.8MB); fue reemplazada con autorización exacta de Miguel, no ampliada silenciosamente.
+
 ## Corte histórico — callback temporal autorizado,2026-10-12 19:39
 
 Miguel: «autorizo», gate qa-email-webhook aprobado. cloudflared2026.10.0 instalado desde Homebrew oficial sin servicio/autostart; Quick Tunnel exclusivamente al proxy local4338, un webhook email.received y secreto privado0600. [Recibo saneado](email-webhook-temporal-20261012.json):404 en otras rutas/métodos,401 sin firma/con firma inválida. Cero eventos nuevos en Resend; recepción firmada y replay positivos pendientes, sin inventarlos. Webhook propio deshabilitado y túnel/proxy cerrados; preview4336 health200, recepción/webhook/egreso/cron/automatización apagados y secreto temporal retirado del proceso. Registros privados conservados para recuperar el mismo webhook; ningún webhook ajeno, DNS, MX o producción intervenidos.

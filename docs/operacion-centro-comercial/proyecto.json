@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "Correo firmado recibido/entregado y replay sin duplicados; vínculo antiguo reparado. PixelBot PR7 y consumidor probados. WhatsApp final espera servicio corregido. QAegreso/cronoff; margen20GiB, propietario/política/scheduler y gates productivos pendientes."
+    "lede": "Correo firmado recibido/entregado y replay sin duplicados; vínculo antiguo reparado. PixelBot PR7 y consumidor probados. WhatsApp final espera servicio corregido. QAegreso/cronoff; propietario/política/scheduler y gates productivos pendientes."
   },
   "parametros": [
     {
@@ -43,7 +43,7 @@
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "VPS19.020GiB/81%; nueva purga limitada de cachéDocker>24h pendiente confirmación. Configprompts local preservado. GO dashboardmerge/activación pendiente."
+      "nota": "Capacidad20.178GiB/80% recuperada con cachéDocker>1h autorizada yrecursos preservados. Medir antes de build. Configprompts local conservado. GO dashboardmerge/activación pendiente."
     }
   ],
   "hero": {

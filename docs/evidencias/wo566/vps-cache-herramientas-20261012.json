@@ -1,0 +1,47 @@
+{
+  "wo": "WO-2026-00566",
+  "at": "2026-10-13T04:27:49.713Z",
+  "authorization": "Miguel: 1 hazlo (recuperar mínimo20GiB)",
+  "before": {
+    "total_bytes": 103865303040,
+    "used_bytes": 82799529984,
+    "free_bytes": 21048995840,
+    "percent": 80
+  },
+  "after": {
+    "total_bytes": 103865303040,
+    "used_bytes": 82300588032,
+    "free_bytes": 21547937792,
+    "percent": 80
+  },
+  "freedBytes": 498941952,
+  "freeGiB": 20.06808090209961,
+  "removedPaths": [
+    "/home/ubuntu/.npm/_cacache",
+    "/home/ubuntu/pixeltec-en-curso/.next/cache/webpack",
+    "/home/ubuntu/.local/share/claude/versions/2.1.267"
+  ],
+  "hostFence": 666,
+  "cleanupFence": 667,
+  "resourcesPreserved": true,
+  "containers": 38,
+  "volumes": 27,
+  "imagesAndPm2Preserved": true,
+  "journalsOriginalsAndCopiesPreserved": true,
+  "manifestUnchanged": true,
+  "privateReceiptSha256": "c14c5c8bd4cf9f066068bae09ae98dfbf87ed8f37e8d5f69dec5dcca0eb3c706",
+  "ownScratchRemoved": true,
+  "healthHttp": 200,
+  "goalMet": true,
+  "administratorCheck": {
+    "requestedAccountExists": false,
+    "existingActiveAdministratorFound": true,
+    "selectionPending": true
+  },
+  "dashboardDeployed": false,
+  "limits": [
+    "El margen supera20GiB en este corte; volver a medir antes del deploy.",
+    "Se preservan los seis journals condicionados: no se amplió su autorización.",
+    "No se modificaron datos demo, credenciales, MX, usuarios ni servicios."
+  ]
+}

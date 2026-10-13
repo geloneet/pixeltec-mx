@@ -119,3 +119,14 @@ La configuración vive en `/home/ubuntu/pixelbot` con el cambio local de prompts
 Recibo privado600 `/home/ubuntu/prune-logs/wo28-activation-20261012.json`: imágenes, ruta/hash del snapshot, mounts, overrides y comprobaciones. Recuperación: admisión y hostLock, mismo proyecto/directorio usando override rollback, verificar imagen anterior y salud/reinicios, nginx -t antes del reload, health externo200. Conservar columnas aditivas y escrituras posteriores. Restaurar datos exige aprobación y conciliación separadas.
 
 La prueba WhatsApp autorizada ya se consumió; no repetirla con otra intención. Replay y segunda conciliación no generaron envío ni auditoría extra. Meta acredita entrega, no lectura humana. PixelBot PAUSED, QA HUMAN; egreso/automatismos QA apagados y túnel cerrado. El dashboard aún requiere su activación productiva y corte de propietario/política/scheduler.
+
+
+## Preparación actual — capacidad y administrador, 2026-10-12 22:30
+
+Capacidad recuperada20.068GiB/80% por limpieza autorizada de cachés y una versiónCLI obsoleta sin uso; [recibo](../evidencias/wo566/vps-cache-herramientas-20261012.json). Los seis journals condicionados, copias/manifiesto y todos los servicios siguen intactos. Revalidar capacidad antes del despliegue; el margen no es una reserva permanente.
+
+Miguel declara datos demo del dashboard; seguir con respaldo y0053 aditiva, sin purgar datos de otros productos ni conversaciones reales. Admin indicado admin@pixeltec.mx no existe en producción; la cuenta activa existente es miguel@pixeltec.mx. Resolver elección solicitada antes de fijar COMMERCIAL_OWNER_ID; obtener UUID del registro real, nunca reutilizar el UUIDQA. Crear una cuenta nueva requiere el flujo de usuarios/autenticación existente, sin contraseñas por chat.
+
+Para el correo permanente, conservar el buzón existente ventas@pixeltec.mx y sus MX/rutas salvo decisión explícita. Propuesta pendiente: confirmar ese buzón, preparar su ruta de recepción hacia Resend y callback HTTPS /api/commercial/webhooks/email en pixeltec.mx; registrar eventos received/delivered/bounced y guardar secretoSvix privado en configuración productiva. El buzón nativoResend de prueba acredita transporte, no recepción automática del buzón comercial. Verificar una ruta que conserve la entrega al equipo antes de cualquier cambio; no duplicar reglas ni sustituir MX principales. Configurar reply-to sólo después de la elección. Recepción y asistente son decisiones separadas.
+
+Publicación preparada en PR186: respaldo verificado,0053, despliegue gobernado del SHA revisado, propietario validado y canales permanentes. Inicio en atención humana, respuestas/recordatorios automáticos apagados hasta política y emisor único. Configuración y pruebas técnicas son trabajo del operador; Miguel sólo decide cuenta, buzón y autorización de publicación/ruta de correo. Esta fase no despliega el dashboard ni renueva permisos para enviar pruebas consumidas.

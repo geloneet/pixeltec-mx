@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "PixelBot PR7 fusionada y desplegada; migración012 conserva183mensajes. WhatsApp final entregado y replay sin duplicados. Correo firmado verificado. QA egreso/cron apagados. Capacidad19.85GiB; limpieza condicionada BLOCKED por retención/auditoría. Dashboard y política/scheduler pendientes."
+    "lede": "PixelBot desplegado y WhatsApp entregado; correo firmado verificado. Nueva limpieza:20.068GiB/80%, servicios y journals preservados. Cuenta admin indicada no existe; elección de administrador pendiente. Dashboard, recepción permanente y política/scheduler pendientes."
   },
   "parametros": [
     {
@@ -43,7 +43,7 @@
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "PixelBot desplegado; dashboard pendiente. Capacidad19.85GiB: copias de seis logs restauradas, originales conservados por condición de retención/auditoría no acreditada. No ampliar limpieza."
+      "nota": "Capacidad comprobada20.068GiB/80%; revalidar antes del corte. Journals originales conservados. Falta elegir administrador (cuenta indicada ausente), configurar recepción permanente y autorizar/publicar dashboard."
     }
   ],
   "hero": {

@@ -4,7 +4,14 @@ WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial
 
 
 
-## Corte vigente — PixelBot desplegado y WhatsApp entregado, 2026-10-12
+
+## Corte vigente — capacidad recuperada y cuenta administradora por elegir, 2026-10-12 22:30
+
+La nueva petición «1 hazlo» autoriza recuperar el mínimo20GiB. Se retiraron únicamente caché npm, caché webpack de pixeltec-en-curso y CLI obsoleta2.1.267 sin uso; versiones2.1.285/2.1.288 conservadas. Inventario, ausencia de descriptores abiertos/builds, hostLock666 y build-cache flock previos. Se recuperaron498,941,952bytes:19.604→20.068GiB/80%;38contenedores,27volúmenes, imágenes, PM2 yconfig PixelBot idénticos. Seis journals, copias y manifiesto intactos. Script/recibo temporales propios retirados bajo hostLock667 tras verificar hashes; recibo privado600 retenido para revisión2026-11-12. HealthHTTP200. [Evidencia saneada](vps-cache-herramientas-20261012.json).
+
+Miguel declaró que los datos del dashboard son demo y señaló admin@pixeltec.mx. Consulta SQL en transacción read-only de pixeltec_mx: esa cuenta no existe; hay un administrador activo, miguel@pixeltec.mx. Se pidió elegir cuenta existente o preparar alta nueva, sin crear usuarios ni cambiar roles. Credenciales Resend/PixelBot presentes; propietario comercial, receptor y firma productivos aún sin configurar. No activar el dashboard, cambiar MX ni enviar mensajes en esta fase. La aprobación de recepción permanente y activación debe describir ese alcance concreto; automatismos siguen separados.
+
+## Corte anterior — PixelBot desplegado y WhatsApp entregado, 2026-10-12
 
 Miguel: «Autorizo fusionar PR7 y desplegar PixelBot en el VPS». [PR7](https://github.com/geloneet/pixelbot/pull/7) fusionada a `8097f2a23b9934988c07021928fb638e34c7e76a`, árbol idéntico al candidato `bbebf4d`. Imagen Linux AMD64 previamente probada con 462 pruebas; archivo SHA256 comprobado al transferir. Se activó sólo PixelBot, con respaldo SQLite fresco, imagen anterior, entorno, configuración local y mounts conservados. Migración012 aplicada una vez, integridad OK y los 183 mensajes anteriores intactos. Salud pública200, cero reinicios, nginx -t aprobado antes del reload; hostLock661.
 

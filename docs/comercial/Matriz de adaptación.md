@@ -4,7 +4,7 @@ WO-2026-00566, 2026-10-10. Base efectiva 1aae1940; rama codex/wo566-centro-comer
 
 | Función | Capacidad existente | Adaptación | Aceptación |
 |---|---|---|---|
-| Inicio | Snapshot e hilos con aislamiento por propietario | Bandeja de correo/WhatsApp, prioridades a la derecha y pipeline por etapas desplegables; revisión solicitada 2026-10-12 | Filtros y acceso al hilo/oportunidad; acciones canónicas; nombres completos en 320–1440px |
+| Inicio | Snapshot e hilos con aislamiento por propietario | Cinco KPI y actividad preservados, bandeja central, prioridades a la derecha y pipeline desplegable; restauración 2026-10-12 | Filtros y acceso al hilo/oportunidad; acciones canónicas; nombres completos en 320–1440px |
 | Ventas | Cotizaciones, ventas y anticipo | Oportunidades vinculadas al cliente; responsable/etapa/fecha | Webhook/doble clic no duplican; conflicto de edición visible |
 | Clientes | Postgres y ficha /clientes/[id] | Lista comercial, reutilizar ficha y portal | Aislamiento entre owners; portal sin datos sensibles |
 | Conversaciones | PixelBot como historial WhatsApp | Referencia comercial; correo propio y outbox duradero | Recepción repetida una vez; envío incierto no reintenta a ciegas |

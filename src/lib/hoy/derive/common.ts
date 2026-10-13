@@ -65,7 +65,7 @@ export function clientHref(client: SnapClient | undefined, tab?: string): string
  * vencido), evaluada en el día calendario de CDMX en vez del huso del
  * servidor.
  */
-export function followUpState(quote: SnapQuote, now: Date): "vencido" | "hoy" | "futuro" | null {
+export function followUpState(quote: Pick<SnapQuote, "status" | "nextFollowUpAt">, now: Date): "vencido" | "hoy" | "futuro" | null {
   if (quote.status !== "enviada") return null;
   const key = toDayKey(quote.nextFollowUpAt);
   if (!key) return null;

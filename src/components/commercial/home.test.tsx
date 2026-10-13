@@ -10,6 +10,8 @@ import {
 import "@testing-library/jest-dom/vitest";
 import { SWRConfig } from "swr";
 import type { CommercialSnapshot } from "@/lib/commercial/snapshot";
+import { deriveDashboard } from "@/lib/hoy/dashboard-derive";
+import { emptySnapshot, fullSnapshot } from "@/lib/hoy/__tests__/fixtures";
 import { CommercialHome } from "./home";
 
 afterEach(() => {
@@ -77,6 +79,61 @@ function show(data = empty, pending: CommercialSnapshot["opportunities"] = []) {
   return { onOpportunity, onPayment, onDecision };
 }
 describe("Inicio comercial", () => {
+  it("conserva los cinco indicadores y Actividad reciente con filtros", () => {
+    show();
+    for (const label of [
+      "Leads nuevos",
+      "Seguimientos hoy",
+      "Cotizaciones pendientes",
+      "Cobros por vencer",
+      "Cobrado este mes",
+    ])
+      expect(screen.getByText(label)).toBeVisible();
+    expect(
+      screen.getByRole("heading", { name: "Actividad reciente" }),
+    ).toBeVisible();
+    for (const label of [
+      "Todas",
+      "WhatsApp",
+      "Correo",
+      "Cotizaciones",
+      "Cobros",
+    ])
+      expect(
+        within(
+          screen.getByRole("navigation", { name: "Filtrar actividad" }),
+        ).getByRole("button", { name: label }),
+      ).toBeVisible();
+  });
+  it("filtra la actividad localmente sin perder la bandeja o prioridades", () => {
+    const overview = deriveDashboard(fullSnapshot(), {
+      vista: "hoy",
+      actividad: "todas",
+      greetingName: null,
+    });
+    render(
+      <CommercialHome
+        data={empty}
+        pending={[]}
+        decisions={[]}
+        overview={overview}
+        onOpportunity={vi.fn()}
+        onDecision={vi.fn()}
+        onPayment={vi.fn()}
+      />,
+    );
+    fireEvent.click(
+      within(
+        screen.getByRole("navigation", { name: "Filtrar actividad" }),
+      ).getByRole("button", { name: "Cobros" }),
+    );
+    expect(screen.getAllByText(/Pago recibido de/).length).toBeGreaterThan(0);
+    expect(screen.queryByText(/Nuevo lead:/)).toBeNull();
+    expect(
+      screen.getByRole("heading", { name: "Bandeja de entrada" }),
+    ).toBeVisible();
+    expect(screen.getByRole("heading", { name: /^Prioridades/ })).toBeVisible();
+  });
   it("filtra canales y abre el hilo exacto, sin enviar ni marcar mensajes", async () => {
     const fetcher = vi.fn(async (url: string, _options?: RequestInit) => ({
       ok: true,

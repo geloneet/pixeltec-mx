@@ -2,6 +2,14 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Corrección vigente — funciones restauradas, 2026-10-12
+
+Miguel señaló que la revisión anterior retiró funciones que no pidió quitar. Se recuperaron los cinco KPI originales y Actividad reciente con filtros/expansión; Nueva cotización, tareas, cobros y alertas. Se mantiene bandeja central, prioridades a la derecha y pipeline legible. Barra de indicadores compacta, acento azul PixelTEC y menor densidad de marcos; cuatro mensajes iniciales, despliegue hasta ocho y acceso al resto. [Evidencia actual](inicio-restaurado-20261012.json).
+
+GET /api/commercial/overview reutiliza las fuentes de Hoy con admin/staff/no-store; no consulta nuevamente PixelBot. Seguimientos añade oportunidades abiertas del Centro, sin duplicar acción del cliente/cotización vinculada; QA muestra3. Actividad conserva su componente y recibe filtro local y enlace al hilo correspondiente.122seleccionadas+27PostgreSQL PASS, tipos/lint/build209 PASS; CUA1440 claro/oscuro y320/390 móvil sin desbordamientos. Nueva cotización abrió clientes propios y Correo filtró actividad real. Capturas privadas fuera de Git, sin nuevos envíos/pagos o schema.
+
+Los primeros tipos detectaron metadata JSON y opciones de tests incorrectas; corregidas sin relajar strict. Se mantiene warning img y límites heredados de cálculo monetario: comprobación MXN, no certificar suma de monedas diferentes. QA egreso/cron/automatización apagados; producción y gates intactos. El corte anterior se conserva como historia y queda superado por esta restauración.
+
 ## Inicio revisado a petición de Miguel — 2026-10-12 23:10
 
 [Verificación del rediseño](inicio-bandeja-20261012.json). Bandeja central de correos/WhatsApp con mensajes y hora, filtros y enlace al hilo; prioridades a la derecha con acciones existentes; pipeline vertical desplegable con nombres completos. Estilo neutro, sin promoción lateral ni badges rojos en Inicio. En móvil el orden es bandeja → prioridades → pipeline.

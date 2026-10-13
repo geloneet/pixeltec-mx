@@ -9,11 +9,13 @@ WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelB
 
 Capacidad fresh20.178GiB/80%, operación limitada autorizada yrecursos preservados; [recibo](../evidencias/wo566/vps-capacidad-refresh-20261012.json). Medir de nuevo antes de build/deploy; no repetir purgas con este permiso ya utilizado.
 
-## Inicio — revisión del 2026-10-12
+## Inicio — revisión vigente del 2026-10-12
 
-La bandeja reúne hasta ocho conversaciones recientes del canal elegido, ordenadas por última entrada conocida (fecha de actualización cuando no hay entradas). Cada fila consulta el mismo hilo autenticado de Conversaciones, comparte su caché SWR, muestra el último mensaje disponible y abre su identificador exacto. Los errores de un canal no ocultan el otro; no se fabrica contenido ni se copia WhatsApp en PostgreSQL.
+Conservar los cinco indicadores originales, Actividad reciente con filtros/expansión, Nueva cotización, tareas de hoy, cobros y alertas. Una petición de mejorar diseño no concede retirar funciones que Miguel no pidió eliminar. GET /api/commercial/overview reutiliza las consultas y derivaciones de Hoy, con admin/staff/no-store y cartera por propietario; leads conserva su feed global original. No realiza una segunda consulta a PixelBot. Seguimientos integra también oportunidades abiertas del Centro, excluye futuros/cerrados y evita doble conteo con cliente/cotización vinculada. Acceso a Ventas cuando incluye pasos del Centro.
 
-Prioridades muestra decisiones de cotización/conversación, cobros vencidos con saldo canónico y seguimientos hasta hoy; desde cinco elementos permite desplegar el resto. Registrar pago y confirmar venta conservan sus formularios y verificaciones. Pipeline agrupa oportunidades abiertas por etapa con nombres completos; ventas ganadas/pausadas/perdidas siguen en Ventas. La bandeja ocupa el panel central, prioridades la derecha; móvil apila bandeja, prioridades y pipeline. [Pruebas y límites](../evidencias/wo566/inicio-bandeja-20261012.json). Este cambio de presentación no activa canales ni automatismos productivos.
+La bandeja ofrece cuatro hilos iniciales y permite desplegar hasta ocho del canal elegido; acceso permanente a todas las conversaciones. Ordena por última entrada conocida, o actualización cuando no hay entradas. Comparte hilo/caché autenticados de Conversaciones y abre su UUID exacto. Fallo de un canal no oculta el otro; no copia WhatsApp ni inventa mensajes. Actividad reutiliza el componente existente, filtra localmente, reconoce la referencia registrada al canal y muestra estados legibles.
+
+Prioridades muestra decisiones, saldo vencido y seguimientos; desde cinco permite desplegar el resto. Formularios de pago/venta mantienen verificaciones. Pipeline agrupa oportunidades por etapa con nombres completos. Móvil: bandeja, prioridades/otros widgets, pipeline, actividad. [Pruebas actuales y límites](../evidencias/wo566/inicio-restaurado-20261012.json). El indicador monetario conserva cálculo heredado; esta QA verifica MXN y no certifica sumar monedas diferentes. No activar canales/automatismos por cambiar presentación.
 
 ## Configuración segura
 

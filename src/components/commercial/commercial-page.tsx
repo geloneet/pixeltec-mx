@@ -2,6 +2,8 @@
 import { useState, useRef, useEffect } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import type { HoyDashboard } from "@/lib/hoy/types";
+import { NuevaCotizacionButton } from "@/components/hoy/nueva-cotizacion-button";
 import { CommercialHome } from "./home";
 import { CommercialInbox } from "./inbox";
 import { CommercialSettings } from "./settings";
@@ -173,6 +175,21 @@ export function CommercialPage({ view }: { view: View }) {
     revalidateOnFocus: true,
     keepPreviousData: true,
   });
+  const {
+    data: overview,
+    error: overviewError,
+    mutate: refreshOverview,
+  } = useSWR<HoyDashboard>(
+    view === "home" ? "/api/commercial/overview" : null,
+    async (url: string) => {
+      const response = await fetch(url, { cache: "no-store" });
+      const value = await response.json();
+      if (!response.ok)
+        throw new Error(value.error || "No se pudo cargar Inicio.");
+      return value;
+    },
+    { refreshInterval: 30000 },
+  );
   const [modal, setModal] = useState<Modal | null>(null);
   const [busy, setBusy] = useState(false);
   const busyRef = useRef(false);
@@ -329,9 +346,16 @@ export function CommercialPage({ view }: { view: View }) {
   );
   return (
     <div className="cc-page cc-enter" key={view}>
-      <header className="cc-head">
+      <header className={view === "home" ? "cc-head cc-home-head" : "cc-head"}>
         <div>
-          <h1>{labels[view]}</h1>
+          {view === "home" && (
+            <span className="cc-home-eyebrow">PIXELTEC / CENTRO COMERCIAL</span>
+          )}
+          <h1>
+            {view === "home" && overview?.greetingName
+              ? `Hola, ${overview.greetingName}.`
+              : labels[view]}
+          </h1>
           <p>
             {view === "home"
               ? new Intl.DateTimeFormat("es-MX", {
@@ -343,6 +367,7 @@ export function CommercialPage({ view }: { view: View }) {
               : descriptions[view]}
           </p>
         </div>
+        {view === "home" && <NuevaCotizacionButton />}
         {["home", "sales", "clients"].includes(view) && (
           <button
             className="cc-button"
@@ -366,6 +391,9 @@ export function CommercialPage({ view }: { view: View }) {
       {view === "home" && (
         <CommercialHome
           data={d}
+          overview={overview}
+          overviewError={Boolean(overviewError)}
+          refreshOverview={() => refreshOverview()}
           pending={pending}
           decisions={decisions}
           onOpportunity={(row) => open({ kind: "opportunity", row })}

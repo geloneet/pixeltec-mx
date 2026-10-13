@@ -15,6 +15,8 @@ import {
   saleStages,
   todayCivil,
 } from "./data";
+import type { HoyDashboard } from "@/lib/hoy/types";
+import { HomeKpis, HomeActivity, HomeSecondary } from "./home-widgets";
 import { loadCommercialThread } from "./thread";
 
 type Conversation = CommercialSnapshot["conversations"][number];
@@ -105,12 +107,18 @@ function MessageRow({
 export function CommercialHome({
   data: d,
   pending,
+  overview,
+  overviewError,
+  refreshOverview,
   decisions,
   onOpportunity,
   onDecision,
   onPayment,
 }: {
   data: CommercialSnapshot;
+  overview?: HoyDashboard;
+  overviewError?: boolean;
+  refreshOverview?: () => Promise<unknown>;
   pending: Opportunity[];
   decisions: Decision[];
   onOpportunity: (row: Opportunity) => void;
@@ -118,6 +126,7 @@ export function CommercialHome({
   onPayment: (row: BillingItem) => void;
 }) {
   const [channel, setChannel] = useState<Channel>("all");
+  const [moreMessages, setMoreMessages] = useState(false);
   const [allPriorities, setAllPriorities] = useState(false);
   const contact = (id: string | null) => d.contacts.find((c) => c.id === id);
   const today = todayCivil();
@@ -206,35 +215,20 @@ export function CommercialHome({
 
   return (
     <div className="cc-home">
-      <div className="cc-home-totals" aria-label="Resumen comercial">
-        {[
-          {
-            label: "Por atender",
-            value: conversations.filter((c) => c.state === "sin_atender")
-              .length,
-            href: "/whatsapp",
-          },
-          { label: "Ventas abiertas", value: pending.length, href: "/ventas" },
-          {
-            label: "Seguimientos de hoy",
-            value: followups.length,
-            href: "/ventas",
-          },
-          { label: "Cobros vencidos", value: overdue.length, href: "/cobros" },
-        ].map((item) => (
-          <Link key={item.label} href={item.href}>
-            <span>{item.label}</span>
-            <strong>{item.value}</strong>
-            <ArrowUpRight size={14} aria-hidden />
-          </Link>
-        ))}
-      </div>
+      <HomeKpis overview={overview} error={overviewError} data={d} />
+      {overviewError && (
+        <p role="alert" className="cc-overview-error">
+          No se pudieron cargar los indicadores y la actividad.{" "}
+          <button onClick={refreshOverview}>Reintentar</button>
+        </p>
+      )}
 
       <div className="cc-home-layout">
         <div className="cc-home-main">
           <section className="cc-home-panel" aria-labelledby="home-inbox-title">
             <div className="cc-home-panel-head">
               <div>
+                <span className="cc-section-number">01 / MENSAJES</span>
                 <h2 id="home-inbox-title">Bandeja de entrada</h2>
                 <p>Últimas conversaciones de correo y WhatsApp</p>
               </div>
@@ -258,7 +252,10 @@ export function CommercialHome({
                 <button
                   key={key}
                   aria-pressed={channel === key}
-                  onClick={() => setChannel(key)}
+                  onClick={() => {
+                    setChannel(key);
+                    setMoreMessages(false);
+                  }}
                 >
                   {label}
                   <span>
@@ -272,7 +269,7 @@ export function CommercialHome({
               ))}
             </div>
             <div className="cc-mail-list">
-              {filtered.slice(0, 8).map((c) => (
+              {filtered.slice(0, moreMessages ? 8 : 4).map((c) => (
                 <MessageRow
                   key={c.id}
                   conversation={c}
@@ -303,12 +300,22 @@ export function CommercialHome({
                 </div>
               )}
             </div>
-            {filtered.length > 8 && (
-              <Link className="cc-home-panel-foot" href="/whatsapp">
-                Ver las {filtered.length} conversaciones
-                <ChevronRight size={14} />
+            <div className="cc-inbox-footer">
+              {filtered.length > 4 && (
+                <button
+                  className="cc-text-action"
+                  aria-expanded={moreMessages}
+                  onClick={() => setMoreMessages(!moreMessages)}
+                >
+                  {moreMessages ? "Mostrar menos" : "Mostrar más mensajes"}
+                  <ChevronRight size={14} />
+                </button>
+              )}
+              <Link className="cc-text-action" href="/whatsapp">
+                Ver todas las conversaciones
+                <ArrowUpRight size={14} />
               </Link>
-            )}
+            </div>
           </section>
 
           <section
@@ -317,6 +324,7 @@ export function CommercialHome({
           >
             <div className="cc-home-panel-head">
               <div>
+                <span className="cc-section-number">02 / VENTAS</span>
                 <h2 id="home-pipeline-title">Pipeline comercial</h2>
                 <p>{pending.length} oportunidades abiertas</p>
               </div>
@@ -373,62 +381,67 @@ export function CommercialHome({
           </section>
         </div>
 
-        <aside
-          className="cc-home-panel cc-home-priorities"
-          aria-labelledby="home-priorities-title"
-        >
-          <div className="cc-home-panel-head">
-            <div>
-              <h2 id="home-priorities-title">
-                Prioridades <span>{priorities.length}</span>
-              </h2>
-              <p>Lo que necesita una acción</p>
-            </div>
-          </div>
-          <div className="cc-priority-list">
-            {priorities.slice(0, allPriorities ? undefined : 5).map((p) => (
-              <article key={p.id}>
-                <p className="cc-priority-label">{p.label}</p>
-                <h3>{p.name}</h3>
-                <p className="cc-priority-detail">{p.detail}</p>
-                {p.action}
-              </article>
-            ))}
-            {!priorities.length && (
-              <div className="cc-home-empty">
-                <strong>Sin pendientes para hoy</strong>
-                <p>Puedes revisar tus conversaciones o avanzar una venta.</p>
-                <Link className="cc-text-action" href="/ventas">
-                  Ir a ventas
-                  <ChevronRight size={14} />
-                </Link>
+        <div className="cc-home-right">
+          <aside
+            className="cc-home-panel cc-home-priorities"
+            aria-labelledby="home-priorities-title"
+          >
+            <div className="cc-home-panel-head">
+              <div>
+                <span className="cc-section-number">POR RESOLVER</span>
+                <h2 id="home-priorities-title">
+                  Prioridades <span>{priorities.length}</span>
+                </h2>
+                <p>Lo que necesita una acción</p>
               </div>
+            </div>
+            <div className="cc-priority-list">
+              {priorities.slice(0, allPriorities ? undefined : 5).map((p) => (
+                <article key={p.id}>
+                  <p className="cc-priority-label">{p.label}</p>
+                  <h3>{p.name}</h3>
+                  <p className="cc-priority-detail">{p.detail}</p>
+                  {p.action}
+                </article>
+              ))}
+              {!priorities.length && (
+                <div className="cc-home-empty">
+                  <strong>Sin pendientes para hoy</strong>
+                  <p>Puedes revisar tus conversaciones o avanzar una venta.</p>
+                  <Link className="cc-text-action" href="/ventas">
+                    Ir a ventas
+                    <ChevronRight size={14} />
+                  </Link>
+                </div>
+              )}
+            </div>
+            {priorities.length > 5 && (
+              <button
+                className="cc-home-panel-foot"
+                aria-expanded={allPriorities}
+                onClick={() => setAllPriorities(!allPriorities)}
+              >
+                {allPriorities
+                  ? "Mostrar menos"
+                  : `Ver las ${priorities.length} prioridades`}
+                <ChevronRight size={14} />
+              </button>
             )}
-          </div>
-          {priorities.length > 5 && (
-            <button
-              className="cc-home-panel-foot"
-              aria-expanded={allPriorities}
-              onClick={() => setAllPriorities(!allPriorities)}
-            >
-              {allPriorities
-                ? "Mostrar menos"
-                : `Ver las ${priorities.length} prioridades`}
-              <ChevronRight size={14} />
-            </button>
-          )}
-          <div className="cc-priority-links">
-            <Link href="/cobros">
-              Todos los cobros
-              <ArrowUpRight size={14} />
-            </Link>
-            <Link href="/proyectos">
-              Proyectos en marcha
-              <ArrowUpRight size={14} />
-            </Link>
-          </div>
-        </aside>
+            <div className="cc-priority-links">
+              <Link href="/cobros">
+                Todos los cobros
+                <ArrowUpRight size={14} />
+              </Link>
+              <Link href="/proyectos">
+                Proyectos en marcha
+                <ArrowUpRight size={14} />
+              </Link>
+            </div>
+          </aside>
+          <HomeSecondary overview={overview} />
+        </div>
       </div>
+      <HomeActivity overview={overview} error={overviewError} data={d} />
     </div>
   );
 }

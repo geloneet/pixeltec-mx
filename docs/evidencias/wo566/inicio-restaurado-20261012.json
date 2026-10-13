@@ -1,0 +1,33 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-12",
+  "request": "Restaurar las funciones retiradas sin petición y mejorar el diseño de Inicio",
+  "restored": ["Leads nuevos", "Seguimientos hoy", "Cotizaciones pendientes", "Cobros por vencer", "Cobrado este mes", "Actividad reciente con cinco filtros y expansión", "Nueva cotización", "Tareas de hoy", "Cobros y pagos", "Alertas"],
+  "preserved": ["Bandeja de correo y WhatsApp", "Prioridades a la derecha", "Pipeline desplegable", "Formularios y permisos existentes"],
+  "implementation": {
+    "overview": "GET /api/commercial/overview exige sesión admin/staff, no-store; usa fuentes/derivaciones existentes de Hoy, sin una segunda consulta a PixelBot",
+    "followups": "Incluye siguientes pasos de oportunidades abiertas del Centro; deduplica contra acción del cliente y cotización vinculada. QA muestra 3, igual a las prioridades de seguimiento",
+    "activity": "Reutiliza ActivityFeed; filtros locales y expansión, canal y vínculo del hilo obtenidos de la referencia registrada; estados en español",
+    "design": "Barra de cinco indicadores, azul PixelTEC, tipografía jerarquizada, bordes de 4px, bandeja compacta con señal de atención; cuatro filas iniciales y despliegue hasta ocho sin perder acceso a la bandeja completa"
+  },
+  "verification": {
+    "selectedTestsPassed": 122,
+    "postgresTestsPassed": 27,
+    "database": "centro_qa local con transportes controlados",
+    "typescript": "PASS estricto",
+    "lint": "PASS; warning img heredado",
+    "build": "PASS; 209 páginas",
+    "browser": "CUA real; escritorio1440 claro/oscuro, móvil320/390; sin desbordamientos",
+    "width320": { "document": 320, "mainClient": 309, "mainScroll": 309, "overflowingControls": 0 },
+    "width390": { "document": 390, "mainClient": 379, "mainScroll": 379, "overflowingControls": 0 },
+    "interactions": ["Filtro Correo muestra actividad correspondiente", "Nueva cotización abre selección de clientes propios", "Mostrar más mensajes conserva acceso al resto", "Indicador de seguimiento integra el Centro nuevo"],
+    "screenshots": "Locales privadas; no se publican destinatarios o identificadores de conversaciones en Git"
+  },
+  "limits": [
+    "Primeras comprobaciones de tipos detectaron metadata JSON desconocida y opción exact no admitida por Testing Library; corregidas sin relajar strict, builds finales PASS",
+    "Se conservan las reglas financieras heredadas; comprobación de importes realizada en cartera MXN, no certifica agregación de monedas diferentes",
+    "Leads conserva el feed global existente; cartera, cobros, pagos, notificaciones y actividad siguen sus consultas originales por propietario",
+    "Historial WhatsApp mantiene fuente PixelBot; conexión interna apagada en QA produce vista previa no disponible",
+    "Sin cambio de schema, VPS, DNS, producción, nuevos mensajes o automatismos; gates productivos conservados"
+  ]
+}

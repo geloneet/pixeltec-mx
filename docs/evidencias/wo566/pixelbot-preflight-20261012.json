@@ -1,0 +1,61 @@
+{
+  "wo": "WO-2026-00028",
+  "coordinator": "WO-2026-00566",
+  "targetCommit": "bbebf4d049cd3628abc082caac5f056b122f7a6f",
+  "imagePlatform": "linux/amd64",
+  "imageSuitePassed": 462,
+  "imageWarnings": 2826,
+  "localSuitePassed": 462,
+  "backupIntegrity": "ok",
+  "backupCounts": {
+    "tenants": 1,
+    "conversaciones": 16,
+    "mensajes": 183,
+    "mensajes_procesados": 92,
+    "mode_audit_log": 9,
+    "wa_status_events": 65
+  },
+  "rehearsal": {
+    "restoreIntegrity": "ok",
+    "rowsPreserved": true,
+    "before": {
+      "tenants": 1,
+      "conversaciones": 16,
+      "mensajes": 183,
+      "mensajes_procesados": 92,
+      "mode_audit_log": 9,
+      "wa_status_events": 65
+    },
+    "after": {
+      "tenants": 1,
+      "conversaciones": 16,
+      "mensajes": 183,
+      "mensajes_procesados": 92,
+      "mode_audit_log": 9,
+      "wa_status_events": 65
+    },
+    "backfilledManualIntents": 2,
+    "migration012LedgerRows": 1,
+    "doubleRun": "PASS",
+    "productionChanged": false
+  },
+  "hostFences": [
+    656,
+    658,
+    659
+  ],
+  "candidateArchiveSha256": "d2c405461c4e05329b3e9e2a8c94d459e5f6699c8ce902e7ab65480bfffa7f37",
+  "candidateWithdrawnFromVps": true,
+  "candidateArtifactRetainedOnMac": true,
+  "finalDisk": {
+    "freeBytes": 21663944704,
+    "percent": 80
+  },
+  "configPreserved": true,
+  "runtimePreserved": true,
+  "activated": false,
+  "mergePerformed": false,
+  "mergeApproval": "pending",
+  "automaticReviewRejected": "PR7 ready and merge require explicit GO for candidate SHA",
+  "privateBackupRetained": true
+}

@@ -99,3 +99,12 @@ Prueba real: ingreso del receptor nativo autorizado→conversación/contacto/opo
 El receptor limitado [preparado para aprobación](Prueba%20temporal%20del%20receptor%20de%20correo.md) admite soloPOST en /api/commercial/webhooks/email y omite cookies/Authorization/respuestas privadas. Una eventual URL Cloudflare temporal transmite únicamente el callback; Resendemail.received y un secreto Svix nuevo requieren GO antes de abrirlo. No se instaló cloudflared ni se creó/publicó un endpoint. Recepción por pull está probada; callback automático y recibo de entrega firmado siguen pendientes.
 
 Fresh df posterior:19.064GiB libres/81%, frente a20.316GiB/79% al cerrar la limpieza. Causa del crecimiento no establecida; el guard20GiB debe cumplirse otra vez antes del deploy. El permiso de limpieza anterior no se amplía automáticamente.
+
+
+## Activar únicamente el recibo coordinado de WhatsApp
+
+Candidato PixelBotPR7/SHA bbebf4d049cd3628abc082caac5f056b122f7a6f: imagenAMD64 y462pruebas del artefacto, respaldo real restaurado y012doble verificados. [Evidencia](../evidencias/wo566/pixelbot-preflight-20261012.json). Merge pendiente tras rechazo automático por falta deGOexacto. No activar desde rama ni modificar gates automáticamente.
+
+Después deGO: marcar PR7ready yfusionar con match-head-commit; confirmar main contieneSHA yárbol esperado. Código productivo mediante checkout aislado, sin reset del config/prompts.yaml modificado. Comprobar capacidadfresh, imagen/backup previos ymontajes data/knowledge/config/secrets originales. Cargar el artifactprivado deSHA comprobado ypreservar imagen anterior. Conservar projectpixelbot/serviceapp; overrideCompose sóloimage, env/mounts originales yup -d --no-build --no-deps app. Arranque aplica012 versionada; comprobar ledger/conteos/health/restarts. nginx-t antes dereload; health externo200. Fallo: restaurar imagen anterior, conservarDDL aditivo yno restaurar backup sobre escrituras recientes.
+
+Sólo después, ejecutar una vez el WhatsApp final aprobado mediante APIautenticada/allowlist individual/intención estable; comprobarwamid/estadoMeta e historialPixelBot yconciliaroutboxsinreenviar. Apagar egresoQA al cerrar. No habilitar automatización global ni scheduler, ni publicar dashboard con el GO de PixelBot.

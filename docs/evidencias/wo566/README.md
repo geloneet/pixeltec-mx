@@ -125,3 +125,12 @@ Navegador IAB volvió a estar disponible al restaurar el servidor local y abrir 
 Receptor temporal preparado con5pruebas de frontera: soloPOST/ruta exacta, sin cookies/Authorization ni respuesta privada, bytes/Svix intactos, límite1MB y rechazo conservado. [Propuesta revisable](../../comercial/Prueba%20temporal%20del%20receptor%20de%20correo.md). No hay túnel/webhook/secreto nuevo público todavía.
 
 Medición posterior de VPS:19989904KiB libres=19.064GiB,81%. La limpieza anterior logró20.316GiB al corte; el almacenamiento volvió a crecer y la causa no está establecida. Docker ahora declara1.38GB de caché recuperable sin acreditar antigüedad/exclusividad. No se repite limpieza ni se toca cache activo; margen≥20GiB vuelve a ser dependencia del despliegue.
+
+
+## Imagen y restauración de PixelBot verificadas —2026-10-12
+
+[Preflight saneado](pixelbot-preflight-20261012.json): imagen LinuxAMD64 del commit bbebf4d,462PASS también dentro del artefacto, parse/import012PASS. Los122fallos iniciales del runner eran ausencia de pytest.ini/ejemplosenv; se montaron los archivos de prueba del repo readonly. La siguiente pasada461PASS/1fallo detectó el segundo ejemplo faltante; montaje correcto y462PASS. No hubo cambio de código, dependencia, guard o prueba para forzar el resultado. Cachepytestdir pasó a/tmp por usuario no-root.
+
+Backup online realSQLite/600/integrityok:1tenant,16conversaciones,183mensajes,92procesados,9auditorías,65eventos. Restauración aislada sin red y migración012doble conservan todos los registros/contenido;2intenciones antiguas movidas,ledger012una sola fila. Primera apertura readonly del backupWAL se detuvo; snapshot cerrado/inmutable permitió lectura sin archivosauxiliares, nunca se aplicó ese modo aDBviva. Configprompts y runtimehealthy/restarts0 conservados. Preparación hostLock656/658; imagen temporal retirada tras ensayo bajo659 yartifactprivadoMac600 retenido; margen20.176GiB/80% restaurado.
+
+Revisión automática rechazó marcar lista/fusionarPR7: GOexplícito de SHA para merge/main requerido. PR7continúaDRAFT/OPEN; gates históricosdeploy/contract-change no se reescriben, nuevo merge-to-mainpending. No workaround oactivación desde rama para eludir ese rechazo. El WhatsApp final aprobado aún no se envió. Dashboardproducción también mantiene sus gates separados. Sin deploy ni cambio deDBviva.

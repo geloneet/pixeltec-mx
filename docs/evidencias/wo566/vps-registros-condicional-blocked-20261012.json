@@ -1,0 +1,20 @@
+{
+  "at": "2026-10-13T03:43:50.849Z",
+  "hostFence": 663,
+  "restoredFiles": 6,
+  "restorationHashAndJournalVerify": true,
+  "noOpenFileDescriptors": true,
+  "retentionRule": "02_PLAYBOOKS/limpieza-temporales-vps.md: logs rotación + purga >30 días",
+  "auditRecoveryRequirement": "not_proven_absent; system journals used by security runbook",
+  "retentionSatisfiedForOriginalRemoval": false,
+  "status": "BLOCKED",
+  "originalsRemoved": 0,
+  "originalFiles": 6,
+  "compressedCopiesRetained": 6,
+  "originalBytes": 201326592,
+  "compressedBytes": 29665353,
+  "manifestAndHashesRetained": true,
+  "retentionReviewAfter": "2026-11-12",
+  "finalFreeBytes": 21316120576,
+  "finalFreeGiB": 19.852184295654297
+}

@@ -3,7 +3,21 @@
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
 
-## Corte vigente — correo firmado y recibos WhatsApp candidatos,2026-10-12
+
+## Corte vigente — PixelBot desplegado y WhatsApp entregado, 2026-10-12
+
+Miguel: «Autorizo fusionar PR7 y desplegar PixelBot en el VPS». [PR7](https://github.com/geloneet/pixelbot/pull/7) fusionada a `8097f2a23b9934988c07021928fb638e34c7e76a`, árbol idéntico al candidato `bbebf4d`. Imagen Linux AMD64 previamente probada con 462 pruebas; archivo SHA256 comprobado al transferir. Se activó sólo PixelBot, con respaldo SQLite fresco, imagen anterior, entorno, configuración local y mounts conservados. Migración012 aplicada una vez, integridad OK y los 183 mensajes anteriores intactos. Salud pública200, cero reinicios, nginx -t aprobado antes del reload; hostLock661.
+
+WhatsApp final real: una intención, una tentativa, un wamid nativo; Meta registró sent y delivered. Cuerpo y actor coinciden con la intención autorizada. Sync del dashboard concilió un recibo; repetir la petición devolvió el mismo outbox sin transporte adicional y el segundo sync concilió cero. Un incremento de outbox y una auditoría de entrega. PixelBot PAUSED y QA HUMAN, contacto/oportunidad enlazados. [Recibo saneado](pixelbot-desplegado-whatsapp-real-20261012.json) y [captura](whatsapp-final-entregado.png). El correo real firmado y replay previos conservan su validez.
+
+Después: egreso correo/WhatsApp/interno, cron, recepción y automatización QA apagados; túnel SSH local4339 cerrado. Preview4336 y checklist4337 conservados. Dashboard productivo, propietario, emisor/scheduler único, política y sus gates siguen pendientes.
+
+Capacidad posterior a la imagen:19.88GiB/80%. Copias privadas verificadas de seis registros cerrados del9–11 de octubre:192MiB originales y28.3MiB comprimidos. Miguel condicionó el retiro a integridad/restauración, no abiertos, retención y ausencia de necesidad de auditoría/recuperación. No ampliar la limpieza; si falla una condición, conservar originales y reportar BLOCKED.
+
+Incidencias: auto-review exigió autorización más explícita que «go», recibida antes del merge. Session declare falló por ventana temporal WO548; un shell sin corte por error continuó con el merge ya autorizado. Se registró la desviación, cerró el frontmatter no admitido y esperó liberación. Antes del VPS se obtuvo admisión real asg_911068fc36/token1876. La ventana ajena no se modificó. El lector local de hash cambió de hashlib.file_digest (no disponible) a SHA256 equivalente; artefacto intacto.
+
+
+## Corte histórico — correo firmado y recibos WhatsApp candidatos,2026-10-12
 
 Miguel autorizó las dos pruebas finales y la suscripción temporal email.received/email.delivered/email.bounced. Un único envío autenticado del dashboard al receptor nativo generó recepción y entrega reales: firma Svix verificada, ambos eventos HTTP200. Replay desde Resend: dos intentos200 por evento, un mensaje entrante y saliente, un outbox, una tentativa y una actividad entrante. Cuerpo exacto del proveedor y la autorización, contacto/oportunidad enlazados, HUMAN e identidad del remitente no verificada. Syncemail importó0 y reparó también el vínculo antiguo de oportunidad sin SQL manual.
 
@@ -134,3 +148,7 @@ Medición posterior de VPS:19989904KiB libres=19.064GiB,81%. La limpieza anterio
 Backup online realSQLite/600/integrityok:1tenant,16conversaciones,183mensajes,92procesados,9auditorías,65eventos. Restauración aislada sin red y migración012doble conservan todos los registros/contenido;2intenciones antiguas movidas,ledger012una sola fila. Primera apertura readonly del backupWAL se detuvo; snapshot cerrado/inmutable permitió lectura sin archivosauxiliares, nunca se aplicó ese modo aDBviva. Configprompts y runtimehealthy/restarts0 conservados. Preparación hostLock656/658; imagen temporal retirada tras ensayo bajo659 yartifactprivadoMac600 retenido; margen20.176GiB/80% restaurado.
 
 Revisión automática rechazó marcar lista/fusionarPR7: GOexplícito de SHA para merge/main requerido. PR7continúaDRAFT/OPEN; gates históricosdeploy/contract-change no se reescriben, nuevo merge-to-mainpending. No workaround oactivación desde rama para eludir ese rechazo. El WhatsApp final aprobado aún no se envió. Dashboardproducción también mantiene sus gates separados. Sin deploy ni cambio deDBviva.
+
+## Limpieza condicionada — BLOCKED, 2026-10-12
+
+Miguel autorizó exclusivamente seis originales si se acreditaban integridad, restauración, ausencia de archivos abiertos y de necesidad de auditoría/recuperación, y cumplimiento de retención. Se restauraron seis copias a archivos aislados: SHA256 y journalctl --verify PASS; lsof no encontró descriptores abiertos. No se acreditó la condición de retención/auditoría: son registros recientes y el playbook contempla purga de logs >30 días; el runbook de seguridad usa los journals para auditar SSH. Se conservaron seis originales, seis copias600, manifiesto y hashes; cero originales retirados y ninguna ampliación. [Resultado](vps-registros-condicional-blocked-20261012.json). Capacidad final19.852GiB/80%, incluyendo28.3MiB de copias. Es un bloqueo de capacidad pendiente, no una autorización faltante para PixelBot ya desplegado.

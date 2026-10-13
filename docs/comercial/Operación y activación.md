@@ -108,3 +108,14 @@ Candidato PixelBotPR7/SHA bbebf4d049cd3628abc082caac5f056b122f7a6f: imagenAMD64 
 Después deGO: marcar PR7ready yfusionar con match-head-commit; confirmar main contieneSHA yárbol esperado. Código productivo mediante checkout aislado, sin reset del config/prompts.yaml modificado. Comprobar capacidadfresh, imagen/backup previos ymontajes data/knowledge/config/secrets originales. Cargar el artifactprivado deSHA comprobado ypreservar imagen anterior. Conservar projectpixelbot/serviceapp; overrideCompose sóloimage, env/mounts originales yup -d --no-build --no-deps app. Arranque aplica012 versionada; comprobar ledger/conteos/health/restarts. nginx-t antes dereload; health externo200. Fallo: restaurar imagen anterior, conservarDDL aditivo yno restaurar backup sobre escrituras recientes.
 
 Sólo después, ejecutar una vez el WhatsApp final aprobado mediante APIautenticada/allowlist individual/intención estable; comprobarwamid/estadoMeta e historialPixelBot yconciliaroutboxsinreenviar. Apagar egresoQA al cerrar. No habilitar automatización global ni scheduler, ni publicar dashboard con el GO de PixelBot.
+
+
+## PixelBot activo y recuperación — corte 2026-10-12
+
+PR7 merge `8097f2a23b9934988c07021928fb638e34c7e76a`, código e imagen `bbebf4d049cd3628abc082caac5f056b122f7a6f`. Despliegue verificado: SQLite íntegro, migración012,183mensajes anteriores conservados, salud200 y WhatsApp entregado sin duplicados. [Evidencia](../evidencias/wo566/pixelbot-desplegado-whatsapp-real-20261012.json). Apartados anteriores de preparación son cortes previos.
+
+La configuración vive en `/home/ubuntu/pixelbot` con el cambio local de prompts. Ese checkout sigue en eaec336 y no representa la imagen activa; no reconstruir desde él ni hacer reset/pull encima del cambio local. El override activo es `/home/ubuntu/pixelbot-releases/wo28-bbebf4d049cd3628abc082caac5f056b122f7a6f/docker-compose.override.yml`; junto a él, `docker-compose.rollback.yml` fija la imagen previa preservada. Usar Compose con `--project-directory /home/ubuntu/pixelbot -p pixelbot -f /home/ubuntu/pixelbot/docker-compose.yml -f <override>` y recrear sólo `app` mediante `up -d --no-build --no-deps app`.
+
+Recibo privado600 `/home/ubuntu/prune-logs/wo28-activation-20261012.json`: imágenes, ruta/hash del snapshot, mounts, overrides y comprobaciones. Recuperación: admisión y hostLock, mismo proyecto/directorio usando override rollback, verificar imagen anterior y salud/reinicios, nginx -t antes del reload, health externo200. Conservar columnas aditivas y escrituras posteriores. Restaurar datos exige aprobación y conciliación separadas.
+
+La prueba WhatsApp autorizada ya se consumió; no repetirla con otra intención. Replay y segunda conciliación no generaron envío ni auditoría extra. Meta acredita entrega, no lectura humana. PixelBot PAUSED, QA HUMAN; egreso/automatismos QA apagados y túnel cerrado. El dashboard aún requiere su activación productiva y corte de propietario/política/scheduler.

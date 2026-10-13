@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "Correo firmado y replay comprobados. PixelBot imagenAMD64/462PASS, backup real restaurado y012doblePASS; margen20.176GiB/80%. Su merge exige GOexplícito tras rechazo automático. WhatsApp final autorizado espera servicio corregido; dashboardproducción/política/scheduler pendientes."
+    "lede": "PixelBot PR7 fusionada y desplegada; migración012 conserva183mensajes. WhatsApp final entregado y replay sin duplicados. Correo firmado verificado. QA egreso/cron apagados. Capacidad19.85GiB; limpieza condicionada BLOCKED por retención/auditoría. Dashboard y política/scheduler pendientes."
   },
   "parametros": [
     {
@@ -33,17 +33,17 @@
     },
     {
       "id": "pr2",
-      "titulo": "Correo firmado real completo; WhatsApp final espera PixelBot corregido",
-      "quien": "Miguel",
-      "estado": "en-espera",
-      "nota": "Webhook propio disabled, túnel/proxy cerrados y secreto retirado. No repetir email ni solicitar claves o permiso QA."
+      "titulo": "Correo firmado y WhatsApp final entregado sin duplicados",
+      "quien": "Codex",
+      "estado": "ok",
+      "nota": "PixelBot desplegado. Pruebas autorizadas consumidas; acceso temporal cerrado. No repetir mensajes ni pedir claves."
     },
     {
       "id": "pr3",
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "Capacidad20.178GiB/80% recuperada con cachéDocker>1h autorizada yrecursos preservados. Medir antes de build. Configprompts local conservado. GO dashboardmerge/activación pendiente."
+      "nota": "PixelBot desplegado; dashboard pendiente. Capacidad19.85GiB: copias de seis logs restauradas, originales conservados por condición de retención/auditoría no acreditada. No ampliar limpieza."
     }
   ],
   "hero": {
@@ -52,7 +52,7 @@
       "texto": "Candidato QA; activación pendiente"
     },
     "titulo": "Verificar canales y aprobar el corte antes de enviar a clientes.",
-    "texto": "Los proveedores muestran requisitos reales. Transportes controlados y build no certifican recepción o envío externo.",
+    "texto": "Correo y WhatsApp tienen entrega real comprobada. El dashboard conserva pendiente su activación productiva y política de automatización.",
     "tiles": [
       {
         "k": "Base",

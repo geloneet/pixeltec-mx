@@ -1,0 +1,70 @@
+{
+  "wo": "WO-2026-00028",
+  "coordinator": "WO-2026-00566",
+  "date": "2026-10-12",
+  "authorization": "Autorizo fusionar PR7 y desplegar PixelBot en el VPS",
+  "candidateCommit": "bbebf4d049cd3628abc082caac5f056b122f7a6f",
+  "mergeCommit": "8097f2a23b9934988c07021928fb638e34c7e76a",
+  "productionImage": "sha256:cb784860678a9d3854fa83c6ad950b64ec19491195dbc754944b9058578922a7",
+  "deployed": true,
+  "healthHttp": "200",
+  "restarts": 0,
+  "migration": {
+    "integrity": "ok",
+    "previousMessagesPreserved": 183,
+    "migration012LedgerRows": 1
+  },
+  "backupVerified": true,
+  "backupCounts": {
+    "tenants": 1,
+    "conversaciones": 16,
+    "mensajes": 183,
+    "mensajes_procesados": 92,
+    "mode_audit_log": 9,
+    "wa_status_events": 65
+  },
+  "configPreserved": true,
+  "mountsPreserved": true,
+  "previousImageRetained": true,
+  "hostFence": 661,
+  "whatsapp": {
+    "nativeIntentCount": 1,
+    "nativeIdMatches": true,
+    "exactBody": true,
+    "actorMatches": true,
+    "deliveryStatus": "delivered",
+    "realProviderStatuses": [
+      "delivered",
+      "sent"
+    ],
+    "verifiedAt": "2026-10-13T03:38:24.573Z",
+    "attempts": 1,
+    "outboxStatus": "delivered",
+    "replaySameOutbox": true,
+    "outboxDelta": 1,
+    "deliveryAuditCount": 1,
+    "replayReconciled": 0
+  },
+  "qaAfterTest": {
+    "emailEgress": "disabled",
+    "whatsappEgress": "disabled",
+    "internalEgress": "disabled",
+    "cron": "disabled",
+    "automation": false,
+    "temporarySshTunnelClosed": true
+  },
+  "diskAfterDeployment": {
+    "freeBytes": 21346267136,
+    "percent": 80
+  },
+  "dashboardProductionActivated": false,
+  "limits": [
+    "La prueba de WhatsApp fue humana y controlada; no acredita traspaso global ni automatización de cartera.",
+    "La nueva imagen reduce el margen a 19.88 GiB; copias comprimidas de registros cerrados preparadas. Retiro condicionado a integridad, restauración, retención y ausencia de necesidad de auditoría."
+  ],
+  "diskCurrent": {
+    "freeBytes": 21316120576,
+    "percent": 80
+  },
+  "capacityRecovery": "BLOCKED: originales recientes retenidos; falta acreditar compatibilidad de retención y ausencia de necesidad de auditoría"
+}

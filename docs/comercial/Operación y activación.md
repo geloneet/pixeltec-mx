@@ -2,9 +2,10 @@
 
 WO-2026-00566 · 2026-10-10. Candidato en codex/wo566-centro-comercial, base 1aae1940. No está desplegado en producción. La interfaz usa PostgreSQL existente y el historial WhatsApp de PixelBot; IVA, recordPayment y aprovisionamiento por anticipo permanecen canónicos. El candidato local permite QA humana, con egress y cron deshabilitados.
 
-Estado2026-10-12 19:39: gate qa-email-webhook aprobado por Miguel, prueba limitada abierta/cerrada. Webhook propio email.received deshabilitado, túnel/proxy cerrados y secreto temporal fuera del proceso QA. Falta correo nuevo para acreditar recepción firmada/replay reales; no falta autorización. cloudflared2026.10.0 queda instalado sin servicio. [Procedimiento de reanudación y resultado](Prueba%20temporal%20del%20receptor%20de%20correo.md).
+Estado2026-10-12: correo firmado real recibido y entregado por el dashboard, replayHTTP200 sin duplicados y vínculo antiguo de oportunidad reparado por sync autenticado. [Recibo real](../evidencias/wo566/email-firmado-real-20261012.json). Webhook propio disabled, túnel/proxy cerrados y secreto temporal retirado; QAegreso/cronoff. Identidad del remitente no verificada.
 
-Los hilos email nuevos enlazan la oportunidad activa del contacto propio al abrirse. Ingestión/replay repara vínculos faltantes de hilos antiguos bajo bloqueo de fila y auditoría, conservando HUMAN y coincidencias dudosas; la oportunidad existente no se sobrescribe. Si no hay una activa, la recepción crea una conforme al índice canónico. No ejecutar SQL manual de reparación ni interpretar un replay como nuevo mensaje. El hilo original de QA espera esa ingestión; pruebas PostgreSQL verifican el comportamiento, no acreditan todavía ese callback externo.
+WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelBot PR7](https://github.com/geloneet/pixelbot/pull/7), bbebf4d. Unir por owner/conversación/intención/cuerpo/actor; read refleja delivered en outbox y conserva read en el historial único de PixelBot. Los terminales no retroceden y los replays no crean envíos ni mensajes. ACK nuevo incompleto queda unknown; legacy sent sin wamid no acredita entrega. Sus gates históricos no conceden activación del dashboard. Prueba final WhatsApp autorizada espera activar ese servicio conservando config/prompts.yaml local y mounts originales.
+
 
 ## Configuración segura
 
@@ -78,7 +79,7 @@ Rollback de aplicación: apagar flags nuevos y quiescer emisores; usar release a
 ## Límites y deuda declarada
 
 - Sin destinatarios autorizados y secretos disponibles no hay prueba real de recepción/envío ni activación certificada. Transporte controlado de tests no equivale a proveedor conectado.
-- El endpoint PixelBot vigente /internal/send devuelve solo status/phone y su historial usa el UUID de intención en waMessageId. La prueba real de WhatsApp tuvo una copia y respuesta humana, pero deliveryStatus=null y ningún wamid Meta correlacionable. El candidato muestra sin confirmación; no inventa delivered/read ni reenvía un estado incierto. Completar el recibo exige cambio coordinado del contrato/persistencia de PixelBot, preservando idempotencia; no se cambió ni desplegó ese servicio en esta prueba.
+- PixelBot productivo aún tiene el contrato legacy sin recibo manual correlacionable. Candidato y consumidor probados, sin deploy; la nueva prueba final autorizada espera el servicio corregido. No afirmar delivered ni reenviar incertidumbre.
 - WhatsApp sincroniza hasta1000 conversaciones y200 mensajes recientes por conversación. El historial completo sigue en PixelBot; carteras mayores necesitan paginación y control de ritmo bajo su contrato real. Una ejecución larga puede retrasar el cron, aunque claims evitan duplicar envíos.
 - El CRM legado sigue reconciliando árboles completos. La protección nueva evita borrado de entidades comerciales, colisiones de owners/parents y los nuevos campos, pero la edición simultánea de la misma sección heredada sigue last-write-wins; pendiente versionar ese flujo completo.
 - Reviewer mantiene su superficie restringida. Money, políticas, comprobación de proveedores y recordatorios son admin; cartera y acciones comerciales son owner-scoped para admin/staff.

@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "WhatsApp ida/vuelta, email saliente delivered y recuperación entrante comprobados. Callback temporal autorizado: frontera verificada, sin correo nuevo; webhook/túnel cerrados. Vínculo antiguo a oportunidad corregido en candidato; su ingestión real pendiente. Egreso/cron apagados; recibo Meta, traspaso, margen20GiB y gates productivos pendientes."
+    "lede": "Correo firmado recibido/entregado y replay sin duplicados; vínculo antiguo reparado. PixelBot PR7 y consumidor probados. WhatsApp final espera servicio corregido. QAegreso/cronoff; margen20GiB, propietario/política/scheduler y gates productivos pendientes."
   },
   "parametros": [
     {
@@ -33,17 +33,17 @@
     },
     {
       "id": "pr2",
-      "titulo": "Claves, destinatarios y webhook QA autorizados; falta correo nuevo",
+      "titulo": "Correo firmado real completo; WhatsApp final espera PixelBot corregido",
       "quien": "Miguel",
       "estado": "en-espera",
-      "nota": "Secreto temporal privado600 y webhook propio deshabilitado tras ensayo sin eventos. Coordinar reapertura y correo nuevo; no repetir GO ni solicitar claves."
+      "nota": "Webhook propio disabled, túnel/proxy cerrados y secreto retirado. No repetir email ni solicitar claves o permiso QA."
     },
     {
       "id": "pr3",
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "Limpieza verificada20.316GiB/79%; medición posterior19.064GiB/81%, validar margen20GiB antes de deploy. GO productivo pendiente."
+      "nota": "VPS19.020GiB/81%; nueva purga limitada de cachéDocker>24h pendiente confirmación. Configprompts local preservado. GO dashboardmerge/activación pendiente."
     }
   ],
   "hero": {

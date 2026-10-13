@@ -1,0 +1,74 @@
+{
+  "checkedAt": "2026-10-13T02:02:45.927Z",
+  "source": "real_authenticated_qa_send_and_signed_resend_callbacks",
+  "authorizedRecipientCount": 1,
+  "actualProviderEvents": [
+    {
+      "type": "email.received",
+      "status": "success"
+    },
+    {
+      "type": "email.delivered",
+      "status": "success"
+    }
+  ],
+  "attempts": {
+    "inbound": [
+      {
+        "status": 200,
+        "sentAt": "2026-10-13T02:02:25.888Z"
+      },
+      {
+        "status": 200,
+        "sentAt": "2026-10-13T02:00:16.116Z"
+      }
+    ],
+    "delivery": [
+      {
+        "status": 200,
+        "sentAt": "2026-10-13T02:02:26.500Z"
+      },
+      {
+        "status": 200,
+        "sentAt": "2026-10-13T02:00:15.824Z"
+      }
+    ]
+  },
+  "signatureVerified": true,
+  "inboundMessages": 1,
+  "outboundMessages": 1,
+  "outboxStatus": "delivered",
+  "outboundDelivery": "delivered",
+  "transportAttempts": 1,
+  "bodyMatchesAuthorizedMessage": true,
+  "bodyMatchesRealProvider": true,
+  "contactLinked": true,
+  "opportunityLinked": true,
+  "humanMode": true,
+  "identityNeedsReview": false,
+  "inboundActivityCount": 1,
+  "counts": {
+    "contacts": 9,
+    "opportunities": 9,
+    "outbox": 4
+  },
+  "baseline": {
+    "contacts": 7,
+    "opportunities": 7,
+    "outbox": 3
+  },
+  "replayQueued": true,
+  "legacyOpportunityLinked": true,
+  "automaticSending": false,
+  "productionChanged": false,
+  "cleanup": {
+    "ownWebhookDisabled": true,
+    "qaHealth": 200,
+    "receivingEnabled": false,
+    "webhookEnabled": false,
+    "temporarySecretRemovedFromRuntime": true,
+    "automaticSending": false,
+    "allEgress": "disabled",
+    "cron": "disabled"
+  }
+}

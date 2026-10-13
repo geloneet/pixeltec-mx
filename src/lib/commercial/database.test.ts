@@ -1020,6 +1020,225 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     ).rejects.toThrow("Tenant no asignado");
     identity.id = owner;
   });
+  it("WhatsApp enlaza el wamid auténtico y recupera un ACK ya persistido sin repetir transporte", async () =>
+    withIsolatedOwners(async (isolated) => {
+      const previousOwner = process.env.COMMERCIAL_OWNER_ID;
+      process.env.COMMERCIAL_OWNER_ID = isolated;
+      process.env.PIXELBOT_TENANT_ID = "qa";
+      process.env.EGRESS_WHATSAPP_MODE = "allowlist";
+      process.env.EGRESS_WHATSAPP_ALLOWLIST = "+15550000028";
+      try {
+        const c = (
+          await inbound.ingestCommercialInbound(isolated, {
+            channel: "whatsapp",
+            externalId: "15550000028",
+            address: "15550000028",
+            name: "Recibo QA",
+            providerId: randomUUID(),
+            body: "Consulta",
+            subject: "",
+            identifierVerified: true,
+            receivedAt: new Date(),
+          })
+        ).conversation!;
+        await db
+          .update(schema.commercialConversations)
+          .set({ mode: "HUMAN" })
+          .where(eq(schema.commercialConversations.id, c.id));
+        for (const status of ["sent", "already_persisted"]) {
+          transport.pixelbot
+            .mockReset()
+            .mockImplementation(
+              async (path: string, body: { client_message_id: string }) => ({
+                status: 200,
+                data: path.endsWith("/mode")
+                  ? { status: "ok", mode: "PAUSED" }
+                  : {
+                      status,
+                      clientMessageId: body.client_message_id,
+                      providerMessageId: "wamid." + body.client_message_id,
+                      providerStatus: status === "sent" ? "sent" : "read",
+                    },
+              }),
+            );
+          const input = {
+            conversationId: c.id,
+            idempotencyKey: randomUUID(),
+            body: "Recibo controlado",
+            subject: "",
+          };
+          const result = await inbox.sendCommercialMessage(input);
+          expect(result.error).toBeUndefined();
+          expect(result.status).toBe(status === "sent" ? "sent" : "delivered");
+          const [row] = await db
+            .select()
+            .from(schema.commercialOutbox)
+            .where(eq(schema.commercialOutbox.id, result.id));
+          expect(row.providerId).toBe("wamid." + result.id);
+          expect((await inbox.sendCommercialMessage(input)).id).toBe(result.id);
+          expect(
+            transport.pixelbot.mock.calls.filter(
+              ([path]) => path === "/internal/send",
+            ),
+          ).toHaveLength(1);
+        }
+        transport.pixelbot
+          .mockReset()
+          .mockImplementation(
+            async (path: string, body: { client_message_id: string }) => ({
+              status: 200,
+              data: path.endsWith("/mode")
+                ? { status: "ok", mode: "PAUSED" }
+                : {
+                    status: "sent",
+                    clientMessageId: body.client_message_id,
+                    providerMessageId: null,
+                    providerStatus: "unknown",
+                  },
+            }),
+          );
+        const unknown = await inbox.sendCommercialMessage({
+          conversationId: c.id,
+          idempotencyKey: randomUUID(),
+          body: "ACK incierto",
+          subject: "",
+        });
+        expect(unknown.status).toBe("unknown");
+        expect(
+          await db
+            .select()
+            .from(schema.commercialMessages)
+            .where(eq(schema.commercialMessages.conversationId, c.id)),
+        ).toHaveLength(0);
+      } finally {
+        process.env.COMMERCIAL_OWNER_ID = previousOwner;
+      }
+    }));
+  it("sincroniza recibos propios una sola vez, conserva terminales y rechaza la correlación ajena", async () =>
+    withIsolatedOwners(async (isolated, foreign) => {
+      const previousOwner = process.env.COMMERCIAL_OWNER_ID;
+      process.env.COMMERCIAL_OWNER_ID = isolated;
+      process.env.PIXELBOT_TENANT_ID = "qa";
+      try {
+        const address = "15550000029";
+        const c = (
+          await inbound.ingestCommercialInbound(isolated, {
+            channel: "whatsapp",
+            externalId: address,
+            address,
+            name: "Sincronización QA",
+            providerId: randomUUID(),
+            body: "Consulta",
+            subject: "",
+            identifierVerified: true,
+            receivedAt: new Date(),
+          })
+        ).conversation!;
+        const [row] = await db
+          .insert(schema.commercialOutbox)
+          .values({
+            ownerId: isolated,
+            actorId: isolated,
+            conversationId: c.id,
+            idempotencyKey: randomUUID(),
+            body: "Intención original",
+            payloadHash: "qa-native-receipt",
+            status: "unknown",
+            attempts: 1,
+          })
+          .returning();
+        let message = {
+          id: "qa-native-outbound",
+          direction: "outbound",
+          text: row.body,
+          clientMessageId: row.id,
+          waMessageId: "wamid." + row.id,
+          from: isolated,
+          deliveryStatus: "read",
+          createdAt: new Date().toISOString(),
+        };
+        transport.pixelbot
+          .mockReset()
+          .mockImplementation(async (path: string) => ({
+            status: 200,
+            data: path.includes("/messages?")
+              ? { messages: [message] }
+              : { conversations: [{ id: address }] },
+          }));
+        for (const mismatch of [
+          { text: "Otro contenido" },
+          { from: foreign },
+          { clientMessageId: randomUUID() },
+          { waMessageId: row.id },
+        ]) {
+          const original = message;
+          message = { ...message, ...mismatch };
+          expect(
+            (await inbox.synchronizeCommercialWhatsApp(undefined, { address }))
+              .reconciled,
+          ).toBe(0);
+          message = original;
+        }
+        const results = await Promise.all([
+          inbox.synchronizeCommercialWhatsApp(undefined, { address }),
+          inbox.synchronizeCommercialWhatsApp(undefined, { address }),
+        ]);
+        expect(results.reduce((sum, r) => sum + r.reconciled, 0)).toBe(1);
+        message.deliveryStatus = "sent";
+        expect(
+          (await inbox.synchronizeCommercialWhatsApp(undefined, { address }))
+            .reconciled,
+        ).toBe(0);
+        let [updated] = await db
+          .select()
+          .from(schema.commercialOutbox)
+          .where(eq(schema.commercialOutbox.id, row.id));
+        expect(updated.status).toBe("delivered");
+        expect(updated.providerId).toBe(message.waMessageId);
+        expect(
+          await db
+            .select()
+            .from(schema.clientActivity)
+            .where(
+              and(
+                eq(schema.clientActivity.ownerId, isolated),
+                eq(schema.clientActivity.type, "commercial_delivery"),
+              ),
+            ),
+        ).toHaveLength(1);
+        expect(
+          await db
+            .select()
+            .from(schema.commercialMessages)
+            .where(eq(schema.commercialMessages.conversationId, c.id)),
+        ).toHaveLength(0);
+        message.waMessageId = "wamid.conflicting-provider";
+        await expect(
+          inbox.synchronizeCommercialWhatsApp(undefined, { address }),
+        ).rejects.toThrow("whatsapp_receipt_conflict");
+        message.waMessageId = "wamid." + row.id;
+        await db
+          .update(schema.commercialOutbox)
+          .set({ status: "failed" })
+          .where(eq(schema.commercialOutbox.id, row.id));
+        message.deliveryStatus = "delivered";
+        expect(
+          (await inbox.synchronizeCommercialWhatsApp(undefined, { address }))
+            .reconciled,
+        ).toBe(0);
+        [updated] = await db
+          .select()
+          .from(schema.commercialOutbox)
+          .where(eq(schema.commercialOutbox.id, row.id));
+        expect(updated.status).toBe("failed");
+        identity.id = foreign;
+        await expect(
+          inbox.synchronizeCommercialWhatsApp(undefined, { address }),
+        ).rejects.toThrow("Tenant no asignado");
+      } finally {
+        process.env.COMMERCIAL_OWNER_ID = previousOwner;
+      }
+    }));
   it("recupera solo el receptor propio, deduplica concurrentes y no ejecuta respuestas", async () => {
     identity.id = owner;
     identity.role = "admin";

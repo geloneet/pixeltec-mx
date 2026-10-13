@@ -2,7 +2,21 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
-## Corte vigente — callback temporal autorizado,2026-10-12 19:39
+
+## Corte vigente — correo firmado y recibos WhatsApp candidatos,2026-10-12
+
+Miguel autorizó las dos pruebas finales y la suscripción temporal email.received/email.delivered/email.bounced. Un único envío autenticado del dashboard al receptor nativo generó recepción y entrega reales: firma Svix verificada, ambos eventos HTTP200. Replay desde Resend: dos intentos200 por evento, un mensaje entrante y saliente, un outbox, una tentativa y una actividad entrante. Cuerpo exacto del proveedor y la autorización, contacto/oportunidad enlazados, HUMAN e identidad del remitente no verificada. Syncemail importó0 y reparó también el vínculo antiguo de oportunidad sin SQL manual.
+
+[Recibo firmado real](email-firmado-real-20261012.json) y [captura de entrega](email-entregado-firmado.png). Webhook propio disabled, túnel/proxy cerrados, secreto temporal retirado del proceso, QAhealth200 y recepción/egreso/cron/automatizaciónoff. CUA comprobó entrega320/1440px; captura limitada al mensaje de prueba, datos privados fuera de Git. Sin DNS/MX o producción modificados. Los cortes anteriores se conservan como historia.
+
+Dependencia WO28 B.2/B.3: [PixelBot PR7](https://github.com/geloneet/pixelbot/pull/7), bbebf4d049cd3628abc082caac5f056b122f7a6f; migración012 separa intención/wamid y proyecta recibos por tenant/destinatario, sin reenviar.462pruebasPASS,7regresiones específicas, compileall/diffcheckPASS. El dashboard captura recibo nativo y concilia historial por owner/conversación/cuerpo/actor/intención propios, auditando una vez y conservando terminales. El historial sigue único en PixelBot. Legacy sent no acredita entrega; ACK nuevo incompleto queda unknown. La prueba final WhatsApp autorizada todavía no se ejecutó: primero debe activarse el servicio corregido.
+
+Dashboard:55comercialesPASS/27PostgreSQLreal,2349generalesPASS/27PGomitidos por defecto, tipos/lint/buildPASS,208páginas. Warning img y deprecaciones Python heredados declarados. Sandbox impidió listen/connect del primer ensayo; escalado ejecutó realmente. Un fixture nuevo tenía allowlist sin+, corregido sin cambiar el guard; suitecompletaPASS.
+
+VPS19.020GiB/81%, PixelBothealthy/restarts0 y config/prompts.yaml modificado localmente5/5líneas. Preparar código aislado conservando configuración, mounts, DB, backup verificado e imagen anterior. Purga limitada de cachéDocker sinuso>24h propuesta y pendiente confirmación, sin ejecutar. Gates merge/activación del dashboard, propietario productivo, traspaso/política/scheduler y observación operativa pendientes. No cierre global ni certificación CI remota.
+
+
+## Corte histórico — callback temporal autorizado,2026-10-12 19:39
 
 Miguel: «autorizo», gate qa-email-webhook aprobado. cloudflared2026.10.0 instalado desde Homebrew oficial sin servicio/autostart; Quick Tunnel exclusivamente al proxy local4338, un webhook email.received y secreto privado0600. [Recibo saneado](email-webhook-temporal-20261012.json):404 en otras rutas/métodos,401 sin firma/con firma inválida. Cero eventos nuevos en Resend; recepción firmada y replay positivos pendientes, sin inventarlos. Webhook propio deshabilitado y túnel/proxy cerrados; preview4336 health200, recepción/webhook/egreso/cron/automatización apagados y secreto temporal retirado del proceso. Registros privados conservados para recuperar el mismo webhook; ningún webhook ajeno, DNS, MX o producción intervenidos.
 

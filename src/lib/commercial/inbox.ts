@@ -28,12 +28,22 @@ import {
   assertWhatsAppEgressAllowed,
   EgressBlockedError,
 } from "@/lib/egress-guard";
-import { messageInput, modeInput, policyInput, uuid, whatsappSyncInput } from "./schemas";
+import {
+  messageInput,
+  modeInput,
+  policyInput,
+  uuid,
+  whatsappSyncInput,
+} from "./schemas";
 import { requireCommercialAccess, CommercialError } from "./access";
 import { commercialInboundOwner, ingestCommercialInbound } from "./inbound";
 import { approvedReply } from "./policy";
 import { reminderBody } from "./message-content";
 import { reconcileCommercialEmailReceipts } from "./email-receipts";
+import {
+  nativeWhatsAppId,
+  reconcileCommercialWhatsAppReceipt,
+} from "./whatsapp-receipts";
 
 type Conversation = typeof conversations.$inferSelect;
 type Outbox = typeof outbox.$inferSelect;
@@ -67,6 +77,9 @@ const remoteMessage = createSelectSchema(messages)
     caption: z.string().nullable().optional(),
     createdAt: providerDate,
     deliveryStatus: z.string().nullable().optional(),
+    clientMessageId: z.string().max(255).nullable().optional(),
+    waMessageId: z.string().max(255).nullable().optional(),
+    from: z.string().max(255).nullable().optional(),
   })
   .passthrough();
 const remoteMessages = z.object({ messages: z.array(remoteMessage).max(1000) });
@@ -123,7 +136,8 @@ async function isolatePixelbot(c: Conversation, actorId: string) {
     mode: "PAUSED",
     changed_by_uid: actorId,
   });
-  const paused = z.object({ status: z.literal("ok"), mode: z.literal("PAUSED") })
+  const paused = z
+    .object({ status: z.literal("ok"), mode: z.literal("PAUSED") })
     .passthrough()
     .safeParse(data);
   if (!paused.success)
@@ -301,6 +315,8 @@ export async function dispatchCommercialOutbox(
     providerId?: string;
     error?: string;
   } = { status: "unknown", error: "delivery_unconfirmed" };
+  let whatsappReceipt:
+    { providerId: string; status: Outbox["status"] } | undefined;
   try {
     result = await db.transaction(async (tx) => {
       const [c] = await tx
@@ -403,7 +419,10 @@ export async function dispatchCommercialOutbox(
       if (c.channel === "whatsapp") {
         // Automatización exige traspaso del tenant; una respuesta humana
         // confirma PAUSED de su conversación antes de cada envío.
-        if (options.automatic && process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE !== "true")
+        if (
+          options.automatic &&
+          process.env.COMMERCIAL_WHATSAPP_EXCLUSIVE !== "true"
+        )
           throw new CommercialError("whatsapp_handoff_pending", 409);
         if (
           !c.lastInboundAt ||
@@ -428,14 +447,51 @@ export async function dispatchCommercialOutbox(
               "persisted_but_send_failed",
               "already_persisted",
             ]),
+            clientMessageId: z.string().max(255).nullable().optional(),
+            providerMessageId: nativeWhatsAppId.nullable().optional(),
+            providerStatus: z
+              .enum([
+                "sending",
+                "unknown",
+                "sent",
+                "delivered",
+                "read",
+                "failed",
+              ])
+              .optional(),
           })
           .passthrough()
           .parse(data);
-        if (response.status !== "sent")
+        if (response.clientMessageId && response.clientMessageId !== claim.id)
+          throw new CommercialError("whatsapp_receipt_conflict", 409);
+        if (
+          response.providerMessageId &&
+          response.clientMessageId === claim.id &&
+          ["sent", "delivered", "read", "failed"].includes(
+            response.providerStatus || "",
+          )
+        ) {
+          whatsappReceipt = {
+            providerId: response.providerMessageId,
+            status:
+              response.providerStatus === "read" ||
+              response.providerStatus === "delivered"
+                ? "delivered"
+                : response.providerStatus === "failed"
+                  ? "failed"
+                  : "sent",
+          };
+        }
+        if (
+          !whatsappReceipt &&
+          (response.status !== "sent" || response.providerStatus !== undefined)
+        )
           return {
             status: "unknown" as const,
             error: "whatsapp_original_receipt_unconfirmed",
           };
+        if (whatsappReceipt?.status === "failed")
+          return { ...whatsappReceipt, error: "whatsapp_delivery_failed" };
       } else {
         assertEmailEgressAllowed({ to: c.address });
         const sent = await sendEmail(
@@ -513,7 +569,7 @@ export async function dispatchCommercialOutbox(
               sql`(select billing_item_id from commercial_reminders where id=${options.reminderId})`,
             ),
           );
-      return { status: "sent" as const };
+      return whatsappReceipt ? whatsappReceipt : { status: "sent" as const };
     });
   } catch (error) {
     // Rechazos locales son seguros; timeout/upstream requiere conciliación.
@@ -545,7 +601,7 @@ export async function dispatchCommercialOutbox(
     outboxId: claim.id,
     code: result.error || null,
   });
-  if (result.providerId)
+  if (result.providerId && c.channel === "email")
     await reconcileCommercialEmailReceipts(ownerId, result.providerId);
   return { id: claim.id, status: result.status, error: result.error };
 }
@@ -671,18 +727,16 @@ export async function saveCommercialPolicy(raw: unknown) {
       uid: session.userId,
       route: "/api/commercial",
     });
-    await tx
-      .insert(commercialPolicyVersions)
-      .values({
-        ownerId: session.userId,
-        revision: data.revision + 1,
-        snapshot: {
-          automaticEnabled: data.automaticEnabled,
-          tone: data.tone,
-          approvedAnswers: data.approvedAnswers,
-        },
-        updatedBy: session.userId,
-      });
+    await tx.insert(commercialPolicyVersions).values({
+      ownerId: session.userId,
+      revision: data.revision + 1,
+      snapshot: {
+        automaticEnabled: data.automaticEnabled,
+        tone: data.tone,
+        approvedAnswers: data.approvedAnswers,
+      },
+      updatedBy: session.userId,
+    });
     return { ok: true };
   });
 }
@@ -801,7 +855,10 @@ export async function linkCommercialConversation(raw: unknown) {
     return { ok: true };
   });
 }
-export async function synchronizeCommercialWhatsApp(ownerId?: string, raw: unknown = {}) {
+export async function synchronizeCommercialWhatsApp(
+  ownerId?: string,
+  raw: unknown = {},
+) {
   if (!ownerId) ownerId = (await requireCommercialAccess()).userId;
   if (ownerId !== (await commercialInboundOwner()))
     throw new CommercialError("Tenant no asignado a esta cartera.", 403);
@@ -823,6 +880,7 @@ export async function synchronizeCommercialWhatsApp(ownerId?: string, raw: unkno
     })
     .parse(data);
   let imported = 0;
+  let reconciled = 0;
   for (const remote of list.conversations) {
     if (filter.address && remote.id !== filter.address) continue;
     const { data: history } = await fetchPixelbot(
@@ -834,9 +892,8 @@ export async function synchronizeCommercialWhatsApp(ownerId?: string, raw: unkno
       undefined,
       "GET",
     );
-    for (const m of remoteMessages
-      .parse(history)
-      .messages.filter((m) => m.direction === "inbound")) {
+    const parsedHistory = remoteMessages.parse(history).messages;
+    for (const m of parsedHistory.filter((m) => m.direction === "inbound")) {
       const result = await ingestCommercialInbound(ownerId, {
         channel: "whatsapp",
         externalId: remote.id,
@@ -859,8 +916,47 @@ export async function synchronizeCommercialWhatsApp(ownerId?: string, raw: unkno
           m.id,
         );
     }
+    const [c] = await db
+      .select()
+      .from(conversations)
+      .where(
+        and(
+          eq(conversations.ownerId, ownerId),
+          eq(conversations.channel, "whatsapp"),
+          eq(conversations.address, remote.id),
+        ),
+      );
+    if (!c) continue;
+    for (const m of parsedHistory.filter((m) => m.direction === "outbound")) {
+      const intention = uuid.safeParse(m.clientMessageId);
+      const providerId = nativeWhatsAppId.safeParse(m.waMessageId);
+      const actor = uuid.safeParse(m.from);
+      const delivery = z
+        .enum(["sent", "delivered", "read", "failed"])
+        .safeParse(m.deliveryStatus);
+      if (
+        !intention.success ||
+        !providerId.success ||
+        !actor.success ||
+        !delivery.success
+      )
+        continue;
+      if (
+        await reconcileCommercialWhatsAppReceipt({
+          ownerId,
+          conversationId: c.id,
+          address: c.address,
+          clientMessageId: intention.data,
+          providerMessageId: providerId.data,
+          actorId: actor.data,
+          delivery: delivery.data,
+          body: m.text || m.caption || "",
+        })
+      )
+        reconciled++;
+    }
   }
-  return { ok: true, imported };
+  return { ok: true, imported, reconciled };
 }
 export async function runApprovedCommercialReply(
   c: Conversation,
@@ -931,10 +1027,9 @@ export async function verifyCommercialConnections() {
     const connected = phone.connectionStatus === "CONNECTED";
     whatsapp = {
       verified: connected,
-      reason:
-        connected
-          ? "Número conectado en Meta y API de historial de PixelBot disponible. El envío requiere permisos, destinatario autorizado y ventana vigente."
-          : "PixelBot responde; comprueba la conexión del número y los permisos en Meta.",
+      reason: connected
+        ? "Número conectado en Meta y API de historial de PixelBot disponible. El envío requiere permisos, destinatario autorizado y ventana vigente."
+        : "PixelBot responde; comprueba la conexión del número y los permisos en Meta.",
     };
   } catch {
     /* Estado pendiente explícito; nunca conectado por presencia de env. */
@@ -952,7 +1047,10 @@ export async function verifyCommercialConnections() {
     )
     .limit(1);
   const receivingVerified =
-    !!receipt && session.userId === process.env.COMMERCIAL_OWNER_ID && !!process.env.RESEND_WEBHOOK_SECRET && process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED === "true";
+    !!receipt &&
+    session.userId === process.env.COMMERCIAL_OWNER_ID &&
+    !!process.env.RESEND_WEBHOOK_SECRET &&
+    process.env.COMMERCIAL_EMAIL_RECEIVING_ENABLED === "true";
   const [worker] = await db
     .select({ createdAt: infraAuditLog.createdAt })
     .from(infraAuditLog)

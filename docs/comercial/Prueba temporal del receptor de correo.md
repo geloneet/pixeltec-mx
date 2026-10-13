@@ -1,6 +1,9 @@
 # ¿Cómo se comprueba el callback real de correo sin publicar el dashboard QA?
 
-Procedimiento de WO566,2026-10-12. Miguel aprobó esta prueba con «autorizo»; gate qa-email-webhook aprobado. Se abrió el receptor limitado y se comprobó su frontera, pero no llegó un correo nuevo: la firma positiva/recepción automática/replay real siguen pendientes. El webhook propio quedó deshabilitado y el túnel cerrado. No solicitar nuevamente ese GO; coordinar un correo nuevo con el receptor abierto antes de reanudar. No es autorización de activación productiva.
+Estado2026-10-12: correo firmado real recibido y entregado por el dashboard, replayHTTP200 sin duplicados y vínculo antiguo de oportunidad reparado por sync autenticado. [Recibo real](../evidencias/wo566/email-firmado-real-20261012.json). Webhook propio disabled, túnel/proxy cerrados y secreto temporal retirado; QAegreso/cronoff. Identidad del remitente no verificada.
+
+WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelBot PR7](https://github.com/geloneet/pixelbot/pull/7), bbebf4d. Unir por owner/conversación/intención/cuerpo/actor; read refleja delivered en outbox y conserva read en el historial único de PixelBot. Los terminales no retroceden y los replays no crean envíos ni mensajes. ACK nuevo incompleto queda unknown; legacy sent sin wamid no acredita entrega. Sus gates históricos no conceden activación del dashboard. Prueba final WhatsApp autorizada espera activar ese servicio conservando config/prompts.yaml local y mounts originales.
+
 
 ## Acceso preparado
 
@@ -38,3 +41,8 @@ Este GO cubre exclusivamente la recepción temporal. El recibo saliente firmado,
 La inspección encontró un defecto distinto: el hilo anterior tenía contacto y una oportunidad activa existente, pero opportunityId del hilo era null. El candidato ahora enlaza la oportunidad al crear el hilo manual y repara vínculos faltantes mediante recepción/replay, con owner, bloqueo de fila y auditoría; conserva HUMAN y revisión de identidad.25casos PostgreSQL/53comerciales PASS. El hilo original no se cambió por SQL manual; su reparación real espera la próxima ingestión. La evidencia anterior de «oportunidad existente» no acreditaba ese enlace directo.
 
 Para comprobar el replay real, usar exclusivamente el evento generado por Resend para el correo nuevo: GET /webhooks/{id}/events, detalle/attempts y POST /webhooks/{id}/events/{event_id}/replay; comprobar2xx y conteos antes/después. El SDK6.9.4 permite esas rutas mediante get/post genéricos. No reenviar mensajes ni sustituir la firma con datos sintéticos. [API oficial de webhooks](https://resend.com/changelog/headless-webhook-api).
+
+
+## Ensayo final positivo y acceso cerrado
+
+Se reutilizó el mismo webhook/secreto propio; suscripción exacta email.received/email.delivered/email.bounced autorizada. Un email, recepción y entrega reales firmadasHTTP200; replay de cada eventoHTTP200 sin duplicados. No hubo bounced ni se fabrica su prueba. Webhookdisabled antes de cerrar acceso, proxy4338/túnel cerrados, secreto retirado, QAhealth200 y flags/egreso/cronoff. Registros600 privados fuera de Git. Los pasos anteriores son procedimiento para una prueba futura específicamente autorizada; no ordenan repetir ésta.

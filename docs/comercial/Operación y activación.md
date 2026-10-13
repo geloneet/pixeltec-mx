@@ -2,6 +2,10 @@
 
 WO-2026-00566 · 2026-10-10. Candidato en codex/wo566-centro-comercial, base 1aae1940. No está desplegado en producción. La interfaz usa PostgreSQL existente y el historial WhatsApp de PixelBot; IVA, recordPayment y aprovisionamiento por anticipo permanecen canónicos. El candidato local permite QA humana, con egress y cron deshabilitados.
 
+Estado2026-10-12 19:39: gate qa-email-webhook aprobado por Miguel, prueba limitada abierta/cerrada. Webhook propio email.received deshabilitado, túnel/proxy cerrados y secreto temporal fuera del proceso QA. Falta correo nuevo para acreditar recepción firmada/replay reales; no falta autorización. cloudflared2026.10.0 queda instalado sin servicio. [Procedimiento de reanudación y resultado](Prueba%20temporal%20del%20receptor%20de%20correo.md).
+
+Los hilos email nuevos enlazan la oportunidad activa del contacto propio al abrirse. Ingestión/replay repara vínculos faltantes de hilos antiguos bajo bloqueo de fila y auditoría, conservando HUMAN y coincidencias dudosas; la oportunidad existente no se sobrescribe. Si no hay una activa, la recepción crea una conforme al índice canónico. No ejecutar SQL manual de reparación ni interpretar un replay como nuevo mensaje. El hilo original de QA espera esa ingestión; pruebas PostgreSQL verifican el comportamiento, no acreditan todavía ese callback externo.
+
 ## Configuración segura
 
 Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.

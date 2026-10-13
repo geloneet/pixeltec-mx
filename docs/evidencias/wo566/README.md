@@ -2,6 +2,14 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Corte vigente — callback temporal autorizado,2026-10-12 19:39
+
+Miguel: «autorizo», gate qa-email-webhook aprobado. cloudflared2026.10.0 instalado desde Homebrew oficial sin servicio/autostart; Quick Tunnel exclusivamente al proxy local4338, un webhook email.received y secreto privado0600. [Recibo saneado](email-webhook-temporal-20261012.json):404 en otras rutas/métodos,401 sin firma/con firma inválida. Cero eventos nuevos en Resend; recepción firmada y replay positivos pendientes, sin inventarlos. Webhook propio deshabilitado y túnel/proxy cerrados; preview4336 health200, recepción/webhook/egreso/cron/automatización apagados y secreto temporal retirado del proceso. Registros privados conservados para recuperar el mismo webhook; ningún webhook ajeno, DNS, MX o producción intervenidos.
+
+Corrección de enlace: el hilo previo tenía clientId, y existía una oportunidad activa del contacto, pero opportunityId era null. La afirmación anterior «oportunidad existente» no acreditaba vínculo directo. El candidato enlaza hilos manuales nuevos y repara el vínculo faltante mediante ingreso/replay con bloqueo/owner/auditoría, sin duplicar mensaje/actividad entrante/oportunidad ni resolver una coincidencia dudosa automáticamente. No hubo SQL manual de reparación sobre el hilo real de QA; espera próxima ingestión.
+
+Verificación final:53pruebas comerciales PASS en6archivos,25 contra PostgreSQL real;2349generales PASS/25PG omitidos por defecto, tipos/lint/build PASS,208páginas. Warning img heredado. El primer ensayo de nuevas regresiones contaminó fixtures de la cartera compartida y fallaron2pruebas anteriores; se aislaron owners y toda la suite crítica pasó. Primer intento general dentro del sandbox terminó sin diagnóstico; repetido con2workers fuera del sandbox PASS. La limpieza inicialmente encontró el padre del proxy ya terminado después del cierre del hijo; se completó idempotentemente y se verificó puerto/proceso cerrados. [Procedimiento y siguiente prueba](../../comercial/Prueba%20temporal%20del%20receptor%20de%20correo.md).
+
 ## Verificación automatizada
 
 | Verificación | Resultado |

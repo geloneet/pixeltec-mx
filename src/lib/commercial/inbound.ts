@@ -15,6 +15,98 @@ import {
 import { inboundInput, uuid } from "./schemas";
 import { CommercialError } from "./access";
 
+type InboundTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+type InboundData = ReturnType<typeof inboundInput.parse>;
+type Conversation = typeof commercialConversations.$inferSelect;
+
+async function ensureInboundOpportunity(
+  tx: InboundTransaction,
+  ownerId: string,
+  clientId: string,
+  data: InboundData,
+) {
+  const [client] = await tx
+    .select({ id: clients.id })
+    .from(clients)
+    .where(and(eq(clients.id, clientId), eq(clients.ownerId, ownerId)));
+  if (!client) throw new CommercialError("Contacto no disponible.", 404);
+  const [created] = await tx
+    .insert(commercialOpportunities)
+    .values({
+      ownerId,
+      clientId,
+      assignedTo: ownerId,
+      source: data.channel,
+      need: data.body.slice(0, 2000),
+    })
+    .onConflictDoNothing()
+    .returning({ id: commercialOpportunities.id });
+  const [existing] = created
+    ? []
+    : await tx
+        .select({ id: commercialOpportunities.id })
+        .from(commercialOpportunities)
+        .where(
+          and(
+            eq(commercialOpportunities.ownerId, ownerId),
+            eq(commercialOpportunities.clientId, clientId),
+            sql`${commercialOpportunities.stage} not in ('ganado','perdido')`,
+          ),
+        );
+  const id = created?.id ?? existing?.id;
+  if (!id) throw new CommercialError("Oportunidad no disponible.", 409);
+  return id;
+}
+
+/** The caller holds the conversation row lock, including on provider replay. */
+async function repairInboundOpportunity(
+  tx: InboundTransaction,
+  ownerId: string,
+  conversation: Conversation,
+  data: InboundData,
+) {
+  if (
+    !conversation.clientId ||
+    conversation.matchReview ||
+    conversation.opportunityId
+  )
+    return conversation;
+  const opportunityId = await ensureInboundOpportunity(
+    tx,
+    ownerId,
+    conversation.clientId,
+    data,
+  );
+  const [updated] = await tx
+    .update(commercialConversations)
+    .set({
+      opportunityId,
+      revision: sql`${commercialConversations.revision}+1`,
+      updatedAt: new Date(),
+    })
+    .where(
+      and(
+        eq(commercialConversations.id, conversation.id),
+        eq(commercialConversations.ownerId, ownerId),
+        sql`${commercialConversations.opportunityId} is null`,
+      ),
+    )
+    .returning();
+  await tx.insert(clientActivity).values({
+    ownerId,
+    clientId: conversation.clientId,
+    type: "commercial_opportunity_linked",
+    message: "Conversación vinculada a su oportunidad comercial",
+    actorName: data.name,
+    metadata: {
+      conversationId: conversation.id,
+      opportunityId,
+      providerId: data.providerId,
+    },
+  });
+  return updated;
+}
+
 export async function commercialInboundOwner() {
   const parsed = uuid.safeParse(process.env.COMMERCIAL_OWNER_ID);
   if (!parsed.success)
@@ -79,8 +171,14 @@ export async function ingestCommercialInbound(ownerId: string, raw: unknown) {
             eq(commercialConversations.channel, data.channel),
             eq(commercialConversations.externalId, data.externalId),
           ),
-        );
-      return { conversation, repeated: true };
+        )
+        .for("update");
+      return {
+        conversation: conversation
+          ? await repairInboundOpportunity(tx, ownerId, conversation, data)
+          : conversation,
+        repeated: true,
+      };
     }
     await tx.execute(
       sql`select pg_advisory_xact_lock(hashtextextended(${ownerId + ":" + data.channel + ":" + address}, 0))`,
@@ -165,30 +263,12 @@ export async function ingestCommercialInbound(ownerId: string, raw: unknown) {
       }
       let opportunityId: string | null = null;
       if (clientId) {
-        const [created] = await tx
-          .insert(commercialOpportunities)
-          .values({
-            ownerId,
-            clientId,
-            assignedTo: ownerId,
-            source: data.channel,
-            need: data.body.slice(0, 2000),
-          })
-          .onConflictDoNothing()
-          .returning({ id: commercialOpportunities.id });
-        const [existing] = created
-          ? []
-          : await tx
-              .select({ id: commercialOpportunities.id })
-              .from(commercialOpportunities)
-              .where(
-                and(
-                  eq(commercialOpportunities.ownerId, ownerId),
-                  eq(commercialOpportunities.clientId, clientId),
-                  sql`${commercialOpportunities.stage} not in ('ganado','perdido')`,
-                ),
-              );
-        opportunityId = created?.id ?? existing?.id ?? null;
+        opportunityId = await ensureInboundOpportunity(
+          tx,
+          ownerId,
+          clientId,
+          data,
+        );
       }
       [conversation] = await tx
         .insert(commercialConversations)
@@ -206,7 +286,13 @@ export async function ingestCommercialInbound(ownerId: string, raw: unknown) {
           lastInboundAt: data.receivedAt,
         })
         .returning();
-    }
+    } else
+      conversation = await repairInboundOpportunity(
+        tx,
+        ownerId,
+        conversation,
+        data,
+      );
     // WhatsApp conserva mensajes únicamente en PixelBot. Aquí se deduplica el
     // evento comercial, sin introducir otro historial ni un segundo bot.
     if (data.channel !== "whatsapp")

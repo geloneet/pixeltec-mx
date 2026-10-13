@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "WhatsApp ida/vuelta y correo saliente delivered comprobados. Correo real entrante recuperado en QA:1mensaje/replay0/contacto/oportunidad/HUMAN. Egreso y cron apagados; callback firmado, traspaso y gates pendientes. Limpieza logró20.32GiB; medición posterior19.06GiB/81% vuelve a exigir margen antes de deploy."
+    "lede": "WhatsApp ida/vuelta, email saliente delivered y recuperación entrante comprobados. Callback temporal autorizado: frontera verificada, sin correo nuevo; webhook/túnel cerrados. Vínculo antiguo a oportunidad corregido en candidato; su ingestión real pendiente. Egreso/cron apagados; recibo Meta, traspaso, margen20GiB y gates productivos pendientes."
   },
   "parametros": [
     {
@@ -33,10 +33,10 @@
     },
     {
       "id": "pr2",
-      "titulo": "Destinatarios y claves existentes autorizados; falta secreto del callback",
+      "titulo": "Claves, destinatarios y webhook QA autorizados; falta correo nuevo",
       "quien": "Miguel",
       "estado": "en-espera",
-      "nota": "No volver a pedir claves ni destinatarios recibidos. Nuevo secreto/exposición temporal exige GO propio."
+      "nota": "Secreto temporal privado600 y webhook propio deshabilitado tras ensayo sin eventos. Coordinar reapertura y correo nuevo; no repetir GO ni solicitar claves."
     },
     {
       "id": "pr3",

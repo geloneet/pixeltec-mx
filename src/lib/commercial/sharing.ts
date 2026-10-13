@@ -9,6 +9,7 @@ import {
   clients,
   quotes,
   commercialConversations,
+  commercialOpportunities,
   clientActivity,
 } from "@/lib/db/schema";
 import { getOwnedQuoteById } from "@/lib/quotes/queries";
@@ -176,11 +177,22 @@ export async function openCommercialEmailConversation(raw: unknown) {
       "Registra un correo válido en la ficha del cliente.",
     );
   const address = client.email.trim().toLowerCase();
+  const [opportunity] = await db
+    .select({ id: commercialOpportunities.id })
+    .from(commercialOpportunities)
+    .where(
+      and(
+        eq(commercialOpportunities.ownerId, session.userId),
+        eq(commercialOpportunities.clientId, clientId),
+        sql`${commercialOpportunities.stage} not in ('ganado','perdido')`,
+      ),
+    );
   const [created] = await db
     .insert(commercialConversations)
     .values({
       ownerId: session.userId,
       clientId,
+      opportunityId: opportunity?.id,
       channel: "email",
       address,
       externalId: address,

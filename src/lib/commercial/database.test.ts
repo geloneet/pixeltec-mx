@@ -85,6 +85,20 @@ const recoveredEmail = {
   html: null,
   created_at: new Date().toISOString(),
 };
+async function withIsolatedOwners(run: (owner: string, other: string) => Promise<void>) {
+  const previous = identity.id;
+  const owner = randomUUID(), other = randomUUID();
+  await db.insert(schema.users).values([owner, other].map(id => ({
+    id, email: id + "@example.invalid", role: "admin" as const,
+    status: "active" as const, passwordHash: "!qa-no-login", name: "QA vínculo aislado",
+  })));
+  identity.id = owner;
+  try {
+    await run(owner, other);
+  } finally {
+    identity.id = previous;
+  }
+}
 describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
   beforeAll(async () => {
     const url = new URL(process.env.DATABASE_URL || "");
@@ -197,6 +211,7 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     });
     expect(result.conversation!.matchReview).toBe(true);
     expect(result.conversation!.clientId).toBeNull();
+    expect(result.conversation!.opportunityId).toBeNull();
     const [client] = await db
       .select()
       .from(schema.clients)
@@ -219,6 +234,73 @@ describe.runIf(enabled)("Centro Comercial en Postgres QA real", () => {
     expect(linked.matchReview).toBe(false);
     expect(linked.clientId).toBe(client.id);
   });
+  it("el hilo manual enlaza la oportunidad activa de su propia cartera", async () => withIsolatedOwners(async (owner, other) => {
+    const email = randomUUID() + "@example.invalid";
+    await ops.createCommercialContact({
+      name: "Correo manual QA",
+      email,
+      need: "Sitio",
+      source: "manual",
+    });
+    const [client] = await db.select().from(schema.clients).where(eq(schema.clients.email, email));
+    const [opportunity] = await db
+      .select()
+      .from(schema.commercialOpportunities)
+      .where(and(eq(schema.commercialOpportunities.clientId, client.id), eq(schema.commercialOpportunities.ownerId, owner)));
+    const opened = await sharing.openCommercialEmailConversation({ clientId: client.id });
+    const [conversation] = await db.select().from(schema.commercialConversations).where(eq(schema.commercialConversations.id, opened.id));
+    expect(conversation.opportunityId).toBe(opportunity.id);
+    identity.id = other;
+    try {
+      await expect(sharing.openCommercialEmailConversation({ clientId: client.id })).rejects.toThrow("correo válido");
+    } finally {
+      identity.id = owner;
+    }
+  }));
+  it("recepción y replay reparan un vínculo antiguo sin duplicar oportunidad, mensaje o actividad", async () => withIsolatedOwners(async (owner) => {
+    const email = randomUUID() + "@example.invalid";
+    await ops.createCommercialContact({ name: "Hilo antiguo QA", email, need: "Sistema", source: "manual" });
+    const [client] = await db.select().from(schema.clients).where(eq(schema.clients.email, email));
+    const [opportunity] = await db.select().from(schema.commercialOpportunities).where(eq(schema.commercialOpportunities.clientId, client.id));
+    const opened = await sharing.openCommercialEmailConversation({ clientId: client.id });
+    // Fixture of a thread created before opportunity linkage was implemented.
+    await db.update(schema.commercialConversations).set({ opportunityId: null }).where(eq(schema.commercialConversations.id, opened.id));
+    const input = { channel: "email", externalId: email, address: email, name: "Hilo antiguo QA", providerId: randomUUID(), body: "Necesito información", subject: "Consulta", identifierVerified: false, receivedAt: new Date() };
+    const [first, duplicate] = await Promise.all([inbound.ingestCommercialInbound(owner, input), inbound.ingestCommercialInbound(owner, input)]);
+    expect([first.repeated, duplicate.repeated].sort()).toEqual([false, true]);
+    expect(first.conversation?.opportunityId).toBe(opportunity.id);
+    expect(duplicate.conversation?.opportunityId).toBe(opportunity.id);
+    expect(first.conversation?.mode).toBe("HUMAN");
+    const [before] = await db.select().from(schema.commercialConversations).where(eq(schema.commercialConversations.id, opened.id));
+    // A persisted old event must also repair its legacy thread on replay.
+    await db.update(schema.commercialConversations).set({ opportunityId: null }).where(eq(schema.commercialConversations.id, opened.id));
+    const [a, b] = await Promise.all([inbound.ingestCommercialInbound(owner, input), inbound.ingestCommercialInbound(owner, input)]);
+    expect(a.repeated && b.repeated).toBe(true);
+    expect(a.conversation?.opportunityId).toBe(opportunity.id);
+    expect(a.conversation?.revision).toBe(before.revision + 1);
+    expect(b.conversation?.revision).toBe(before.revision + 1);
+    expect((await db.select().from(schema.commercialOpportunities).where(eq(schema.commercialOpportunities.clientId, client.id))).length).toBe(1);
+    expect((await inbox.getCommercialThread(opened.id)).length).toBe(1);
+    const activities = await db.select().from(schema.clientActivity).where(and(eq(schema.clientActivity.ownerId, owner), eq(schema.clientActivity.clientId, client.id)));
+    expect(activities.filter(a => a.type === "mensaje_entrante")).toHaveLength(1);
+    expect(activities.filter(a => a.type === "commercial_opportunity_linked")).toHaveLength(2);
+  }));
+  it("la recepción de un hilo antiguo sin oportunidad crea una sola y rechaza contactos ajenos", async () => withIsolatedOwners(async (owner, other) => {
+    const id = randomUUID(), email = id + "@example.invalid";
+    await db.insert(schema.clients).values({ id, firestoreId: id, ownerId: owner, source: "crm_blob", name: "Sin oportunidad QA", email });
+    const opened = await sharing.openCommercialEmailConversation({ clientId: id });
+    const input = { channel: "email", externalId: email, address: email, name: "Sin oportunidad QA", providerId: randomUUID(), body: "Consulta nueva", subject: "", identifierVerified: false, receivedAt: new Date() };
+    const result = await inbound.ingestCommercialInbound(owner, input);
+    expect(result.conversation?.opportunityId).toBeTruthy();
+    expect((await db.select().from(schema.commercialOpportunities).where(eq(schema.commercialOpportunities.clientId, id))).length).toBe(1);
+    const foreign = randomUUID();
+    await db.insert(schema.clients).values({ id: foreign, firestoreId: foreign, ownerId: other, source: "crm_blob", name: "Otra cartera" });
+    // An inconsistent legacy relation cannot cross the ownership boundary.
+    await db.update(schema.commercialConversations).set({ clientId: foreign, opportunityId: null }).where(eq(schema.commercialConversations.id, opened.id));
+    await expect(inbound.ingestCommercialInbound(owner, { ...input, providerId: randomUUID() })).rejects.toThrow("Contacto no disponible");
+    expect((await db.select().from(schema.commercialOpportunities).where(eq(schema.commercialOpportunities.clientId, foreign))).length).toBe(0);
+    expect((await db.select().from(schema.commercialMessages).where(eq(schema.commercialMessages.conversationId, opened.id))).length).toBe(1);
+  }));
   it("dos clics generan un solo envío y se conserva el recibo", async () => {
     const [c] = await db
       .select()

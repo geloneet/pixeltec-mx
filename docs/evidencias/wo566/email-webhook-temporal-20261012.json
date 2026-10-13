@@ -1,0 +1,92 @@
+{
+  "checkedAt": "2026-10-13T01:39:37.078Z",
+  "authorization": "Miguel: autorizo, qa-email-webhook",
+  "scope": "temporary email.received only",
+  "cloudflaredVersion": "2026.10.0",
+  "installation": "official Homebrew formula, no service",
+  "registeredOwnWebhook": true,
+  "providerEventCount": 0,
+  "signedInboundVerified": false,
+  "realProviderReplayPerformed": false,
+  "waitingForNewTestMail": true,
+  "accessTests": {
+    "checkedAt": "2026-10-13T01:24:00.341Z",
+    "results": [
+      {
+        "path": "/hoy",
+        "method": "GET",
+        "invalidSignatureTest": false,
+        "status": 404
+      },
+      {
+        "path": "/api/commercial",
+        "method": "POST",
+        "invalidSignatureTest": false,
+        "status": 404
+      },
+      {
+        "path": "/api/commercial/webhooks/email",
+        "method": "GET",
+        "invalidSignatureTest": false,
+        "status": 404
+      },
+      {
+        "path": "/api/commercial/webhooks/email",
+        "method": "POST",
+        "invalidSignatureTest": false,
+        "status": 401
+      },
+      {
+        "path": "/api/commercial/webhooks/email",
+        "method": "POST",
+        "invalidSignatureTest": true,
+        "status": 401
+      }
+    ]
+  },
+  "counts": {
+    "contacts": 7,
+    "opportunities": 7,
+    "conversations": 3,
+    "outbox": 3,
+    "email_inbound": 1
+  },
+  "baseline": {
+    "checkedAt": "2026-10-13T01:24:40.407Z",
+    "contacts": 7,
+    "opportunities": 7,
+    "conversations": 3,
+    "outbox": 3,
+    "email_inbound": 1
+  },
+  "cleanup": {
+    "ownWebhookDisabled": true,
+    "unrelatedWebhooksUnchanged": true,
+    "proxyPortClosed": true,
+    "tunnelProcessClosed": true,
+    "qaHealth": 200,
+    "receivingEnabled": false,
+    "webhookEnabled": false,
+    "temporarySecretRemovedFromRuntime": true,
+    "automaticSending": false,
+    "allEgress": "disabled",
+    "cron": "disabled"
+  },
+  "schemaChanged": false,
+  "productionChanged": false,
+  "correction": {
+    "legacyMissingOpportunityFound": true,
+    "fixVerifiedInPostgres": true,
+    "originalQaThreadRepairPendingNewIngestion": true
+  },
+  "validation": {
+    "commercial": 53,
+    "realPostgres": 25,
+    "generalPassed": 2349,
+    "generalSkipped": 25,
+    "typecheck": "PASS",
+    "lint": "PASS inherited img warning",
+    "build": "PASS",
+    "staticPages": 208
+  }
+}

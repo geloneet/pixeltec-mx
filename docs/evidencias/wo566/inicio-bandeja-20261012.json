@@ -1,0 +1,33 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-12",
+  "scope": "Rediseño solicitado de Inicio, candidato local PR186",
+  "changes": [
+    "Bandeja central de correo y WhatsApp, filtros, último mensaje y hora CDMX, enlace al hilo exacto",
+    "Prioridades a la derecha: decisiones, pagos vencidos y seguimientos; acciones existentes",
+    "Pipeline vertical por etapas desplegables, nombres completos y acceso a la oportunidad",
+    "Retiro de tarjeta promocional del sidebar y fondos rojos de las prioridades de Inicio"
+  ],
+  "checks": {
+    "typescript": "PASS",
+    "lint": "PASS; warning img heredado en progressive-cube.tsx",
+    "productionBuild": "PASS; 208 páginas",
+    "uiAndCommercialTests": { "passed": 45, "postgresSkippedInThisRun": 27 },
+    "isolatedPostgresTests": { "passed": 27, "database": "centro_qa local", "externalTransports": "controlados" },
+    "visual": {
+      "browser": "Codex in-app browser real, CUA",
+      "desktop": "1440×1080, claro y oscuro; columnas separadas por 24px; sin desbordamientos",
+      "mobile": "390×844 y 320×740; flujo bandeja, prioridades, pipeline",
+      "width320": { "documentWidth": 320, "mainClientWidth": 309, "mainScrollWidth": 309, "overflowingControls": 0 },
+      "width1440": { "documentWidth": 1440, "mainClientWidth": 1181, "mainScrollWidth": 1181, "inboxRight": 1063, "prioritiesLeft": 1087, "overflowingControls": 0 },
+      "interactions": ["Filtro WhatsApp excluye correos", "Correo abre su conversación exacta", "Etapa abre nombres completos", "Oportunidad abre formulario correspondiente", "Pago abre saldo canónico sin confirmar registro"],
+      "screenshots": "Locales privadas; no se publican conversaciones, teléfonos ni identificadores en Git"
+    }
+  },
+  "limitations": [
+    "El primer ensayo de webhook-proxy.test.ts falló por listen EPERM del sandbox; repetición permitida fuera del sandbox PASS",
+    "Hasta ocho vistas previas por canal seleccionado; historial con RBAC del endpoint existente y fuente WhatsApp única en PixelBot",
+    "WhatsApp muestra estado no disponible en QA con egreso interno apagado; no certifica nueva conectividad externa",
+    "No se modificaron schema, VPS, DNS, datos productivos, automatismos ni gates de merge/activación"
+  ]
+}

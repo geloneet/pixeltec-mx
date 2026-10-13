@@ -17,7 +17,6 @@ import {
   Workflow,
   Newspaper,
   UserCog,
-  Sparkles,
   type LucideIcon,
   Search,
   ChevronRight,
@@ -65,17 +64,6 @@ const PLANNED_ICONS: Partial<Record<ModuleId, LucideIcon>> = {
   reportes: BarChart3,
   automatizaciones: Workflow,
 };
-
-/** Tarjeta estática del pie del sidebar (mockup; sin botón de video: no existe video). */
-function SidebarPromoCard() {
-  return (
-    <div className="rounded-xl border border-sidebar-border bg-sidebar-accent/60 p-4">
-      <Sparkles className="h-4 w-4 text-primary" strokeWidth={2} aria-hidden />
-      <p className="mt-2 text-sm font-semibold leading-snug text-foreground">Tu equipo comercial, potenciado</p>
-      <p className="mt-1 text-xs leading-relaxed text-muted-foreground">Mensajes, clientes y ventas en un solo lugar.</p>
-    </div>
-  );
-}
 
 /**
  * Sidebar vertical — desktop (`lg:` y superior). WO-2026-00515: estética del
@@ -269,9 +257,6 @@ export function AppSidebar({
         )}
       </nav>
 
-      <div className="mt-4">
-        <SidebarPromoCard />
-      </div>
     </aside>
   );
 }

@@ -4,18 +4,12 @@ import useSWR from "swr";
 import Link from "next/link";
 import type { CommercialSnapshot } from "@/lib/commercial/snapshot";
 import { approvedReply } from "@/lib/commercial/policy";
+import { loadCommercialThread } from "./thread";
 import { commercialAction } from "./api";
 import { CommercialModal } from "./modal";
 import { dateLabel, initials } from "./data";
 import { commercialErrorLabel, deliveryLabel } from "./feedback";
 type Conversation = CommercialSnapshot["conversations"][number];
-type Message = {
-  id: string;
-  direction: string;
-  body: string;
-  delivery: string;
-  createdAt: string;
-};
 const states = {
   sin_atender: "Sin atender",
   decision: "Necesitan tu decisión",
@@ -59,14 +53,9 @@ export function CommercialInbox({
     error,
     mutate: refreshThread,
     isLoading,
-  } = useSWR<{ messages: Message[] }>(
+  } = useSWR(
     c ? "/api/commercial/conversations/" + c.id : null,
-    async (url: string) => {
-      const r = await fetch(url, { cache: "no-store" });
-      const value = await r.json();
-      if (!r.ok) throw new Error(value.error);
-      return value;
-    },
+    loadCommercialThread,
     { refreshInterval: 15000 },
   );
   async function run(action: string, input: unknown) {

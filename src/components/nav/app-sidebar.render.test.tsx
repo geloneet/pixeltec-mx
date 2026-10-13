@@ -93,10 +93,10 @@ describe("sidebar del panel", () => {
     expect(screen.getAllByText("Pronto")).toHaveLength(3);
   });
 
-  it("separa con «Más» las áreas fuera del mockup y muestra la tarjeta del equipo", () => {
+  it("separa las áreas con «Más» y omite la promoción decorativa", () => {
     render(<AppSidebar activeArea={null} />);
     expect(screen.getByText("Más")).toBeTruthy();
-    expect(screen.getByText("Tu equipo comercial, potenciado")).toBeTruthy();
+    expect(screen.queryByText("Tu equipo comercial, potenciado")).toBeNull();
     expect(screen.queryByText(/ver video/i)).toBeNull();
   });
 

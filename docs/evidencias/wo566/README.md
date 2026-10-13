@@ -2,6 +2,15 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Inicio revisado a petición de Miguel — 2026-10-12 23:10
+
+[Verificación del rediseño](inicio-bandeja-20261012.json). Bandeja central de correos/WhatsApp con mensajes y hora, filtros y enlace al hilo; prioridades a la derecha con acciones existentes; pipeline vertical desplegable con nombres completos. Estilo neutro, sin promoción lateral ni badges rojos en Inicio. En móvil el orden es bandeja → prioridades → pipeline.
+
+45 pruebas de UI/comercial PASS y 27 PostgreSQL real PASS; tipos, lint y build de 208 páginas PASS. Warning img heredado. El primer ensayo del proxy falló por listen EPERM del sandbox; repetido fuera del sandbox PASS. CUA verificó 1440 claro/oscuro y 390/320 móvil, sin desbordamientos; correo, oportunidad y formulario de pago abren destinos correctos, sin guardar o enviar. Capturas locales privadas, datos de prueba conservados fuera de Git.
+
+WhatsApp QA indica vista previa no disponible con el egreso interno apagado; no se inventan mensajes ni se declara conectividad nueva. Se reutiliza el endpoint con autorización por propietario, máximo ocho hilos visibles por filtro y la fuente PixelBot. Sin cambio de schema, VPS, DNS, producción, mensajes ni política automática. Preview propio4336 restaurado; publicación del dashboard aún depende de los gates existentes.
+
+
 
 
 

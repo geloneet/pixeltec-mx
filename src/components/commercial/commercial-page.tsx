@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import { CommercialHome } from "./home";
 import { CommercialInbox } from "./inbox";
 import { CommercialSettings } from "./settings";
 import { commercialAction } from "./api";
@@ -15,14 +16,10 @@ import {
   Plus,
   ArrowUpRight,
   ChevronRight,
-  CalendarDays,
   LayoutGrid,
   List,
   Check,
   Mail,
-  MessageCircle,
-  CircleDollarSign,
-  FolderKanban,
 } from "lucide-react";
 import type { CommercialSnapshot } from "@/lib/commercial/snapshot";
 import type { BillingItem } from "@/types/documents";
@@ -71,7 +68,7 @@ type Modal =
   | { kind: "statement"; client: Contact }
   | { kind: "activation"; row: Quote };
 const labels: Record<View, string> = {
-  home: "Tu día comercial",
+  home: "Inicio",
   sales: "Ventas",
   clients: "Clientes",
   projects: "Proyectos",
@@ -276,8 +273,6 @@ export function CommercialPage({ view }: { view: View }) {
             !["aceptada", "rechazada"].includes(q.status))),
     ),
   );
-  const first = pending[0];
-  const firstClient = first ? contact(first.clientId) : undefined;
   const nextDue = (o: Opportunity) =>
     o.nextActionDue
       ? "Para el " + dateLabel(o.nextActionDue)
@@ -369,245 +364,19 @@ export function CommercialPage({ view }: { view: View }) {
         </p>
       )}
       {view === "home" && (
-        <>
-          {first && firstClient ? (
-            <section
-              className="cc-card cc-hero"
-              aria-labelledby="priority-title"
-            >
-              <div className="cc-hero-main">
-                <span className="cc-kicker">Atiende primero</span>
-                <div className="cc-hero-client">
-                  <span className="cc-avatar">
-                    {initials(firstClient.name)}
-                  </span>
-                  <div>
-                    <strong>{firstClient.name}</strong>
-                    <p>
-                      {first.source === "email"
-                        ? "Correo"
-                        : first.source === "whatsapp"
-                          ? "WhatsApp"
-                          : "Contacto comercial"}{" "}
-                      · {dateLabel(first.updatedAt)}
-                    </p>
-                  </div>
-                  <span className="cc-tag amber">
-                    {first.nextActionDue && first.nextActionDue <= todayCivil()
-                      ? "Seguimiento pendiente"
-                      : first.stage === "nuevo"
-                        ? "Nuevo interés"
-                        : saleStageLabel[first.stage]}
-                  </span>
-                </div>
-                <h2 id="priority-title">{first.need}</h2>
-                <p className="cc-muted">
-                  {first.nextAction ||
-                    "Revisa el contexto y acuerda el siguiente paso."}
-                </p>
-                <div className="cc-actions">
-                  <button
-                    className="cc-button primary"
-                    onClick={() => open({ kind: "opportunity", row: first })}
-                  >
-                    Revisar oportunidad <ArrowUpRight size={15} />
-                  </button>
-                  <Link
-                    className="cc-button"
-                    href={"/whatsapp?client=" + firstClient.id}
-                  >
-                    Abrir conversación
-                  </Link>
-                  <button
-                    className="cc-button quiet"
-                    onClick={() => open({ kind: "opportunity", row: first })}
-                  >
-                    <CalendarDays size={15} />
-                    Agendar
-                  </button>
-                </div>
-              </div>
-              <div className="cc-hero-side">
-                <span className="cc-kicker">El siguiente paso</span>
-                <h3 className="mt-4 font-semibold">
-                  {saleStageLabel[first.stage]}
-                </h3>
-                <p>{nextDue(first)}</p>
-                <span className="cc-tag">{quoteAmount(first)}</span>
-                <details>
-                  <summary>Por qué aparece primero</summary>
-                  <p>
-                    Prioridad calculada por la fecha del siguiente paso entre
-                    las oportunidades abiertas. Se conserva la necesidad y el
-                    historial del contacto.
-                  </p>
-                </details>
-              </div>
-            </section>
-          ) : (
-            <Empty
-              title="Tu día está al corriente"
-              text="Agrega un contacto o revisa las oportunidades para definir el próximo paso."
-            />
-          )}
-          <div className="cc-tabs" role="tablist" aria-label="Prioridades">
-            {[
-              [
-                "all",
-                "Nuevos interesados",
-                pending.filter((o) => o.stage === "nuevo").length,
-              ],
-              [
-                "decision",
-                "Necesitan tu decisión",
-                decisions.length +
-                  d.conversations.filter((c) => c.state === "decision").length,
-              ],
-              [
-                "follow",
-                "Seguimientos de hoy",
-                pending.filter(
-                  (o) => o.nextActionDue && o.nextActionDue <= todayCivil(),
-                ).length,
-              ],
-            ].map(([id, label, count]) => (
-              <button
-                key={id}
-                role="tab"
-                aria-selected={tab === id}
-                onClick={() => setTab(String(id))}
-              >
-                {label}
-                <span>{count}</span>
-              </button>
-            ))}
-          </div>
-          {tab === "decision" ? (
-            <div className="cc-line-list">
-              {decisions.length === 0 &&
-                !d.conversations.some((c) => c.state === "decision") && (
-                  <div className="p-5 cc-muted">
-                    No hay decisiones pendientes.
-                  </div>
-                )}
-              {decisions.map((a) => {
-                const q = d.quotes.find((q) => q.id === a.quoteId)!;
-                return (
-                  <div className="cc-line-row" key={a.id}>
-                    <span className="cc-avatar">
-                      {initials(contact(q.clientId)?.name || "")}
-                    </span>
-                    <div className="cc-line-content">
-                      <strong>
-                        {contact(q.clientId)?.name} · {q.title}
-                      </strong>
-                      <p>
-                        {a.actorName}{" "}
-                        {a.decision === "accept"
-                          ? "aceptó"
-                          : "solicitó cambios en"}{" "}
-                        la versión {a.version} el {dateLabel(a.createdAt)}
-                      </p>
-                    </div>
-                    <button
-                      className="cc-button primary"
-                      onClick={() =>
-                        a.decision === "accept"
-                          ? open({ kind: "activation", row: q })
-                          : open({
-                              kind: "quote",
-                              row: q,
-                              client: contact(q.clientId)!,
-                            })
-                      }
-                    >
-                      {a.decision === "accept"
-                        ? "Confirmar venta"
-                        : "Revisar cambios"}
-                    </button>
-                  </div>
-                );
-              })}
-              {d.conversations
-                .filter((c) => c.state === "decision")
-                .map((c) => (
-                  <div className="cc-line-row" key={c.id}>
-                    <span className="cc-avatar">
-                      <MessageCircle size={18} />
-                    </span>
-                    <div className="cc-line-content">
-                      <strong>
-                        {contact(c.clientId || "")?.name ||
-                          c.subject ||
-                          "Contacto por revisar"}
-                      </strong>
-                      <p>
-                        {c.matchReview
-                          ? "Confirma a quién pertenece este contacto."
-                          : "La conversación necesita tu decisión."}
-                      </p>
-                    </div>
-                    <Link
-                      className="cc-button primary"
-                      href={"/whatsapp?conversation=" + c.id}
-                    >
-                      Abrir conversación
-                    </Link>
-                  </div>
-                ))}
-            </div>
-          ) : (
-            <div className="cc-line-list">
-              {pending
-                .filter((o) =>
-                  tab === "follow"
-                    ? o.nextActionDue && o.nextActionDue <= todayCivil()
-                    : o.stage === "nuevo",
-                )
-                .slice(0, 8)
-                .map((o) => (
-                  <div className="cc-line-row" key={o.id}>
-                    <span className="cc-avatar">
-                      {initials(contact(o.clientId)?.name || "")}
-                    </span>
-                    <div className="cc-line-content">
-                      <strong>{contact(o.clientId)?.name}</strong>
-                      <p>
-                        {o.need} · {nextDue(o)}
-                      </p>
-                    </div>
-                    <span className="cc-tag">{saleStageLabel[o.stage]}</span>
-                    <button
-                      className="cc-button"
-                      onClick={() => open({ kind: "opportunity", row: o })}
-                    >
-                      Revisar <ChevronRight size={14} />
-                    </button>
-                  </div>
-                ))}
-            </div>
-          )}
-          <Link href="/proyectos" className="cc-secondary-row">
-            <span>
-              <FolderKanban size={15} className="inline mr-2" />
-              {d.projects.filter((p) => p.stage !== "entregado").length}{" "}
-              proyectos en marcha
-            </span>
-            <span>
-              Ver proyectos <ChevronRight size={14} className="inline" />
-            </span>
-          </Link>
-          <Link href="/cobros" className="cc-secondary-row">
-            <span>
-              <CircleDollarSign size={15} className="inline mr-2" />
-              {d.bills.filter((b) => balanceCents(b) > 0).length} cobros
-              pendientes
-            </span>
-            <span>
-              Revisar cobros <ChevronRight size={14} className="inline" />
-            </span>
-          </Link>
-        </>
+        <CommercialHome
+          data={d}
+          pending={pending}
+          decisions={decisions}
+          onOpportunity={(row) => open({ kind: "opportunity", row })}
+          onPayment={(row) => open({ kind: "payment", row })}
+          onDecision={(decision) => {
+            const row = d.quotes.find((q) => q.id === decision.quoteId)!;
+            if (decision.decision === "accept")
+              open({ kind: "activation", row });
+            else open({ kind: "quote", row, client: contact(row.clientId)! });
+          }}
+        />
       )}
       {view === "sales" && (
         <>

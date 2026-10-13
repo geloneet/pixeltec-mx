@@ -9,6 +9,12 @@ WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelB
 
 Capacidad fresh20.178GiB/80%, operación limitada autorizada yrecursos preservados; [recibo](../evidencias/wo566/vps-capacidad-refresh-20261012.json). Medir de nuevo antes de build/deploy; no repetir purgas con este permiso ya utilizado.
 
+## Inicio — revisión del 2026-10-12
+
+La bandeja reúne hasta ocho conversaciones recientes del canal elegido, ordenadas por última entrada conocida (fecha de actualización cuando no hay entradas). Cada fila consulta el mismo hilo autenticado de Conversaciones, comparte su caché SWR, muestra el último mensaje disponible y abre su identificador exacto. Los errores de un canal no ocultan el otro; no se fabrica contenido ni se copia WhatsApp en PostgreSQL.
+
+Prioridades muestra decisiones de cotización/conversación, cobros vencidos con saldo canónico y seguimientos hasta hoy; desde cinco elementos permite desplegar el resto. Registrar pago y confirmar venta conservan sus formularios y verificaciones. Pipeline agrupa oportunidades abiertas por etapa con nombres completos; ventas ganadas/pausadas/perdidas siguen en Ventas. La bandeja ocupa el panel central, prioridades la derecha; móvil apila bandeja, prioridades y pipeline. [Pruebas y límites](../evidencias/wo566/inicio-bandeja-20261012.json). Este cambio de presentación no activa canales ni automatismos productivos.
+
 ## Configuración segura
 
 Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.

@@ -36,7 +36,8 @@
   "administratorCheck": {
     "requestedAccountExists": false,
     "existingActiveAdministratorFound": true,
-    "selectionPending": true
+    "selectionPending": false,
+    "existingActiveAdministratorSelected": true
   },
   "dashboardDeployed": false,
   "limits": [

@@ -5,11 +5,11 @@ WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial
 
 
 
-## Corte vigente — capacidad recuperada y cuenta administradora por elegir, 2026-10-12 22:30
+## Corte vigente — capacidad recuperada y cuenta administradora elegida, 2026-10-12 22:30
 
 La nueva petición «1 hazlo» autoriza recuperar el mínimo20GiB. Se retiraron únicamente caché npm, caché webpack de pixeltec-en-curso y CLI obsoleta2.1.267 sin uso; versiones2.1.285/2.1.288 conservadas. Inventario, ausencia de descriptores abiertos/builds, hostLock666 y build-cache flock previos. Se recuperaron498,941,952bytes:19.604→20.068GiB/80%;38contenedores,27volúmenes, imágenes, PM2 yconfig PixelBot idénticos. Seis journals, copias y manifiesto intactos. Script/recibo temporales propios retirados bajo hostLock667 tras verificar hashes; recibo privado600 retenido para revisión2026-11-12. HealthHTTP200. [Evidencia saneada](vps-cache-herramientas-20261012.json).
 
-Miguel declaró que los datos del dashboard son demo y señaló admin@pixeltec.mx. Consulta SQL en transacción read-only de pixeltec_mx: esa cuenta no existe; hay un administrador activo, miguel@pixeltec.mx. Se pidió elegir cuenta existente o preparar alta nueva, sin crear usuarios ni cambiar roles. Credenciales Resend/PixelBot presentes; propietario comercial, receptor y firma productivos aún sin configurar. No activar el dashboard, cambiar MX ni enviar mensajes en esta fase. La aprobación de recepción permanente y activación debe describir ese alcance concreto; automatismos siguen separados.
+Miguel declaró que los datos del dashboard son demo y señaló admin@pixeltec.mx. Consulta SQL en transacción read-only de pixeltec_mx: esa cuenta no existe; hay un administrador activo, miguel@pixeltec.mx. Miguel eligió usar miguel@pixeltec.mx; UUID real verificado y guardado privado para el corte, sin crear usuarios ni cambiar roles. Credenciales Resend/PixelBot presentes; propietario comercial, receptor y firma productivos aún sin configurar. No activar el dashboard, cambiar MX ni enviar mensajes en esta fase. Miguel confirmó conservar ventas@pixeltec.mx y mostrar sus respuestas en Conversaciones. La preparación de esa ruta queda autorizada; activación productiva y automatismos conservan sus gates separados.
 
 ## Corte anterior — PixelBot desplegado y WhatsApp entregado, 2026-10-12
 

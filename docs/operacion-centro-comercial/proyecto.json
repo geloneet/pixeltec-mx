@@ -4,7 +4,7 @@
     "nombre": "Centro Comercial PixelTEC · WO566",
     "objetivo": "Llevar el candidato probado en QA a operación real con proveedores verificados y aprobación explícita.",
     "supervisor": "Codex · Ingeniería · Mac mini",
-    "lede": "PixelBot desplegado y WhatsApp entregado; correo firmado verificado. Nueva limpieza:20.068GiB/80%, servicios y journals preservados. Cuenta admin indicada no existe; elección de administrador pendiente. Dashboard, recepción permanente y política/scheduler pendientes."
+    "lede": "PixelBot desplegado y WhatsApp entregado; correo firmado verificado. Nueva limpieza:20.068GiB/80%, servicios y journals preservados. Miguel eligió la cuenta administradora existente; recepción permanente y publicación del dashboard pendientes. Automatismos apagados."
   },
   "parametros": [
     {
@@ -43,7 +43,7 @@
       "titulo": "Capacidad WO547 y GO productivo",
       "quien": "Miguel y operador",
       "estado": "en-espera",
-      "nota": "Capacidad comprobada20.068GiB/80%; revalidar antes del corte. Journals originales conservados. Falta elegir administrador (cuenta indicada ausente), configurar recepción permanente y autorizar/publicar dashboard."
+      "nota": "Capacidad20.068GiB/80%; revalidar antes del corte. Journals preservados. Miguel eligió su administrador existente y conservar ventas@pixeltec.mx. Falta preparar la ruta permanente del correo y publicar el dashboard bajo su gate productivo."
     }
   ],
   "hero": {

@@ -1,6 +1,8 @@
 "use client";
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { SITE } from "@/lib/site-config";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
 import {
@@ -28,6 +30,7 @@ import {
 } from "@/components/nav/nav-config";
 import { useCmdK } from "@/components/cmd-k/CmdKProvider";
 import "./commercial.css";
+import "./motion.css";
 const icons = {
   hoy: Home,
   ventas: TrendingUp,
@@ -40,20 +43,8 @@ const icons = {
 export function PixeltecMark() {
   return (
     <span className="cc-brand">
-      <svg
-        width="32"
-        height="32"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-        aria-hidden="true"
-      >
-        <path d="M12 2.5 20.5 7v10L12 21.5 3.5 17V7z" />
-        <path d="M3.5 7 12 11.5 20.5 7M12 11.5v10" />
-      </svg>
-      <span>PIXELTEC</span>
+      <Image src={SITE.logoPath} width={36} height={36} alt="" priority />
+      <span>{SITE.name}</span>
     </span>
   );
 }

@@ -128,8 +128,9 @@
   font-size: 20px;
   letter-spacing: 0.04em;
 }
-.cc-brand svg {
-  color: var(--cc-blue);
+.cc-brand img {
+  flex-shrink: 0;
+  object-fit: contain;
 }
 .cc-side-label {
   padding: 0 12px;

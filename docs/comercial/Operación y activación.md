@@ -17,6 +17,8 @@ La bandeja ofrece cuatro hilos iniciales y permite desplegar hasta ocho del cana
 
 Prioridades muestra decisiones, saldo vencido y seguimientos; desde cinco permite desplegar el resto. Formularios de pago/venta mantienen verificaciones. Pipeline agrupa oportunidades por etapa con nombres completos. Móvil: bandeja, prioridades/otros widgets, pipeline, actividad. [Pruebas actuales y límites](../evidencias/wo566/inicio-restaurado-20261012.json). El indicador monetario conserva cálculo heredado; esta QA verifica MXN y no certifica sumar monedas diferentes. No activar canales/automatismos por cambiar presentación.
 
+El shell usa el logo oficial declarado en SITE, sin variantes dibujadas a mano. Animaciones locales en motion.css: entradas breves, gráficas y apertura de etapas/controles; sin bucles ni animación de importes. Ajustes → Movimiento → Reducir movimiento desactiva efectos, igual que la preferencia del dispositivo. Al comprobar animaciones, revisar primero ese ajuste; mantener contenido y gráficas visibles en ambos modos. [Verificación2026-10-13](../evidencias/wo566/logo-movimiento-20261013.json).
+
 ## Configuración segura
 
 Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.

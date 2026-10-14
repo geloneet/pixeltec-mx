@@ -2,6 +2,12 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Logo oficial y movimiento — 2026-10-13
+
+[Pulido verificado](logo-movimiento-20261013.json). Logo canónico SITE.logoPath y SITE.name, asset existente sin modificar, sustituye el SVG genérico del shell. Movimiento CSS breve de paneles/filas, trazado de gráficas, pipeline y controles; sin dependencias nuevas, bucles ni cambios de valores. Se respeta movimiento reducido del dispositivo y del ajuste local. La vista tenía Reducir movimiento marcado: desmarcado por petición de Miguel; estado final normal y opción disponible.
+
+43pruebas UI PASS, tipos/lint/build209 PASS. CUA1440/320: logo cargado y menú móvil, cinco KPI/actividad conservados y sin desbordamiento. Normal: estilos cc-page-in/cc-panel-in/cc-chart-draw, pipeline220ms con opacidad0.985899 observada durante entrada; modo reducido: animationName none y contenido/gráficos visibles. Interpolación de altura disponible en el navegador; fallback de entrada en otros. API DOM no ofrece getAnimations: se verificó con estilos/estado visible, sin otro mecanismo de control. Captura local privada y ambas pestañas QA actualizadas. Sin schema, lógica de negocio, datos, envíos, VPS/DNS, producción o automatismos. Warning img heredado permanece.
+
 ## Corrección vigente — funciones restauradas, 2026-10-12
 
 Miguel señaló que la revisión anterior retiró funciones que no pidió quitar. Se recuperaron los cinco KPI originales y Actividad reciente con filtros/expansión; Nueva cotización, tareas, cobros y alertas. Se mantiene bandeja central, prioridades a la derecha y pipeline legible. Barra de indicadores compacta, acento azul PixelTEC y menor densidad de marcos; cuatro mensajes iniciales, despliegue hasta ocho y acceso al resto. [Evidencia actual](inicio-restaurado-20261012.json).

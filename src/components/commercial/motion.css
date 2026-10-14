@@ -1,0 +1,172 @@
+/* Movimiento de interfaz: breve, sin bucles y sin animar importes. */
+.commercial .cc-enter {
+  animation: cc-page-in 260ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+.commercial
+  :is(
+    .cc-home-kpis,
+    .cc-home-panel,
+    .cc-home-secondary > section,
+    .cc-home-secondary-details,
+    .cc-home-activity,
+    .cc-grid > .cc-card
+  ) {
+  animation: cc-panel-in 380ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
+}
+.commercial .cc-home-kpis {
+  animation-delay: 35ms;
+}
+.commercial [aria-labelledby="home-inbox-title"] {
+  animation-delay: 80ms;
+}
+.commercial .cc-home-priorities {
+  animation-delay: 120ms;
+}
+.commercial [aria-labelledby="home-pipeline-title"] {
+  animation-delay: 160ms;
+}
+.commercial .cc-home-activity {
+  animation-delay: 200ms;
+}
+.commercial .cc-grid > .cc-card:nth-child(2) {
+  animation-delay: 35ms;
+}
+.commercial .cc-grid > .cc-card:nth-child(3) {
+  animation-delay: 70ms;
+}
+.commercial .cc-grid > .cc-card:nth-child(4) {
+  animation-delay: 105ms;
+}
+.commercial .cc-mail-row {
+  animation: cc-message-in 220ms ease-out both;
+}
+.commercial .cc-mail-row:nth-child(2) {
+  animation-delay: 25ms;
+}
+.commercial .cc-mail-row:nth-child(3) {
+  animation-delay: 50ms;
+}
+.commercial .cc-mail-row:nth-child(4) {
+  animation-delay: 75ms;
+}
+.commercial
+  :is(
+    .cc-button,
+    .cc-nav-link,
+    .cc-mail-row,
+    .cc-home-kpi,
+    .cc-text-action,
+    .cc-mail-open
+  ) {
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease,
+    color 160ms ease,
+    transform 160ms ease;
+}
+.commercial .cc-button:active {
+  transform: scale(0.985);
+}
+@media (hover: hover) {
+  .commercial .cc-button:hover {
+    transform: translateY(-1px);
+  }
+  .commercial .cc-mail-row:hover .cc-mail-open {
+    transform: translate(2px, -2px);
+  }
+  .commercial .cc-text-action:hover svg {
+    transform: translateX(2px);
+  }
+}
+.commercial .cc-text-action svg {
+  transition: transform 160ms ease;
+}
+.commercial .cc-chart-line {
+  stroke-dasharray: 1;
+  animation: cc-chart-draw 650ms cubic-bezier(0.2, 0.7, 0.25, 1) 120ms backwards;
+}
+.commercial .cc-chart-bar {
+  transform-origin: center bottom;
+  transform-box: fill-box;
+  animation: cc-chart-grow 400ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
+}
+.commercial .cc-pipeline-stage[open] .cc-pipeline-opportunities,
+.commercial .cc-home-secondary-details[open] > section {
+  animation: cc-panel-in 220ms ease-out;
+}
+/* Navegadores compatibles interpolan la altura real, sin máximos ficticios. */
+@supports (interpolate-size: allow-keywords) {
+  .commercial :is(.cc-pipeline-stage, .cc-home-secondary-details) {
+    interpolate-size: allow-keywords;
+  }
+  .commercial
+    :is(.cc-pipeline-stage, .cc-home-secondary-details)::details-content {
+    block-size: 0;
+    overflow: clip;
+    transition:
+      block-size 240ms cubic-bezier(0.2, 0.7, 0.25, 1),
+      content-visibility 240ms allow-discrete;
+  }
+  .commercial
+    :is(.cc-pipeline-stage, .cc-home-secondary-details)[open]::details-content {
+    block-size: auto;
+  }
+}
+@keyframes cc-page-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cc-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cc-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes cc-chart-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes cc-chart-grow {
+  from {
+    transform: scaleY(0.35);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .commercial *,
+  .commercial *::details-content {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+html[data-commercial-motion="reduced"] .commercial *,
+html[data-commercial-motion="reduced"] .commercial *::details-content {
+  animation: none !important;
+  transition: none !important;
+}

@@ -98,6 +98,8 @@ export function HomeKpis({
                         buildBarRects(card.series, 70, 28, 3).map((r, i) => (
                           <rect
                             key={i}
+                            className="cc-chart-bar"
+                            style={{ animationDelay: `${i * 35}ms` }}
                             {...r}
                             fill="currentColor"
                             rx="1"
@@ -106,6 +108,8 @@ export function HomeKpis({
                         ))
                       ) : (
                         <path
+                          className="cc-chart-line"
+                          pathLength={1}
                           d={buildSparklinePath(card.series, 70, 28, 1.5) || ""}
                           stroke="currentColor"
                           strokeWidth="1.5"

@@ -1,0 +1,33 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-13",
+  "scope": "Logo oficial y microanimaciones solicitados; conservar funciones y distribución",
+  "brand": {
+    "source": "SITE.logoPath y SITE.name, src/lib/site-config.ts",
+    "asset": "public/assets/brand/pixeltec-circuit-cube.png existente, sin modificar",
+    "replacement": "Retirado cubo SVG simplificado del shell; Next Image con espacio reservado36×36 y nombre canónico"
+  },
+  "motion": {
+    "implementation": "CSS local, sin dependencias nuevas, bucles ni cambios de valores",
+    "effects": ["Entrada de página260ms", "Paneles380ms con secuencia breve", "Filas220ms", "Trazo de gráfica650ms", "Barras400ms", "Apertura de pipeline220ms y altura240ms donde el navegador la soporta", "Respuesta de controles160ms"],
+    "reducedMotion": "Respeta preferencia del dispositivo y ajuste local Reducir movimiento; gráficos completos y contenido visible al desactivar efectos",
+    "localPreference": "La vista tenía Reducir movimiento marcado; desmarcado por la petición de animaciones. Estado final normal; automatización comercial no modificada"
+  },
+  "verification": {
+    "uiTestsPassed": 43,
+    "typescript": "PASS estricto",
+    "lint": "PASS, warning img heredado",
+    "build": "PASS209 páginas",
+    "realBrowser": {
+      "logo": "Imagen canónica optimizada cargada,36px visibles, escritorio y menú móvil",
+      "normal": "cc-page-in/cc-panel-in/cc-chart-draw,0.38s/0.65s; contenido pipeline0.22s con opacidad0.985899 observada durante apertura",
+      "reduced": "Página/panel/gráfica animationName=none; contenido y series visibles",
+      "heightInterpolationSupported": true,
+      "desktop": { "width": 1440, "mainClient": 1181, "mainScroll": 1181 },
+      "mobile": { "width": 320, "documentWidth": 320, "mainClient": 309, "mainScroll": 309 },
+      "preserved": "Cinco KPI, Actividad reciente, bandeja, prioridades y pipeline; ambas pestañas QA actualizadas"
+    },
+    "screenshots": "Captura local privada, sin datos de conversaciones en Git"
+  },
+  "limits": ["Sin cambio de schema, lógica financiera/autorización, datos, mensajes, VPS/DNS o producción", "API de inspección DOM no expone getAnimations; prueba realizada con estilos computados y opacidad observada", "Navegadores sin interpolación de altura usan la entrada de contenido; gates productivos existentes conservados"]
+}

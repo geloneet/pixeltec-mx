@@ -221,15 +221,66 @@ describe("Inicio comercial", () => {
     const { onOpportunity } = show({ ...empty, contacts: [contact] }, [
       opportunity,
     ]);
-    fireEvent.click(
+    expect(
       screen.getByText("Cotización", { selector: ".cc-pipeline-label" }),
-    );
+    ).toBeVisible();
+    expect(screen.getByText("Un sitio de ventas")).toBeVisible();
     fireEvent.click(
       screen.getByRole("button", {
         name: /Empresa con un nombre comercial extenso/,
       }),
     );
     expect(onOpportunity).toHaveBeenCalledWith(opportunity);
+    const stage = screen
+      .getByText("Cotización", { selector: ".cc-pipeline-label" })
+      .closest("details")!;
+    expect(stage).toHaveAttribute("open");
+    fireEvent.click(stage.querySelector("summary")!);
+    expect(
+      within(stage).getByRole("button", {
+        name: /Empresa con un nombre comercial extenso/,
+      }),
+    ).not.toBeVisible();
+    fireEvent.click(stage.querySelector("summary")!);
+    expect(
+      within(stage).getByRole("button", {
+        name: /Empresa con un nombre comercial extenso/,
+      }),
+    ).toBeVisible();
+  });
+  it("muestra dos previews por defecto y permite abrir el resto sin perder acciones", () => {
+    const rows = Array.from(
+      { length: 5 },
+      (_, i) =>
+        ({
+          id: "sale-" + i,
+          clientId: "client-" + i,
+          stage: "nuevo",
+          need: "Necesidad " + i,
+          nextAction: "Próximo paso " + i,
+          nextActionDue: null,
+        }) as CommercialSnapshot["opportunities"][number],
+    );
+    const contacts = rows.map(
+      (o, i) =>
+        ({
+          id: o.clientId,
+          name: "Cliente " + i,
+        }) as CommercialSnapshot["contacts"][number],
+    );
+    const { onOpportunity } = show({ ...empty, contacts }, rows);
+    const pipeline = screen.getByRole("region", { name: "Pipeline comercial" });
+    expect(
+      within(pipeline).getByRole("button", { name: /Cliente 0/ }),
+    ).toBeVisible();
+    expect(
+      within(pipeline).getByRole("button", { name: /Cliente 4/ }),
+    ).not.toBeVisible();
+    fireEvent.click(within(pipeline).getByText("Ver 3 más"));
+    fireEvent.click(
+      within(pipeline).getByRole("button", { name: /Cliente 4/ }),
+    );
+    expect(onOpportunity).toHaveBeenCalledWith(rows[4]);
   });
   it("no inventa conversaciones o prioridades para una cartera vacía", () => {
     show();

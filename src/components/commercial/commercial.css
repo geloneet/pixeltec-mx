@@ -1,27 +1,13 @@
-@font-face {
-  font-family: "Bricolage Grotesque";
-  font-style: normal;
-  font-weight: 200 800;
-  font-display: swap;
-  src: url("/fonts/bricolage.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Hanken Grotesk";
-  font-style: normal;
-  font-weight: 100 900;
-  font-display: swap;
-  src: url("/fonts/hanken-grotesk.ttf") format("truetype");
-}
 .commercial {
-  --cc-bg: #f7f8fa;
+  --cc-bg: #f7f7f8;
   --cc-card: #fff;
-  --cc-card2: #f1f3f6;
-  --cc-line: #e3e6eb;
+  --cc-card2: #f8f8f9;
+  --cc-line: #e9eaec;
   --cc-line2: #ced3db;
   --cc-tx: #15181d;
   --cc-tx2: #4a505a;
   --cc-tx3: #5f6570;
-  --cc-blue: #1466ff;
+  --cc-blue: #0784fc;
   --cc-blue-tx: #0b4fd1;
   --cc-blue-bg: #eaf1ff;
   --cc-green: #0f6b4d;
@@ -42,7 +28,7 @@
   --input: 220 17% 91%;
   --muted: 220 20% 95%;
   --muted-foreground: 216 8% 40%;
-  font-family: "Hanken Grotesk", system-ui, sans-serif;
+  font-family: var(--font-roboto), Arial, sans-serif;
   color: var(--cc-tx);
   font-variant-numeric: tabular-nums;
 }
@@ -80,7 +66,7 @@
 .commercial h2,
 .commercial h3,
 .cc-brand {
-  font-family: "Bricolage Grotesque", "Hanken Grotesk", system-ui, sans-serif;
+  font-family: inherit;
   font-variant-numeric: normal;
 }
 .commercial button,
@@ -280,9 +266,9 @@
   margin-bottom: 24px;
 }
 .cc-head h1 {
-  font-size: 27px;
-  font-weight: 600;
-  letter-spacing: -0.6px;
+  font-size: 23px;
+  font-weight: 500;
+  letter-spacing: -0.4px;
   margin: 0;
   line-height: 1.2;
 }
@@ -1669,4 +1655,256 @@ html[data-commercial-motion="reduced"] .cc-overlay {
   .commercial .cc-record-page .cc-head > div {
     width: 100%;
   }
+}
+
+/* Records retain useful context before their full detail is opened. */
+.commercial .cc-record-list { display: grid; gap: 10px; overflow: visible; }
+.commercial .cc-row-labels { background: transparent; padding-block: 2px; }
+.commercial .cc-detail-row,
+.commercial .cc-detail-row:last-child { border: 1px solid var(--cc-line); border-radius: 8px; overflow: hidden; }
+.commercial .cc-row-identity {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.commercial .cc-row-identity > span:last-child {
+  min-width: 0;
+  flex: 1;
+}
+.commercial .cc-record-icon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--cc-line);
+  background: var(--cc-blue-bg);
+  color: var(--cc-blue-tx);
+  border-radius: 7px;
+  flex-shrink: 0;
+}
+.commercial [data-kind="project"] .cc-record-icon {
+  color: var(--cc-green);
+  background: var(--cc-green-bg);
+}
+.commercial [data-kind="quote"] .cc-record-icon,
+.commercial [data-kind="billing"] .cc-record-icon {
+  color: var(--cc-amber);
+  background: var(--cc-amber-bg);
+}
+.commercial .cc-record-preview {
+  grid-column: 1 / 5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 22px;
+  padding-top: 11px;
+  border-top: 1px solid var(--cc-line);
+  color: var(--cc-tx2);
+  font-size: 12px;
+  line-height: 1.5;
+  min-width: 0;
+}
+.commercial .cc-record-preview > span {
+  min-width: 0;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow-wrap: anywhere;
+}
+.commercial .cc-detail-row[open] .cc-record-preview {
+  display: none;
+}
+.commercial .cc-tag[data-status="conversacion"] {
+  background: var(--cc-blue-bg);
+  color: var(--cc-blue-tx);
+}
+.commercial .cc-tag[data-status="ganado"] {
+  background: var(--cc-green-bg);
+  color: var(--cc-green);
+}
+.commercial .cc-tag[data-status="cotizacion"],
+.commercial .cc-tag[data-status="cierre"] {
+  background: var(--cc-amber-bg);
+  color: var(--cc-amber);
+}
+.commercial .cc-thread-list {
+  background: var(--cc-card2);
+}
+.commercial .cc-thread-item {
+  background: var(--cc-card);
+  border-color: var(--cc-line);
+  margin-bottom: 5px;
+}
+.commercial .cc-thread-item.selected {
+  background: var(--cc-blue-bg);
+}
+.commercial .cc-thread-context {
+  border-left: 3px solid var(--cc-blue);
+}
+.commercial .cc-bubble.inbound {
+  border-left: 3px solid var(--cc-line2);
+}
+@media (max-width: 700px) {
+  .commercial .cc-record-preview {
+    grid-column: 1 / 3;
+    grid-row: 4;
+    padding-top: 9px;
+    font-size: 11px;
+  }
+  .commercial .cc-record-icon {
+    width: 28px;
+    height: 28px;
+  }
+  .commercial .cc-row-identity {
+    gap: 9px;
+  }
+}
+.commercial .cc-board .cc-record-preview {
+  grid-column: 1 / -1;
+  grid-row: 4;
+}
+/* Payzen reference: neutral frames and inset content; color belongs to signals. */
+.commercial .cc-detail-row > summary,
+.commercial .cc-detail-row[data-kind] > summary {
+  border-left: 0;
+}
+.commercial .cc-record-page .cc-metric,
+.commercial .cc-record-page .cc-metric:nth-child(n) {
+  border-top: 1px solid var(--cc-line);
+  border-radius: 9px;
+  background: var(--cc-card);
+}
+.commercial .cc-record-list {
+  background: var(--cc-card);
+  padding: 12px;
+  border: 1px solid var(--cc-line);
+  border-radius: 10px;
+}
+.commercial .cc-detail-row {
+  box-shadow: none;
+  background: var(--cc-card2);
+}
+.commercial .cc-detail-row > summary {
+  background: var(--cc-card);
+  margin: 6px;
+  border: 1px solid var(--cc-line);
+  border-radius: 6px;
+  padding: 14px 16px;
+  gap: 13px;
+}
+.commercial .cc-record-preview {
+  padding-top: 9px;
+  color: var(--cc-tx3);
+}
+.commercial .cc-row-detail {
+  background: var(--cc-card);
+}
+.commercial .cc-topbar {
+  height: 60px;
+  padding: 0 24px;
+  background: var(--cc-bg);
+}
+.commercial .cc-search {
+  max-width: 450px;
+  padding: 7px 11px;
+  border: 1px solid var(--cc-line);
+  background: var(--cc-card);
+  border-radius: 7px;
+  font-size: 12px;
+}
+.commercial .cc-nav-link {
+  font-size: 13px;
+  padding: 9px 11px;
+  border-radius: 6px;
+}
+.commercial .cc-nav-link.selected {
+  background: var(--cc-card);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 3%);
+}
+@media (min-width: 901px) {
+  .commercial .cc-sidebar {
+    width: 216px;
+    padding: 20px 12px 12px;
+  }
+  .commercial .cc-brand {
+    font-size: 18px;
+    letter-spacing: 0;
+  }
+  .commercial .cc-main {
+    padding: 24px;
+  }
+}
+@media (max-width: 700px) {
+  .commercial .cc-detail-row > summary {
+    padding: 12px;
+    gap: 8px;
+  }
+  .commercial .cc-record-list {
+    padding: 7px;
+    gap: 8px;
+  }
+  .commercial .cc-topbar {
+    padding: 0 18px;
+  }
+  .commercial .cc-search {
+    min-width: 0;
+  }
+}
+@media (max-width: 1000px) {
+  .commercial .cc-row-labels {
+    display: none;
+  }
+  .commercial .cc-detail-row > summary {
+    grid-template-columns: minmax(0, 1fr) auto 16px;
+    gap: 9px 12px;
+    min-width: 0;
+  }
+  .commercial .cc-row-identity {
+    grid-column: 1 / 3;
+  }
+  .commercial .cc-row-status {
+    grid-column: 1;
+    grid-row: 2;
+  }
+  .commercial .cc-row-value {
+    grid-column: 2;
+    grid-row: 2;
+    max-width: 150px;
+    text-align: right;
+    font-size: 12px;
+  }
+  .commercial .cc-row-next {
+    grid-column: 1 / 3;
+    grid-row: 3;
+  }
+  .commercial .cc-disclosure-arrow {
+    grid-column: 3;
+    grid-row: 1;
+  }
+  .commercial .cc-record-preview {
+    grid-column: 1 / 3;
+    grid-row: 4;
+  }
+}
+
+/* Reference proportions: regular typography, quiet chrome, nested white surfaces. */
+.commercial .cc-side-search { margin: -10px 0 20px; }
+.commercial .cc-topbar-title { font-size: 14px; font-weight: 400; margin-right: auto; }
+.commercial .cc-topbar-actions { display: flex; align-items: center; gap: 8px; }
+.commercial .cc-topbar-actions > .cc-icon-button { border: 1px solid var(--cc-line); border-radius: 8px; width: 34px; height: 34px; background: var(--cc-card); }
+.commercial .cc-connection { border: 1px solid var(--cc-line); border-radius: 7px; padding: 7px 10px; }
+.commercial .cc-side-label { font-weight: 400; margin-bottom: 7px; }
+.commercial .cc-nav-link { font-weight: 400; gap: 10px; }
+.commercial .cc-brand { font-weight: 500; }
+.commercial .cc-head { margin-bottom: 20px; }
+.commercial .cc-head p { margin-top: 5px; }
+@media (min-width: 801px) {
+  .commercial .cc-top-search { display: none; }
+  .commercial .cc-main { padding: 12px 16px 30px; }
+  .commercial .cc-page { padding: 20px 16px 24px; background: var(--cc-card); border: 1px solid var(--cc-line); border-radius: 16px; }
+}
+@media (max-width: 800px) {
+  .commercial .cc-topbar-title, .commercial .cc-topbar-actions { display: none; }
+  .commercial .cc-side-search { margin-top: 0; }
+  .commercial .cc-head h1 { font-size: 23px; }
 }

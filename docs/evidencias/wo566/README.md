@@ -2,6 +2,12 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Referencia visual y previews — 2026-10-13
+
+[Recibo de esta revisión](referencia-preview-20261013.json). Miguel pide rectángulos con preview abierto por defecto y proporciona Payzen como nueva referencia, incluyendo tipografía y todos sus elementos. La presentación comercial usa Roboto local como aproximación (no fuente identificada de la captura), marcos blancos/grises, bordes suaves y color en señales; búsqueda existente en sidebar y topbar compacto. Pipeline conserva plegado/acciones, inicia abierto, muestra dos previews por etapa y permite ver más. Cinco KPI y actividad, bandeja/prioridades y demás funciones conservados. La gráfica muestra registros canónicos de siete días con selección/ejes/tooltip, sin curva ficticia. Proyectos incorpora filtros derivados de etapas y nota visible antes de abrir.
+
+111 UI/quotes/ruta PASS; tipos/lint/build209 PASS, warning img heredado. Las27 pruebas PG de la fase anterior siguen documentadas en su recibo: no reejecutadas en este ajuste de presentación. CUA1440 claro y320 oscuro/reducido: siete vistas sin overflow;801 proyectos577=577, filas470=470. Búsqueda, logo/menú móvil, Enter/detalle, filtro y gráfica verificados sin guardar/enviar. Capturas privadas fuera de Git; QAoff, sin migración/negocio/envíos/producción.
+
 ## Vistas compactas — 2026-10-13
 
 [Ventas, clientes, proyectos, cobros, chat y cotizaciones](vistas-compactas-20261013.json). Resumen desplegable accesible, sin retirar acciones; Ventas inicia en lista y conserva tablero/filtros. Chat con identidad/canal/asunto y composición revisada; Cotizaciones con búsqueda, vigencias, filtros/contadores, nueva propuesta/documento/versionado. Total inicial, mensual y renovación anual permanecen separados y se calculan desde el módulo canónico. Reviewer conserva su vista y visitantes siguen redirigidos; API mantiene aislamiento por propietario.

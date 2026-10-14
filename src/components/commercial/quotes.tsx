@@ -125,6 +125,12 @@ export function CommercialQuotes({
           return (
             <DetailRow
               key={q.id}
+              kind="quote"
+              preview={
+                <span>
+                  Alcance · {q.scopeIncluded || q.solution || "Por completar"}
+                </span>
+              }
               title={q.title || q.folio}
               subtitle={`${q.folio} · ${client?.name || "Cliente"} · v${q.version}`}
               status={

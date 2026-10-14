@@ -90,36 +90,40 @@ export function HomeKpis({
                   <Icon size={17} strokeWidth={1.7} aria-hidden />
                   <span>{card.label}</span>
                 </div>
-                <div className="cc-kpi-value">
-                  <strong>{card.valueText ?? "Sin datos"}</strong>
-                  {hasSeries && (
-                    <svg viewBox="0 0 70 28" aria-hidden>
-                      {card.chart === "bars" ? (
-                        buildBarRects(card.series, 70, 28, 3).map((r, i) => (
-                          <rect
-                            key={i}
-                            className="cc-chart-bar"
-                            style={{ animationDelay: `${i * 35}ms` }}
-                            {...r}
-                            fill="currentColor"
-                            rx="1"
-                            opacity={i === card.series.length - 1 ? 1 : 0.45}
+                <div className="cc-kpi-body">
+                  <div className="cc-kpi-value">
+                    <strong>{card.valueText ?? "Sin datos"}</strong>
+                    {hasSeries && (
+                      <svg viewBox="0 0 70 28" aria-hidden>
+                        {card.chart === "bars" ? (
+                          buildBarRects(card.series, 70, 28, 3).map((r, i) => (
+                            <rect
+                              key={i}
+                              className="cc-chart-bar"
+                              style={{ animationDelay: `${i * 35}ms` }}
+                              {...r}
+                              fill="currentColor"
+                              rx="1"
+                              opacity={i === card.series.length - 1 ? 1 : 0.45}
+                            />
+                          ))
+                        ) : (
+                          <path
+                            className="cc-chart-line"
+                            pathLength={1}
+                            d={
+                              buildSparklinePath(card.series, 70, 28, 1.5) || ""
+                            }
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            fill="none"
                           />
-                        ))
-                      ) : (
-                        <path
-                          className="cc-chart-line"
-                          pathLength={1}
-                          d={buildSparklinePath(card.series, 70, 28, 1.5) || ""}
-                          stroke="currentColor"
-                          strokeWidth="1.5"
-                          fill="none"
-                        />
-                      )}
-                    </svg>
-                  )}
+                        )}
+                      </svg>
+                    )}
+                  </div>
+                  <Trend card={card} />
                 </div>
-                <Trend card={card} />
                 <span className="sr-only">{card.seriesLabel}</span>
               </Link>
             );

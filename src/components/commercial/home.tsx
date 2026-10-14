@@ -17,6 +17,7 @@ import {
 } from "./data";
 import type { HoyDashboard } from "@/lib/hoy/types";
 import { HomeKpis, HomeActivity, HomeSecondary } from "./home-widgets";
+import { HomeTrend } from "./home-trend";
 import { loadCommercialThread } from "./thread";
 
 type Conversation = CommercialSnapshot["conversations"][number];
@@ -228,7 +229,7 @@ export function CommercialHome({
           <section className="cc-home-panel" aria-labelledby="home-inbox-title">
             <div className="cc-home-panel-head">
               <div>
-                <span className="cc-section-number">01 / MENSAJES</span>
+                <span className="cc-section-number">Correo y WhatsApp</span>
                 <h2 id="home-inbox-title">Bandeja de entrada</h2>
                 <p>Últimas conversaciones de correo y WhatsApp</p>
               </div>
@@ -318,13 +319,19 @@ export function CommercialHome({
             </div>
           </section>
 
+          <HomeTrend
+            overview={overview}
+            data={d}
+            error={Boolean(overviewError)}
+          />
+
           <section
             className="cc-home-panel"
             aria-labelledby="home-pipeline-title"
           >
             <div className="cc-home-panel-head">
               <div>
-                <span className="cc-section-number">02 / VENTAS</span>
+                <span className="cc-section-number">Ventas</span>
                 <h2 id="home-pipeline-title">Pipeline comercial</h2>
                 <p>{pending.length} oportunidades abiertas</p>
               </div>
@@ -338,41 +345,58 @@ export function CommercialHome({
                 .filter((stage) => stage !== "ganado")
                 .map((stage, index) => {
                   const rows = pending.filter((o) => o.stage === stage);
+                  const preview = (o: Opportunity) => (
+                    <button key={o.id} onClick={() => onOpportunity(o)}>
+                      <span>
+                        <strong>
+                          {contact(o.clientId)?.name || "Contacto"}
+                        </strong>
+                        <span className="cc-pipeline-need">{o.need}</span>
+                        <span className="cc-pipeline-next">
+                          {o.nextAction || "Definir siguiente paso"}
+                          {o.nextActionDue
+                            ? " · " + dateLabel(o.nextActionDue)
+                            : ""}
+                        </span>
+                      </span>
+                      <ArrowUpRight size={15} aria-hidden />
+                    </button>
+                  );
                   return (
-                    <details className="cc-pipeline-stage" key={stage}>
-                      <summary>
+                    <details
+                      open
+                      className="cc-pipeline-stage"
+                      data-stage={stage}
+                      key={stage}
+                    >
+                      <summary className="cc-pipeline-stage-head">
                         <span className="cc-pipeline-index">
                           {String(index + 1).padStart(2, "0")}
                         </span>
-                        <span className="cc-pipeline-label">
+                        <h3 className="cc-pipeline-label">
                           {saleStageLabel[stage]}
-                        </span>
+                        </h3>
                         <span className="cc-pipeline-count">{rows.length}</span>
-                        <ChevronRight size={16} aria-hidden />
+                        <ChevronRight size={14} aria-hidden />
                       </summary>
                       <div className="cc-pipeline-opportunities">
+                        {rows.slice(0, 2).map(preview)}
                         {!rows.length && (
-                          <p className="cc-muted">
-                            No hay oportunidades en esta etapa.
+                          <p className="cc-pipeline-empty">
+                            Sin oportunidades en esta etapa.
                           </p>
                         )}
-                        {rows.map((o) => (
-                          <button key={o.id} onClick={() => onOpportunity(o)}>
-                            <span>
-                              <strong>
-                                {contact(o.clientId)?.name || "Contacto"}
-                              </strong>
-                              <span>{o.need}</span>
-                              <span className="cc-muted">
-                                {o.nextAction || "Definir siguiente paso"}
-                                {o.nextActionDue
-                                  ? " · " + dateLabel(o.nextActionDue)
-                                  : ""}
-                              </span>
-                            </span>
-                            <ArrowUpRight size={15} aria-hidden />
-                          </button>
-                        ))}
+                        {rows.length > 2 && (
+                          <details className="cc-pipeline-more">
+                            <summary>
+                              Ver {rows.length - 2} más{" "}
+                              <ChevronRight size={14} aria-hidden />
+                            </summary>
+                            <div className="cc-pipeline-extra">
+                              {rows.slice(2).map(preview)}
+                            </div>
+                          </details>
+                        )}
                       </div>
                     </details>
                   );
@@ -388,7 +412,7 @@ export function CommercialHome({
           >
             <div className="cc-home-panel-head">
               <div>
-                <span className="cc-section-number">POR RESOLVER</span>
+                <span className="cc-section-number">Por resolver</span>
                 <h2 id="home-priorities-title">
                   Prioridades <span>{priorities.length}</span>
                 </h2>

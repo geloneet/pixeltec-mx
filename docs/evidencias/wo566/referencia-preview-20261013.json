@@ -1,0 +1,73 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-13",
+  "phase": "Referencia visual Payzen y previews rectangulares",
+  "base": "dfa9700e51ea274741d660d4d8f5ffe13b698e55",
+  "humanRequest": [
+    "pipeline rectangular con preview por defecto",
+    "en general no tan minimalista",
+    "acercar tipografía y todos los elementos a HP5sSLMbAAAaAHT.jpeg"
+  ],
+  "implemented": [
+    "Roboto local ya licenciado: fuente única y títulos regulares; aproximación visual, no identificación certificada de la fuente de la foto",
+    "Sidebar con búsqueda existente y topbar compacto; logo canónico y navegación por rol conservados",
+    "Marco blanco de trabajo, tarjetas grises con contenido blanco, bordes suaves, color concentrado en iconos/estados",
+    "Cinco KPI, actividad/filtros, bandeja central, prioridades a la derecha, tareas/alertas/cobros conservados",
+    "Pipeline con cuatro rectángulos abiertos por defecto, dos previews por etapa, ver más y plegado nativo accesible; abre la misma ficha de venta",
+    "Gráfica de siete días usa la serie canónica del KPI, no agrega endpoint ni cálculo financiero; selector de serie/día, ejes, banda y tooltip; cero e indisponibilidad honestos",
+    "Previews de origen/responsable, contacto/proyectos/ventas, nota de proyecto, alcance de cotización y contexto del cobro",
+    "Proyectos: contadores/filtros derivados para cuatro etapas y pendientes de confirmar; detalle/actualizar/compartir/historial/trabajo preservados"
+  ],
+  "validation": {
+    "selectedUIQuoteAndRoute": 111,
+    "typecheck": "PASS",
+    "lint": "PASS; warning img heredado progressive-cube.tsx:27",
+    "build": "PASS;209 páginas",
+    "postgresBusiness": "27 PASS en fase previa dfa9700; no reejecutado aquí, sin cambio de negocio o persistencia",
+    "commands": [
+      "npm test -- 'src/app/(admin)/cotizaciones/page.test.tsx' src/components/commercial/records.test.tsx src/components/commercial/inbox.test.tsx src/components/commercial/home.test.tsx src/components/commercial/home-trend.test.tsx src/components/commercial/home-kpis.test.ts src/lib/quotes/money.test.ts src/lib/quotes/terms.test.ts src/lib/quotes/share.test.ts --maxWorkers=2",
+      "npm run typecheck",
+      "npm run lint",
+      "npm run build"
+    ]
+  },
+  "browser": {
+    "desktop1440": [
+      "hoy",
+      "ventas",
+      "clientes",
+      "proyectos",
+      "cobros",
+      "cotizaciones",
+      "whatsapp"
+    ],
+    "desktopMainClientEqualsScroll": [
+      1213,
+      1224
+    ],
+    "mobile320": [
+      "hoy",
+      "ventas",
+      "clientes",
+      "proyectos",
+      "cobros",
+      "cotizaciones",
+      "whatsapp"
+    ],
+    "mobile": "documento <=320px; main client=scroll en siete vistas",
+    "projects801": "main577=577; dos resúmenes470=470, flecha dentro:731<748",
+    "functional": "Búsqueda/menú móvil con logo, Enter pliega/reabre pipeline, preview2+ver más, filtro proyecto muestra1, Enter revela todas sus acciones; no guardar/enviar",
+    "chart": "11 oct2 registros; Leads con siete ceros y aviso honesto; serie Seguimientos total3 en QA",
+    "preservation": "5KPI, actividad, cuatro etapas abiertas por defecto",
+    "motion": "normal cc-chart-draw; reducido none y contenido visible",
+    "finalPreferences": "claro/normal; viewport override restablecido; dos pestañas QA actualizadas",
+    "screenshots": "Privadas fuera de Git; contienen datos QA. inicio-referencia.jpg, pipeline-preview-referencia.jpg, proyectos-referencia.jpg"
+  },
+  "limits": [
+    "Sin schema, migraciones, datos, autenticación, permisos API, lógica financiera, envíos, automatismos, VPS, DNS, merge o deploy",
+    "QA egreso/cron/recepción/automatismos deshabilitados; WhatsApp remoto muestra su fallo real",
+    "Referencias antiguas Bricolage/#1466FF sustituidas en presentación comercial por petición humana posterior; assets públicos conservados",
+    "Candidato local/PR186: no afirmar publicación productiva",
+    "Formato: npm exec prettier sin binario local se detuvo; no se instaló dependencia; formato manual, lint/tipos/diffcheck verificados"
+  ]
+}

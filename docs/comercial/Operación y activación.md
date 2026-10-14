@@ -9,6 +9,14 @@ WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelB
 
 Capacidad fresh20.178GiB/80%, operación limitada autorizada yrecursos preservados; [recibo](../evidencias/wo566/vps-capacidad-refresh-20261012.json). Medir de nuevo antes de build/deploy; no repetir purgas con este permiso ya utilizado.
 
+## Presentación con referencia Payzen — 2026-10-13
+
+Miguel actualizó la referencia visual con Payzen y pidió analizar tipografía y todos los elementos. Roboto ya disponible y licenciado en public/fonts sustituye Hanken/Bricolage únicamente en el shell comercial, usando la variable de next/font del layout. Es una aproximación visual, no identificación exacta de la fuente de la foto. La nueva instrucción humana prevalece sobre el brief visual anterior; el sitio público y sus assets no cambian. Mantener títulos regulares, bordes suaves y superficies en dos capas; nunca usar datos inventados para reproducir las gráficas de la referencia.
+
+Inicio conserva cinco KPI, actividad/filtros, bandeja de correo/WhatsApp y prioridades a la derecha. Cada etapa del pipeline inicia abierta con dos previews rectangulares; el encabezado permite plegarla y «Ver más» revela el resto. Clic en oportunidad abre la misma ficha existente. La gráfica reutiliza withCommercialFollowups/series del KPI y helpers canónicos de fechas: selección de serie y día, ejes/banda/tooltip; ceros reales e indisponibilidad se distinguen. No añade otro origen de datos.
+
+Ventas/Clientes/Proyectos/Cobros/Cotizaciones presentan contexto breve antes del detalle nativo; clic/Enter muestra todas las acciones. Proyectos filtra por etapas confirmadas (revision>0) o por confirmar (revision=0), sin alterar etapas ni persistencia. La búsqueda global conserva su diálogo/atajo y aparece en sidebar en escritorio y topbar móvil; logo oficial y navegación según rol permanecen. [Validación](../evidencias/wo566/referencia-preview-20261013.json):111 pruebas, tipos/lint/build209; siete vistas sin overflow en1440/320, proyectos801, tema/movimiento/teclado. Sin schema, lógica financiera, datos, envío ni producción; gates existentes separados.
+
 ## Inicio — revisión vigente del 2026-10-12
 
 Conservar los cinco indicadores originales, Actividad reciente con filtros/expansión, Nueva cotización, tareas de hoy, cobros y alertas. Una petición de mejorar diseño no concede retirar funciones que Miguel no pidió eliminar. GET /api/commercial/overview reutiliza las consultas y derivaciones de Hoy, con admin/staff/no-store y cartera por propietario; leads conserva su feed global original. No realiza una segunda consulta a PixelBot. Seguimientos integra también oportunidades abiertas del Centro, excluye futuros/cerrados y evita doble conteo con cliente/cotización vinculada. Acceso a Ventas cuando incluye pasos del Centro.

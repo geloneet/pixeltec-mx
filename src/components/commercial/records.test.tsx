@@ -129,6 +129,7 @@ function showPage(
 describe("Operación resumida y detalle", () => {
   it("conserva las acciones del cliente dentro de su detalle y busca por correo", () => {
     showPage("clients", data);
+    expect(screen.getByText("0 proyectos · 0 ventas abiertas")).toBeVisible();
     const row = screen.getByText("Cliente de prueba").closest("details")!;
     expect(row).not.toHaveAttribute("open");
     expect(
@@ -210,6 +211,7 @@ describe("Cotizaciones de trabajo", () => {
         onDecision={vi.fn()}
       />,
     );
+    expect(screen.getByText("Alcance · Alcance de prueba")).toBeVisible();
     fireEvent.click(screen.getByText("Proyecto QA").closest("summary")!);
     expect(screen.getByText("Mensual")).toBeVisible();
     expect(
@@ -252,6 +254,9 @@ describe("Proyectos y cobros en filas", () => {
         },
       ],
     });
+    expect(
+      screen.getByText("Nota al cliente · Revisar entregable"),
+    ).toBeVisible();
     const row = screen.getByText("Proyecto activo").closest("details")!;
     fireEvent.click(row.querySelector("summary")!);
     expect(screen.getByRole("progressbar")).toHaveAttribute(
@@ -317,4 +322,41 @@ describe("Proyectos y cobros en filas", () => {
       }),
     ).not.toBeInTheDocument();
   });
+});
+
+it("filtra proyectos por etapas confirmadas y conserva los que aún no tienen etapa", () => {
+  showPage("projects", {
+    ...data,
+    projects: [
+      {
+        id: "p1",
+        publicId: null,
+        clientId: "client",
+        name: "Proyecto confirmado",
+        stage: "revision",
+        revision: 1,
+        note: "",
+        nextStep: "Revisar",
+        due: null,
+      },
+      {
+        id: "p2",
+        publicId: null,
+        clientId: "client",
+        name: "Proyecto sin confirmar",
+        stage: "arranque",
+        revision: 0,
+        note: "",
+        nextStep: "",
+        due: null,
+      },
+    ],
+  });
+  expect(screen.getByText("Proyecto sin confirmar")).toBeVisible();
+  fireEvent.click(screen.getByRole("button", { name: /1 Listo para revisar/ }));
+  expect(screen.getByText("Proyecto confirmado")).toBeVisible();
+  expect(screen.queryByText("Proyecto sin confirmar")).not.toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: /1 Por confirmar/ }));
+  expect(screen.getByText("Proyecto sin confirmar")).toBeVisible();
+  expect(screen.queryByText("Proyecto confirmado")).not.toBeInTheDocument();
 });

@@ -311,9 +311,17 @@ export function CommercialPage({ view }: { view: View }) {
               billsFor(c.id).every((b) => balanceCents(b) === 0)
             : true,
     );
-  const visibleProjects = d.projects.filter((p) =>
-    (p.name + " " + contact(p.clientId)?.name).toLowerCase().includes(query),
-  );
+  const visibleProjects = d.projects
+    .filter((p) =>
+      (p.name + " " + contact(p.clientId)?.name).toLowerCase().includes(query),
+    )
+    .filter(
+      (p) =>
+        tab === "all" ||
+        (tab === "unconfirmed"
+          ? p.revision === 0
+          : p.revision > 0 && p.stage === tab),
+    );
   const visibleBills = d.bills
     .filter((b) =>
       (b.concept + " " + b.clientName).toLowerCase().includes(query),
@@ -335,9 +343,29 @@ export function CommercialPage({ view }: { view: View }) {
   const opportunityCard = (o: Opportunity) => (
     <DetailRow
       key={o.id}
+      kind="sale"
+      preview={
+        <>
+          <span>
+            Origen ·{" "}
+            {o.source === "email"
+              ? "Correo"
+              : o.source === "whatsapp"
+                ? "WhatsApp"
+                : o.source === "form"
+                  ? "Formulario"
+                  : "Manual"}
+          </span>
+          <span>Responsable · {d.user.name}</span>
+        </>
+      }
       title={contact(o.clientId)?.name || "Contacto por vincular"}
       subtitle={o.need}
-      status={<span className="cc-tag">{saleStageLabel[o.stage]}</span>}
+      status={
+        <span className="cc-tag" data-status={o.stage}>
+          {saleStageLabel[o.stage]}
+        </span>
+      }
       value={quoteAmount(o)}
       next={
         <>
@@ -407,7 +435,7 @@ export function CommercialPage({ view }: { view: View }) {
       <header className={view === "home" ? "cc-head cc-home-head" : "cc-head"}>
         <div>
           {view === "home" && (
-            <span className="cc-home-eyebrow">PIXELTEC / CENTRO COMERCIAL</span>
+            <span className="cc-home-eyebrow">Centro Comercial</span>
           )}
           <h1>
             {view === "home" && overview?.greetingName
@@ -662,6 +690,20 @@ export function CommercialPage({ view }: { view: View }) {
             {visibleContacts.map((c) => (
               <DetailRow
                 key={c.id}
+                kind="client"
+                preview={
+                  <>
+                    <span>
+                      {c.email || c.phone || "Contacto por completar"}
+                    </span>
+                    <span>
+                      {d.projects.filter((p) => p.clientId === c.id).length}{" "}
+                      proyectos ·{" "}
+                      {pending.filter((o) => o.clientId === c.id).length} ventas
+                      abiertas
+                    </span>
+                  </>
+                }
                 title={c.name}
                 subtitle={
                   c.contactName || c.email || c.phone || "Contacto comercial"
@@ -779,6 +821,35 @@ export function CommercialPage({ view }: { view: View }) {
               {d.projects.length} proyectos
             </span>
           </div>
+          <div
+            className="cc-stage-strip"
+            aria-label="Filtrar proyectos por etapa"
+          >
+            {[
+              ...projectStages.map((stage) => [
+                stage,
+                projectStageLabel[stage],
+              ]),
+              ["unconfirmed", "Por confirmar"],
+            ].map(([id, label]) => (
+              <button
+                key={id}
+                aria-pressed={tab === id}
+                onClick={() => setTab(tab === id ? "all" : id)}
+              >
+                <b>
+                  {
+                    d.projects.filter((p) =>
+                      id === "unconfirmed"
+                        ? p.revision === 0
+                        : p.revision > 0 && p.stage === id,
+                    ).length
+                  }
+                </b>
+                {label}
+              </button>
+            ))}
+          </div>
           <div className="cc-record-list">
             <RowLabels
               identity="Proyecto / cliente"
@@ -789,12 +860,19 @@ export function CommercialPage({ view }: { view: View }) {
             {visibleProjects.map((p) => (
               <DetailRow
                 key={p.id}
+                kind="project"
+                preview={
+                  <span>
+                    Nota al cliente ·{" "}
+                    {p.note || "Todavía no hay una nota para el cliente."}
+                  </span>
+                }
                 title={p.name}
                 subtitle={contact(p.clientId)?.name}
                 status={
                   <span
                     className={
-                      "cc-tag " + (p.stage === "entregado" ? "green" : "")
+                      "cc-tag " + (p.stage === "entregado" ? "green" : "amber")
                     }
                   >
                     {p.revision > 0
@@ -959,6 +1037,16 @@ export function CommercialPage({ view }: { view: View }) {
             {visibleBills.map((b) => (
               <DetailRow
                 key={b.id}
+                kind="billing"
+                preview={
+                  <span>
+                    Total del período ·{" "}
+                    {money(Math.round(b.amount * 100), b.currency)} ·{" "}
+                    {d.reminders.some((r) => r.billingItemId === b.id)
+                      ? "Recordatorio registrado; consulta su estado"
+                      : "Sin recordatorio programado"}
+                  </span>
+                }
                 title={b.concept}
                 subtitle={b.clientName}
                 status={

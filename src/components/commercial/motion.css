@@ -93,17 +93,17 @@
   transform-box: fill-box;
   animation: cc-chart-grow 400ms cubic-bezier(0.2, 0.7, 0.25, 1) backwards;
 }
-.commercial .cc-pipeline-stage[open] .cc-pipeline-opportunities,
+.commercial .cc-pipeline-more[open] .cc-pipeline-extra,
 .commercial .cc-home-secondary-details[open] > section {
   animation: cc-panel-in 220ms ease-out;
 }
 /* Navegadores compatibles interpolan la altura real, sin máximos ficticios. */
 @supports (interpolate-size: allow-keywords) {
-  .commercial :is(.cc-pipeline-stage, .cc-home-secondary-details) {
+  .commercial :is(.cc-pipeline-more, .cc-home-secondary-details) {
     interpolate-size: allow-keywords;
   }
   .commercial
-    :is(.cc-pipeline-stage, .cc-home-secondary-details)::details-content {
+    :is(.cc-pipeline-more, .cc-home-secondary-details)::details-content {
     block-size: 0;
     overflow: clip;
     transition:
@@ -111,7 +111,7 @@
       content-visibility 240ms allow-discrete;
   }
   .commercial
-    :is(.cc-pipeline-stage, .cc-home-secondary-details)[open]::details-content {
+    :is(.cc-pipeline-more, .cc-home-secondary-details)[open]::details-content {
     block-size: auto;
   }
 }

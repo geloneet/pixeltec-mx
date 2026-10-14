@@ -14,6 +14,7 @@ import {
   CircleDollarSign,
   Settings2,
   Search,
+  Mail,
   ChevronDown,
   Menu,
   X,
@@ -26,7 +27,6 @@ import {
   getMoreNavAreas,
   getPrimaryNavAreas,
   NAV_AREA_LABELS,
-  type NavArea,
 } from "@/components/nav/nav-config";
 import { useCmdK } from "@/components/cmd-k/CmdKProvider";
 import "./commercial.css";
@@ -157,6 +157,15 @@ export function CommercialShell({ children }: { children: ReactNode }) {
         >
           <X size={20} />
         </button>
+        <button
+          className="cc-search cc-side-search"
+          onClick={() => setOpen(true)}
+          aria-label="Buscar clientes, proyectos y acciones…"
+        >
+          <Search size={16} />
+          <span>Buscar</span>
+          <kbd>⌘ K</kbd>
+        </button>
         <p className="cc-side-label">Centro Comercial</p>
         <nav aria-label="Navegación principal">
           {primary.map((key) => {
@@ -223,16 +232,30 @@ export function CommercialShell({ children }: { children: ReactNode }) {
           >
             <Menu size={21} />
           </button>
-          <button className="cc-search" onClick={() => setOpen(true)}>
+          <span className="cc-topbar-title">
+            {area ? NAV_AREA_LABELS[area] : "Centro Comercial"}
+          </span>
+          <button className="cc-search cc-top-search" onClick={() => setOpen(true)}>
             <Search size={17} />
             <span>Buscar clientes, proyectos y acciones…</span>
             <kbd>⌘ K</kbd>
           </button>
-          <Link href="/ajustes" className="cc-connection">
-            <span className="cc-dot" />
-            Revisar conexiones
-            <ChevronDown size={14} />
-          </Link>
+          <div className="cc-topbar-actions">
+            {primary.includes("whatsapp") && (
+              <Link
+                href="/whatsapp"
+                className="cc-icon-button"
+                aria-label="Abrir conversaciones"
+              >
+                <Mail size={18} strokeWidth={1.5} />
+              </Link>
+            )}
+            <Link href="/ajustes" className="cc-connection">
+              <span className="cc-dot" />
+              Revisar conexiones
+              <ChevronDown size={14} />
+            </Link>
+          </div>
         </header>
         <main id="commercial-main" tabIndex={-1} className="cc-main">
           {children}

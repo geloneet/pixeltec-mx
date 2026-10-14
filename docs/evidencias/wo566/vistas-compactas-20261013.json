@@ -1,0 +1,70 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-13",
+  "scope": "Vistas compactas comerciales solicitadas por Miguel",
+  "environment": "QA local, PostgreSQL centro_qa; transportes/cron/recepción/automatismos deshabilitados",
+  "changes": [
+    "Ventas inicia en lista resumida, conserva tablero y filtros; contexto/acciones al clic o Enter",
+    "Clientes resume identidad, estado, saldo y próximo paso; busca también contacto/correo/teléfono; ficha y acciones conservadas",
+    "Proyectos y Cobros en rectángulos desplegables; etapas/saldos canónicos",
+    "Cotizaciones admin/staff con nueva propuesta, contadores, búsqueda, estados/vigencias, documento/versionado y ficha; reviewer conserva vista anterior",
+    "Chat con identidad/canal/asunto/emisor/hora/entrega y compositor; controles de modo/vinculación/sync/reintento/revisión conservados"
+  ],
+  "tests": {
+    "selectedUIQuoteAndRoute": 106,
+    "isolatedPostgresBusiness": 27,
+    "typecheck": "PASS",
+    "lint": "PASS; warning img heredado en progressive-cube.tsx:27",
+    "build": "PASS;209 páginas",
+    "commands": [
+      "npm run typecheck",
+      "npm run lint",
+      "npm test -- src/app/(admin)/cotizaciones/page.test.tsx src/components/commercial/records.test.tsx src/components/commercial/inbox.test.tsx src/components/commercial/home.test.tsx src/components/commercial/home-kpis.test.ts src/lib/quotes/money.test.ts src/lib/quotes/terms.test.ts src/lib/quotes/share.test.ts --maxWorkers=2",
+      "COMMERCIAL_DB_TESTS=1 npm test -- src/lib/commercial/database.test.ts --maxWorkers=2",
+      "npm run build"
+    ]
+  },
+  "browser": {
+    "provider": "CUA IAB real",
+    "desktop": {
+      "viewport": 1440,
+      "salesRowHeightPixels": [
+        76,
+        91
+      ],
+      "mainClientAndScrollPixels": [
+        1181,
+        1181
+      ],
+      "darkAllSixViews": "PASS sin desbordamiento",
+      "defaultTabWidth": 1039
+    },
+    "mobile": {
+      "viewport": 320,
+      "allSixViews": "PASS; pageScrollWidth320, mainScrollWidth igual a clientWidth309 o320 según scrollbar",
+      "quoteButtonBounds": [
+        18,
+        180.47
+      ],
+      "fixed": "Nueva cotización estaba recortada; encabezado móvil en columna, comprobado de nuevo"
+    },
+    "keyboard": "Enter abre detalle y conserva foco visible",
+    "billing": "Pago parcial correcto; abrir formulario no registra pago; cancelado sin cambios",
+    "quotes": "Detalle, documento y versión abren; sin compartir ni confirmar aceptación",
+    "clientSearch": "Búsqueda sin coincidencias y Limpiar filtros comprobados",
+    "movement": {
+      "normal": "cc-panel-in",
+      "reduced": "none en lista y detalle; contenido visible",
+      "finalPreferences": "light/normal; viewport override reset"
+    },
+    "homeRegression": "5 indicadores y Actividad reciente presentes",
+    "tabs": "Ambas QA actualizadas y conservadas; producción sin navegar ni modificar"
+  },
+  "limits": [
+    "No modifica schema ni lógica monetaria; total inicial incluye anualidad cobrable según computeBreakdown; mensual y renovación anual separados, no suma monedas diferentes",
+    "WhatsApp remoto no disponible con egreso interno QA deshabilitado; error honesto y reintento conservados",
+    "Capturas privadas fuera de Git; datos y mensajes de prueba conservados",
+    "Un chunk antiguo falló durante reconstrucción del preview; corregido con restart/reload owned y revisión final",
+    "Sin mensajes, pagos, datos, VPS/DNS ni despliegue productivo; gates pendientes separados"
+  ]
+}

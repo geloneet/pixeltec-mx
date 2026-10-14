@@ -2,6 +2,12 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Vistas compactas — 2026-10-13
+
+[Ventas, clientes, proyectos, cobros, chat y cotizaciones](vistas-compactas-20261013.json). Resumen desplegable accesible, sin retirar acciones; Ventas inicia en lista y conserva tablero/filtros. Chat con identidad/canal/asunto y composición revisada; Cotizaciones con búsqueda, vigencias, filtros/contadores, nueva propuesta/documento/versionado. Total inicial, mensual y renovación anual permanecen separados y se calculan desde el módulo canónico. Reviewer conserva su vista y visitantes siguen redirigidos; API mantiene aislamiento por propietario.
+
+106 pruebas UI/quotes/ruta y27 PostgreSQL real PASS, tipos/lint/build209 PASS (warning img heredado). Revisión visual final y medidas registradas en el recibo; capturas privadas fuera de Git. QA sin egreso/cron/recepción/automatismos; WhatsApp remoto no se consulta con egreso interno deshabilitado, fallo honesto conservado. Sin schema/datos/envíos/VPS/producción. La publicación y activación productiva conservan sus gates.
+
 ## Logo oficial y movimiento — 2026-10-13
 
 [Pulido verificado](logo-movimiento-20261013.json). Logo canónico SITE.logoPath y SITE.name, asset existente sin modificar, sustituye el SVG genérico del shell. Movimiento CSS breve de paneles/filas, trazado de gráficas, pipeline y controles; sin dependencias nuevas, bucles ni cambios de valores. Se respeta movimiento reducido del dispositivo y del ajuste local. La vista tenía Reducir movimiento marcado: desmarcado por petición de Miguel; estado final normal y opción disponible.

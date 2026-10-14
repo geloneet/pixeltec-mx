@@ -19,6 +19,14 @@ Prioridades muestra decisiones, saldo vencido y seguimientos; desde cinco permit
 
 El shell usa el logo oficial declarado en SITE, sin variantes dibujadas a mano. Animaciones locales en motion.css: entradas breves, gráficas y apertura de etapas/controles; sin bucles ni animación de importes. Ajustes → Movimiento → Reducir movimiento desactiva efectos, igual que la preferencia del dispositivo. Al comprobar animaciones, revisar primero ese ajuste; mantener contenido y gráficas visibles en ambos modos. [Verificación2026-10-13](../evidencias/wo566/logo-movimiento-20261013.json).
 
+## Vistas comerciales — revisión del 2026-10-13
+
+Ventas inicia en lista, conserva tablero y filtros por etapa. Cliente, necesidad, estado, importe y siguiente paso son el resumen; clic o Enter despliega contexto y acciones existentes. Clientes busca nombre/contacto/correo/teléfono y conserva ficha, estado de cuenta, nueva oportunidad y correo. Proyectos y Cobros usan rectángulos horizontales desplegables, con avance por etapa real y saldo calculado por período, respectivamente. Buscar sin coincidencias muestra recuperación de filtros.
+
+Cotizaciones para admin/staff usa el snapshot autenticado de su cartera: nueva propuesta, estados derivados, vigencia/próximos siete días, búsqueda, documento, edición/versionado y ficha. Conserva la vista anterior del rol reviewer sin ampliar permisos del API comercial. Total inicial usa computeBreakdown.oneTime, incluida primera anualidad cobrable; mensuales y renovación anual se muestran aparte, sin sumar monedas diferentes. Compartir/confirmar aceptación reutiliza controles y confirmaciones existentes.
+
+Conversaciones muestra identidad/canal/asunto, emisor/hora/entrega y respuesta en áreas diferenciadas; conserva vinculación, revisión, modo humano/pausa/reactivación, sincronización y reintentos. Revisar envío sólo abre confirmación; abrir un hilo no envía mensajes. Movimiento breve respeta reducción. No hay cambio de schema, datos, negocio, conexiones ni despliegue. [Pruebas y revisión visual](../evidencias/wo566/vistas-compactas-20261013.json).
+
 ## Configuración segura
 
 Configurar en el gestor de secretos del entorno aprobado, nunca en chat, JSON del checklist, cliente, Git ni logs. El 2026-10-11 Miguel autorizó reutilizar las credenciales del env del VPS: las variables necesarias de Resend, Meta y PixelBot están en .env.local privado/ignorado0600 del candidato. DB y autenticación conservan sus valores de QA; egreso, cron y automatización permanecen apagados. Ningún secreto forma parte del artefacto versionado.

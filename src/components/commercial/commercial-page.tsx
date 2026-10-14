@@ -4,6 +4,8 @@ import useSWR from "swr";
 import Link from "next/link";
 import type { HoyDashboard } from "@/lib/hoy/types";
 import { NuevaCotizacionButton } from "@/components/hoy/nueva-cotizacion-button";
+import { DetailRow, RowLabels } from "./detail-row";
+import { CommercialQuotes } from "./quotes";
 import { CommercialHome } from "./home";
 import { CommercialInbox } from "./inbox";
 import { CommercialSettings } from "./settings";
@@ -40,11 +42,11 @@ import {
   totalsLabel,
   dateLabel,
   todayCivil,
-  initials,
 } from "./data";
 
 type View =
   | "home"
+  | "quotes"
   | "sales"
   | "clients"
   | "projects"
@@ -72,6 +74,7 @@ type Modal =
 const labels: Record<View, string> = {
   home: "Inicio",
   sales: "Ventas",
+  quotes: "Cotizaciones",
   clients: "Clientes",
   projects: "Proyectos",
   billing: "Cobros",
@@ -80,7 +83,8 @@ const labels: Record<View, string> = {
 };
 const descriptions: Record<View, string> = {
   home: "Lo que necesita tu atención, en un solo lugar.",
-  sales: "De un primer interés a un proyecto en marcha.",
+  sales: "Cliente, importe y próximo paso. Abre una venta para ver el detalle.",
+  quotes: "Propuestas, vigencias y decisiones de tus clientes.",
   clients: "Personas, proyectos y próximos pasos.",
   projects: "Que tus clientes sepan cómo va su proyecto.",
   billing: "Lo que está pendiente, lo que venció y lo que ya recibiste.",
@@ -197,7 +201,7 @@ export function CommercialPage({ view }: { view: View }) {
   const [modalError, setModalError] = useState("");
   const [tab, setTab] = useState("all");
   const [search, setSearch] = useState("");
-  const [board, setBoard] = useState(true);
+  const [board, setBoard] = useState(false);
   const paymentKey = useRef("");
   useEffect(() => {
     setTab("all");
@@ -290,36 +294,82 @@ export function CommercialPage({ view }: { view: View }) {
             !["aceptada", "rechazada"].includes(q.status))),
     ),
   );
+  const visibleContacts = d.contacts
+    .filter((c) =>
+      [c.name, c.contactName, c.email, c.phone]
+        .join(" ")
+        .toLowerCase()
+        .includes(query),
+    )
+    .filter((c) =>
+      tab === "balance"
+        ? billsFor(c.id).some((b) => balanceCents(b) > 0)
+        : tab === "sales"
+          ? pending.some((o) => o.clientId === c.id)
+          : tab === "clear"
+            ? billsFor(c.id).length > 0 &&
+              billsFor(c.id).every((b) => balanceCents(b) === 0)
+            : true,
+    );
+  const visibleProjects = d.projects.filter((p) =>
+    (p.name + " " + contact(p.clientId)?.name).toLowerCase().includes(query),
+  );
+  const visibleBills = d.bills
+    .filter((b) =>
+      (b.concept + " " + b.clientName).toLowerCase().includes(query),
+    )
+    .filter((b) =>
+      tab === "paid"
+        ? b.status === "pagado"
+        : tab === "overdue"
+          ? b.status === "vencido"
+          : balanceCents(b) > 0,
+    );
+  const visibleOpportunities = opportunities.filter((o) =>
+    tab === "all" ? !["pausado", "perdido"].includes(o.stage) : o.stage === tab,
+  );
   const nextDue = (o: Opportunity) =>
     o.nextActionDue
       ? "Para el " + dateLabel(o.nextActionDue)
       : "Agenda el siguiente paso";
   const opportunityCard = (o: Opportunity) => (
-    <article className="cc-card" key={o.id}>
-      <div className="cc-row-head">
-        <span className="cc-small cc-muted">{contact(o.clientId)?.name}</span>
-        <span className="cc-tag">
+    <DetailRow
+      key={o.id}
+      title={contact(o.clientId)?.name || "Contacto por vincular"}
+      subtitle={o.need}
+      status={<span className="cc-tag">{saleStageLabel[o.stage]}</span>}
+      value={quoteAmount(o)}
+      next={
+        <>
+          {o.nextAction || "Definir siguiente paso"}
+          <small>
+            {o.nextActionDue ? dateLabel(o.nextActionDue) : "Sin fecha"}
+          </small>
+        </>
+      }
+    >
+      <div className="cc-detail-facts">
+        <p>
+          <small>Necesidad</small>
+          {o.need}
+        </p>
+        <p>
+          <small>Origen · Responsable</small>
           {o.source === "email"
             ? "Correo"
             : o.source === "whatsapp"
               ? "WhatsApp"
               : o.source === "form"
                 ? "Formulario"
-                : "Manual"}
-        </span>
+                : "Manual"}{" "}
+          · {d.user.name}
+        </p>
+        <p>
+          <small>Próximo paso</small>
+          {o.nextAction || "Define el siguiente paso"} · {nextDue(o)}
+        </p>
       </div>
-      <h3 className="mt-3 font-semibold">{o.need}</h3>
-      <p className="cc-money">{quoteAmount(o)}</p>
       <div className="cc-actions">
-        <span className="cc-tag">{saleStageLabel[o.stage]}</span>
-        <span className="cc-small cc-muted">Responsable: {d.user.name}</span>
-      </div>
-      <p className="cc-next">
-        {o.nextAction || "Define el siguiente paso"}
-        <br />
-        <span className="cc-muted">{nextDue(o)}</span>
-      </p>
-      <div className="cc-actions mt-4">
         <button
           className="cc-button"
           onClick={() => open({ kind: "opportunity", row: o })}
@@ -342,10 +392,18 @@ export function CommercialPage({ view }: { view: View }) {
           </button>
         )}
       </div>
-    </article>
+    </DetailRow>
   );
   return (
-    <div className="cc-page cc-enter" key={view}>
+    <div
+      className={
+        "cc-page cc-enter" +
+        (["sales", "clients", "projects", "billing", "quotes"].includes(view)
+          ? " cc-record-page"
+          : "")
+      }
+      key={view}
+    >
       <header className={view === "home" ? "cc-head cc-home-head" : "cc-head"}>
         <div>
           {view === "home" && (
@@ -367,7 +425,7 @@ export function CommercialPage({ view }: { view: View }) {
               : descriptions[view]}
           </p>
         </div>
-        {view === "home" && <NuevaCotizacionButton />}
+        {["home", "quotes"].includes(view) && <NuevaCotizacionButton />}
         {["home", "sales", "clients"].includes(view) && (
           <button
             className="cc-button"
@@ -404,6 +462,17 @@ export function CommercialPage({ view }: { view: View }) {
               open({ kind: "activation", row });
             else open({ kind: "quote", row, client: contact(row.clientId)! });
           }}
+        />
+      )}
+      {view === "quotes" && (
+        <CommercialQuotes
+          data={d}
+          onPreview={(row) => open({ kind: "quote-preview", row })}
+          onEdit={(row) => {
+            const client = contact(row.clientId);
+            if (client) open({ kind: "quote", row, client });
+          }}
+          onDecision={(row) => open({ kind: "activation", row })}
         />
       )}
       {view === "sales" && (
@@ -496,29 +565,43 @@ export function CommercialPage({ view }: { view: View }) {
           </div>
           {board ? (
             <div className="cc-board">
-              {saleStages.map((s) => (
-                <section className="cc-board-col" key={s}>
-                  <h2>{saleStageLabel[s]}</h2>
-                  {opportunities
-                    .filter((o) => o.stage === s)
-                    .map(opportunityCard)}
-                </section>
-              ))}
+              {saleStages
+                .filter((s) => tab === "all" || tab === s)
+                .map((s) => (
+                  <section className="cc-board-col" key={s}>
+                    <h2>{saleStageLabel[s]}</h2>
+                    {opportunities
+                      .filter((o) => o.stage === s)
+                      .map(opportunityCard)}
+                    {!opportunities.some((o) => o.stage === s) && (
+                      <p className="cc-small cc-muted">
+                        Sin ventas en esta etapa
+                      </p>
+                    )}
+                  </section>
+                ))}
             </div>
-          ) : opportunities.length ? (
-            <div className="cc-grid">
-              {opportunities
-                .filter((o) =>
-                  tab === "all"
-                    ? !["pausado", "perdido"].includes(o.stage)
-                    : o.stage === tab,
-                )
-                .map(opportunityCard)}
+          ) : visibleOpportunities.length ? (
+            <div className="cc-record-list">
+              <RowLabels
+                identity="Cliente / necesidad"
+                value="Cotización"
+                next="Siguiente paso"
+              />
+              {visibleOpportunities.map(opportunityCard)}
             </div>
           ) : (
             <Empty
-              title="Tu primera oportunidad empieza aquí"
-              text="Crea un contacto con su necesidad. El importe aparecerá al vincular una cotización real."
+              title={
+                d.opportunities.length
+                  ? "Sin ventas en esta vista"
+                  : "Tu primera oportunidad empieza aquí"
+              }
+              text={
+                d.opportunities.length
+                  ? "Prueba otra etapa o una búsqueda distinta."
+                  : "Crea un contacto con su necesidad. El importe aparecerá al vincular una cotización real."
+              }
             />
           )}
           <details className="mt-6 cc-small cc-muted">
@@ -531,7 +614,7 @@ export function CommercialPage({ view }: { view: View }) {
               }
               )
             </summary>
-            <div className="cc-grid mt-4">
+            <div className="cc-record-list mt-4">
               {opportunities
                 .filter((o) => ["pausado", "perdido"].includes(o.stage))
                 .map(opportunityCard)}
@@ -570,28 +653,20 @@ export function CommercialPage({ view }: { view: View }) {
               </button>
             ))}
           </div>
-          <div className="cc-grid">
-            {d.contacts
-              .filter((c) => c.name.toLowerCase().includes(query))
-              .filter((c) =>
-                tab === "balance"
-                  ? billsFor(c.id).some((b) => balanceCents(b) > 0)
-                  : tab === "sales"
-                    ? pending.some((o) => o.clientId === c.id)
-                    : tab === "clear"
-                      ? billsFor(c.id).length > 0 &&
-                        billsFor(c.id).every((b) => balanceCents(b) === 0)
-                      : true,
-              )
-              .map((c) => (
-                <article className="cc-card" key={c.id}>
-                  <div className="cc-contact-top">
-                    <span className="cc-avatar">{initials(c.name)}</span>
-                    <div>
-                      <h2>{c.name}</h2>
-                      <p>{c.contactName || "Contacto comercial"}</p>
-                    </div>
-                  </div>
+          <div className="cc-record-list">
+            <RowLabels
+              identity="Cliente / contacto"
+              value="Saldo pendiente"
+              next="Siguiente paso"
+            />
+            {visibleContacts.map((c) => (
+              <DetailRow
+                key={c.id}
+                title={c.name}
+                subtitle={
+                  c.contactName || c.email || c.phone || "Contacto comercial"
+                }
+                status={
                   <span className="cc-tag">
                     {c.status === "prospecto"
                       ? "En venta"
@@ -601,49 +676,87 @@ export function CommercialPage({ view }: { view: View }) {
                           ? "En pausa"
                           : "Cerrado"}
                   </span>
-                  <p className="cc-contact-meta">
+                }
+                value={
+                  billsFor(c.id).length === 0
+                    ? "Sin cobros"
+                    : billsFor(c.id).some((b) => balanceCents(b) > 0)
+                      ? balanceFor(c.id)
+                      : "Al corriente"
+                }
+                next={
+                  <>
+                    {pending.find((o) => o.clientId === c.id)?.nextAction ||
+                      "Sin próximo paso"}
+                    <small>
+                      {dateLabel(
+                        pending.find((o) => o.clientId === c.id)?.nextActionDue,
+                      )}
+                    </small>
+                  </>
+                }
+              >
+                <div className="cc-detail-facts">
+                  <p>
+                    <small>Contacto</small>
+                    {c.contactName || c.name}
+                    <br />
+                    {c.email || "Sin correo"}
+                    <br />
+                    {c.phone || "Sin teléfono"}
+                  </p>
+                  <p>
+                    <small>Próximo paso</small>
+                    {pending.find((o) => o.clientId === c.id)?.nextAction ||
+                      "Sin siguiente paso registrado"}
+                    <br />
+                    {dateLabel(
+                      pending.find((o) => o.clientId === c.id)?.nextActionDue,
+                    )}
+                  </p>
+                  <p>
+                    <small>Proyectos</small>
                     {d.projects
                       .filter((p) => p.clientId === c.id)
                       .map((p) => p.name)
                       .join(" · ") || "Sin proyectos registrados"}
                   </p>
-                  <div className="cc-balance">
-                    <span>
-                      {billsFor(c.id).some((b) => balanceCents(b) > 0)
-                        ? "Saldo pendiente"
-                        : "Cuenta"}
-                    </span>
-                    <strong>
-                      {billsFor(c.id).length === 0
-                        ? "Sin cobros"
-                        : billsFor(c.id).some((b) => balanceCents(b) > 0)
-                          ? balanceFor(c.id)
-                          : "Al corriente"}
-                    </strong>
-                  </div>
-                  <p className="cc-small cc-muted">
-                    {pending.find((o) => o.clientId === c.id)?.nextAction ||
-                      "Sin siguiente paso registrado"}
-                  </p>
-                  <div className="cc-card-footer cc-actions">
-                    <Link href={href(c)} className="cc-button">
-                      Ver cliente <ChevronRight size={14} />
-                    </Link>
-                    <button
-                      className="cc-button quiet"
-                      onClick={() => open({ kind: "statement", client: c })}
-                    >
-                      Estado de cuenta
-                    </button>
-                    <ClientCommercialActions
-                      client={c}
-                      data={d}
-                      refresh={mutate}
-                    />
-                  </div>
-                </article>
-              ))}
+                </div>
+                <div className="cc-actions">
+                  <Link href={href(c)} className="cc-button">
+                    Ver cliente <ChevronRight size={14} />
+                  </Link>
+                  <button
+                    className="cc-button quiet"
+                    onClick={() => open({ kind: "statement", client: c })}
+                  >
+                    Estado de cuenta
+                  </button>
+                  <ClientCommercialActions
+                    client={c}
+                    data={d}
+                    refresh={mutate}
+                  />
+                </div>
+              </DetailRow>
+            ))}
           </div>
+          {d.contacts.length > 0 && !visibleContacts.length && (
+            <Empty
+              title="Sin resultados en esta vista"
+              text="Prueba otro filtro o una búsqueda distinta."
+            >
+              <button
+                className="cc-button"
+                onClick={() => {
+                  setSearch("");
+                  setTab("all");
+                }}
+              >
+                Limpiar filtros
+              </button>
+            </Empty>
+          )}
           {!d.contacts.length && (
             <Empty
               title="Tu cartera, en un solo lugar"
@@ -666,69 +779,108 @@ export function CommercialPage({ view }: { view: View }) {
               {d.projects.length} proyectos
             </span>
           </div>
-          <div className="cc-grid two">
-            {d.projects
-              .filter((p) =>
-                (p.name + " " + contact(p.clientId)?.name)
-                  .toLowerCase()
-                  .includes(query),
-              )
-              .map((p) => (
-                <article className="cc-card" key={p.id}>
-                  <div className="cc-row-head">
-                    <div>
-                      <p className="cc-small cc-muted mb-2">
-                        {contact(p.clientId)?.name}
-                      </p>
-                      <h2>{p.name}</h2>
-                    </div>
+          <div className="cc-record-list">
+            <RowLabels
+              identity="Proyecto / cliente"
+              status="Etapa"
+              value="Avance comercial"
+              next="Siguiente paso"
+            />
+            {visibleProjects.map((p) => (
+              <DetailRow
+                key={p.id}
+                title={p.name}
+                subtitle={contact(p.clientId)?.name}
+                status={
+                  <span
+                    className={
+                      "cc-tag " + (p.stage === "entregado" ? "green" : "")
+                    }
+                  >
+                    {p.revision > 0
+                      ? projectStageLabel[p.stage]
+                      : "Por confirmar"}
+                  </span>
+                }
+                value={
+                  <span className="cc-row-progress">
                     <span
-                      className={
-                        "cc-tag " + (p.stage === "entregado" ? "green" : "")
-                      }
-                    >
+                      style={{
+                        width:
+                          (p.revision > 0
+                            ? (projectStages.indexOf(p.stage) + 1) * 25
+                            : 0) + "%",
+                      }}
+                    />
+                    <small>
                       {p.revision > 0
-                        ? projectStageLabel[p.stage]
-                        : "Etapa por confirmar"}
-                    </span>
-                  </div>
-                  <Progress stage={p.stage} confirmed={p.revision > 0} />
-                  <p className="cc-small cc-muted mt-5">
+                        ? projectStages.indexOf(p.stage) + 1 + " de 4 etapas"
+                        : "Sin etapa confirmada"}
+                    </small>
+                  </span>
+                }
+                next={
+                  <>
+                    {p.nextStep || "Por definir"}
+                    <small>{dateLabel(p.due)}</small>
+                  </>
+                }
+              >
+                <Progress stage={p.stage} confirmed={p.revision > 0} />
+                <div className="cc-detail-facts">
+                  <p>
+                    <small>Nota para el cliente</small>
                     {p.note || "Todavía no hay una nota para el cliente."}
                   </p>
-                  <p className="cc-next">
-                    <strong>Siguiente paso</strong>
-                    <br />
+                  <p>
+                    <small>Próximo paso</small>
                     {p.nextStep || "Por definir"} · {dateLabel(p.due)}
                   </p>
-                  <div className="cc-balance">
-                    <span>Saldo de la cuenta</span>
-                    <strong>{balanceFor(p.clientId)}</strong>
-                  </div>
-                  <div className="cc-card-footer cc-actions">
-                    <button
-                      className="cc-button"
-                      onClick={() => open({ kind: "project", row: p })}
-                    >
-                      Actualizar avance
-                    </button>
-                    <Link
-                      className="cc-button quiet"
-                      href={
-                        "/proyectos/" + encodeURIComponent(p.publicId || p.id)
-                      }
-                    >
-                      Trabajo interno <ArrowUpRight size={13} />
-                    </Link>
-                    <ProjectCommercialActions
-                      project={p}
-                      data={d}
-                      refresh={mutate}
-                    />
-                  </div>
-                </article>
-              ))}
+                  <p>
+                    <small>Saldo de la cuenta</small>
+                    {balanceFor(p.clientId)}
+                  </p>
+                </div>
+                <div className="cc-actions">
+                  <button
+                    className="cc-button"
+                    onClick={() => open({ kind: "project", row: p })}
+                  >
+                    Actualizar avance
+                  </button>
+                  <Link
+                    className="cc-button quiet"
+                    href={
+                      "/proyectos/" + encodeURIComponent(p.publicId || p.id)
+                    }
+                  >
+                    Trabajo interno <ArrowUpRight size={13} />
+                  </Link>
+                  <ProjectCommercialActions
+                    project={p}
+                    data={d}
+                    refresh={mutate}
+                  />
+                </div>
+              </DetailRow>
+            ))}
           </div>
+          {d.projects.length > 0 && !visibleProjects.length && (
+            <Empty
+              title="Sin resultados en esta vista"
+              text="Prueba otro filtro o una búsqueda distinta."
+            >
+              <button
+                className="cc-button"
+                onClick={() => {
+                  setSearch("");
+                  setTab("all");
+                }}
+              >
+                Limpiar filtros
+              </button>
+            </Empty>
+          )}
           {!d.projects.length && (
             <Empty
               title="Tus proyectos aparecerán aquí"
@@ -789,86 +941,114 @@ export function CommercialPage({ view }: { view: View }) {
               </button>
             ))}
           </div>
-          <div className="cc-grid two">
-            {d.bills
-              .filter((b) =>
-                tab === "paid"
-                  ? b.status === "pagado"
-                  : tab === "overdue"
-                    ? b.status === "vencido"
-                    : balanceCents(b) > 0,
-              )
-              .map((b) => (
-                <article className="cc-card" key={b.id}>
-                  <div className="cc-row-head">
-                    <div>
-                      <p className="cc-small cc-muted mb-2">{b.clientName}</p>
-                      <h2>{b.concept}</h2>
-                    </div>
-                    <span
-                      className={
-                        "cc-tag " +
-                        (b.status === "vencido"
-                          ? "red"
-                          : b.status === "pagado"
-                            ? "green"
-                            : "amber")
-                      }
-                    >
-                      {b.status === "vencido"
-                        ? "Vencido"
-                        : b.status === "parcial"
-                          ? "Pago parcial"
-                          : b.status === "pagado"
-                            ? "Pagado"
-                            : "Pendiente"}
-                    </span>
-                  </div>
-                  <div className="cc-money">
-                    {money(balanceCents(b), b.currency)}{" "}
-                    <span className="cc-small cc-muted">por recibir</span>
-                  </div>
-                  <p className="cc-small cc-muted">
-                    Total del período:{" "}
-                    {money(Math.round(b.amount * 100), b.currency)} · Vence{" "}
+          <div className="cc-toolbar">
+            <input
+              aria-label="Buscar cobros"
+              className="cc-input"
+              placeholder="Buscar cliente o concepto…"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <div className="cc-record-list">
+            <RowLabels
+              identity="Concepto / cliente"
+              value={tab === "paid" ? "Total del período" : "Por recibir"}
+              next="Vencimiento"
+            />
+            {visibleBills.map((b) => (
+              <DetailRow
+                key={b.id}
+                title={b.concept}
+                subtitle={b.clientName}
+                status={
+                  <span
+                    className={
+                      "cc-tag " + (b.status === "pagado" ? "green" : "")
+                    }
+                  >
+                    {b.status === "vencido"
+                      ? "Vencido"
+                      : b.status === "parcial"
+                        ? "Pago parcial"
+                        : b.status === "pagado"
+                          ? "Pagado"
+                          : "Pendiente"}
+                  </span>
+                }
+                value={money(
+                  tab === "paid" ? Math.round(b.amount * 100) : balanceCents(b),
+                  b.currency,
+                )}
+                next={
+                  <>
                     {dateLabel(b.dueDate)}
+                    <small>{b.paymentHistory.length} pagos registrados</small>
+                  </>
+                }
+              >
+                <div className="cc-detail-facts">
+                  <p>
+                    <small>Total del período</small>
+                    {money(Math.round(b.amount * 100), b.currency)}
                   </p>
-                  <p className="cc-next">
-                    {b.paymentHistory.length} pagos en el historial ·{" "}
+                  <p>
+                    <small>Por recibir</small>
+                    {money(balanceCents(b), b.currency)}
+                  </p>
+                  <p>
+                    <small>Recordatorio</small>
                     {d.reminders.find((r) => r.billingItemId === b.id)
                       ?.status || "Sin recordatorio programado"}
                   </p>
-                  <div className="cc-card-footer cc-actions">
-                    {balanceCents(b) > 0 && (
-                      <button
-                        className="cc-button"
-                        onClick={() => open({ kind: "payment", row: b })}
-                      >
-                        Registrar pago
-                      </button>
-                    )}
-                    {contact(b.clientId) && (
-                      <button
-                        className="cc-button quiet"
-                        onClick={() =>
-                          open({
-                            kind: "statement",
-                            client: contact(b.clientId)!,
-                          })
-                        }
-                      >
-                        Estado de cuenta
-                      </button>
-                    )}
-                    <BillingCommercialActions
-                      bill={b}
-                      data={d}
-                      refresh={mutate}
-                    />
-                  </div>
-                </article>
-              ))}
+                </div>
+                <div className="cc-actions">
+                  {balanceCents(b) > 0 && (
+                    <button
+                      className="cc-button"
+                      onClick={() => open({ kind: "payment", row: b })}
+                    >
+                      Registrar pago
+                    </button>
+                  )}
+                  {contact(b.clientId) && (
+                    <button
+                      className="cc-button quiet"
+                      onClick={() =>
+                        open({
+                          kind: "statement",
+                          client: contact(b.clientId)!,
+                        })
+                      }
+                    >
+                      Estado de cuenta
+                    </button>
+                  )}
+                  <BillingCommercialActions
+                    bill={b}
+                    data={d}
+                    refresh={mutate}
+                  />
+                </div>
+              </DetailRow>
+            ))}
           </div>
+          {d.bills.length > 0 && !visibleBills.length && (
+            <Empty
+              title="Sin resultados en esta vista"
+              text="Prueba otro filtro o una búsqueda distinta."
+            >
+              <button
+                className="cc-button"
+                onClick={() => {
+                  setSearch("");
+                  setTab("all");
+                }}
+              >
+                Limpiar filtros
+              </button>
+            </Empty>
+          )}
           {!d.bills.length && (
             <Empty
               title="No hay cobros registrados"

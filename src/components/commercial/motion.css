@@ -9,7 +9,8 @@
     .cc-home-secondary > section,
     .cc-home-secondary-details,
     .cc-home-activity,
-    .cc-grid > .cc-card
+    .cc-grid > .cc-card,
+    .cc-record-list
   ) {
   animation: cc-panel-in 380ms cubic-bezier(0.2, 0.7, 0.25, 1) both;
 }
@@ -37,6 +38,8 @@
 .commercial .cc-grid > .cc-card:nth-child(4) {
   animation-delay: 105ms;
 }
+.commercial .cc-detail-row[open] > .cc-row-detail,
+.commercial .cc-bubble,
 .commercial .cc-mail-row {
   animation: cc-message-in 220ms ease-out both;
 }

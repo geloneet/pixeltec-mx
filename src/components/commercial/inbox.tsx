@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import Link from "next/link";
+import { Mail, MessageCircle, FileText } from "lucide-react";
 import type { CommercialSnapshot } from "@/lib/commercial/snapshot";
 import { approvedReply } from "@/lib/commercial/policy";
 import { loadCommercialThread } from "./thread";
@@ -111,6 +112,18 @@ export function CommercialInbox({
         answers: d.policy.approvedAnswers,
       })
     : null;
+  const channelLabel =
+    c?.channel === "whatsapp"
+      ? "WhatsApp"
+      : c?.channel === "form"
+        ? "Formulario"
+        : "Correo";
+  const client = d.contacts.find((row) => row.id === c?.clientId);
+  const nextSale = d.opportunities.find(
+    (o) =>
+      o.clientId === c?.clientId &&
+      !["ganado", "perdido", "pausado"].includes(o.stage),
+  );
   return (
     <>
       <div className="cc-toolbar">
@@ -192,6 +205,7 @@ export function CommercialInbox({
                 </h2>
                 {rows.map((row) => (
                   <button
+                    title={row.subject || row.address}
                     key={row.id}
                     className={
                       "cc-thread-item" +
@@ -200,7 +214,7 @@ export function CommercialInbox({
                     aria-pressed={row.id === selected}
                     onClick={() => setSelected(row.id)}
                   >
-                    <span className="cc-avatar">
+                    <span className="cc-avatar cc-thread-avatar">
                       {initials(
                         d.contacts.find((client) => client.id === row.clientId)
                           ?.name || row.address,
@@ -241,14 +255,19 @@ export function CommercialInbox({
           {c ? (
             <>
               <header className="cc-thread-head">
-                <div>
-                  <h2>
-                    {d.contacts.find((client) => client.id === c.clientId)
-                      ?.name || c.address}
-                  </h2>
-                  <p className="cc-small cc-muted">
-                    {c.address} · {states[c.state]}
-                  </p>
+                <div className="cc-thread-identity">
+                  <span className="cc-avatar">
+                    {initials(client?.name || c.address)}
+                  </span>
+                  <div>
+                    <h2>
+                      {d.contacts.find((client) => client.id === c.clientId)
+                        ?.name || c.address}
+                    </h2>
+                    <p className="cc-small cc-muted">
+                      {c.address} · {states[c.state]}
+                    </p>
+                  </div>
                 </div>
                 <span className="cc-tag">
                   {c.mode === "BOT"
@@ -258,7 +277,7 @@ export function CommercialInbox({
                       : "Humano"}
                 </span>
               </header>
-              <div className="cc-actions mb-4">
+              <div className="cc-actions cc-thread-controls">
                 {c.clientId && (
                   <Link
                     href={
@@ -316,6 +335,35 @@ export function CommercialInbox({
                   Reactivar asistente
                 </button>
               </div>
+              <div className="cc-thread-context">
+                <span className="cc-channel-label">
+                  {c.channel === "whatsapp" ? (
+                    <MessageCircle size={14} />
+                  ) : c.channel === "form" ? (
+                    <FileText size={14} />
+                  ) : (
+                    <Mail size={14} />
+                  )}{" "}
+                  {channelLabel}
+                </span>
+                <strong title={c.subject}>
+                  {c.subject || "Conversación con el cliente"}
+                </strong>
+                <span>
+                  {thread ? `${thread.messages.length} mensajes` : "Historial"}
+                </span>
+              </div>
+              {nextSale?.nextAction && (
+                <details className="cc-thread-sale">
+                  <summary>Próximo paso: {nextSale.nextAction}</summary>
+                  <p>
+                    {nextSale.need} · {dateLabel(nextSale.nextActionDue)}
+                  </p>
+                  <Link href="/ventas" className="cc-button quiet">
+                    Abrir Ventas
+                  </Link>
+                </details>
+              )}
               {c.matchReview && (
                 <div className="cc-error">
                   Este identificador coincide con un contacto sin verificar.{" "}
@@ -347,9 +395,20 @@ export function CommercialInbox({
                 )}
                 {thread?.messages.map((m) => (
                   <article className={"cc-bubble " + m.direction} key={m.id}>
+                    <div className="cc-bubble-author">
+                      {m.direction === "inbound"
+                        ? client?.contactName || client?.name || "Cliente"
+                        : "PixelTEC"}
+                    </div>
                     <p>{m.body}</p>
                     <small>
                       {dateLabel(m.createdAt)} ·{" "}
+                      {new Intl.DateTimeFormat("es-MX", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZone: "America/Mexico_City",
+                      }).format(new Date(m.createdAt))}{" "}
+                      ·{" "}
                       {m.direction === "inbound"
                         ? "Recibido"
                         : m.delivery === "sent"

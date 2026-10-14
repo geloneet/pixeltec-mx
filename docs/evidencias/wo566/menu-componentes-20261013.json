@@ -1,0 +1,41 @@
+{
+  "workOrder": "WO-2026-00566",
+  "date": "2026-10-13",
+  "phase": "Detalle de menú y componentes según capturas aprobadas",
+  "base": "b78ee0fbd7c314476ca97d350a169bfe64ad63c1",
+  "humanRequest": "ve bien el estilo del menú, la tipografia, los recortes, la suavidad del sistema, los colores, los iconos como todo se organiza bien",
+  "changes": [
+    "Menú compacto con grupos Comercial/Operación/General/Más herramientas abiertos por defecto y plegables;11destinos existentes preservados, visibilidad por catálogo/rol sin ampliar permisos",
+    "Iconos Lucide de18px/trazo1.45, tipografía regular14px, filas34px, marco activo neutro y ficha inferior suave;logo canónico conservado",
+    "Botones comerciales y primary alineados con azul#0784fc, pesos regulares y bordes neutros",
+    "KPI conservados con valores/deltas/links/series canónicos;21marcas agrupadas en7días, altura real de cada día y ceros grises, sin porcentaje de progreso inventado",
+    "Registros comerciales en listas con encabezado tenue/divisores finos y contexto visible; mismo detalle/acciones al clic",
+    "Actividad reciente organizada en filas de evento/contacto/fecha, sin perder filtros/expansión/enlaces"
+  ],
+  "validation": {
+    "uiQuotesRoute": 115,
+    "navigationRoleCases": 4,
+    "typecheck": "PASS",
+    "lint": "PASS; warning img heredado progressive-cube.tsx:27",
+    "build": "PASS;209 páginas",
+    "postgres": "27pruebas acreditadas en dfa9700, no reejecutadas en esta fase sin cambio de negocio/persistencia",
+    "diffCheck": "PASS"
+  },
+  "browser": {
+    "desktop1440": "7vistas:mainclient=scroll1213o1224, sin overflow; menú14px/34px,11enlaces",
+    "mobile320": "7vistas oscuras/reducidas: documento<=320 y mainclient=scroll; menú abre/cierra y Más herramientas se pliega, Blog oculto",
+    "sales801": "main566=566;9resúmenes498=498",
+    "functional": "Enter pliega/reabre Operación y oculta Cotizaciones; Más herramientas oculta Blog. Enter abre/cierra venta; actividad se expande y se restaura; sin guardar/enviar",
+    "colors": "botón Nueva cotización efectivo rgb(7,132,252), opacidad1; primary209 98% 51%",
+    "kpis": "5micrográficas,21segmentos por serie; fuente y valores conservados",
+    "final": "claro/normal, viewport reset, ambas pestañas locales actualizadas",
+    "captures": "Privadas fuera de Git:menu-kpi-referencia.jpg,ventas-detalle-referencia.jpg,actividad-detalle-referencia.jpg; capturas fullPage evitan recorte del buffer de captura visible, sin editar píxeles"
+  },
+  "coordination": "Registro volvió a responder;status con reservas propias vigentes y pending_operations vacío; heartbeat11leases PASS. No se retiró candado ni se atribuye quién lo recuperó.",
+  "limits": [
+    "Sin schema/datos/negocio/RBAC/API/envíos/automatismos/VPS/DNS/merge/deploy",
+    "QA conserva egreso/cron/recepción/automatismos apagados y error honesto de WhatsApp remoto",
+    "Grupos son presentación local del shell: no cambia la taxonomía canónica ni el catálogo de módulos",
+    "Fuente Roboto local sigue siendo aproximación visual; no afirmar identificación exacta de la fuente de la foto"
+  ]
+}

@@ -22,7 +22,7 @@
   --card-foreground: 218 16% 10%;
   --popover: 0 0% 100%;
   --popover-foreground: 218 16% 10%;
-  --primary: 219 100% 54%;
+  --primary: 209 98% 51%;
   --primary-foreground: 0 0% 100%;
   --border: 220 17% 91%;
   --input: 220 17% 91%;
@@ -55,7 +55,7 @@
   --card-foreground: 220 9% 93%;
   --popover: 225 8% 10%;
   --popover-foreground: 220 9% 93%;
-  --primary: 219 100% 54%;
+  --primary: 209 98% 51%;
   --primary-foreground: 0 0% 100%;
   --border: 223 8% 17%;
   --input: 223 8% 17%;
@@ -1907,4 +1907,45 @@ html[data-commercial-motion="reduced"] .cc-overlay {
   .commercial .cc-topbar-title, .commercial .cc-topbar-actions { display: none; }
   .commercial .cc-side-search { margin-top: 0; }
   .commercial .cc-head h1 { font-size: 23px; }
+}
+
+/* Fine treatment from the approved close-ups: 34px menu rhythm and hairline frames. */
+.commercial .cc-navigation { min-height: 0; overflow-y: auto; margin-bottom: 16px; scrollbar-width: thin; }
+.commercial .cc-nav-group { margin-bottom: 22px; }
+.commercial .cc-nav-group:last-child { margin-bottom: 0; }
+.commercial .cc-nav-group > summary { display: flex; justify-content: space-between; align-items: center; padding: 0 2px 7px; font-size: 12px; font-weight: 400; color: var(--cc-tx3); cursor: pointer; list-style: none; }
+.commercial .cc-nav-group > summary::-webkit-details-marker { display: none; }
+.commercial .cc-nav-group:not([open]) > summary > svg { transform: rotate(180deg); }
+.commercial .cc-nav-link { min-height: 34px; padding: 5px 9px; margin-bottom: 2px; gap: 10px; font-size: 14px; line-height: 22px; color: var(--cc-tx2); }
+.commercial .cc-nav-link > svg { color: var(--cc-tx3); flex-shrink: 0; }
+.commercial .cc-nav-link.selected { border-color: var(--cc-line); background: var(--cc-card); box-shadow: 0 1px 2px rgb(0 0 0 / 2%); font-weight: 400; }
+.commercial .cc-account { border: 1px solid var(--cc-line); border-radius: 9px; padding: 10px 9px; background: var(--cc-card2); }
+.commercial .cc-account strong { font-weight: 500; }
+.commercial .cc-brand { font-size: 19px; }
+.commercial .cc-logo { margin-bottom: 25px; }
+.commercial .cc-record-list { padding: 0; gap: 0; border-radius: 12px; }
+.commercial .cc-row-labels { padding: 11px 17px; background: var(--cc-card2); border-bottom: 1px solid var(--cc-line); border-radius: 12px 12px 0 0; }
+.commercial .cc-detail-row, .commercial .cc-detail-row:last-child { background: var(--cc-card); border: 0; border-bottom: 1px solid var(--cc-line); border-radius: 0; }
+.commercial .cc-detail-row:last-child { border-bottom: 0; }
+.commercial .cc-detail-row > summary { margin: 0; border: 0; border-radius: 0; padding: 13px 17px; gap: 9px 14px; }
+.commercial .cc-detail-row > summary:hover { background: var(--cc-card2); }
+.commercial .cc-row-identity { gap: 10px; }
+.commercial .cc-row-identity strong { font-size: 13px; font-weight: 500; }
+.commercial .cc-row-identity small { margin-top: 2px; line-height: 1.45; }
+.commercial .cc-row-value { font-weight: 500; }
+.commercial .cc-record-preview { border-top: 0; padding-top: 0; padding-left: 44px; font-size: 11px; }
+.commercial .cc-record-icon { width: 30px; height: 30px; border-radius: 7px; border: 0; }
+.commercial .cc-record-icon > svg { stroke-width: 1.5; }
+.commercial .cc-tag { border-radius: 6px; padding: 2px 7px; font-size: 11px; line-height: 1.5; }
+.commercial .cc-tag.green { background: var(--cc-card); border: 1px solid var(--cc-green-bg); color: var(--cc-green); }
+.commercial .cc-button { font-weight: 400; font-size: 13px; border-color: var(--cc-line); box-shadow: 0 1px 2px rgb(0 0 0 / 2%); }
+.commercial .cc-button.primary, .commercial .cc-head > button.bg-primary { background: var(--cc-blue); border-color: var(--cc-blue); color: #fff; font-weight: 400; }
+.commercial .cc-button.primary:hover, .commercial .cc-head > button.bg-primary:hover { background: #0877df; }
+.commercial .cc-button > svg { stroke-width: 1.6; }
+@media (max-width: 1000px) {
+ .commercial .cc-record-preview { padding-left: 0; }
+}
+@media (max-width: 700px) {
+ .commercial .cc-record-list { padding: 0; }
+ .commercial .cc-detail-row > summary { padding: 13px; }
 }

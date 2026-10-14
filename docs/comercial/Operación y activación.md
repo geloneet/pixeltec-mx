@@ -9,6 +9,14 @@ WhatsApp incorpora recibo nativo y conciliación propia, coordinados con [PixelB
 
 Capacidad fresh20.178GiB/80%, operación limitada autorizada yrecursos preservados; [recibo](../evidencias/wo566/vps-capacidad-refresh-20261012.json). Medir de nuevo antes de build/deploy; no repetir purgas con este permiso ya utilizado.
 
+## Menú y componentes — 2026-10-13
+
+Las nuevas capturas de Miguel precisan el tratamiento del menú y componentes: CommercialNavigation agrupa los mismos destinos autorizados del catálogo en Comercial/Operación/General/Más herramientas. Los grupos inician abiertos, permiten plegarse con clic/Enter y se restablecen al cambiar de área; no cambia la taxonomía de nav-config ni se amplían permisos. Menú con texto regular14px, filas34px e iconos18px/trazo1.45; ficha inferior y selección con borde suave. Búsqueda/menú móvil/atajo/cuenta se conservan.
+
+Los cinco KPI conservan valores, deltas, links y series: cada día se dibuja con tres marcas (21 para siete días) con su altura real; los ceros permanecen grises, nunca se inventa progreso de objetivos. Botones y primary comercial usan azul#0784fc; listas comerciales con divisores finos/preview/detalle intacto. Actividad reciente presenta evento/contacto/fecha en filas y mantiene filtros/expansión/enlaces. Roboto local continúa como aproximación tipográfica.
+
+[Recibo](../evidencias/wo566/menu-componentes-20261013.json):115UI/quotes/ruta y tipos/lint/build209 PASS;7vistas1440/320 sin overflow y Ventas801566=566, filas498=498. Sin cambio de negocio/persistencia/schema/envíos/producción. Registro volvió a responder normalmente y heartbeat11leases PASS; no se retiró candado ni se atribuye recuperación. Mantener los gates productivos separados.
+
 ## Presentación con referencia Payzen — 2026-10-13
 
 Miguel actualizó la referencia visual con Payzen y pidió analizar tipografía y todos los elementos. Roboto ya disponible y licenciado en public/fonts sustituye Hanken/Bricolage únicamente en el shell comercial, usando la variable de next/font del layout. Es una aproximación visual, no identificación exacta de la fuente de la foto. La nueva instrucción humana prevalece sobre el brief visual anterior; el sitio público y sus assets no cambian. Mantener títulos regulares, bordes suaves y superficies en dos capas; nunca usar datos inventados para reproducir las gráficas de la referencia.

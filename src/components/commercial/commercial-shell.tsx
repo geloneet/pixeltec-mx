@@ -5,41 +5,17 @@ import Image from "next/image";
 import { SITE } from "@/lib/site-config";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
-import {
-  Home,
-  TrendingUp,
-  Users,
-  MessageCircle,
-  FolderKanban,
-  CircleDollarSign,
-  Settings2,
-  Search,
-  Mail,
-  ChevronDown,
-  Menu,
-  X,
-  LogOut,
-} from "lucide-react";
+import { Search, Mail, ChevronDown, Menu, X, LogOut } from "lucide-react";
+import { CommercialNavigation } from "./commercial-navigation";
 import { signOut } from "next-auth/react";
 import {
   getActiveArea,
-  getAreaHref,
-  getMoreNavAreas,
   getPrimaryNavAreas,
   NAV_AREA_LABELS,
 } from "@/components/nav/nav-config";
 import { useCmdK } from "@/components/cmd-k/CmdKProvider";
 import "./commercial.css";
 import "./motion.css";
-const icons = {
-  hoy: Home,
-  ventas: TrendingUp,
-  crm: Users,
-  whatsapp: MessageCircle,
-  proyectos: FolderKanban,
-  finanzas: CircleDollarSign,
-  ajustes: Settings2,
-};
 export function PixeltecMark() {
   return (
     <span className="cc-brand">
@@ -136,7 +112,6 @@ export function CommercialShell({ children }: { children: ReactNode }) {
     if (main) main.scrollTop = 0;
   }, [pathname, area]);
   const primary = getPrimaryNavAreas(role);
-  const more = getMoreNavAreas(role);
   return (
     <div
       className={
@@ -166,33 +141,7 @@ export function CommercialShell({ children }: { children: ReactNode }) {
           <span>Buscar</span>
           <kbd>⌘ K</kbd>
         </button>
-        <p className="cc-side-label">Centro Comercial</p>
-        <nav aria-label="Navegación principal">
-          {primary.map((key) => {
-            const Icon = icons[key as keyof typeof icons] ?? FolderKanban;
-            return (
-              <Link
-                key={key}
-                href={getAreaHref(key)}
-                aria-current={area === key ? "page" : undefined}
-                className={"cc-nav-link" + (area === key ? " selected" : "")}
-              >
-                <Icon size={19} strokeWidth={1.8} />
-                <span>{NAV_AREA_LABELS[key]}</span>
-              </Link>
-            );
-          })}
-        </nav>
-        <details className="cc-more">
-          <summary>
-            Más herramientas <ChevronDown size={15} />
-          </summary>
-          {more.map((key) => (
-            <Link key={key} href={getAreaHref(key)} className="cc-nav-link">
-              {NAV_AREA_LABELS[key]}
-            </Link>
-          ))}
-        </details>
+        <CommercialNavigation role={role} activeArea={area} />
         <div className="cc-account">
           <span className="cc-avatar">
             {(session?.user?.name || session?.user?.email || "PT")

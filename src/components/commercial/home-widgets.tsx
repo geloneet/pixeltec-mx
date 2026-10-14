@@ -14,7 +14,7 @@ import {
   Minus,
 } from "lucide-react";
 import type { HoyDashboard, KpiCard } from "@/lib/hoy/types";
-import { buildSparklinePath, buildBarRects } from "@/lib/hoy/sparkline";
+import { buildBarRects } from "@/lib/hoy/sparkline";
 import { ActivityFeed } from "@/components/hoy/activity-feed";
 import { ChecklistPanel } from "@/components/hoy/checklist-panel";
 import { AlertsPanel } from "@/components/hoy/alerts-panel";
@@ -77,8 +77,7 @@ export function HomeKpis({
       {cards.length
         ? cards.map((card) => {
             const Icon = icons[card.id];
-            const hasSeries =
-              card.series.length > 1 && card.series.some((v) => v !== 0);
+            const hasSeries = card.valueText !== null && card.series.length > 0;
             return (
               <Link
                 key={card.id}
@@ -93,36 +92,37 @@ export function HomeKpis({
                 <div className="cc-kpi-body">
                   <div className="cc-kpi-value">
                     <strong>{card.valueText ?? "Sin datos"}</strong>
-                    {hasSeries && (
-                      <svg viewBox="0 0 70 28" aria-hidden>
-                        {card.chart === "bars" ? (
-                          buildBarRects(card.series, 70, 28, 3).map((r, i) => (
-                            <rect
-                              key={i}
-                              className="cc-chart-bar"
-                              style={{ animationDelay: `${i * 35}ms` }}
-                              {...r}
-                              fill="currentColor"
-                              rx="1"
-                              opacity={i === card.series.length - 1 ? 1 : 0.45}
-                            />
-                          ))
-                        ) : (
-                          <path
-                            className="cc-chart-line"
-                            pathLength={1}
-                            d={
-                              buildSparklinePath(card.series, 70, 28, 1.5) || ""
-                            }
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            fill="none"
-                          />
-                        )}
-                      </svg>
-                    )}
                   </div>
                   <Trend card={card} />
+                  {hasSeries && (
+                    <svg
+                      className="cc-kpi-bars"
+                      viewBox="0 0 154 24"
+                      preserveAspectRatio="none"
+                      aria-hidden
+                    >
+                      {buildBarRects(card.series, 154, 24, 5).map((rect, i) => (
+                        <g key={i}>
+                          {Array.from({ length: 3 }, (_, tick) => {
+                            const width = (rect.width - 4) / 3;
+                            const x = rect.x + tick * (width + 2);
+                            return (
+                              <g key={tick}>
+                                <rect x={x} y={0} width={width} height={24} rx={2} fill="var(--cc-line)" />
+                                <rect
+                                  className="cc-chart-bar"
+                                  style={{ animationDelay: `${i * 35}ms` }}
+                                  x={x} y={rect.y} width={width} height={rect.height}
+                                  fill={card.series[i] === 0 ? "var(--cc-line)" : "currentColor"}
+                                  rx={2}
+                                />
+                              </g>
+                            );
+                          })}
+                        </g>
+                      ))}
+                    </svg>
+                  )}
                 </div>
                 <span className="sr-only">{card.seriesLabel}</span>
               </Link>

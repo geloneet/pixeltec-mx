@@ -2,6 +2,12 @@
 
 WO-2026-00566 · 2026-10-10 · base1aae1940 · rama codex/wo566-centro-comercial. Entorno aislado wo566.localhost:4336, PostgreSQL16 centro_qa en5454. Todo el egreso y cron del candidato están deshabilitados. Fixtures con example.invalid; abonos son registros de QA sin transferir dinero.
 
+## Menú y componentes — detalle de referencia, 2026-10-13
+
+[Recibo](menu-componentes-20261013.json). Miguel precisa menú/tipografía/bordes/suavidad/colores/iconos/organización con cuatro capturas. Menú en grupos plegables Comercial/Operación/General/Más herramientas, catálogo y roles intactos; iconos18px/trazo1.45, texto regular14px y filas34px. Botones alineados con azul#0784fc; listas con divisores suaves, contexto visible y acciones conservadas. KPI con21marcas agrupadas en siete días reales, sin progress ficticio; ceros grises. Actividad reciente en filas con filtros/expansión/enlaces preservados.
+
+115UI/quotes/ruta PASS (cuatro casos de navegación por rol), tipos/lint/build209 PASS. CUA7vistas1440 y320 oscuro/reducido sin overflow; Ventas801 main566=566 y nueve resúmenes498=498; plegado/Enter/expansión verificados sin guardar/enviar. Capturas privadas fullPage; preferencias final claro/normal y viewport reset. Registro volvió a responder/heartbeat11leases, sin retirar candado. No schema/datos/negocio/envíos/VPS/producción.
+
 ## Referencia visual y previews — 2026-10-13
 
 [Recibo de esta revisión](referencia-preview-20261013.json). Miguel pide rectángulos con preview abierto por defecto y proporciona Payzen como nueva referencia, incluyendo tipografía y todos sus elementos. La presentación comercial usa Roboto local como aproximación (no fuente identificada de la captura), marcos blancos/grises, bordes suaves y color en señales; búsqueda existente en sidebar y topbar compacto. Pipeline conserva plegado/acciones, inicia abierto, muestra dos previews por etapa y permite ver más. Cinco KPI y actividad, bandeja/prioridades y demás funciones conservados. La gráfica muestra registros canónicos de siete días con selección/ejes/tooltip, sin curva ficticia. Proyectos incorpora filtros derivados de etapas y nota visible antes de abrir.

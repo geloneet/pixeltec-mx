@@ -1,5 +1,10 @@
 # Mapa URL × intención — pixeltec.mx
 
+Revisión WO590, 2026-10-14: [baseline fechado](baseline-2026-10-14.md) y
+[piloto editorial propuesto](piloto-editorial-2026-10-14.md). La matriz conserva
+su historial; sus rutas de implementación y estados antiguos no certifican el
+estado del router actual. Las cifras nuevas no prueban canibalización.
+
 Matriz canónica (G1). Volumen/dificultad: SIN fuente de datos aún — todo lo
 marcado `[Hipótesis]` se valida con Search Console cuando haya impresiones.
 Estados: existente · optimizar · consolidar · crear · redirigir · archivar.
@@ -26,7 +31,7 @@ Estados: existente · optimizar · consolidar · crear · redirigir · archivar.
 | /blog/<7 demo> | retirados | — | — | — | — | redirigido | 308 → /blog (2026-08-03) |
 | /login /portal /reset-password /p/* | privadas | — | — | — | — | noindex | fuera del sitemap |
 
-## Canibalización detectada
+## Hipótesis de solapamiento por validar
 
 - `/guias-transformacion` vs `/blog`: si las guías no se materializan como
   lead magnets reales, consolidar en el blog (decisión de contenido, no de

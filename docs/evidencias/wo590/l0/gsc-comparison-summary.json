@@ -1,0 +1,1710 @@
+{
+  "checkedAt": "2026-10-14T23:40:29.687041+00:00",
+  "source": "GSC UI comparison CSV export (actual download)",
+  "sourceSha256": "479dcaab37ccfc488bece800d84ed176751bd174212cdfcb2952b63d096b4715",
+  "privateSource": "/Users/pixeltec/Downloads/pixeltec.mx-Performance-on-Search-2026-10-14.zip",
+  "filters": {
+    "Tipo de búsqueda": "Web (text-based)",
+    "Fecha": "14 sept 2026-11 oct 2026",
+    "Página": "+https://pixeltec.mx/"
+  },
+  "current": {
+    "start": "2026-09-14",
+    "end": "2026-10-11",
+    "days": 28
+  },
+  "previous": {
+    "start": "2026-08-17",
+    "end": "2026-09-13",
+    "days": 28
+  },
+  "gscUiTotals": {
+    "current": {
+      "clicks": 93,
+      "impressions": 1631,
+      "ctr": 0.057,
+      "position": 10.6
+    },
+    "previous": {
+      "clicks": 28,
+      "impressions": 310,
+      "ctr": 0.09,
+      "position": 9.6
+    },
+    "precision": "CTR and position as displayed; impressions from generic 1.631 in GSC DOM"
+  },
+  "pageRows": 66,
+  "queryRows": 102,
+  "pages": [
+    {
+      "url": "https://pixeltec.mx/",
+      "current": {
+        "clicks": 84,
+        "impressions": 194,
+        "ctr": 0.433,
+        "position": 3.04
+      },
+      "previous": {
+        "clicks": 25,
+        "impressions": 74,
+        "ctr": 0.3378,
+        "position": 9.61
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+      "current": {
+        "clicks": 2,
+        "impressions": 232,
+        "ctr": 0.0086,
+        "position": 7.01
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0.0,
+        "position": 9.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-web-puerto-vallarta",
+      "current": {
+        "clicks": 2,
+        "impressions": 13,
+        "ctr": 0.15380000000000002,
+        "position": 6.85
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/about",
+      "current": {
+        "clicks": 1,
+        "impressions": 165,
+        "ctr": 0.0060999999999999995,
+        "position": 2.58
+      },
+      "previous": {
+        "clicks": 1,
+        "impressions": 79,
+        "ctr": 0.0127,
+        "position": 8.77
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-guadalajara",
+      "current": {
+        "clicks": 1,
+        "impressions": 24,
+        "ctr": 0.0417,
+        "position": 17.04
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-puerto-vallarta",
+      "current": {
+        "clicks": 1,
+        "impressions": 22,
+        "ctr": 0.0455,
+        "position": 3.55
+      },
+      "previous": {
+        "clicks": 1,
+        "impressions": 6,
+        "ctr": 0.16670000000000001,
+        "position": 1.5
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/empresas-de-desarrollo-de-software-puerto-vallarta",
+      "current": {
+        "clicks": 1,
+        "impressions": 12,
+        "ctr": 0.0833,
+        "position": 11.83
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/sistema-personalizado-para-empresas-puerto-vallarta",
+      "current": {
+        "clicks": 1,
+        "impressions": 1,
+        "ctr": 1.0,
+        "position": 1.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/equipo",
+      "current": {
+        "clicks": 0,
+        "impressions": 128,
+        "ctr": 0.0,
+        "position": 2.51
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 31,
+        "ctr": 0.0,
+        "position": 4.74
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/services",
+      "current": {
+        "clicks": 0,
+        "impressions": 116,
+        "ctr": 0.0,
+        "position": 2.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 27,
+        "ctr": 0.0,
+        "position": 2.81
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-web-guadalajara",
+      "current": {
+        "clicks": 0,
+        "impressions": 104,
+        "ctr": 0.0,
+        "position": 61.38
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/contact",
+      "current": {
+        "clicks": 0,
+        "impressions": 85,
+        "ctr": 0.0,
+        "position": 1.32
+      },
+      "previous": {
+        "clicks": 1,
+        "impressions": 19,
+        "ctr": 0.0526,
+        "position": 3.21
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrolladores-de-app",
+      "current": {
+        "clicks": 0,
+        "impressions": 65,
+        "ctr": 0.0,
+        "position": 18.15
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/industrias",
+      "current": {
+        "clicks": 0,
+        "impressions": 58,
+        "ctr": 0.0,
+        "position": 1.31
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 25,
+        "ctr": 0.0,
+        "position": 1.84
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/services/ecosistemas-web",
+      "current": {
+        "clicks": 0,
+        "impressions": 55,
+        "ctr": 0.0,
+        "position": 2.98
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0.0,
+        "position": 1.71
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-zapopan",
+      "current": {
+        "clicks": 0,
+        "impressions": 40,
+        "ctr": 0.0,
+        "position": 15.18
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/programador-de-software",
+      "current": {
+        "clicks": 0,
+        "impressions": 22,
+        "ctr": 0.0,
+        "position": 19.59
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp",
+      "current": {
+        "clicks": 0,
+        "impressions": 21,
+        "ctr": 0.0,
+        "position": 11.62
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles",
+      "current": {
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0.0,
+        "position": 28.85
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizar-whatsapp-business",
+      "current": {
+        "clicks": 0,
+        "impressions": 15,
+        "ctr": 0.0,
+        "position": 19.2
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrolladores-de-app-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 14,
+        "ctr": 0.0,
+        "position": 4.93
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrolladores-de-apps-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 13,
+        "ctr": 0.0,
+        "position": 7.69
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/industrias/hoteles",
+      "current": {
+        "clicks": 0,
+        "impressions": 13,
+        "ctr": 0.0,
+        "position": 13.23
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-web-bahia-de-banderas",
+      "current": {
+        "clicks": 0,
+        "impressions": 12,
+        "ctr": 0.0,
+        "position": 5.33
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/empresas-de-desarrollo-de-software",
+      "current": {
+        "clicks": 0,
+        "impressions": 12,
+        "ctr": 0.0,
+        "position": 23.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-web-zapopan",
+      "current": {
+        "clicks": 0,
+        "impressions": 12,
+        "ctr": 0.0,
+        "position": 30.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/industrias/clinicas-dentales",
+      "current": {
+        "clicks": 0,
+        "impressions": 11,
+        "ctr": 0.0,
+        "position": 18.27
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatiza-tu-negocio",
+      "current": {
+        "clicks": 0,
+        "impressions": 9,
+        "ctr": 0.0,
+        "position": 45.11
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/pixelbot",
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0.0,
+        "position": 4.88
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/programador-de-software-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0.0,
+        "position": 9.12
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-bahia-de-banderas",
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0.0,
+        "position": 10.75
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-de-app",
+      "current": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0.0,
+        "position": 12.12
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/services/automatizacion",
+      "current": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0.0,
+        "position": 4.86
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp",
+      "current": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0.0,
+        "position": 8.43
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-de-aplicaciones-moviles-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0.0,
+        "position": 9.71
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/sistemas-a-medida",
+      "current": {
+        "clicks": 0,
+        "impressions": 7,
+        "ctr": 0.0,
+        "position": 27.57
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/blog/agente-de-ia-en-whatsapp-para-mi-negocio",
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0.0,
+        "position": 7.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 8,
+        "ctr": 0.0,
+        "position": 5.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/blog",
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0.0,
+        "position": 9.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 20,
+        "ctr": 0.0,
+        "position": 37.55
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/services/consultoria",
+      "current": {
+        "clicks": 0,
+        "impressions": 6,
+        "ctr": 0.0,
+        "position": 22.67
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/blog/ia-para-pymes-en-mexico-guia-honesta-para-empezar-sin-quemar-dinero",
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0.0,
+        "position": 6.4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0.0,
+        "position": 78.8
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/sistemas-a-medida-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0.0,
+        "position": 13.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/software-a-medida-para-empresas",
+      "current": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0.0,
+        "position": 31.4
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/",
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0.0,
+        "position": 2.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/diagnostico",
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0.0,
+        "position": 5.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 8.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizar-whatsapp-business-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0.0,
+        "position": 7.25
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/en/blog/sistema-administrativo-para-eficientar-tu-pyme-en-mexico",
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0.0,
+        "position": 14.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrolladores-de-apps",
+      "current": {
+        "clicks": 0,
+        "impressions": 4,
+        "ctr": 0.0,
+        "position": 26.75
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizar-mensajes-de-whatsapp-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0.0,
+        "position": 3.67
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/desarrollo-de-app-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0.0,
+        "position": 8.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatiza-tu-negocio-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0.0,
+        "position": 13.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/automatizacion-de-mensajes-en-whatsapp-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 3,
+        "ctr": 0.0,
+        "position": 49.67
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito",
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0.0,
+        "position": 4.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/villa-nogal/",
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/materiales-de-barro",
+      "current": {
+        "clicks": 0,
+        "impressions": 2,
+        "ctr": 0.0,
+        "position": 8.5
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/consultoria-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 1.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/consultoria-puerto-vallarta/",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 2.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/terminos-de-servicio",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 4.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 5,
+        "ctr": 0.0,
+        "position": 2.2
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/dalk",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 5.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/mapa",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 6.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/aviso-de-privacidad",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 7.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/subsify/terminos",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 7.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/smile-more/",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 9.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/casos-de-exito/velank",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 9.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/en/data-deletion/",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 9.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/consultoria-zapopan",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 12.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    },
+    {
+      "url": "https://pixeltec.mx/software-a-medida-para-empresas-puerto-vallarta",
+      "current": {
+        "clicks": 0,
+        "impressions": 1,
+        "ctr": 0.0,
+        "position": 19.0
+      },
+      "previous": {
+        "clicks": 0,
+        "impressions": 0,
+        "ctr": 0.0,
+        "position": 0.0
+      }
+    }
+  ],
+  "devices": [
+    [
+      "Dispositivo",
+      "14/9/26 - 11/10/26 Clics",
+      "17/8/26 - 13/9/26 Clics",
+      "14/9/26 - 11/10/26 Impresiones",
+      "17/8/26 - 13/9/26 Impresiones",
+      "14/9/26 - 11/10/26 CTR",
+      "17/8/26 - 13/9/26 CTR",
+      "14/9/26 - 11/10/26 Posición",
+      "17/8/26 - 13/9/26 Posición"
+    ],
+    [
+      "Ordenador",
+      "52",
+      "5",
+      "583",
+      "76",
+      "8.92%",
+      "6.58%",
+      "9.48",
+      "19.42"
+    ],
+    [
+      "Tablet",
+      "3",
+      "1",
+      "25",
+      "3",
+      "12%",
+      "33.33%",
+      "1.88",
+      "3"
+    ],
+    [
+      "Móviles",
+      "2",
+      "2",
+      "153",
+      "35",
+      "1.31%",
+      "5.71%",
+      "38.78",
+      "6.29"
+    ]
+  ],
+  "countries": [
+    [
+      "País",
+      "14/9/26 - 11/10/26 Clics",
+      "17/8/26 - 13/9/26 Clics",
+      "14/9/26 - 11/10/26 Impresiones",
+      "17/8/26 - 13/9/26 Impresiones",
+      "14/9/26 - 11/10/26 CTR",
+      "17/8/26 - 13/9/26 CTR",
+      "14/9/26 - 11/10/26 Posición",
+      "17/8/26 - 13/9/26 Posición"
+    ],
+    [
+      "México",
+      "57",
+      "8",
+      "582",
+      "82",
+      "9.79%",
+      "9.76%",
+      "8.53",
+      "12.73"
+    ],
+    [
+      "La India",
+      "0",
+      "0",
+      "16",
+      "0",
+      "0%",
+      "0%",
+      "58.69",
+      "0"
+    ],
+    [
+      "Estados Unidos",
+      "0",
+      "0",
+      "15",
+      "7",
+      "0%",
+      "0%",
+      "31.4",
+      "66.14"
+    ],
+    [
+      "España",
+      "0",
+      "0",
+      "13",
+      "11",
+      "0%",
+      "0%",
+      "34.85",
+      "10.45"
+    ],
+    [
+      "Rusia",
+      "0",
+      "0",
+      "13",
+      "0",
+      "0%",
+      "0%",
+      "40.92",
+      "0"
+    ],
+    [
+      "Austria",
+      "0",
+      "0",
+      "10",
+      "1",
+      "0%",
+      "0%",
+      "29.9",
+      "9"
+    ],
+    [
+      "Perú",
+      "0",
+      "0",
+      "8",
+      "1",
+      "0%",
+      "0%",
+      "13.25",
+      "2"
+    ],
+    [
+      "Argentina",
+      "0",
+      "0",
+      "8",
+      "2",
+      "0%",
+      "0%",
+      "41.88",
+      "4.5"
+    ],
+    [
+      "Ucrania",
+      "0",
+      "0",
+      "8",
+      "0",
+      "0%",
+      "0%",
+      "42.5",
+      "0"
+    ],
+    [
+      "Filipinas",
+      "0",
+      "0",
+      "7",
+      "0",
+      "0%",
+      "0%",
+      "23.86",
+      "0"
+    ],
+    [
+      "Brasil",
+      "0",
+      "0",
+      "6",
+      "1",
+      "0%",
+      "0%",
+      "35",
+      "10"
+    ],
+    [
+      "Canadá",
+      "0",
+      "0",
+      "5",
+      "0",
+      "0%",
+      "0%",
+      "14.4",
+      "0"
+    ],
+    [
+      "Colombia",
+      "0",
+      "0",
+      "5",
+      "1",
+      "0%",
+      "0%",
+      "24",
+      "3"
+    ],
+    [
+      "Alemania",
+      "0",
+      "0",
+      "5",
+      "2",
+      "0%",
+      "0%",
+      "26.6",
+      "8"
+    ],
+    [
+      "Chile",
+      "0",
+      "0",
+      "5",
+      "2",
+      "0%",
+      "0%",
+      "28.4",
+      "3.5"
+    ],
+    [
+      "Indonesia",
+      "0",
+      "0",
+      "4",
+      "0",
+      "0%",
+      "0%",
+      "25.75",
+      "0"
+    ],
+    [
+      "Irlanda",
+      "0",
+      "0",
+      "4",
+      "0",
+      "0%",
+      "0%",
+      "35.25",
+      "0"
+    ],
+    [
+      "Bangladés",
+      "0",
+      "0",
+      "3",
+      "0",
+      "0%",
+      "0%",
+      "11.33",
+      "0"
+    ],
+    [
+      "Suiza",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "5",
+      "0"
+    ],
+    [
+      "Eslovaquia",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "35.5",
+      "0"
+    ],
+    [
+      "Francia",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "36.5",
+      "0"
+    ],
+    [
+      "Israel",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "39",
+      "0"
+    ],
+    [
+      "Polonia",
+      "0",
+      "0",
+      "2",
+      "1",
+      "0%",
+      "0%",
+      "47",
+      "10"
+    ],
+    [
+      "Emiratos Árabes Unidos",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "51.5",
+      "0"
+    ],
+    [
+      "Bulgaria",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "73.5",
+      "0"
+    ],
+    [
+      "Serbia",
+      "0",
+      "0",
+      "2",
+      "0",
+      "0%",
+      "0%",
+      "75",
+      "0"
+    ],
+    [
+      "Malta",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "1",
+      "0"
+    ],
+    [
+      "Ruanda",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "2",
+      "0"
+    ],
+    [
+      "Azerbaiyán",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "8",
+      "0"
+    ],
+    [
+      "Reino Unido",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "10",
+      "0"
+    ],
+    [
+      "Portugal",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "10",
+      "0"
+    ],
+    [
+      "Región desconocida",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "13",
+      "0"
+    ],
+    [
+      "República Dominicana",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "15",
+      "0"
+    ],
+    [
+      "Venezuela",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "15",
+      "0"
+    ],
+    [
+      "Noruega",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "16",
+      "0"
+    ],
+    [
+      "Taiwán",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "17",
+      "0"
+    ],
+    [
+      "Bosnia y Herzegovina",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "21",
+      "0"
+    ],
+    [
+      "Omán",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "23",
+      "0"
+    ],
+    [
+      "Vietnam",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "24",
+      "0"
+    ],
+    [
+      "Kenia",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "43",
+      "0"
+    ],
+    [
+      "Nueva Zelanda",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "48",
+      "0"
+    ],
+    [
+      "Tailandia",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "63",
+      "0"
+    ],
+    [
+      "Fiyi",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "68",
+      "0"
+    ],
+    [
+      "Kazajistán",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "69",
+      "0"
+    ],
+    [
+      "Tanzania",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "69",
+      "0"
+    ],
+    [
+      "Sri Lanka",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "70",
+      "0"
+    ],
+    [
+      "Australia",
+      "0",
+      "0",
+      "1",
+      "1",
+      "0%",
+      "0%",
+      "71",
+      "4"
+    ],
+    [
+      "Hong Kong",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "72",
+      "0"
+    ],
+    [
+      "Malasia",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "77",
+      "0"
+    ],
+    [
+      "Italia",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "79",
+      "0"
+    ],
+    [
+      "Myanmar (Birmania)",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "79",
+      "0"
+    ],
+    [
+      "Puerto Rico",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "79",
+      "0"
+    ],
+    [
+      "Croacia",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "80",
+      "0"
+    ],
+    [
+      "Nepal",
+      "0",
+      "0",
+      "1",
+      "0",
+      "0%",
+      "0%",
+      "80",
+      "0"
+    ],
+    [
+      "Guatemala",
+      "0",
+      "0",
+      "0",
+      "2",
+      "0%",
+      "0%",
+      "0",
+      "6.5"
+    ]
+  ],
+  "searchAppearance": [
+    [
+      "Aparición en búsquedas",
+      "Clics",
+      "Impresiones",
+      "CTR",
+      "Posición"
+    ]
+  ],
+  "limitations": [
+    "Query and page exports are separate dimensions; no query×page matrix reconstructed.",
+    "Raw queries remain private; no report of identifiable people or search terms committed.",
+    "Normalized period rows are dated at period end solely for existing weekly-report aggregation; not daily observations.",
+    "90-day context and follow-up live inspection were not captured before browser access was denied.",
+    "UI rolling window after reload was Sep15-Oct12; this export uses fixed Sep14-Oct11 and must not be mixed with it."
+  ]
+}

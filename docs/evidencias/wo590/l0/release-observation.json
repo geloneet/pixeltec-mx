@@ -1,0 +1,11 @@
+{
+  "at": "2026-10-14T23:56:23.075194+00:00",
+  "imageTag": "pixeltec-mx-app:68c0bbae6f6b6621c8f4c5956097e924ea41c9ab",
+  "imageId": "sha256:526fab7ad269973115eaea91528ce55c2864548d9290dda72c21d8d08adb6881",
+  "container": "pixeltec-mx",
+  "status": "running",
+  "evidenceCommand": "ssh ubuntu@198.100.155.231 docker inspect pixeltec-mx --format (image tag/image ID/state only)",
+  "checkoutBase": "1aae1940b31e3e7011fa6c2b7239cea53684a785",
+  "tagShaIsAncestorOfMain": true,
+  "limits": "Image tag and immutable image ID observed; no deployment or rebuild performed. Local base and deployed image are different revisions."
+}

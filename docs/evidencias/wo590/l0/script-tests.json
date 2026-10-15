@@ -1,0 +1,19 @@
+{
+  "success": true,
+  "numTotalTests": 24,
+  "numPassedTests": 24,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "files": [
+    {
+      "path": "scripts/seo/gsc-weekly-report.test.ts",
+      "tests": 16,
+      "status": "passed"
+    },
+    {
+      "path": "scripts/seo/home-seo-snapshot.test.ts",
+      "tests": 8,
+      "status": "passed"
+    }
+  ]
+}

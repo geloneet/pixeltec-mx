@@ -1,0 +1,17 @@
+{
+  "checkedAt": "2026-10-14",
+  "url": "https://pixeltec.mx/consultoria-bahia-de-banderas",
+  "source": "Google Search Console individual URL inspection, Chrome DOM observed",
+  "indexStatus": "La URL no está en Google",
+  "reason": "Descubierta: actualmente sin indexar",
+  "sitemap": "https://pixeltec.mx/sitemap.xml",
+  "referringPage": "No se ha detectado ninguna",
+  "lastCrawl": null,
+  "canonicalGoogle": null,
+  "liveTest": {
+    "started": true,
+    "resultCaptured": false,
+    "reason": "browser permission denied before result could be read"
+  },
+  "indexingRequested": false
+}

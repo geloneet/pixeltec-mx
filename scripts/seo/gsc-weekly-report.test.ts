@@ -17,6 +17,29 @@ function loadFixture(): GscRow[] {
 }
 
 describe('parseGscCsv', () => {
+  it('conserva consultas multilínea como una sola observación, sin inventar filas', () => {
+    const csv = 'date,query,clicks,impressions,ctr,position\n2026-10-11,"automatizar\nreportes",2,120,1.67%,7\n2026-10-11,software,1,40,2.5%,9';
+    const rows = parseGscCsv(csv);
+    expect(rows).toHaveLength(2);
+    expect(rows[0]).toMatchObject({ date: '2026-10-11', query: 'automatizar\nreportes', clicks: 2, impressions: 120, position: 7 });
+    const report = buildWeeklyReport(rows, new Date('2026-10-11T00:00:00Z'));
+    expect(report.rowsTotal).toBe(2);
+    expect(report.rowsUsed).toBe(2);
+    expect(report.quickWins).toHaveLength(1);
+    expect(report.quickWins[0].impressions).toBe(120);
+  });
+
+  it('respeta CRLF y comillas escapadas dentro de una celda con separador de punto y coma', () => {
+    const csv = '\uFEFFConsultas principales;Clics;Impresiones;CTR;Posición\r\n"software; \"\"a medida\"\"\r\npara pymes";3;120;"2,5 %";"6,2"\r\n\r\n';
+    const rows = parseGscCsv(csv, { defaultDate: '2026-10-11' });
+    expect(rows).toHaveLength(1);
+    expect(rows[0]).toMatchObject({ query: 'software; "a medida"\r\npara pymes', clicks: 3, impressions: 120, ctr: 0.025, position: 6.2 });
+  });
+
+  it('rechaza una celda con comillas sin cerrar para no emitir métricas parciales', () => {
+    expect(() => parseGscCsv('query,clicks,impressions\n"consulta\nincompleta,1,100')).toThrow(/comillas/i);
+  });
+
   it('lee el CSV largo (fecha, página, consulta) con porcentajes y decimales', () => {
     const rows = loadFixture();
     expect(rows).toHaveLength(22);

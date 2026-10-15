@@ -1,0 +1,31 @@
+{
+  "base": "1aae1940b31e3e7011fa6c2b7239cea53684a785",
+  "observedDefect": "Nine multiline GSC queries were split into extra CSV records. 204 exported period observations became230 parser rows,26 discarded downstream.",
+  "regressionBefore": {
+    "newTests": 3,
+    "failed": 3,
+    "existingPassedInFile": 13
+  },
+  "after": {
+    "rowsTotal": 204,
+    "rowsUsed": 204,
+    "hasPages": false,
+    "hasPrevious": true,
+    "quickWins": 0,
+    "lowCtr": 0,
+    "thresholds": {
+      "minImpressions": 100,
+      "newQueryMinImpressions": 5,
+      "quickWinRange": [
+        4,
+        15
+      ],
+      "topPages": 20
+    }
+  },
+  "inputSha256": "479dcaab37ccfc488bece800d84ed176751bd174212cdfcb2952b63d096b4715",
+  "rawQueriesCommitted": false,
+  "weeklyReportCommitted": false,
+  "normalization": "Comparison CSV current and previous columns selected by exact date prefixes, preserving cells with Python csv.reader/writer. Existing report input receives one aggregate row per query per period, dated at period end. Not daily data.",
+  "change": "Preserve quoted newlines, CRLF and escaped quotes; reject unterminated quote. No thresholds, brand regex, DB/auth/financial logic or schema changed."
+}

@@ -1,0 +1,73 @@
+{
+  "base": "31c0ace833820a55552a3b5609429151bffb09f0",
+  "workOrder": "WO-2026-00594",
+  "selfExcluded": true,
+  "files": [
+    {
+      "path": "design/landingpagepixel2.0/application-seo.mjs",
+      "bytes": 2778,
+      "sha256": "fa5f37021af2c710f642e9a14cfb0b5a9b3b115994b65c2ad76eb435eb050826"
+    },
+    {
+      "path": "design/landingpagepixel2.0/build.mjs",
+      "bytes": 13083,
+      "sha256": "51329b5c96c370cb0395d93d547678f6bd0492c4cd88bae049b2c8213922247e"
+    },
+    {
+      "path": "design/landingpagepixel2.0/docs/application-seo.generated.json",
+      "bytes": 6420,
+      "sha256": "a17da8d00c43ec3b9112c58e99590cb997fb2ed300dae54ba8f55dab0bd06965"
+    },
+    {
+      "path": "design/landingpagepixel2.0/seo-build.mjs",
+      "bytes": 4828,
+      "sha256": "9322dcde9e2898121e853971f6ba7b3abbcc5a45f615cadd93ec3a72f7b32bc1"
+    },
+    {
+      "path": "design/landingpagepixel2.0/src/templates.ts",
+      "bytes": 29727,
+      "sha256": "917e0e2a9e4396388ec14506fd0dad55da905e659793bd47058b0b45e7c4d92a"
+    },
+    {
+      "path": "docs/evidencias/wo594/README.md",
+      "bytes": 3949,
+      "sha256": "45a9d6dc0c84a0f541c22438e337be359c7d2a307e169a1e80024cef8b609b9d"
+    },
+    {
+      "path": "docs/evidencias/wo594/generation.json",
+      "bytes": 1055,
+      "sha256": "07949562c7ecc9ac43860e1b3dbd335cc7a6222a9b8e3fded3af2b2838baa307"
+    },
+    {
+      "path": "docs/evidencias/wo594/tests.json",
+      "bytes": 223,
+      "sha256": "346b44811c2f35de866258b3f8d98a530ca2501c111d3c6c53e3e05d8ab8a113"
+    },
+    {
+      "path": "docs/evidencias/wo594/validation.json",
+      "bytes": 1183,
+      "sha256": "4034595142f6eec735ddca7b682418937f7eb40d635f577bf3539c36b929170c"
+    },
+    {
+      "path": "docs/seo/baseline-2026-10-14.md",
+      "bytes": 12090,
+      "sha256": "c3882984ab5cb27a628b71da69fda90d0401b8ff4dfcaa58f56ce22068a4fa13"
+    },
+    {
+      "path": "docs/seo/piloto-editorial-2026-10-14.md",
+      "bytes": 6961,
+      "sha256": "eee87d190d7a308e96cf75e9f394c55f577a0dcb60ed5139abd14b896bad8e30"
+    },
+    {
+      "path": "src/components/public-site/consulting-coverage.test.ts",
+      "bytes": 1966,
+      "sha256": "463cd31e2675956d4e5eca32f64a15895ca426c7e7d924412ba4023994ead2d6"
+    },
+    {
+      "path": "src/components/public-site/generated/pages.json",
+      "bytes": 1276101,
+      "sha256": "48376a9a359f9f87c995b8616f4e49aeaab17f1f93b940aa1a43e93d209306a0"
+    }
+  ],
+  "limits": "Integrity hashes for this candidate, not security or Google/visual certification."
+}

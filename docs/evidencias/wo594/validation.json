@@ -1,0 +1,39 @@
+{
+  "base": "31c0ace833820a55552a3b5609429151bffb09f0",
+  "typecheck": {
+    "command": "npm run typecheck",
+    "exitCode": 0
+  },
+  "designBuild": {
+    "command": "npm run build (design/landingpagepixel2.0)",
+    "exitCode": 0,
+    "routes": 152
+  },
+  "applicationBuild": {
+    "command": "npm run build",
+    "exitCode": 0,
+    "logSha256": "c06b2af021f531829ae1fcff7bc15d73ac6e3d20972c5e53d9ccca9f197a5eb6"
+  },
+  "compiler": {
+    "command": "node scripts/public-site/compile-pages.mjs",
+    "pageTrees": 126
+  },
+  "browser": {
+    "url": "http://localhost:4850/services/consultoria",
+    "status": "BLOCKED_USER_PERMISSION",
+    "message": "The user declined permission for this action. No alternate browser, hostname, raw CDP or indirect rendering used.",
+    "responsiveSmoke": "PENDING",
+    "visualVerdict": "PENDING"
+  },
+  "publication": {
+    "pushed": false,
+    "merged": false,
+    "deployed": false
+  },
+  "google": {
+    "pagespeed": "BLOCKED_SAVED_PREFERENCE",
+    "searchConsole": "BLOCKED_SAVED_PREFERENCE",
+    "indexingRequested": false
+  },
+  "scope": "Only consulting hub body differs from regenerated baseline; all noindex flags and routes preserved."
+}

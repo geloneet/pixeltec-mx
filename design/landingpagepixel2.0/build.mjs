@@ -11,7 +11,7 @@ import {company,serviceContent,caseStudies,industryContent,editorial} from './.b
 import {guideContent} from './.build/guides.js';
 import {languages,localPath} from './.build/i18n.js';
 import {escapeHTML,services,projects,posts} from './.build/catalog.js';
-import {addStructuredData,writeInventory,siteContactEmail} from './seo-build.mjs';
+import {addStructuredData,writeInventory,siteContactEmail,consultingCoverage} from './seo-build.mjs';
 import {loadSources,loadRichSources,articleHtml,legalHtml} from './source-content.mjs';
 const environment=z.enum(['preview','public']).default('preview').parse(process.env.SEO_ENV);
 if(environment==='public')assertReleaseReady(await inspectRelease());
@@ -24,7 +24,7 @@ for(const locale of languages){
  const t=renderer(locale,environment);const x=(es,en)=>locale==='es'?es:en;const pages=[];
  const add=(path,title,family,body,description)=>pages.push({path,title,family,body,description});
  add('/services/',x('Servicios','Services'),x('Servicios','Services'),t.serviceIndex());
- for(const s of serviceContent)add(s.path,s.title[locale],x('Servicios','Services'),t.serviceDetail(s),s.description[locale]);
+ for(const s of serviceContent)add(s.path,s.title[locale],x('Servicios','Services'),t.serviceDetail(s,undefined,s.id==='consulting'?consultingCoverage:[]),s.description[locale]);
  add('/about/',x('Nosotros','About'),x('Empresa','Company'),t.about());
  add('/equipo/',x('Equipo','Team'),x('Empresa','Company'),t.team());
  add('/metodologia/',x('Metodología','Our process'),x('Empresa','Company'),t.methodology());

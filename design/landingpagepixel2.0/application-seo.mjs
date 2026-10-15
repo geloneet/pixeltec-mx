@@ -11,6 +11,7 @@ const snapshotSchema=z.object({
  ORG_ID:z.literal('https://pixeltec.mx/#organization'),
  WEBSITE_ID:z.literal('https://pixeltec.mx/#website'),
  redirects:z.array(z.object({source:z.string(),destination:z.string(),permanent:z.boolean(),origin:z.literal('next.config.ts')})),
+ consultingCoverage:z.array(z.object({path:z.string().regex(/^\/consultoria-[a-z0-9-]+\/$/),city:z.string().min(1)})),
 });
 
 // Repository builds read canonical code. The standalone design handoff uses
@@ -23,12 +24,15 @@ export async function applicationSEO(){
   return snapshotSchema.parse(JSON.parse(await readFile(snapshot,'utf8')));
  }
  const files={};
- for(const path of ['src/lib/seo/site-graph.ts','src/lib/site-config.ts','src/lib/content/services-catalog.ts','next.config.ts'])files[path]=createHash('sha256').update(await readFile('../../'+path)).digest('hex');
+ for(const path of ['src/lib/seo/site-graph.ts','src/lib/site-config.ts','src/lib/content/services-catalog.ts','src/lib/content/local-services.ts','next.config.ts'])files[path]=createHash('sha256').update(await readFile('../../'+path)).digest('hex');
  await build({entryPoints:['../../src/lib/seo/site-graph.ts'],outfile:'.build/site-graph.js',bundle:true,format:'esm',platform:'node'});
  const {siteGraph,ORG_ID,WEBSITE_ID}=await import('./.build/site-graph.js');
+ await build({entryPoints:['../../src/lib/content/local-services.ts'],outfile:'.build/local-services.js',bundle:true,format:'esm',platform:'node'});
+ const {CONSULTORIA_CITIES}=await import('./.build/local-services.js');
+ const consultingCoverage=CONSULTORIA_CITIES.map(({slug,city})=>({path:`/${slug}/`,city}));
  const config=await readFile('../../next.config.ts','utf8');
  const redirects=[...config.matchAll(/source:\s*['"]([^'"]+)['"],\s*destination:\s*['"]([^'"]+)['"],\s*permanent:\s*(true|false)/g)].map(m=>({source:m[1],destination:m[2],permanent:m[3]==='true',origin:'next.config.ts'}));
- const data=snapshotSchema.parse({source:'pixeltec-mx application: generated public SEO export',files,siteGraph,ORG_ID,WEBSITE_ID,redirects});
+ const data=snapshotSchema.parse({source:'pixeltec-mx application: generated public SEO export',files,siteGraph,ORG_ID,WEBSITE_ID,redirects,consultingCoverage});
  await writeFile(snapshot,JSON.stringify(data,null,2)+'\n');
  return data;
 }

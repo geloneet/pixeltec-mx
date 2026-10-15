@@ -40,7 +40,7 @@ Hechos pendientes de validación por Miguel: modalidad y cobertura efectiva del 
 | `/consultoria-puerto-vallarta` | `/consultoria-bahia-de-banderas` | Enlace contextual de cobertura ya existente | Conservar; no duplicarlo |
 | Artículo sobre datos sensibles | `/diagnostico` o servicio pertinente según el contenido actual | Próximo paso para revisar procesos/uso de IA | Verificar bloque actual y mapa central antes de añadir |
 
-Los dos destinos comerciales mencionados responden correctamente en el rastreo de producción; el estado debe revalidarse con el candidato. El enlace del hub se implementa en la fuente del generador existente, **no editando a mano** `src/components/public-site/generated/pages.json`. La ruta de diseño aún no está admitida por WO590, por lo que este paquete no la modifica. Los enlaces deben ser `<a href>` descriptivos; no se añaden variaciones de keywords al menú/footer.
+Los dos destinos comerciales mencionados responden correctamente en el rastreo de producción; el estado debe revalidarse con el candidato. Continuación WO594: fuente del diseño admitida en contrato hijo, cobertura derivada de `CONSULTORIA_CITIES` por el exportador existente y catálogo regenerado. El enlace del hub está preparado en código, sin editar a mano `src/components/public-site/generated/pages.json`. [Evidencia y validación pendiente](../evidencias/wo594/README.md). Los enlaces son `<a href>` descriptivos; no se añaden variaciones de keywords al menú/footer. El contenido CMS y el resto de cambios editoriales siguen como propuesta.
 
 ## Qué impide convertir el borrador en publicación
 

@@ -1,0 +1,9 @@
+{
+  "success": true,
+  "numTotalTests": 2350,
+  "numPassedTests": 2350,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "files": 189,
+  "command": "npm test -- --reporter=json --outputFile=/private/tmp/wo594-tests.json"
+}

@@ -1,0 +1,35 @@
+{
+  "base": "1aae1940b31e3e7011fa6c2b7239cea53684a785",
+  "typecheck": {
+    "command": "npm run typecheck",
+    "result": "passed",
+    "exitCode": 0
+  },
+  "build": {
+    "command": "npm run build",
+    "result": "passed",
+    "exitCode": 0,
+    "logSha256": "1949711ff19925db8422fdfe1f6682cc6d3311fc564d39a5bdcb80d1e5dbbd37",
+    "firstAttempt": "Earlier baseline build failed downloading existing Google Fonts under restricted network; network-enabled build and final rebuild passed. No font or lockfile change."
+  },
+  "tests": {
+    "success": true,
+    "numTotalTests": 2347,
+    "numPassedTests": 2347,
+    "numFailedTests": 0,
+    "numPendingTests": 0,
+    "testFiles": 188,
+    "command": "npm test -- --reporter=json --outputFile=/private/tmp/wo590-final-tests.json",
+    "includes": "src/**/*.test.{ts,tsx} + scripts/seo/**/*.test.ts; canonical vitest.config.ts"
+  },
+  "diffCheck": {
+    "command": "git diff --check",
+    "result": "passed"
+  },
+  "limits": [
+    "No CMS, database, environment, money, auth or provider change. Public diagnostic followup now passes the existing session identifier.",
+    "Business actions mocked; no real submission or notification.",
+    "No candidate HTTP/browser smoke with configured blog QA; production crawl is a separate observed release.",
+    "No Google performance or Rich Results result invented; pending dependency recorded."
+  ]
+}

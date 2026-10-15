@@ -1,0 +1,238 @@
+{
+  "checkedAt": "2026-10-15T00:07:39.175Z",
+  "origin": "https://pixeltec.mx",
+  "redirects": [
+    {
+      "start": "http://pixeltec.mx/",
+      "hops": [
+        {
+          "url": "http://pixeltec.mx/",
+          "status": 301,
+          "location": "https://pixeltec.mx/"
+        },
+        {
+          "url": "https://pixeltec.mx/",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "start": "https://www.pixeltec.mx/",
+      "hops": [
+        {
+          "url": "https://www.pixeltec.mx/",
+          "status": 301,
+          "location": "https://pixeltec.mx/"
+        },
+        {
+          "url": "https://pixeltec.mx/",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "start": "http://www.pixeltec.mx/",
+      "hops": [
+        {
+          "url": "http://www.pixeltec.mx/",
+          "status": 301,
+          "location": "https://www.pixeltec.mx/"
+        },
+        {
+          "url": "https://www.pixeltec.mx/",
+          "status": 301,
+          "location": "https://pixeltec.mx/"
+        },
+        {
+          "url": "https://pixeltec.mx/",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "start": "https://pixeltec.mx/services/",
+      "hops": [
+        {
+          "url": "https://pixeltec.mx/services/",
+          "status": 308,
+          "location": "/services"
+        },
+        {
+          "url": "https://pixeltec.mx/services",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "start": "https://pixeltec.mx/services?utm_source=wo590-audit",
+      "hops": [
+        {
+          "url": "https://pixeltec.mx/services?utm_source=wo590-audit",
+          "status": 200,
+          "location": null
+        }
+      ]
+    },
+    {
+      "start": "https://pixeltec.mx/blog/escalabilidad-en-la-nube-con-nextjs-y-firebase",
+      "hops": [
+        {
+          "url": "https://pixeltec.mx/blog/escalabilidad-en-la-nube-con-nextjs-y-firebase",
+          "status": 308,
+          "location": "/blog"
+        },
+        {
+          "url": "https://pixeltec.mx/blog",
+          "status": 200,
+          "location": null
+        }
+      ]
+    }
+  ],
+  "metadata": [
+    {
+      "url": "https://pixeltec.mx/",
+      "status": 200,
+      "title": "Desarrollo Web, Apps y Automatización con IA en Puerto Vallarta | PixelTEC",
+      "canonical": "https://pixeltec.mx",
+      "og": {
+        "title": "Desarrollo Web, Apps y Automatización con IA en Puerto Vallarta",
+        "description": "Desarrollo web y apps, software a medida y automatización con IA y WhatsApp para pymes de Puerto Vallarta, Bahía de Banderas, Guadalajara y México.",
+        "url": "https://pixeltec.mx",
+        "image": "https://pixeltec.mx/og-image.png",
+        "type": "website"
+      },
+      "icons": [
+        {
+          "rel": "icon",
+          "href": "/favicon.ico"
+        },
+        {
+          "rel": "icon",
+          "href": "/icon.png?97a8cf3d74605bf3"
+        },
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?377b71c55e29d873"
+        }
+      ]
+    },
+    {
+      "url": "https://pixeltec.mx/services",
+      "status": 200,
+      "title": "Servicios de desarrollo web, IA y consultoría | PixelTEC",
+      "canonical": "https://pixeltec.mx/services",
+      "og": {
+        "title": "Servicios de desarrollo web, IA y consultoría",
+        "description": "Descubre nuestras soluciones de alto impacto: Ecosistemas Web Avanzados, Automatización de Procesos y Consultoría Tecnológica para modernizar tu empresa.",
+        "url": "https://pixeltec.mx/services",
+        "image": "https://pixeltec.mx/og-image.png",
+        "type": "website"
+      },
+      "icons": [
+        {
+          "rel": "icon",
+          "href": "/favicon.ico"
+        },
+        {
+          "rel": "icon",
+          "href": "/icon.png?97a8cf3d74605bf3"
+        },
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?377b71c55e29d873"
+        }
+      ]
+    },
+    {
+      "url": "https://pixeltec.mx/services/consultoria",
+      "status": 200,
+      "title": "Consultoría Tecnológica para PyMEs | PixelTEC",
+      "canonical": "https://pixeltec.mx/services/consultoria",
+      "og": {
+        "title": "Consultoría Tecnológica para PyMEs",
+        "description": "Diagnóstico, transformación digital y rediseño UI/UX para modernizar tus procesos y elevar la eficiencia de tu empresa.",
+        "url": "https://pixeltec.mx/services/consultoria",
+        "image": "https://pixeltec.mx/og-image.png",
+        "type": "website"
+      },
+      "icons": [
+        {
+          "rel": "icon",
+          "href": "/favicon.ico"
+        },
+        {
+          "rel": "icon",
+          "href": "/icon.png?97a8cf3d74605bf3"
+        },
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?377b71c55e29d873"
+        }
+      ]
+    },
+    {
+      "url": "https://pixeltec.mx/consultoria-bahia-de-banderas",
+      "status": 200,
+      "title": "Consultoría Tecnológica Estratégica en Bahía de Banderas | PixelTEC",
+      "canonical": "https://pixeltec.mx/consultoria-bahia-de-banderas",
+      "og": {
+        "title": "Consultoría Tecnológica Estratégica en Bahía de Banderas",
+        "description": "Estrategia de digitalización para desarrollos inmobiliarios y administradoras de Bahía de Banderas y la Riviera Nayarit. Diagnóstico gratuito.",
+        "url": "https://pixeltec.mx/consultoria-bahia-de-banderas",
+        "image": "https://pixeltec.mx/og-image.png",
+        "type": "website"
+      },
+      "icons": [
+        {
+          "rel": "icon",
+          "href": "/favicon.ico"
+        },
+        {
+          "rel": "icon",
+          "href": "/icon.png?97a8cf3d74605bf3"
+        },
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?377b71c55e29d873"
+        }
+      ]
+    },
+    {
+      "url": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+      "status": 200,
+      "title": "Qué datos no debes compartir con una IA en tu empresa | PixelTEC",
+      "canonical": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+      "og": {
+        "title": "Qué datos no debes compartir con una IA en tu empresa",
+        "description": "Guía práctica para PyMEs: qué información confidencial no debes pegar en ChatGPT, Gemini o Claude, por qué es riesgoso y cómo usarlos de forma segura.",
+        "url": "https://pixeltec.mx/blog/que-datos-nunca-deberias-compartir-con-chatgpt-gemini-o-claude-en-tu-empresa",
+        "image": "https://images.unsplash.com/photo-1745674684468-b9fc392fda3f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wxMDE2NDYxfDB8MXxzZWFyY2h8MTJ8fENoYXRncHR8ZW58MXwwfHx8MTc4ODQ0OTk2NXww&ixlib=rb-4.1.0&q=80&w=1080",
+        "type": "article"
+      },
+      "icons": [
+        {
+          "rel": "icon",
+          "href": "/favicon.ico"
+        },
+        {
+          "rel": "icon",
+          "href": "/icon.png?97a8cf3d74605bf3"
+        },
+        {
+          "rel": "apple-touch-icon",
+          "href": "/apple-icon.png?377b71c55e29d873"
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Read-only production HTTP sample; no redirect rules changed.",
+    "Not exhaustive historical URL/parameter coverage.",
+    "Public HTML metadata does not replace Google rendered or Rich Results validation."
+  ]
+}

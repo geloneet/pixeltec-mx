@@ -4,7 +4,9 @@ import {canonicalURL,indexPolicy,languageAlternates,englishComplete} from './.bu
 import {localPath} from './.build/i18n.js';
 import {editorial,serviceContent,industryContent} from './.build/content.js';
 import {escapeHTML} from './.build/catalog.js';
-const {siteGraph,ORG_ID,WEBSITE_ID,redirects}=await applicationSEO();
+const application=await applicationSEO();
+const {siteGraph,ORG_ID,WEBSITE_ID,redirects}=application;
+export const consultingCoverage=application.consultingCoverage;
 export const siteContactEmail=siteGraph['@graph'].find(node=>node['@id']===ORG_ID).email;
 const json=data=>JSON.stringify(data).replaceAll('<','\\u003c');
 export function addStructuredData(html,page){

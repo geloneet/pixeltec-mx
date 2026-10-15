@@ -1,0 +1,32 @@
+{
+  "base": "31c0ace833820a55552a3b5609429151bffb09f0",
+  "sourceRegistry": "src/lib/content/local-services.ts:CONSULTORIA_CITIES",
+  "sourceMechanism": "Existing applicationSEO/esbuild public export supplies consultingCoverage to design builder/template; no hand-maintained city list.",
+  "baselineGeneration": {
+    "changedFields": "Organization logo refreshed from canonical SITE.logoPath in schemas of126 existing pages; no body/metadata/noindex change.",
+    "snapshotRefreshed": true
+  },
+  "afterSourceChange": {
+    "changedContent": [
+      "/services/consultoria"
+    ],
+    "routeSetUnchanged": true,
+    "noindexFlagsUnchanged": true,
+    "titlesAndDescriptionsUnchanged": true
+  },
+  "regression": {
+    "before": {
+      "failed": 1,
+      "passed": 2
+    },
+    "after": {
+      "failed": 0,
+      "passed": 3
+    }
+  },
+  "googleIndexingRequested": false,
+  "limits": [
+    "No claim that links guarantee indexing or ranking.",
+    "The production crawl predates this candidate; candidate HTTP/UI verification recorded separately."
+  ]
+}

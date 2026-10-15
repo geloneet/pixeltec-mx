@@ -1,0 +1,21 @@
+{
+  "status": "BLOCKED_SAVED_BROWSER_PREFERENCE",
+  "affectedDomains": [
+    "pagespeed.web.dev",
+    "search.google.com"
+  ],
+  "humanAuthorization": "Miguel authorized PageSpeed and reported enabling both domains; subsequent tool calls still returned saved user permission setting blocks this action.",
+  "policyResult": "Do not use workaround, indirect execution, alternate browser surfaces or raw browser commands.",
+  "unaffectedWork": [
+    "public HTTP crawl and existing downloaded CSV",
+    "local parser regression and tests"
+  ],
+  "pending": [
+    "30 comparable PageSpeed samples: five pages × mobile/desktop × three runs",
+    "GSC90-day export",
+    "live Bahía test result",
+    "pilot query×page and fresh Google Rich Results validation"
+  ],
+  "manualControlSource": "https://learn.chatgpt.com/docs/chrome-extension#manage-allowed-and-blocked-websites",
+  "manualControl": "Settings > Computer Use > Chrome > Manage; remove domains from blocklist. No preference was changed by the agent."
+}

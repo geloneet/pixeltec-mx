@@ -1,0 +1,132 @@
+{
+  "base": "1aae1940b31e3e7011fa6c2b7239cea53684a785",
+  "files": [
+    {
+      "path": "docs/evidencias/wo590/README.md",
+      "sha256": "561cd204af721e6d47ef6b460dee36bda813607b1052971d066eba7ef56d6639",
+      "bytes": 4844
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/application-tests.json",
+      "sha256": "3299be8970902a0b8d5f8dac1dbc191ea3d8faa7f87c64d74e3f3804a489fa24",
+      "bytes": 239
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/bahia-inspection.json",
+      "sha256": "e57d3ab0feb2364dbb112dfd626f14f7b052ec6bbe05b0d43d6d64acc6de4114",
+      "bytes": 592
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/browser-dependency.json",
+      "sha256": "432642aa415244e70d698a43683f9a1f824c6458efaba306eb419c3db90f89e3",
+      "bytes": 1013
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/csv-parser-regression.json",
+      "sha256": "856351446e11153fca353fdb23ec09e55b34a4bc90b023cfa9b8b2f5d24f85ed",
+      "bytes": 1201
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/gsc-comparison-summary.json",
+      "sha256": "47cb15f6db6bbcbf746be54b7e18c0aaa1c423fda36f24a7bf054ae708e9885a",
+      "bytes": 30607
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/integrated-tests.json",
+      "sha256": "602447fb7374dcff60556394a28d509c1b4c3ef295c963531664df9560ccae79",
+      "bytes": 328
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/inventory.json",
+      "sha256": "e75b61e9aabe1dbb8f85c0732569a25d378e1c45201cff3bf4415bbddef1a6ad",
+      "bytes": 304323
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/lead-attribution-regression.json",
+      "sha256": "3200a74b733c1a8358518a4559f6da17eb547c5dced6e0bbf4b62c0cd9fcad5a",
+      "bytes": 916
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/production-crawl.json",
+      "sha256": "e36701ff02301492daefe01c0672d366b78c7d73c53bf1b2fd32ff15e190432e",
+      "bytes": 1092149
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/psi-api-probe.json",
+      "sha256": "f712bd9f5608f3bf0e480ee5f1b1b57baacaf056e5b7c9f706c92959f08611cc",
+      "bytes": 211
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/public-contracts.json",
+      "sha256": "391c616e8b75a2c7855671a26b464b41f7c844694fa2c30f3b4a686627ecf837",
+      "bytes": 7643
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/public-metadata-and-redirects.json",
+      "sha256": "4ad14b5a69122968d9feda6a627828f840654ed42838ba8e26ca433e2395584b",
+      "bytes": 7502
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/release-observation.json",
+      "sha256": "72503242f53802310f5e5b6831b4af7a4f5e689e632e548fad600ac3d7af6248",
+      "bytes": 626
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/script-tests.json",
+      "sha256": "a378a0fd653cd940443f9a29b2d6811f031b4c559f23d74afa59c3a349aba4f4",
+      "bytes": 356
+    },
+    {
+      "path": "docs/evidencias/wo590/l0/validation.json",
+      "sha256": "7b69c3bc08fe7e2d1148c053b13b24c9a074de890c3c979e0270782108252ded",
+      "bytes": 1392
+    },
+    {
+      "path": "docs/seo/URL-INTENT-MAP.md",
+      "sha256": "0dfc6feaa0ea4729a21017d9e541180e25dc71465bcc4796e939abd658363f99",
+      "bytes": 14920
+    },
+    {
+      "path": "docs/seo/baseline-2026-10-14.md",
+      "sha256": "539f69b6691a22b3235dfb8560e128e2321c1e3387547b74cd0165e16c5096bc",
+      "bytes": 11510
+    },
+    {
+      "path": "docs/seo/conversiones-2026-10-14.md",
+      "sha256": "ced1b99899078e9f23c28aae9bc7fb40a04404a390fd88d8f687562eb3f893ac",
+      "bytes": 3946
+    },
+    {
+      "path": "docs/seo/piloto-editorial-2026-10-14.md",
+      "sha256": "78c05aea9235a96a4e9495c8b70d464aa768e79c0ed6e7f4350249a6ebdb1984",
+      "bytes": 6785
+    },
+    {
+      "path": "scripts/seo/gsc-weekly-report.lib.ts",
+      "sha256": "8c65b4d6d6974113791b04f4840a67698711207e8db38f1f241ab93863057174",
+      "bytes": 20294
+    },
+    {
+      "path": "scripts/seo/gsc-weekly-report.test.ts",
+      "sha256": "e6bf41706c162d812a85282b12b189221bca0be67cf10b2eb47a8a30f50b472f",
+      "bytes": 9068
+    },
+    {
+      "path": "src/components/public-site/lead-followup.test.tsx",
+      "sha256": "6c00aad50bf9dac0abb4183d270ee4beafff3877f8c43af5c58cfef65e9b120f",
+      "bytes": 3489
+    },
+    {
+      "path": "src/components/public-site/lead-followup.tsx",
+      "sha256": "2cfe61b37dda4a129314d6cc8c976f292b339d5537d899fb3e1a0c14c896cfa5",
+      "bytes": 2435
+    },
+    {
+      "path": "vitest.config.ts",
+      "sha256": "58f29d08a4a74d6d33d1e52eefefefa98b586a0e0678c70b7434e29b2da0f9fe",
+      "bytes": 347
+    }
+  ],
+  "selfExcluded": true,
+  "limits": "Hashes prove file integrity, not security or semantic completeness. Public crawl contains already-public brand information. Raw GSC queries/export and private runtime logs not included."
+}

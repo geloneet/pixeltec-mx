@@ -1,0 +1,7 @@
+{
+  "at": "2026-10-14T23:36:10.006Z",
+  "status": 429,
+  "service": "pagespeedonline.googleapis.com",
+  "reason": "Queries per day quota exhausted for unauthenticated API consumer",
+  "lighthouseResult": null
+}

@@ -1,0 +1,27 @@
+{
+  "base": "1aae1940b31e3e7011fa6c2b7239cea53684a785",
+  "defect": "LeadFollowup omitted the existing sessionId accepted by submitDiagnostic; cookie attribution could still be available.",
+  "before": {
+    "failed": 1,
+    "passed": 5,
+    "failingCase": "preserve existing content session"
+  },
+  "after": {
+    "passed": 6,
+    "failed": 0,
+    "cases": [
+      "no contact consent: no action or session creation",
+      "invalid diagnostic: no action",
+      "success only on server result",
+      "preserve form on failure",
+      "reuse existing session identifier",
+      "identifier unavailable: lead still submitted"
+    ]
+  },
+  "change": "Reuse getTrackingSessionId after form/answer validation, pass optional sessionId; existing server UUID validation retained.",
+  "realSubmissions": 0,
+  "databaseMutations": 0,
+  "realNotifications": 0,
+  "newAnalyticsProvider": false,
+  "newDatabaseField": false
+}

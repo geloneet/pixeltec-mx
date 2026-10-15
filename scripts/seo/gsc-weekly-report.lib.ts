@@ -122,34 +122,43 @@ function fold(value: string): string {
     .trim();
 }
 
-/** Parser CSV mínimo con comillas dobles; detecta `,` o `;` en la cabecera. */
+/** CSV con celdas entrecomilladas (también multilínea), separado por `,` o `;`. */
 function parseCsvLines(text: string): string[][] {
-  const lines = text.replace(/^﻿/, '').split(/\r?\n/);
-  const header = lines.find((l) => l.trim().length > 0) ?? '';
+  const source = text.replace(/^﻿/, '');
+  const header = source.split(/\r?\n/).find((l) => l.trim().length > 0) ?? '';
   const sep = (header.match(/;/g) ?? []).length > (header.match(/,/g) ?? []).length ? ';' : ',';
   const out: string[][] = [];
-  for (const line of lines) {
-    if (!line.trim()) continue;
-    const cells: string[] = [];
-    let cur = '';
-    let quoted = false;
-    for (let i = 0; i < line.length; i++) {
-      const ch = line[i];
-      if (quoted) {
-        if (ch === '"' && line[i + 1] === '"') {
-          cur += '"';
-          i++;
-        } else if (ch === '"') quoted = false;
-        else cur += ch;
-      } else if (ch === '"') quoted = true;
-      else if (ch === sep) {
-        cells.push(cur);
-        cur = '';
-      } else cur += ch;
-    }
-    cells.push(cur);
-    out.push(cells.map((c) => c.trim()));
+  let cells: string[] = [];
+  let cur = '';
+  let quoted = false;
+  const finishRow = () => {
+    const row = [...cells, cur].map((cell) => cell.trim());
+    if (row.some((cell) => cell !== '')) out.push(row);
+    cells = [];
+    cur = '';
+  };
+
+  // El salto de línea solo termina una observación fuera de las comillas.
+  // Dividir antes el archivo inventaba filas en exportaciones reales de GSC.
+  for (let i = 0; i < source.length; i++) {
+    const ch = source[i];
+    if (quoted) {
+      if (ch === '"' && source[i + 1] === '"') {
+        cur += '"';
+        i++;
+      } else if (ch === '"') quoted = false;
+      else cur += ch;
+    } else if (ch === '"') quoted = true;
+    else if (ch === sep) {
+      cells.push(cur);
+      cur = '';
+    } else if (ch === '\n' || ch === '\r') {
+      finishRow();
+      if (ch === '\r' && source[i + 1] === '\n') i++;
+    } else cur += ch;
   }
+  if (quoted) throw new Error('CSV con comillas sin cerrar');
+  finishRow();
   return out;
 }
 

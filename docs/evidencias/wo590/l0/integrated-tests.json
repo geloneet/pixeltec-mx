@@ -1,0 +1,10 @@
+{
+  "success": true,
+  "numTotalTests": 2347,
+  "numPassedTests": 2347,
+  "numFailedTests": 0,
+  "numPendingTests": 0,
+  "testFiles": 188,
+  "command": "npm test -- --reporter=json --outputFile=/private/tmp/wo590-final-tests.json",
+  "includes": "src/**/*.test.{ts,tsx} + scripts/seo/**/*.test.ts; canonical vitest.config.ts"
+}

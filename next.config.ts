@@ -18,7 +18,7 @@ const nextConfig: NextConfig = {
   // instancia de "react" que usa para crear los elementos JSX del documento
   // PDF no es la misma con la que su reconciler interno los reconoce ->
   // "Objects are not valid as a React child" (React error #31) al renderizar.
-  serverExternalPackages: ['grammy', 'ws', '@anthropic-ai/sdk', '@react-pdf/renderer'],
+  serverExternalPackages: ['grammy', 'ws', '@anthropic-ai/sdk', '@react-pdf/renderer', '@modelcontextprotocol/sdk', 'express', 'jose'],
   eslint: {
     ignoreDuringBuilds: true,
   },

@@ -19,3 +19,11 @@ Pruebas locales: Node20/LinuxARM64+PostgreSQL16 sintético, contratos y TypeScri
 Ruta de conexión: Plugins de cuenta ChatGPT→Add custom MCP server→https://pixeltec.mx/api/mcp→OAuth→Create as plugin→instalar→consentimiento humano→nueva conversación. ClientID y redirect se copian EXACTOS de ficha real; predefinido público none+PKCE, sin DCR/CIMD abierto. No config.toml local. No anunciar RFC9207 ni callback estable sin implementarlo. Final: tools/list y consulta real desde inventario del padre, renovación/revocación/continuidad en conversación nueva. Events2.0/webhooks no implementados; polling requeriría tarea declarada y permisos/fuente durable.
 
 Documentos oficiales verificados16oct: https://developers.openai.com/plugins/deploy/connect-chatgpt y https://developers.openai.com/plugins/build/auth .
+
+Bootstrap público separado: PIXELTEC_MCP_DISCOVERY_ENABLED=true publica sólo metadata y challenge401, sin claves/clientes/usuarios/grants ni consultasDB. OAuth permanece503 hasta configuración privada aprobada; esto permite copiar el callback real de Plugins sin inventarlo. No equivale a conexión instalada. Se mantiene Hostcanónico y rechazoOrigin en bootstrap.
+
+Batch exacto: scripts/mcp/prepare-activation.mjs genera docs/integration/mcp-secretary/activation-batch-candidate.sql sin conectarDB. Conserva hashes de fuentes, retira delimitadores internos y califica public en copia derivada. Guarda recibo migration_0053_mcp_v1 en mcp_secretary.audit dentro delCOMMIT. Guardrechaza TODO destino parcial/homónimo/reciboexistente, no repara ni reejecuta.16checks PostgreSQLsintético y revisiónindependiente. Exige respaldo/restauración yGO antespsql; no altera journalDrizzle.
+
+La configuraciónWhatsApp sólo acepta el tenant EXACTO que ya contiene PIXELBOT_TENANT_ID en el mismoDashboard. No se puede apuntar aotro tenant mediante MCPconfig.
+
+Lockfile validado con npm10/Node20AMD64: incorpora entradas transitivas esbuild0.28.2 ausentes, sin actualizar paquetes existentes ni runtime. BuildAMD64aislado en preparación; no confundir con release ejecutada.

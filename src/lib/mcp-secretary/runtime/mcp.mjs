@@ -38,10 +38,10 @@ export function httpHandler({ secretary, authenticate, origins, hosts, resourceM
   if (typeof authenticate!=='function' || !Array.isArray(origins) || !Array.isArray(hosts) || !hosts.length) throw new Error('AUTH_CONFIGURATION_REQUIRED');
   return async request=>{
     const origin=request.headers.get('origin');
-    if (!hosts.includes(request.headers.get('host')||new URL(request.url).host) || (origin && !origins.includes(origin))) return new Response(null,{status:403});
+    if (!hosts.includes(request.headers.get('host')||new URL(request.url).host) || (origin && !origins.includes(origin))) return new Response(null,{status:403,headers:{'Cache-Control':'no-store'}});
     let identity;
     try { identity=await authenticate(request); } catch { identity=null; }
-    if (!identity) return new Response(null,{status:401,headers:resourceMetadataUrl ? {'WWW-Authenticate':`Bearer resource_metadata="${resourceMetadataUrl}"`} : {}});
+    if (!identity) return new Response(null,{status:401,headers:{'Cache-Control':'no-store',...(resourceMetadataUrl ? {'WWW-Authenticate':`Bearer resource_metadata="${resourceMetadataUrl}"`} : {})}});
     const transport=new WebStandardStreamableHTTPServerTransport({sessionIdGenerator:undefined,enableJsonResponse:true});
     const server=createMcp(secretary,identity,{enableFollowupTools,registerExtraTools});
     try { await server.connect(transport); const response=await transport.handleRequest(request);response.headers.set('Cache-Control','no-store');return response; }

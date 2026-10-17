@@ -123,9 +123,13 @@ PIXELTEC_MX_IMAGE_TAG="$SHA" "${COMPOSE[@]}" config --quiet \
   || fail "docker-compose.yml de la release no valida"
 
 echo "==> [5/9] Contrato E0 (predeploy) — la salida solo lleva nombres/estados"
-docker run --rm --env-file "$PIXELTEC_MX_ENV_FILE" \
+# Node >=20.12 reads quoted multiline dotenv values; Docker --env-file does not.
+# Mount the existing contract read-only, outside the immutable release.
+docker run --rm --entrypoint node \
+  -v "$PIXELTEC_MX_ENV_FILE:/run/pixeltec-env:ro" \
   -v "$RELEASE_DIR/scripts:/s:ro" -w /s node:20 \
-  npx -y tsx@4 validate-egress-config.ts --profile=predeploy ${CAPS[@]:+"${CAPS[@]}"} \
+  --env-file=/run/pixeltec-env /usr/local/lib/node_modules/npm/bin/npx-cli.js \
+  -y tsx@4 validate-egress-config.ts --profile=predeploy ${CAPS[@]:+"${CAPS[@]}"} \
   || fail "contrato E0 inválido — no se construye ni se despliega"
 
 if [ "$CHECK_ONLY" = 1 ]; then

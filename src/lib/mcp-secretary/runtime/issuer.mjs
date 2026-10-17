@@ -73,7 +73,14 @@ export class CommercialIssuer {
    (await tx.run('INSERT INTO mcp_secretary.codes(hash,grant_id,request,expires) VALUES($1,$2,$3,$4)',hash(code),grantId,JSON.stringify(request),this.clock()+60000));
    await this.audit(s.userId,grantId,'consent_approved',tx);
   });
-  redirect.searchParams.set(code?'code':'error',code||'access_denied');res.redirect(redirect.href);
+  redirect.searchParams.set(code?'code':'error',code||'access_denied');
+  // Keep form-action self: Chrome applies it to a form POST's cross-origin
+  // redirect chain. Finish the POST locally; an explicit top-level link returns
+  // to the already validated exact OAuth callback. No extra grant or endpoint.
+  res.setHeader('Cache-Control','no-store');
+  res.setHeader('Referrer-Policy','no-referrer');
+  res.setHeader('Content-Security-Policy',"default-src 'none'; form-action 'self'; frame-ancestors 'none'; base-uri 'none'");
+  res.type('html').send('<!doctype html><html lang="es"><meta charset="utf-8"><title>Volver a ChatGPT</title><h1>'+ (code?'Lecturas autorizadas':'Autorización cancelada')+'</h1><p>Completa el retorno ahora.'+(code?' El enlace vence en 60 segundos.':'')+'</p><a rel="noreferrer" href="'+escape(redirect.href)+'">Volver a ChatGPT</a></html>');
  }
  async getCode(client,code){const c=(await this.store.one('SELECT * FROM mcp_secretary.codes WHERE hash=$1',hash(code)));if(!c||(!c.used&&c.expires<=this.clock()))throw new InvalidGrantError('Invalid code');const request=JSON.parse(c.request);if(request.clientId!==client.client_id)throw new InvalidGrantError('Invalid client');return{...c,request};}
  async challengeForAuthorizationCode(client,code){return (await this.getCode(client,code)).request.challenge;}

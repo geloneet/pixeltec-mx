@@ -14,8 +14,6 @@
 import { desc, eq, sql } from 'drizzle-orm';
 import { db, type DB } from '@/lib/db';
 import { blogPosts, blogPostVersions } from '@/lib/db/schema';
-import { logBlogActivity } from './activity';
-import { computeWordCount, computeReadingTime } from './ai/generate-post';
 
 type PostRow = typeof blogPosts.$inferSelect;
 export type BlogPostVersionRow = typeof blogPostVersions.$inferSelect;
@@ -134,43 +132,11 @@ export async function restoreVersion(
   versionId: string,
   actor: SnapshotActor
 ): Promise<{ restoredVersion: number }> {
-  const [row] = await db.select().from(blogPosts).where(eq(blogPosts.id, postId)).limit(1);
-  if (!row) throw new Error('Post no encontrado');
-
-  const version = await getVersion(versionId);
-  if (!version || version.postId !== row.id) throw new Error('Versión no encontrada');
-
-  await db.transaction(async (tx) => {
-    await snapshotPost(tx, row, 'pre-restauracion', actor);
-    await tx
-      .update(blogPosts)
-      .set({
-        title: version.title,
-        excerpt: version.excerpt,
-        body: version.body,
-        category: version.category,
-        tags: version.tags ?? [],
-        coverImage: version.coverImage,
-        seo: version.seo ?? {},
-        sources: version.sources ?? [],
-        internalLinks: version.internalLinks ?? [],
-        // Derivados del body restaurado (no son «contenido»: se recalculan
-        // para que el listado no muestre cifras del cuerpo anterior).
-        wordCount: computeWordCount(version.body),
-        readingTimeMin: computeReadingTime(computeWordCount(version.body)),
-        updatedAt: new Date(),
-      })
-      .where(eq(blogPosts.id, row.id));
-  });
-
-  await logBlogActivity({
-    postId: row.id,
-    type: 'version-restaurada',
-    message: `Versión ${version.version} restaurada («${version.title}»)`,
-    actorId: actor.id,
-    actorName: actor.name,
-    metadata: { versionId: version.id, version: version.version },
-  });
-
-  return { restoredVersion: version.version };
+  const {editorialService,editorialSessionIdentity}=await import('./editorial/host');
+  const current=await editorialService.read(editorialSessionIdentity,postId);
+  const version=await getVersion(versionId);
+  if(!version||version.postId!==current.id)throw new Error('Versión no encontrada');
+  const extra=(version.editorial as {safetySnapshot?:{faq?:unknown;mapsEmbed?:unknown;aiParams?:unknown}})?.safetySnapshot;
+  await editorialService.save(editorialSessionIdentity,{id:current.id,requestKey:crypto.randomUUID(),expectedVersion:current.version,patch:{title:version.title,excerpt:version.excerpt,body:version.body,category:version.category,tags:version.tags??[],coverImage:version.coverImage,seo:version.seo??{},sources:version.sources??[],internalLinks:version.internalLinks??[],faq:extra?.faq??[],mapsEmbed:extra?.mapsEmbed??null,aiParams:extra?.aiParams??null}});
+  return {restoredVersion:version.version};
 }

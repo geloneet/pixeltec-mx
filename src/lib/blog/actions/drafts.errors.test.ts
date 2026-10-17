@@ -35,6 +35,8 @@ vi.mock("../ai/generate-post", () => ({
   generateSlug: vi.fn(() => "slug"),
 }));
 
+vi.mock('../editorial/host',()=>({editorialSessionIdentity:'host-only',editorialService:{read:vi.fn(async()=>({id:'row-1',version:'0',content:{}})),save:vi.fn()}}));
+
 import { generateDraft, regenerateDraft } from "./drafts";
 
 const PROVIDER_BODY =

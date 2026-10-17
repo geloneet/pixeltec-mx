@@ -7,15 +7,12 @@
  * sin dependencias ni variables de entorno nuevas. Como en Encino, PROPONE:
  * devuelve el artículo/FAQ al editor y solo persiste `ai_params`.
  */
-import { eq } from 'drizzle-orm';
-import { db } from '@/lib/db';
-import { blogPosts } from '@/lib/db/schema';
+import {editorialService,editorialSessionIdentity} from '@/lib/blog/editorial/host';
 import { anthropicCreate } from '@/lib/ai/anthropic-egress';
 import { parseModelJson } from '@/lib/ai/model-json';
 import { getModel } from '@/lib/blog/ai/client';
 import { requireUserSession } from '@/lib/auth/session';
 import { getPublishedPosts } from '@/lib/blog/queries/posts';
-import { logBlogActivity } from '@/lib/blog/activity';
 import type { ActionResult } from '@/lib/blog/schemas';
 import { toPublicFailure } from '@/lib/errors/public-failure';
 import {
@@ -74,8 +71,7 @@ export async function generateBlogCmsArticle(raw: unknown): Promise<ActionResult
   if (!parsed.success) return { ok: false, error: 'Datos del wizard inválidos.' };
   const input = parsed.data;
   try {
-    const [row] = await db.select({ id: blogPosts.id, slug: blogPosts.slug }).from(blogPosts).where(eq(blogPosts.id, input.postId)).limit(1);
-    if (!row) return { ok: false, error: 'Entrada no encontrada' };
+    const row=await editorialService.read(editorialSessionIdentity,input.postId);
     const catalog = await internalLinkCatalog(row.slug);
     const prompt = [
       `Brief del artículo:\n${input.brief}`,
@@ -93,23 +89,11 @@ export async function generateBlogCmsArticle(raw: unknown): Promise<ActionResult
       metaDescription: result.metaDescription.slice(0, 160),
       tags: result.tags.map((t) => t.trim()).filter(Boolean).slice(0, 8),
       body: result.body.replace(/^#\s+.*\n+/, ''),
+      ai:{model:getModel(),generatedAt:new Date().toISOString(),editedByHuman:false,wordsAdded:0,iterations:1},
     };
 
-    await db
-      .update(blogPosts)
-      .set({
-        aiParams: {
-          brief: input.brief,
-          tone: input.tone,
-          audience: input.audience,
-          internalLinkCount: input.internalLinkCount,
-          externalLinkCount: input.externalLinkCount,
-        },
-        ai: { model: getModel(), generatedAt: new Date().toISOString(), editedByHuman: false, wordsAdded: 0, iterations: 1 },
-        updatedAt: new Date(),
-      })
-      .where(eq(blogPosts.id, row.id));
-    await logBlogActivity({ postId: row.id, type: input.modification ? 'regenerado-ia' : 'generado-ia', message: input.modification ? 'Artículo regenerado con IA' : 'Artículo generado con IA', actorId: session.userId });
+    // Proposal only. The editor applies the result to its private revision;
+    // this read/inference never writes metadata onto a published row.
     return { ok: true, data: article };
   } catch (err) {
     console.error('[blog-cms] generateArticle:', err instanceof Error ? err.name : typeof err);
@@ -126,6 +110,7 @@ export async function generateBlogCmsFaq(raw: unknown): Promise<ActionResult<{ f
   if (!parsed.success) return { ok: false, error: 'Datos inválidos.' };
   const input = parsed.data;
   try {
+    await editorialService.read(editorialSessionIdentity,input.postId);
     const prompt = [
       `Genera ${input.count} preguntas frecuentes con su respuesta sobre este artículo.`,
       input.existingQuestions.length ? `No repitas estas preguntas: ${input.existingQuestions.join(' | ')}` : '',

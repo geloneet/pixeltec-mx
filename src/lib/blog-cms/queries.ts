@@ -1,9 +1,9 @@
 // Blog (WO-2026-00088, paridad Encino) — capa de lectura/escritura sobre las
 // MISMAS tablas del blog legacy (D-C Opción A). Sin cliente de BD paralelo:
 // todo pasa por `@/lib/db`. Las funciones son server-only por importar `db`.
-import { and, count, desc, eq, ilike, inArray, isNull, lte, or, sql } from 'drizzle-orm';
+import { and, count, desc, eq, ilike, inArray, isNull, or, sql } from 'drizzle-orm';
 import { db } from '@/lib/db';
-import { blogCategories, blogPosts, postRedirects } from '@/lib/db/schema';
+import { blogCategories, blogPosts, postRedirects,editorialDrafts,editorialCommands } from '@/lib/db/schema';
 import { serializePost } from '@/lib/blog/queries/posts';
 import type { BlogPostSerialized } from '@/lib/blog/types';
 
@@ -12,6 +12,7 @@ export type BlogCmsStatusTab = 'all' | 'published' | 'scheduled' | 'draft' | 'ar
 export const PAGE_SIZE = 20;
 
 export interface AdminPostsFilter {
+  ownerId?:string;
   status?: BlogCmsStatusTab;
   category?: string;
   /** `YYYY-MM` sobre coalesce(published_at, updated_at). */
@@ -22,14 +23,14 @@ export interface AdminPostsFilter {
 
 /** Estados «vivos» del flujo Encino. El legacy `needs-review`/`approved` se
  *  muestra en «Todas» como borradores en revisión (no se pierden). */
-function statusCondition(tab: BlogCmsStatusTab | undefined) {
+function statusCondition(tab: BlogCmsStatusTab | undefined,ownerId?:string) {
   switch (tab) {
     case 'published':
-      return eq(blogPosts.status, 'published');
+      return and(eq(blogPosts.status,'published'),ownerId?sql`not (${scheduledFor(ownerId)})`:undefined);
     case 'scheduled':
-      return eq(blogPosts.status, 'scheduled');
+      return ownerId?or(eq(blogPosts.status,'scheduled'),scheduledFor(ownerId)):eq(blogPosts.status,'scheduled');
     case 'draft':
-      return inArray(blogPosts.status, ['draft', 'needs-review', 'approved']);
+      return and(inArray(blogPosts.status, ['draft', 'needs-review', 'approved']),ownerId?sql`not (${scheduledFor(ownerId)})`:undefined);
     case 'archived':
       return eq(blogPosts.status, 'archived');
     default:
@@ -37,11 +38,17 @@ function statusCondition(tab: BlogCmsStatusTab | undefined) {
   }
 }
 
+function scheduledFor(ownerId:string){return sql`exists(select 1 from mcp_safety_candidate.editorial_commands c where c.draft_id=${blogPosts.id} and c.owner_id=${ownerId} and c.kind='publish' and c.state='queued')`;}
+
 const monthExpr = sql<string>`to_char(date_trunc('month', coalesce(${blogPosts.publishedAt}, ${blogPosts.updatedAt})), 'YYYY-MM')`;
+// Explicit empty-draft discard keeps FK/command history but leaves the CMS.
+const notDiscarded = sql`not exists(select 1 from mcp_safety_candidate.editorial_drafts d where d.id=${blogPosts.id} and d.content ? 'discardedAt')`;
 
 function whereFor(filter: AdminPostsFilter) {
   const conds = [
-    statusCondition(filter.status),
+    notDiscarded,
+    statusCondition(filter.status,filter.ownerId),
+    filter.ownerId?sql`${blogPosts.author}->>'uid'=${filter.ownerId}`:undefined,
     filter.category ? eq(blogPosts.category, filter.category) : undefined,
     filter.month && /^\d{4}-\d{2}$/.test(filter.month) ? sql`${monthExpr} = ${filter.month}` : undefined,
     filter.search ? or(ilike(blogPosts.title, `%${filter.search}%`), ilike(blogPosts.slug, `%${filter.search}%`)) : undefined,
@@ -62,59 +69,43 @@ export async function listBlogCmsPosts(filter: AdminPostsFilter): Promise<{ post
       .offset((page - 1) * PAGE_SIZE),
     db.select({ total: count() }).from(blogPosts).where(where),
   ]);
-  return { posts: rows.map(serializePost), total: Number(total) };
+  if(!filter.ownerId||!rows.length)return {posts:rows.map(serializePost),total:Number(total)};
+  const drafts=await db.select({targetPostId:editorialDrafts.targetPostId,content:editorialDrafts.content,updatedAt:editorialDrafts.updatedAt}).from(editorialDrafts).where(and(eq(editorialDrafts.ownerId,filter.ownerId),inArray(editorialDrafts.id,rows.map(r=>r.id))));
+  const queued=await db.select({id:editorialCommands.draftId,dueAt:editorialCommands.dueAt}).from(editorialCommands).where(and(eq(editorialCommands.ownerId,filter.ownerId),eq(editorialCommands.state,'queued'),inArray(editorialCommands.draftId,rows.map(r=>r.id))));
+  const scheduled=new Map(queued.map(c=>[c.id,c.dueAt]));
+  const byId=new Map(drafts.map(d=>[d.targetPostId,d]));
+  return {posts:rows.map(row=>{const draft=byId.get(row.id);const content=(draft?.content as {fields?:Record<string,unknown>}|undefined)?.fields;return {...serializePost(content?{...row,...content,updatedAt:draft!.updatedAt} as typeof row:row),id:row.id,...(scheduled.has(row.id)?{status:'scheduled' as const,scheduledAt:scheduled.get(row.id)?.toISOString()??null}:{})};}),total:Number(total)};
 }
 
-export async function countBlogCmsPostsByStatus(): Promise<Record<string, number>> {
-  const rows = await db
-    .select({ status: blogPosts.status, n: count() })
-    .from(blogPosts)
-    .groupBy(blogPosts.status);
-  return Object.fromEntries(rows.map((r) => [r.status, Number(r.n)]));
+export async function countBlogCmsPostsByStatus(ownerId?:string):Promise<Record<string,number>> {
+  const state=ownerId?sql<string>`case when ${scheduledFor(ownerId)} then 'scheduled' else ${blogPosts.status} end`:blogPosts.status;
+  // Calcular la expresión correlacionada una vez: SELECT/GROUP BY con binds
+  // distintos no son la misma expresión para PostgreSQL, aunque su valor coincida.
+  const scoped=db.select({status:sql<string>`${state}`.as('effective_status')}).from(blogPosts)
+    .where(and(notDiscarded,ownerId?sql`${blogPosts.author}->>'uid'=${ownerId}`:undefined)).as('scoped_blog_status');
+  const rows=await db.select({status:scoped.status,n:count()}).from(scoped).groupBy(scoped.status);
+  return Object.fromEntries(rows.map(r=>[r.status,Number(r.n)]));
 }
 
 export async function listBlogCmsMonths(): Promise<string[]> {
   const rows = await db
     .select({ month: monthExpr })
     .from(blogPosts)
+    .where(notDiscarded)
     .groupBy(monthExpr)
     .orderBy(desc(monthExpr));
   return rows.map((r) => r.month).filter(Boolean);
 }
 
-// ── Programación (barrido en render, paridad Encino `publishDueScheduledPosts`) ──
-
-const SCHEDULED_SWEEP_INTERVAL_MS = 60_000;
-let lastScheduledSweep = 0;
-
-/**
- * Publica los posts `scheduled` cuya fecha ya pasó. Como en Encino: se invoca
- * desde el render de las superficies públicas y del listado admin, a lo sumo
- * una vez por minuto por proceso (estado en memoria, no coordinado entre
- * réplicas). Devuelve los slugs publicados. `force` ignora el throttle (tests).
- */
-export async function publishDueScheduledPosts(opts: { force?: boolean; now?: Date } = {}): Promise<string[]> {
-  const nowMs = (opts.now ?? new Date()).getTime();
-  if (!opts.force && nowMs - lastScheduledSweep < SCHEDULED_SWEEP_INTERVAL_MS) return [];
-  lastScheduledSweep = nowMs;
-  const now = opts.now ?? new Date();
-  const rows = await db
-    .update(blogPosts)
-    .set({
-      status: 'published',
-      publishedAt: sql`coalesce(${blogPosts.publishedAt}, ${blogPosts.scheduledAt})`,
-      scheduledAt: null,
-      updatedAt: now,
-    })
-    .where(and(eq(blogPosts.status, 'scheduled'), lte(blogPosts.scheduledAt, now)))
-    .returning({ slug: blogPosts.slug });
-  return rows.map((r) => r.slug);
+// Compatibility shim for existing render callers. GET/render MUST NOT publish.
+// A durable explicit command runner will replace the old opportunistic sweep.
+// Keeping this no-op prevents public article/sitemap reads from writing data.
+export async function publishDueScheduledPosts(_opts: { force?: boolean; now?: Date } = {}): Promise<string[]> {
+  return [];
 }
 
-/** Solo para tests: reinicia el throttle del barrido. */
-export function resetScheduledSweepThrottle(): void {
-  lastScheduledSweep = 0;
-}
+/** @deprecated no in-memory scheduler remains. */
+export function resetScheduledSweepThrottle(): void {}
 
 // ── Borradores vacíos (paridad Encino `deleteAbandonedEmptyDrafts`/`deleteBlogPostIfEmpty`) ──
 
@@ -129,20 +120,16 @@ const EMPTY_DRAFT = and(
 /** Borra borradores sin título, sin cuerpo y sin portada abandonados hace más de
  *  10 minutos (las revisiones/actividad caen en cascada). Devuelve cuántos. */
 export async function deleteAbandonedEmptyDrafts(): Promise<number> {
-  const rows = await db
-    .delete(blogPosts)
-    .where(and(EMPTY_DRAFT, sql`${blogPosts.updatedAt} < now() - interval '10 minutes'`))
-    .returning({ id: blogPosts.id });
-  return rows.length;
+  // Compatibility shim for the admin list GET. Cleanup is an explicit command,
+  // never an incidental consequence of someone opening a page.
+  return 0;
 }
 
 /** Borra UN borrador si sigue vacío (al cerrar el wizard IA sin escribir). */
 export async function deleteBlogPostIfEmpty(id: string): Promise<boolean> {
-  const rows = await db
-    .delete(blogPosts)
-    .where(and(eq(blogPosts.id, id), EMPTY_DRAFT))
-    .returning({ id: blogPosts.id });
-  return rows.length > 0;
+  // Call the authenticated common service via discardEmptyBlogCmsDraft.
+  // This legacy unscoped helper is retained as a read-safe compatibility stub.
+  return false;
 }
 
 // ── Slug único (misma regla que el legacy: -2, -3…; evita redirects históricos) ──
@@ -185,7 +172,7 @@ export async function listBlogCategoryNames(): Promise<string[]> {
 export async function listBlogCategoriesWithUsage(): Promise<BlogCategoryDto[]> {
   const [cats, usage] = await Promise.all([
     db.select().from(blogCategories).orderBy(blogCategories.name),
-    db.select({ category: blogPosts.category, n: count() }).from(blogPosts).groupBy(blogPosts.category),
+    db.select({ category: blogPosts.category, n: count() }).from(blogPosts).where(notDiscarded).groupBy(blogPosts.category),
   ]);
   const byName = new Map(usage.map((u) => [u.category, Number(u.n)]));
   const byId = new Map(cats.map((c) => [c.id, c.name]));

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { requireUserSession } from "@/lib/auth/session";
-import { getPostById } from "@/lib/blog/queries/posts";
+import {readEditorialView} from "@/lib/blog/editorial/host";
 import { listVersions } from "@/lib/blog/versions";
 import { listBlogCategoryNames } from "@/lib/blog-cms/queries";
 import { ADMIN_BLOG_PATH } from "@/lib/blog-cms/paths";
@@ -23,11 +23,12 @@ export default async function BlogCmsEditPage({ params, searchParams }: { params
   const session = await requireUserSession();
   if (!session) redirect(`/login?redirect=${ADMIN_BLOG_PATH}`);
   const { id } = await params;
-  if (!/^[0-9a-f-]{36}$/i.test(id)) notFound();
+  if (!/^[a-z0-9_-]{1,200}$/i.test(id)) notFound();
   const sp = await searchParams;
 
-  const post = await getPostById(id);
-  if (!post) notFound();
+  const view = await readEditorialView(id).catch(()=>null);
+  if (!view) notFound();
+  const {post}=view;
   const [categories, versions] = await Promise.all([
     listBlogCategoryNames(),
     listVersions(post.id).catch(() => []),
@@ -36,6 +37,9 @@ export default async function BlogCmsEditPage({ params, searchParams }: { params
   return (
     <BlogCmsEditor
       post={post}
+      revisionVersion={view.version}
+      revisionDigest={view.digest}
+      revisionReviewed={view.reviewed}
       categories={categories}
       revisions={versions.slice(0, 10)}
       isAdmin={session.role === "admin"}

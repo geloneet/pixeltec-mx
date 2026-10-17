@@ -6,7 +6,7 @@ import { beforeEach, describe, expect, test, vi } from 'vitest';
  * restaurar JAMÁS toca `status` ni `slug`. Todo con db mockeada.
  */
 
-const { dbMock, insertValuesMock, updateSetMock, selectQueue, logBlogActivityMock } = vi.hoisted(() => {
+const { privateRead,privateSave, dbMock, insertValuesMock, updateSetMock, selectQueue, logBlogActivityMock } = vi.hoisted(() => {
   const insertValuesMock = vi.fn(async (_values: Record<string, unknown>) => undefined);
   const updateSetMock = vi.fn((_payload: Record<string, unknown>) => ({
     where: vi.fn(async () => undefined),
@@ -34,9 +34,10 @@ const { dbMock, insertValuesMock, updateSetMock, selectQueue, logBlogActivityMoc
   // La transacción reusa el mismo mock como `tx`.
   dbMock.transaction = vi.fn(async (cb: (tx: unknown) => Promise<unknown>) => cb(dbMock));
 
-  return { dbMock, insertValuesMock, updateSetMock, selectQueue, logBlogActivityMock: vi.fn() };
+  return {privateRead:vi.fn(),privateSave:vi.fn(), dbMock, insertValuesMock, updateSetMock, selectQueue, logBlogActivityMock: vi.fn() };
 });
 
+vi.mock('./editorial/host',()=>({editorialSessionIdentity:'host-only',editorialService:{read:privateRead,save:privateSave}}));
 vi.mock('@/lib/db', () => ({ db: dbMock }));
 vi.mock('./activity', () => ({ logBlogActivity: logBlogActivityMock }));
 
@@ -97,6 +98,8 @@ const ACTOR = { id: 'u1', name: 'Miguel' };
 beforeEach(() => {
   vi.clearAllMocks();
   selectQueue.length = 0;
+  privateRead.mockResolvedValue({id:'post-uuid',version:'9'});
+  privateSave.mockResolvedValue({version:'10'});
 });
 
 describe('snapshotPost — version = max+1 en el mismo ejecutor', () => {
@@ -129,47 +132,17 @@ describe('snapshotPost — version = max+1 en el mismo ejecutor', () => {
   });
 });
 
-describe('restoreVersion — snapshot previo y regla dura status/slug', () => {
-  test('snapshotea `pre-restauracion` ANTES y el update no toca status ni slug', async () => {
-    selectQueue.push([POST_ROW]); // post actual
-    selectQueue.push([VERSION_ROW]); // versión a restaurar
-    selectQueue.push([{ max: 5 }]); // max dentro de la tx (snapshot previo)
-
-    const result = await restoreVersion('post-uuid', 'version-uuid', ACTOR);
-
-    expect(result).toEqual({ restoredVersion: 4 });
-
-    // Snapshot previo del contenido ACTUAL con reason pre-restauracion.
-    expect(insertValuesMock).toHaveBeenCalledTimes(1);
-    const snapshot = insertValuesMock.mock.calls[0][0];
-    expect(snapshot.reason).toBe('pre-restauracion');
-    expect(snapshot.version).toBe(6);
-    expect(snapshot.title).toBe('Título actual');
-
-    // Update: restaura contenido, JAMÁS status ni slug.
-    expect(updateSetMock).toHaveBeenCalledTimes(1);
-    const payload = updateSetMock.mock.calls[0][0];
-    expect(payload).not.toHaveProperty('status');
-    expect(payload).not.toHaveProperty('slug');
-    expect(payload.title).toBe('Título viejo');
-    expect(payload.body).toBe('Cuerpo viejo');
-    expect(payload.category).toBe('opinión');
-    expect(payload.tags).toEqual(['z']);
-
-    // Actividad registrada.
-    expect(logBlogActivityMock).toHaveBeenCalledWith(
-      expect.objectContaining({ type: 'version-restaurada', postId: 'post-uuid' })
-    );
-  });
-
-  test('rechaza una versión que pertenece a OTRO post', async () => {
-    selectQueue.push([POST_ROW]);
-    selectQueue.push([{ ...VERSION_ROW, postId: 'otro-post' }]);
-
-    await expect(restoreVersion('post-uuid', 'version-uuid', ACTOR)).rejects.toThrow(
-      'Versión no encontrada'
-    );
-    expect(updateSetMock).not.toHaveBeenCalled();
-    expect(insertValuesMock).not.toHaveBeenCalled();
-  });
+describe('restoreVersion — only a new private revision, preserving the public row',()=>{
+ test('restores selected immutable content through CAS and resets review in common service',async()=>{
+  selectQueue.push([VERSION_ROW]);
+  expect(await restoreVersion('post-uuid','version-uuid',ACTOR)).toEqual({restoredVersion:4});
+  expect(privateSave).toHaveBeenCalledWith('host-only',expect.objectContaining({id:'post-uuid',expectedVersion:'9',patch:expect.objectContaining({title:'Título viejo',body:'Cuerpo viejo'})}));
+  const payload=privateSave.mock.calls[0][1].patch;expect(payload).not.toHaveProperty('status');expect(payload).not.toHaveProperty('slug');
+  expect(updateSetMock).not.toHaveBeenCalled();expect(insertValuesMock).not.toHaveBeenCalled();
+ });
+ test('rejects a version belonging to another post before any save',async()=>{
+  selectQueue.push([{...VERSION_ROW,postId:'other'}]);
+  await expect(restoreVersion('post-uuid','version-uuid',ACTOR)).rejects.toThrow('Versión no encontrada');
+  expect(privateSave).not.toHaveBeenCalled();expect(updateSetMock).not.toHaveBeenCalled();
+ });
 });

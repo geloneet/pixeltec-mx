@@ -12,6 +12,7 @@ const { requireAdminMock, resolvePostRowMock, uploadObjectMock } = vi.hoisted(()
   uploadObjectMock: vi.fn(async () => 'https://cdn.example.com/blog/images/post-1/hash.png'),
 }));
 
+vi.mock('@/lib/blog/editorial/host',()=>({editorialSessionIdentity:'host-only',editorialService:{read:resolvePostRowMock}}));
 vi.mock('@/lib/auth-guards', () => ({ requireAdmin: requireAdminMock }));
 vi.mock('@/lib/blog/pg', () => ({ resolvePostRow: resolvePostRowMock }));
 vi.mock('@/lib/r2/upload', () => ({ uploadObject: uploadObjectMock }));
@@ -21,11 +22,11 @@ import { POST } from './route';
 const PNG_MAGIC = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]);
 const JPEG_MAGIC = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 4]);
 
-function makeReq(opts: { file?: File; postId?: string }): NextRequest {
+function makeReq(opts: { file?: File; postId?: string; origin?:string }): NextRequest {
   const form = new FormData();
   if (opts.postId !== undefined) form.set('postId', opts.postId);
   if (opts.file) form.set('file', opts.file);
-  return new Request('http://localhost/api/blog/image', { method: 'POST', body: form }) as unknown as NextRequest;
+  return new Request('http://localhost/api/blog/image', { method: 'POST', body: form,headers:{Origin:opts.origin??'https://pixeltec.mx'} }) as unknown as NextRequest;
 }
 
 beforeEach(() => {
@@ -36,6 +37,15 @@ beforeEach(() => {
 });
 
 describe('POST /api/blog/image', () => {
+  test('canonical owner denial prevents uploading into another post namespace',async()=>{
+    resolvePostRowMock.mockRejectedValueOnce(new Error('EDITORIAL_NOT_FOUND'));
+    const res=await POST(makeReq({postId:'other',file:new File([PNG_MAGIC],'a.png',{type:'image/png'})}));
+    expect(res.status).toBe(404);expect(uploadObjectMock).not.toHaveBeenCalled();
+  });
+  test('foreign Origin is rejected',async()=>{
+    const res=await POST(makeReq({postId:'p1',origin:'https://foreign.invalid',file:new File([PNG_MAGIC],'a.png',{type:'image/png'})}));
+    expect(res.status).toBe(403);expect(uploadObjectMock).not.toHaveBeenCalled();
+  });
   test('sin sesión admin → status del guard, sin tocar R2', async () => {
     requireAdminMock.mockResolvedValueOnce({ ok: false, error: 'Unauthorized', status: 401 });
     const res = await POST(makeReq({ postId: 'p1', file: new File([PNG_MAGIC], 'a.png', { type: 'image/png' }) }));
@@ -74,6 +84,6 @@ describe('POST /api/blog/image', () => {
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true, url: 'https://cdn.example.com/blog/images/post-1/hash.png' });
     const [key] = uploadObjectMock.mock.calls[0] as unknown as [string, Buffer, string];
-    expect(key).toMatch(/^blog\/images\/post-uuid-1\/[0-9a-f]{12}\.png$/);
+    expect(key).toMatch(/^blog\/images\/post-uuid-1\/[0-9a-f]{64}\.png$/);
   });
 });

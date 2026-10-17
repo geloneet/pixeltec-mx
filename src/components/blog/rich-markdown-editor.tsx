@@ -12,7 +12,7 @@
  * en el bundle SSR ni en el resto del sitio.
  */
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type MutableRefObject } from "react";
 import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import {
   Bold,
@@ -45,7 +45,7 @@ import { cn } from "@/lib/utils";
 import { createBlogEditorExtensions } from "./tiptap-extensions";
 
 /** Debounce corto de serialización: no spamear el form (que ya tiene su
- *  propio debounce de autosave de 5 s) en cada tecla. */
+ *  propio debounce de autosave) en cada tecla. */
 const SERIALIZE_DEBOUNCE_MS = 300;
 
 interface MarkdownStorage {
@@ -55,6 +55,9 @@ interface MarkdownStorage {
 interface RichMarkdownEditorProps {
   value: string;
   onChange: (markdown: string) => void;
+  /** Snapshot síncrono antes de guardar, incluso dentro del debounce. */
+  flushMarkdownRef?: MutableRefObject<(() => string) | null>;
+  onPendingChange?: () => void;
   /**
    * WO-2026-00088 (Blog, paridad Encino): sube un archivo de imagen y devuelve
    * su URL pública (R2). Opcional: sin él, el diálogo de imagen solo acepta URL
@@ -63,11 +66,24 @@ interface RichMarkdownEditorProps {
   onUploadImage?: (file: File) => Promise<string>;
 }
 
-export default function RichMarkdownEditor({ value, onChange, onUploadImage }: RichMarkdownEditorProps) {
+export default function RichMarkdownEditor({ value, onChange, onUploadImage, flushMarkdownRef, onPendingChange }: RichMarkdownEditorProps) {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   // Último Markdown emitido/recibido: evita re-deserializar el contenido
   // cuando el cambio del form lo originó este mismo editor.
   const lastMarkdownRef = useRef(value);
+  const pendingMarkdownRef = useRef(false);
+  const [serializationError, setSerializationError] = useState(false);
+  const serialize = useCallback((e: Editor) => {
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = null;
+    if (!pendingMarkdownRef.current) return lastMarkdownRef.current;
+    const md = (e.storage.markdown as MarkdownStorage).getMarkdown();
+    lastMarkdownRef.current = md;
+    pendingMarkdownRef.current = false;
+    setSerializationError(false);
+    onChange(md);
+    return md;
+  }, [onChange]);
 
   const editor = useEditor({
     extensions: createBlogEditorExtensions(),
@@ -83,20 +99,32 @@ export default function RichMarkdownEditor({ value, onChange, onUploadImage }: R
       },
     },
     onUpdate: ({ editor: e }) => {
+      pendingMarkdownRef.current = true;
+      onPendingChange?.();
       if (debounceRef.current) clearTimeout(debounceRef.current);
       debounceRef.current = setTimeout(() => {
-        const md = (e.storage.markdown as MarkdownStorage).getMarkdown();
-        lastMarkdownRef.current = md;
-        onChange(md);
+        try { serialize(e); }
+        catch { setSerializationError(true); }
       }, SERIALIZE_DEBOUNCE_MS);
     },
   });
+
+  useEffect(() => {
+    if (!flushMarkdownRef || !editor) return;
+    const flush = () => serialize(editor);
+    flushMarkdownRef.current = flush;
+    return () => { if (flushMarkdownRef.current === flush) flushMarkdownRef.current = null; };
+  }, [editor, flushMarkdownRef, serialize]);
 
   // Cambios EXTERNOS de `body` (Herramientas de IA, restaurar versión…):
   // se re-deserializa solo si el valor no salió de este editor.
   useEffect(() => {
     if (!editor || value === lastMarkdownRef.current) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = null;
+    pendingMarkdownRef.current = false;
     lastMarkdownRef.current = value;
+    setSerializationError(false);
     editor.commands.setContent(value, false);
   }, [value, editor]);
 
@@ -111,6 +139,7 @@ export default function RichMarkdownEditor({ value, onChange, onUploadImage }: R
     <div className="rounded-lg border border-border bg-background focus-within:border-blue-500/50">
       <EditorToolbar editor={editor} onUploadImage={onUploadImage} />
       <EditorContent editor={editor} />
+      {serializationError && <p role="alert" className="px-4 py-2 text-sm text-destructive">No se pudo preparar el contenido para guardar. El texto sigue en el editor; vuelve a intentarlo.</p>}
     </div>
   );
 }

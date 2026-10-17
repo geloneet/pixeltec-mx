@@ -31,14 +31,16 @@ import { selectableBlogSchemaTypes } from "@/lib/blog-cms/schema-types";
 import { AI_ARTICLE_TONES, toAiArticleParams, type AiArticleTone } from "@/lib/blog-cms/ai-params";
 import { isSystemSlug } from "@/lib/blog-cms/transitions";
 import { parseUnsplashImageUrl } from "@/lib/blog-cms/unsplash-url";
-import type { BlogCmsIntent } from "@/lib/blog-cms/schemas";
+import type { BlogCmsIntent, AiArticleResult } from "@/lib/blog-cms/schemas";
 import {
   discardEmptyBlogCmsDraft,
   restoreBlogCmsRevision,
   saveBlogCmsPost,
+  reviewBlogCmsRevision,
 } from "@/lib/blog-cms/actions";
 import { ADMIN_BLOG_PATH } from "@/lib/blog-cms/paths";
 import { generateBlogCmsArticle, generateBlogCmsFaq } from "@/lib/blog-cms/ai";
+import {EditorialEvidence} from "./editorial-evidence";
 import { StatusPill } from "./status-pill";
 import { UnsplashPicker } from "./unsplash-picker";
 import { formatEditorialDate } from "@/lib/blog/format-date";
@@ -72,6 +74,10 @@ interface FormState {
   coverImageAlt: string;
   mapsEmbed: string;
   schemaTypes: string[];
+  sources:BlogPostSerialized["sources"];
+  internalLinks:BlogPostSerialized["internalLinks"];
+  ai:BlogPostSerialized["ai"];
+  aiParams:BlogPostSerialized["aiParams"];
 }
 
 interface EditorProps {
@@ -80,6 +86,7 @@ interface EditorProps {
   revisions: BlogPostVersionMeta[];
   isAdmin: boolean;
   startWithAi: boolean;
+  revisionVersion?:string;revisionDigest?:string;revisionReviewed?:boolean;
 }
 
 async function uploadImage(postId: string, file: File, endpoint: "/api/blog/cover" | "/api/blog/image"): Promise<string> {
@@ -92,7 +99,7 @@ async function uploadImage(postId: string, file: File, endpoint: "/api/blog/cove
   return json.url;
 }
 
-export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithAi }: EditorProps) {
+export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithAi, revisionVersion="0",revisionDigest="",revisionReviewed=false }: EditorProps) {
   const router = useRouter();
   const [tab, setTab] = useState<Tab>("publicar");
   const [status, setStatus] = useState<string>(post.status);
@@ -114,6 +121,7 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
     coverImageAlt: post.seo.ogImageAlt,
     mapsEmbed: post.mapsEmbed ?? "",
     schemaTypes: post.seo.schemaTypes ?? [],
+    sources:post.sources,internalLinks:post.internalLinks,ai:post.ai,aiParams:post.aiParams,
   });
   const [slugTouched, setSlugTouched] = useState(!isSystemSlug(post.slug) && post.slug !== generateSlug(post.title));
   const [saveState, setSaveState] = useState<"idle" | "saving" | "saved" | "error">("idle");
@@ -126,6 +134,14 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
   const [aiParams, setAiParams] = useState(toAiArticleParams(post.aiParams));
   const [coverUrlInput, setCoverUrlInput] = useState("");
   const dirtyRef = useRef(false);
+  const flushMarkdownRef = useRef<(() => string) | null>(null);
+  const [bodyEdit, setBodyEdit] = useState(0);
+  const versionRef=useRef(revisionVersion),digestRef=useRef(revisionDigest);
+  const [reviewed,setReviewed]=useState(revisionReviewed);
+  const [attested,setAttested]=useState(false);
+  const saveQueue=useRef<Promise<unknown>>(Promise.resolve());
+  const editGeneration=useRef(0);
+  const failedRequest=useRef<{signature:string;key:string}|null>(null);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const formRef = useRef(form);
   formRef.current = form;
@@ -133,7 +149,26 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
   const set = useCallback(<K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
     dirtyRef.current = true;
+    editGeneration.current++;setReviewed(false);setAttested(false);
   }, []);
+
+  const onBodyChange = useCallback((body: string) => {
+    if (body === formRef.current.body) return;
+    // The save queue reads this ref before React commits the state update.
+    formRef.current = { ...formRef.current, body };
+    set("body", body);
+  }, [set]);
+  const onBodyPending = useCallback(() => {
+    dirtyRef.current = true;
+    editGeneration.current++;
+    setReviewed(false);setAttested(false);setSaveState(state=>state==="error"?"error":"idle");
+    setBodyEdit(n => n + 1);
+  }, []);
+  const flushBody = useCallback(() => flushMarkdownRef.current?.() ?? formRef.current.body, []);
+  const openBodyTool = (open: () => void) => {
+    try { flushBody(); open(); }
+    catch { toast.error("No se pudo preparar el contenido. El texto sigue en el editor; vuelve a intentarlo."); }
+  };
 
   // «Restaurar revisión» (WO-2026-00206): antes este componente se remontaba
   // por completo vía `key={post.updatedAt}` en page.tsx para releer `post` en
@@ -164,6 +199,7 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
       coverImageAlt: p.seo.ogImageAlt,
       mapsEmbed: p.mapsEmbed ?? "",
       schemaTypes: p.seo.schemaTypes ?? [],
+      sources:p.sources,internalLinks:p.internalLinks,ai:p.ai,aiParams:p.aiParams,
     });
     setSlugTouched(!isSystemSlug(p.slug) && p.slug !== generateSlug(p.title));
     setAiParams(toAiArticleParams(p.aiParams));
@@ -173,18 +209,22 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
     if (!restoringRef.current) return;
     restoringRef.current = false;
     syncFormFromPost(post);
-  }, [post, syncFormFromPost]);
+    versionRef.current=revisionVersion;digestRef.current=revisionDigest;setReviewed(revisionReviewed);setAttested(false);
+  }, [post, syncFormFromPost,revisionVersion,revisionDigest,revisionReviewed]);
 
   // Título → slug mientras el usuario no haya tocado el slug (paridad Encino).
   function onTitleChange(title: string) {
     setForm((f) => ({ ...f, title, slug: slugTouched ? f.slug : generateSlug(title) }));
     dirtyRef.current = true;
+    editGeneration.current++;setReviewed(false);setAttested(false);
   }
 
   const buildPayload = useCallback((intent: BlogCmsIntent, when?: string) => {
     const f = formRef.current;
     return {
       id: post.id,
+      expectedVersion:versionRef.current,expectedDigest:digestRef.current,
+      sources:f.sources,internalLinks:f.internalLinks,ai:f.ai,aiParams:f.aiParams,
       title: f.title,
       body: f.body,
       metaDescription: f.metaDescription,
@@ -205,28 +245,49 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
     };
   }, [post.id]);
 
-  const doSave = useCallback(async (intent: BlogCmsIntent, when?: string): Promise<boolean> => {
-    setSaveState("saving");
-    const res = await saveBlogCmsPost(buildPayload(intent, when));
-    if (!res.ok || !res.data) {
-      setSaveState("error");
-      toast.error(res.error ?? "No se pudo guardar");
-      return false;
-    }
-    dirtyRef.current = false;
-    setSaveState("saved");
-    setSavedAt(new Date().toLocaleTimeString("es-MX", { hour: "2-digit", minute: "2-digit" }));
-    setStatus(res.data.status);
-    setPublishedAt(res.data.publishedAt);
-    setScheduledAt(res.data.scheduledAt);
-    if (res.data.slug !== formRef.current.slug) setForm((f) => ({ ...f, slug: res.data!.slug }));
-    if (formRef.current.newCategory) setForm((f) => ({ ...f, category: f.newCategory, newCategory: "" }));
-    if (intent !== "autosave") {
-      toast.success(intent === "publish" ? "Entrada publicada" : intent === "schedule" ? "Entrada programada" : "Borrador guardado");
-      router.refresh();
-    }
-    return true;
-  }, [buildPayload, router]);
+  const doSave = useCallback((intent:BlogCmsIntent,when?:string):Promise<boolean> => {
+    const operation=saveQueue.current.then(async()=>{
+      let request: {signature:string;key:string} | undefined;
+      let generation=editGeneration.current;
+      setSaveState(state=>state==="error"?"error":"saving");
+      try {
+        // Flush inside the queue: each operation snapshots the latest body and
+        // uses the version returned by the previous save. A serialization error
+        // must stop before sending an older body to the server.
+        const body=flushBody();
+        const payload={...buildPayload(intent,when),body},signature=JSON.stringify(payload);
+        const requestKey=failedRequest.current?.signature===signature?failedRequest.current.key:crypto.randomUUID();
+        request={signature,key:requestKey};
+        generation=editGeneration.current;
+        const res=await saveBlogCmsPost({...payload,requestKey});
+        if(res.data){
+          if(digestRef.current!==res.data.digest)setReviewed(false);
+          versionRef.current=res.data.version;digestRef.current=res.data.digest;
+          setStatus(res.data.status);setPublishedAt(res.data.publishedAt);setScheduledAt(res.data.scheduledAt);
+        }
+        if(!res.ok||!res.data){if(generation===editGeneration.current){setSaveState("error");toast.error(res.error??"No se pudo guardar");}return false;}
+        failedRequest.current=null;
+        const current=generation===editGeneration.current;
+        // A receipt advances CAS even when the visible edit is newer. Only
+        // that edit's own receipt may clear its error or confirm it as saved.
+        if(current){
+          dirtyRef.current=false;setSaveState("saved");
+          setSavedAt(new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit"}));
+          if(intent!=="autosave"){toast.success(intent==="publish"?"Entrada publicada":intent==="schedule"?"Entrada programada":"Borrador privado guardado");router.refresh();}
+        }else if(intent==="publish"||intent==="schedule"){
+          toast.message(`Versión ${res.data.version} ${intent==="publish"?"publicada":"programada"}. Hay cambios posteriores sin guardar.`);
+        }
+        return true;
+      }catch{if(request)failedRequest.current=request;if(generation===editGeneration.current){setSaveState("error");toast.error(request?"No se confirmó el guardado. Puedes reintentarlo con los mismos datos.":"No se pudo preparar el contenido. El texto sigue en el editor; vuelve a intentarlo.");}return false;}
+    });
+    saveQueue.current=operation.then(()=>undefined,()=>undefined);return operation;
+  },[buildPayload,flushBody,router]);
+  const reviewCurrent=()=>start(async()=>{
+    if(dirtyRef.current||!attested)return;
+    const generation=editGeneration.current;
+    const res=await reviewBlogCmsRevision({id:post.id,expectedDigest:digestRef.current,requestKey:crypto.randomUUID(),verifiedSourceIds:formRef.current.sources.map(s=>s.id),verifiedLinks:formRef.current.internalLinks.map(l=>l.targetUrl),claimsVerified:true});
+    if(res.ok&&generation===editGeneration.current){setReviewed(true);toast.success("Revisión registrada para esta versión");}else toast.error(res.error??"La versión cambió durante la revisión");
+  });
   const doSaveRef = useRef(doSave);
   doSaveRef.current = doSave;
 
@@ -236,7 +297,7 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => void doSaveRef.current("autosave"), AUTOSAVE_DELAY_MS);
     return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [form]);
+  }, [form, bodyEdit]);
 
   useEffect(() => {
     const handler = (e: BeforeUnloadEvent) => { if (dirtyRef.current) { e.preventDefault(); } };
@@ -295,7 +356,9 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
           </div>
           <RichMarkdownEditor
             value={form.body}
-            onChange={(md) => set("body", md)}
+            onChange={onBodyChange}
+            onPendingChange={onBodyPending}
+            flushMarkdownRef={flushMarkdownRef}
             onUploadImage={(file) => uploadImage(post.id, file, "/api/blog/image")}
           />
         </div>
@@ -316,19 +379,19 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
             <Card title="Publicación">
               <div className="space-y-2">
                 {isAdmin ? (
-                  <Button className="w-full" disabled={pending} onClick={() => explicit("publish")}>
-                    {status === "published" ? "Guardar cambios" : status === "scheduled" ? "Publicar ahora" : "Publicar"}
+                  <Button className="w-full" disabled={pending||!reviewed||dirtyRef.current} onClick={() => explicit("publish")}>
+                    {status === "published" ? "Publicar revisión" : status === "scheduled" ? "Publicar ahora" : "Publicar"}
                   </Button>
                 ) : (
                   <p className="text-xs text-muted-foreground">Publicar y programar requieren rol administrador.</p>
                 )}
                 <Button variant="outline" className="w-full" disabled={pending} onClick={() => explicit("draft")}>Guardar borrador</Button>
                 {isAdmin && status !== "published" && (
-                  <Button variant="outline" className="w-full gap-2" disabled={pending} onClick={() => setScheduleOpen(true)}>
+                  <Button variant="outline" className="w-full gap-2" disabled={pending||!reviewed||dirtyRef.current} onClick={() => setScheduleOpen(true)}>
                     <CalendarClock className="h-4 w-4" /> {status === "scheduled" ? "Reprogramar entrada" : "Programar entrada"}
                   </Button>
                 )}
-                {status === "scheduled" && scheduledAt && (
+                {scheduledAt && (
                   <p className="text-xs text-purple-300">Programada para {formatEditorialDate(scheduledAt)}.</p>
                 )}
                 {status === "published" && (
@@ -337,12 +400,18 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
                   </a>
                 )}
                 {aiParams && (
-                  <button type="button" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground" onClick={() => { setAiRegen(true); setAiOpen(true); }}>
+                  <button type="button" className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground" onClick={() => openBodyTool(() => { setAiRegen(true); setAiOpen(true); })}>
                     <Sparkles className="h-3 w-3" /> Regenerar el artículo con IA…
                   </button>
                 )}
                 <p className="text-xs text-muted-foreground">Creada por {post.author.name}{publishedAt ? ` · publicada ${formatEditorialDate(publishedAt)}` : ""}</p>
               </div>
+            </Card>
+            <Card title="Revisión de esta versión">
+              <p className="text-xs">Los cambios se guardan en privado. Guarda el borrador y comprueba las fuentes y enlaces antes de publicar.</p>
+              <Link href={`${ADMIN_BLOG_PATH}/${post.id}/preview`} target="_blank" className="text-xs underline">Vista previa privada</Link>
+              <EditorialEvidence sources={form.sources} links={form.internalLinks} onSources={v=>set("sources",v)} onLinks={v=>set("internalLinks",v)}/>
+              {isAdmin&&<><label className="mt-3 flex gap-2 text-xs"><input type="checkbox" checked={attested} onChange={e=>setAttested(e.target.checked)}/>Verifiqué las fuentes, los enlaces y las afirmaciones de esta versión.</label><Button className="mt-2" variant="outline" disabled={pending||dirtyRef.current||!attested||!form.sources.length} onClick={reviewCurrent}>{reviewed?"Versión revisada":"Registrar revisión"}</Button></>}
             </Card>
             <Card title="Historial de versiones" icon={<History className="h-3.5 w-3.5" />}>
               {revisions.length === 0 ? (
@@ -429,7 +498,7 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
                 ))}
                 <div className="flex flex-wrap gap-2">
                   <Button type="button" variant="outline" size="sm" className="gap-1" disabled={form.faq.length >= 20} onClick={() => set("faq", [...form.faq, { question: "", answer: "" }])}><Plus className="h-3 w-3" /> Agregar</Button>
-                  <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => setFaqAiOpen(true)}><Sparkles className="h-3 w-3" /> Insertar con IA</Button>
+                  <Button type="button" variant="outline" size="sm" className="gap-1" onClick={() => openBodyTool(() => setFaqAiOpen(true))}><Sparkles className="h-3 w-3" /> Insertar con IA</Button>
                 </div>
               </div>
             </Card>
@@ -534,9 +603,10 @@ export function BlogCmsEditor({ post, categories, revisions, isAdmin, startWithA
           if (res.ok && res.data?.deleted) router.replace(ADMIN_BLOG_PATH);
         })}
         onResult={(r, params) => {
-          setForm((f) => ({ ...f, title: r.title, slug: slugTouched ? f.slug : generateSlug(r.title), metaDescription: r.metaDescription, body: r.body, tags: r.tags.join(", ") }));
+          setForm((f) => ({ ...f, title: r.title, slug: slugTouched ? f.slug : generateSlug(r.title), metaDescription: r.metaDescription, body: r.body, tags: r.tags.join(", "), ai:r.ai??f.ai,aiParams:params }));
           setAiParams(params);
           dirtyRef.current = true;
+    editGeneration.current++;setReviewed(false);setAttested(false);
         }}
         pristine={!form.title.trim() && !form.body.trim() && !form.coverImage}
       />
@@ -617,7 +687,7 @@ type AiParamsState = { brief: string; tone: AiArticleTone; audience: string; int
  *  audiencia → enlaces; modo «regenerar» pide la modificación. */
 function AiArticleDialog({ open, regen, initial, postId, currentTitle, currentBody, pristine, onOpenChange, onResult, onDiscardPristine }: {
   open: boolean; regen: boolean; initial: AiParamsState | null; postId: string; currentTitle: string; currentBody: string; pristine: boolean;
-  onOpenChange: (o: boolean) => void; onResult: (r: { title: string; metaDescription: string; tags: string[]; body: string }, params: AiParamsState) => void; onDiscardPristine: () => void;
+  onOpenChange: (o: boolean) => void; onResult: (r: AiArticleResult, params: AiParamsState) => void; onDiscardPristine: () => void;
 }) {
   const [step, setStep] = useState(0);
   const [params, setParams] = useState<AiParamsState>(initial ?? { brief: "", tone: "informativo", audience: "", internalLinkCount: 2, externalLinkCount: 1 });

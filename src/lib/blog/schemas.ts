@@ -1,34 +1,10 @@
 import { z } from 'zod';
+import {EditorialSeoSchema,PostSourceSchema,InternalLinkSchema} from './editorial/content-schema.mjs';
 
 // ── WS2: piezas de estrategia/evidencia ──────────────────────────────────────
 
-export const PostSourceSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(3, 'Título de la fuente muy corto').max(300),
-  url: z.string().url('URL de fuente inválida'),
-  publisher: z.string().max(200).default(''),
-  sourceType: z.enum([
-    'official',
-    'primary-research',
-    'regulation',
-    'technical-documentation',
-    'reputable-secondary',
-    'pixeltec-evidence',
-  ]),
-  claimSupported: z.string().max(500).default(''),
-  accessedAt: z.string().default(''),
-  verifiedByHuman: z.boolean().default(false),
-});
+export {PostSourceSchema,InternalLinkSchema};
 export type PostSourceInput = z.infer<typeof PostSourceSchema>;
-
-export const InternalLinkSchema = z.object({
-  targetUrl: z.string().min(1).refine((u) => u.startsWith('/') || u.startsWith('https://pixeltec.mx'), {
-    message: 'El enlace interno debe ser relativo (/ruta) o del propio dominio',
-  }),
-  anchor: z.string().min(2, 'Anchor descriptivo requerido').max(120),
-  placement: z.string().max(200).optional(),
-  verified: z.boolean().default(false),
-});
 
 export const BriefInternalLinkTargetSchema = z.object({
   url: z.string().min(1),
@@ -71,20 +47,22 @@ export const BlogBriefSchema = z.object({
 export type BlogBriefInput = z.infer<typeof BlogBriefSchema>;
 
 export const BlogPostEditSchema = z.object({
+  expectedVersion:z.string().regex(/^(0|[1-9][0-9]*)$/).optional(),
+  requestKey:z.string().uuid().optional(),
   title: z.string().min(10).max(120),
   excerpt: z.string().min(50).max(160),
   body: z.string().min(500),
   category: z.enum(['arquitectura', 'automatización', 'case-study', 'opinión']),
   tags: z.array(z.string().min(1).max(50)).max(8),
   coverImage: z.string().url().nullable().optional(),
-  seoMetaTitle: z.string().max(70).optional(),
-  seoMetaDescription: z.string().max(160).optional(),
+  seoMetaTitle: EditorialSeoSchema.shape.metaTitle,
+  seoMetaDescription: EditorialSeoSchema.shape.metaDescription,
   // WS2 — SEO/editorial editable desde el editor
   coverImageAlt: z.string().max(200).optional(),
   // B-PR5 — atribución opcional de la portada (persistida en seo.coverAttribution)
   coverAttribution: z.string().max(200).optional(),
   canonicalUrl: z.string().url().nullable().optional(),
-  noindex: z.boolean().optional(),
+  noindex: EditorialSeoSchema.shape.noindex,
   primaryKeyword: z.string().max(120).optional(),
   secondaryKeywords: z.array(z.string().min(1).max(120)).max(10).optional(),
   searchIntent: SearchIntentEnum.or(z.literal('')).optional(),

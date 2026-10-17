@@ -1,0 +1,164 @@
+{
+  "base": "153c057b5be123d3ed46b244dfe09fe593206bcf",
+  "source": "f1721ec64e90086dcd0b9885fa13fe152e875905",
+  "files": {
+    "src/app/(admin)/blog-cms/[id]/editar/page.tsx": {
+      "sameAsF172": true,
+      "sha256": "2802b35c76b02d5f7e7b85782a462af2844c19bf62c6069eb34190cd3f7e4292"
+    },
+    "src/app/(admin)/blog-cms/[id]/preview/page.tsx": {
+      "sameAsF172": true,
+      "sha256": "d77b317f6ad8f944feac49d54ef2087531c1ffce33d872a4b43fca78de1a4ad1"
+    },
+    "src/app/(admin)/blog-cms/page.tsx": {
+      "sameAsF172": true,
+      "sha256": "fc7bd7330ab8fc946df71f247e5f9ba027024d1fe9465c40671ddb4e4a40782d"
+    },
+    "src/app/api/admin/blog/run-scheduled/route.ts": {
+      "sameAsF172": true,
+      "sha256": "597ca8084dffa88eb85a25c6cfaf237cff0b642818b6ec1c62f865aca719d452"
+    },
+    "src/app/api/admin/commercial/inventory/route.test.ts": {
+      "sameAsF172": true,
+      "sha256": "77410170ee98223752262cc739ce1b298d463911a08de36840200ddecea018de"
+    },
+    "src/app/api/admin/commercial/inventory/route.ts": {
+      "sameAsF172": true,
+      "sha256": "50c31032eb75d3546e4cd6fb43035136bde11cf13e63d08ef9c418d9a8ac2299"
+    },
+    "src/app/api/blog/cover/route.test.ts": {
+      "sameAsF172": true,
+      "sha256": "a4747247910a83d74d82125b851908c2a4a899d85cdcf02f6b210eb6cb50716e"
+    },
+    "src/app/api/blog/cover/route.ts": {
+      "sameAsF172": true,
+      "sha256": "9c40ab761c7be0b30ad7c86ebe98e4a216db62f567a96643dee2666f1d6cf1d4"
+    },
+    "src/app/api/blog/image/route.test.ts": {
+      "sameAsF172": true,
+      "sha256": "0b1cace2d5be26ebe34b770565e7af29f467eb856ab6aaef2b44c6120e6caaed"
+    },
+    "src/app/api/blog/image/route.ts": {
+      "sameAsF172": true,
+      "sha256": "0c33b9b519d4ddd63ebe1d9ae038935855349a69c6175804aaa24a4a1674d6b4"
+    },
+    "src/components/blog/cms/editor-save.test.tsx": {
+      "sameAsF172": true,
+      "sha256": "e2084c005b90f3ef8adf6948159b6f78df122fa9ac9c0c51daf4ade702f6048d"
+    },
+    "src/components/blog/cms/editor.tsx": {
+      "sameAsF172": true,
+      "sha256": "1a674f64ee063e190accb7bb9354b3651b7e58d18d70086162dcb4f2ce18ead8"
+    },
+    "src/components/blog/cms/editorial-evidence.tsx": {
+      "sameAsF172": true,
+      "sha256": "aa606abd6321716fcfd3e7a1f378459b9a2bd4ae12cfab2494e4b01716b8ccd5"
+    },
+    "src/components/blog/rich-markdown-editor.tsx": {
+      "sameAsF172": true,
+      "sha256": "102a6093e32d1cab279d7bd38077144df7eda126e9012c2557e82462b871c69c"
+    },
+    "src/lib/blog-cms/actions.test.ts": {
+      "sameAsF172": true,
+      "sha256": "e0fedc01356d9eab1d145dffcea81058b60ab2061ba6a6f0e2b07fea6a1ed26c"
+    },
+    "src/lib/blog-cms/actions.ts": {
+      "sameAsF172": true,
+      "sha256": "09676093ab6bb88ec15284f47da14f7dce969bbb70499d854324cbe539b80341"
+    },
+    "src/lib/blog-cms/ai.ts": {
+      "sameAsF172": true,
+      "sha256": "f2cd71bc7a9c55df046978fd94c7fbab3f5253f30614af2d9a1be6043a14c82f"
+    },
+    "src/lib/blog-cms/queries.test.ts": {
+      "sameAsF172": true,
+      "sha256": "b565d4695ddd0f19be0504d0c670caa4d4c1d92736eebb18d67106ead365933f"
+    },
+    "src/lib/blog-cms/queries.ts": {
+      "sameAsF172": true,
+      "sha256": "4761b807c8cfbbc52025e26869f408570694daf6b79f8824ee77ec3d3391d5dc"
+    },
+    "src/lib/blog-cms/schemas.ts": {
+      "sameAsF172": true,
+      "sha256": "3e3e05da8eb2bd98df63351a399b81514b38e7c7bc5b92f7f1f682f70e0fd41e"
+    },
+    "src/lib/blog/actions/ai-tools.test.ts": {
+      "sameAsF172": true,
+      "sha256": "209307458a7a9f71a90031c9e23dadd3073d1c00f9203f9c19ed09c840abab04"
+    },
+    "src/lib/blog/actions/ai-tools.ts": {
+      "sameAsF172": true,
+      "sha256": "15b2b1f113072136d93ab2569af39d5d6681d9f5e2bdaa2958c93f747d10bac1"
+    },
+    "src/lib/blog/actions/drafts.errors.test.ts": {
+      "sameAsF172": true,
+      "sha256": "10a9a1981584fc2d3b73d93c2131ea308bcbb11b76a263a80d6411e70dacabba"
+    },
+    "src/lib/blog/actions/drafts.ts": {
+      "sameAsF172": true,
+      "sha256": "c11b74317c22401b1704bc83e5a4b93b537db1df1d5d3ac5dff5a3d5d930eac5"
+    },
+    "src/lib/blog/actions/posts.ts": {
+      "sameAsF172": true,
+      "sha256": "3de3bd1ca6995bf7c375f90df5af07dc30cef0b4634419bc5adbc5bd079c128e"
+    },
+    "src/lib/blog/actions/versions.ts": {
+      "sameAsF172": true,
+      "sha256": "e18c3377625213cf21cbf2e15105a53190787b4b07fda2760ca76427e2040ae9"
+    },
+    "src/lib/blog/editorial/content-schema.mjs": {
+      "sameAsF172": true,
+      "sha256": "641847875748532a2d63304ebaa2b07d53b7a8a5043399ad3a024a9b63f31176"
+    },
+    "src/lib/blog/editorial/host.ts": {
+      "sameAsF172": true,
+      "sha256": "728487d76dbf1d3a1a360ee9940650f33811959d9b773f75ccde3fdd59900514"
+    },
+    "src/lib/blog/editorial/service.mjs": {
+      "sameAsF172": true,
+      "sha256": "a94b0c0240204f23dc44e16f6cd6dd19d78e1600b509faeb8ba70f90adc99c2f"
+    },
+    "src/lib/blog/schemas.ts": {
+      "sameAsF172": true,
+      "sha256": "1eb4830222eba553d62b3db1e3776af6946d77b708ed60c24a3c1915685bc5da"
+    },
+    "src/lib/blog/versions.test.ts": {
+      "sameAsF172": true,
+      "sha256": "07f6140875500b6d375e15bb95775ea052f89a294d5202171dea10834f5ffbd6"
+    },
+    "src/lib/blog/versions.ts": {
+      "sameAsF172": true,
+      "sha256": "d6387b8ca255c11c9e709999dae3fe76ed13b00602691f99740bf55ae83e677a"
+    },
+    "src/lib/commercial/inventory.mjs": {
+      "sameAsF172": false,
+      "sha256": "52302626ad25637ebac200c7496102e4e0dabc395496f9090add2d882595c19a"
+    },
+    "src/lib/db/schema.ts": {
+      "sameAsF172": false,
+      "sha256": "f08ccee7488fa33875deb996e12aa4ca4aa229b08b40c75b8a3e165c09b0271d"
+    }
+  },
+  "excluded": [
+    "src/lib/commercial/inbound.ts",
+    "src/lib/mcp/editorial.mjs",
+    "src/lib/mcp/events/capture.ts",
+    "src/lib/mcp/events/feed.mjs",
+    "src/lib/mcp/events/register.mjs"
+  ],
+  "reviewerReport": "/Users/pixeltec/Documents/Codex/2026-10-17/task-3/revalidation-f1721ec6/REVALIDACION-P2-f1721ec6.md",
+  "exceptions": {
+    "src/lib/db/schema.ts": "Only two editorial tables; no event schema objects",
+    "src/lib/commercial/inventory.mjs": "Normalize shared Drizzle timestamp locally; RED real toISOString failure"
+  },
+  "unchangedFromBase": {
+    "src/lib/commercial/inbound.ts": true,
+    "src/lib/mcp-secretary": true,
+    "src/app/api/mcp": true,
+    "src/app/api/oauth": true,
+    "package-lock.json": true,
+    "next.config.ts": true,
+    "Dockerfile": true,
+    "scripts/deploy": true
+  }
+}

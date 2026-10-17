@@ -60,8 +60,8 @@ export default async function BlogCmsPage({ searchParams }: { searchParams: Sear
   const page = Math.max(1, Number.parseInt(one(sp.page) || "1", 10) || 1);
 
   const [{ posts, total }, counts, categories, months] = await Promise.all([
-    listBlogCmsPosts({ status: tab.status, category: categoria || undefined, month: /^\d{4}-\d{2}$/.test(fecha) ? fecha : undefined, search: q || undefined, page }),
-    countBlogCmsPostsByStatus(),
+    listBlogCmsPosts({ ownerId:session.userId,status: tab.status, category: categoria || undefined, month: /^\d{4}-\d{2}$/.test(fecha) ? fecha : undefined, search: q || undefined, page }),
+    countBlogCmsPostsByStatus(session.userId),
     listBlogCategoryNames(),
     listBlogCmsMonths(),
   ]);

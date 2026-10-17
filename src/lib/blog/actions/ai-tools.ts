@@ -12,6 +12,7 @@
 import { anthropicCreate } from '@/lib/ai/anthropic-egress';
 import { getModel } from '../ai/client';
 import { requireUserSession } from '@/lib/auth/session';
+import {editorialService,editorialSessionIdentity} from '@/lib/blog/editorial/host';
 import { resolvePostRow } from '../pg';
 import { extractToneTarget, isBlogTone } from '../ai-tools-logic';
 import type { ActionResult } from '../schemas';
@@ -76,8 +77,11 @@ async function runTool(
   const session = await requireUserSession();
   if (!session) return { ok: false, error: 'No autenticado' };
 
-  const row = await resolvePostRow(postId);
-  if (!row) return { ok: false, error: 'Post no encontrado' };
+  const current=await editorialService.read(editorialSessionIdentity,postId).catch(()=>null);
+  if(!current)return {ok:false,error:'No tienes acceso a esta revisión privada.'};
+  const base=await resolvePostRow(postId);
+  if(!base)return {ok:false,error:'Post no encontrado'};
+  const row={...base,...current.content};
 
   try {
     const { prompt, maxTokens } = build(row);

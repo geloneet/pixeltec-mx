@@ -1,0 +1,11 @@
+import {beforeEach,expect,test,vi} from 'vitest';
+const {admin,read}=vi.hoisted(()=>({admin:vi.fn(),read:vi.fn()}));
+vi.mock('@/lib/auth-guards',()=>({requireAdmin:admin}));
+vi.mock('@/lib/db',()=>({db:{$client:{fixture:true}}}));
+vi.mock('@/lib/commercial/inventory.mjs',()=>({readCommercialInventory:read}));
+import {GET} from './route';
+beforeEach(()=>{vi.clearAllMocks();admin.mockResolvedValue({ok:true,uid:'canonical-owner'});read.mockResolvedValue({counts:{invoices:'2'},completeForDestructiveAction:false});});
+test('requires admin and never queries for denied sessions',async()=>{admin.mockResolvedValue({ok:false,status:403,error:'forbidden'});expect((await GET(new Request('https://fixture.test/api/admin/commercial/inventory'))).status).toBe(403);expect(read).not.toHaveBeenCalled();});
+test('only server owner is passed; responses are not cached',async()=>{const r=await GET(new Request('https://fixture.test/api/admin/commercial/inventory'));expect(r.status).toBe(200);expect(read).toHaveBeenCalledWith({fixture:true},'canonical-owner');expect(r.headers.get('cache-control')).toBe('no-store');});
+test('caller cannot substitute an owner or a query',async()=>{expect((await GET(new Request('https://fixture.test/api/admin/commercial/inventory?ownerId=other'))).status).toBe(400);expect(read).not.toHaveBeenCalled();});
+test('database errors cannot masquerade as zero or leak their message',async()=>{read.mockRejectedValue(new Error('private database connection detail'));const r=await GET(new Request('https://fixture.test/api/admin/commercial/inventory'));expect(r.status).toBe(503);expect(await r.text()).not.toContain('private');});

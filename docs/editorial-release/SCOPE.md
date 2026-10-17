@@ -1,0 +1,11 @@
+# Corte CMS e inventario admin
+
+Base153c057b5be123d3ed46b244dfe09fe593206bcf. Fuente funcional f1721ec64e90086dcd0b9885fa13fe152e875905, con conformidad independiente acotada del P2 de guardado. La rama acumulada se conserva sin cambios. El SHA del corte se informa tras el commit local; resultados finales de build/E2E viven fuera del árbol fuente para no cambiar ese SHA después de compilar.
+
+Runtime:25 archivos,23 idénticos a f1721ec6; schema reducido a editorial_drafts/editorial_commands e inventario con normalización local del timestamp transparente de Drizzle (`new Date(value).toISOString()`). Nueve tests src preservados. El ingreso comercial, MCP/OAuth, lock/runtime y scripts de despliegue coinciden con la base. No registrar herramientas nuevas, capturar email, incluir feed/relay o modificar PixelBot.
+
+DDL generado por Drizzle en drizzle/editorial-release; sólo dos tablas con las mismas definiciones/FKs/índices editoriales anteriores. Journal independiente, sin bases/credenciales. `scripts/editorial-release/migration.mjs` aplica exclusivamente ese bundle con lock/transacción/hash/fingerprint; no toca public/journal global, no adopta schema sin recibo ni con drift, no concede grants ni elimina datos. Si producción ya contiene otro corte del schema, detener y revisar; no repararlo automáticamente. No se monta migrador productivo o scheduler al instalar estos archivos.
+
+Validar sólo cambio de DDL y dependencias (fresh/replay/drift/rollback, cliente Drizzle compartido y lectura inventario); mantener evidencia válida del código copiado. Inventario sigue devolviendo completeForDestructiveAction:false: no cubre PixelBot/R2/huérfanos y no autoriza borrar. No publicar pruebas ni hacer GET público de blog.
+
+Antes de deploy: revisión del corte/DDL, integración del SHA aprobado a main, artefacto final Node20/Next y E2E Next/SQL, capacidad/backup/rollback productivos verificados y gates DDL/deploy. Vía canónica deploy-pixeltec-mx; sin flags R2 delete o Meta. Deploy no incluye publicación editorial: aprobar artículo/digest/URL por separado. El primer artículo puede usar la sesión admin existente sin scopes nuevos. Scopes, eventos, inventario completo de almacenes externos y borrado son alcances distintos.

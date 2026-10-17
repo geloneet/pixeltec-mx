@@ -1,7 +1,8 @@
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAdmin } from '@/lib/auth-guards';
-import { resolvePostRow } from '@/lib/blog/pg';
+import {editorialService,editorialSessionIdentity} from '@/lib/blog/editorial/host';
+import {isCommercialOriginAllowed} from '@/lib/commercial/origin';
 import { uploadObject } from '@/lib/r2/upload';
 
 /**
@@ -26,6 +27,7 @@ export async function POST(req: NextRequest) {
   const guard = await requireAdmin(undefined, { route: 'blog-cms:image-upload' });
   if (!guard.ok) return NextResponse.json({ error: guard.error }, { status: guard.status });
 
+  if(!isCommercialOriginAllowed(req))return NextResponse.json({error:'Origen no permitido.'},{status:403});
   const form = await req.formData();
   const file = form.get('file') as File | null;
   const postId = (form.get('postId') as string | null) ?? '';
@@ -38,10 +40,16 @@ export async function POST(req: NextRequest) {
   if (!magicBytesMatch(buffer, file.type)) {
     return NextResponse.json({ error: 'El contenido del archivo no coincide con el tipo declarado' }, { status: 400 });
   }
-  const row = await resolvePostRow(postId);
-  if (!row) return NextResponse.json({ error: 'Post no encontrado' }, { status: 404 });
+  let row;
+  try{row=await editorialService.read(editorialSessionIdentity,postId);}
+  catch(error){const code=error instanceof Error?error.message:'';return NextResponse.json({error:'No se pudo verificar la entrada.'},{status:code==='EDITORIAL_NOT_FOUND'?404:code==='EDITORIAL_ACCESS_DENIED'?403:503});}
 
-  const hash = createHash('sha256').update(buffer).digest('hex').slice(0, 12);
+
+  if(!row)return NextResponse.json({error:'Post no encontrado'},{status:404});
+  const fresh=await requireAdmin(undefined,{route:'blog:upload-commit'});
+  if(!fresh.ok||fresh.uid!==guard.uid)return NextResponse.json({error:'Permiso actualizado no disponible.'},{status:403});
+
+  const hash = createHash('sha256').update(buffer).digest('hex');
   const key = `blog/images/${row.id}/${hash}.${ext}`;
   const url = await uploadObject(key, buffer, file.type);
   return NextResponse.json({ ok: true, url });

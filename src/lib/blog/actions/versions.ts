@@ -2,11 +2,11 @@
 
 // B-PR6 — Server Actions del versionado de artículos. Resuelven ids públicos
 // (firestore legacy o uuid) y delegan en la capa pura de src/lib/blog/versions.
-import { db } from '@/lib/db';
+import {editorialService,editorialSessionIdentity} from '../editorial/host';
 import { requireUserSession } from '@/lib/auth/session';
 import { requireAdmin } from '@/lib/auth-guards';
-import { resolvePostRow, getUserDisplayName } from '../pg';
-import { getVersion, restoreVersion, snapshotPost } from '../versions';
+import { getUserDisplayName,resolvePostRow } from '../pg';
+import { getVersion, restoreVersion } from '../versions';
 import type { ActionResult } from '../schemas';
 import { toPublicFailure } from '@/lib/errors/public-failure';
 
@@ -28,6 +28,7 @@ export async function getPostVersionContent(
   const session = await requireUserSession();
   if (!session) return { ok: false, error: 'No autenticado' };
 
+  await editorialService.read(editorialSessionIdentity,postId);
   const row = await resolvePostRow(postId);
   if (!row) return { ok: false, error: 'Post no encontrado' };
 
@@ -69,6 +70,7 @@ export async function restorePostVersion(
   const session = await requireUserSession();
   if (!session) return { ok: false, error: 'No autenticado' };
 
+  await editorialService.read(editorialSessionIdentity,postId);
   const row = await resolvePostRow(postId);
   if (!row) return { ok: false, error: 'Post no encontrado' };
 
@@ -103,6 +105,7 @@ export async function createRevision(
   const guard = await requireAdmin(undefined, { route: 'blog:create-revision' });
   if (!guard.ok) return { ok: false, error: guard.error };
 
+  await editorialService.read(editorialSessionIdentity,postId);
   const row = await resolvePostRow(postId);
   if (!row) return { ok: false, error: 'Post no encontrado' };
   if (row.status !== 'published') {
@@ -110,12 +113,10 @@ export async function createRevision(
   }
 
   try {
-    const actorName = await getUserDisplayName(guard.uid);
-    const version = await snapshotPost(db, row, 'nueva-revision', {
-      id: guard.uid,
-      name: actorName,
-    });
-    return { ok: true, data: { version } };
+    const current=await editorialService.read(editorialSessionIdentity,postId);
+    const saved=await editorialService.save(editorialSessionIdentity,{id:current.id,requestKey:crypto.randomUUID(),expectedVersion:current.version,patch:{},invalidateReview:true});
+    const version=Number(saved.version);if(!Number.isSafeInteger(version))throw new Error('VERSION_OUT_OF_RANGE');
+    return {ok:true,data:{version}};
   } catch (err) {
     console.error('createRevision error:', err);
     return {

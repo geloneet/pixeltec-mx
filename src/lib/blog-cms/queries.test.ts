@@ -41,7 +41,7 @@ vi.mock("@/lib/db/schema", () => ({
 }));
 vi.mock("@/lib/blog/queries/posts", () => ({ serializePost: vi.fn((r: unknown) => r) }));
 
-import { publishDueScheduledPosts, resetScheduledSweepThrottle, uniqueBlogSlug } from "./queries";
+import { publishDueScheduledPosts, resetScheduledSweepThrottle, deleteAbandonedEmptyDrafts, uniqueBlogSlug } from "./queries";
 
 beforeEach(() => {
   vi.clearAllMocks();
@@ -49,36 +49,20 @@ beforeEach(() => {
   resetScheduledSweepThrottle();
 });
 
-describe("publishDueScheduledPosts — barrido en render (paridad Encino)", () => {
-  test("publica los slugs devueltos por el UPDATE", async () => {
-    returningMock.mockResolvedValueOnce([{ slug: "post-vencido" }, { slug: "otro-post" }]);
-    const slugs = await publishDueScheduledPosts({ force: true });
-    expect(slugs).toEqual(["post-vencido", "otro-post"]);
+describe("render compatibility — no publication or cleanup side effects", () => {
+  test("forced call cannot publish even when UPDATE would return overdue posts", async () => {
+    returningMock.mockResolvedValueOnce([{ slug: "post-vencido" }]);
+    expect(await publishDueScheduledPosts({ force: true })).toEqual([]);
+    expect(returningMock).not.toHaveBeenCalled();
   });
-
-  test("throttle: una segunda llamada dentro del minuto no vuelve a tocar la DB", async () => {
-    returningMock.mockResolvedValueOnce([{ slug: "a" }]);
-    const first = await publishDueScheduledPosts({ now: new Date("2026-08-25T12:00:00.000Z") });
-    expect(first).toEqual(["a"]);
-
-    const second = await publishDueScheduledPosts({ now: new Date("2026-08-25T12:00:30.000Z") });
-    expect(second).toEqual([]);
-    expect(returningMock).toHaveBeenCalledTimes(1);
+  test("repeated reads at arbitrary dates remain pure", async () => {
+    for (const date of ["2026-08-25T12:00:00Z", "2026-08-25T12:01:30Z"]) {
+      expect(await publishDueScheduledPosts({ now: new Date(date) })).toEqual([]);
+    }
+    expect(returningMock).not.toHaveBeenCalled();
   });
-
-  test("force ignora el throttle", async () => {
-    returningMock.mockResolvedValue([{ slug: "a" }]);
-    await publishDueScheduledPosts({ now: new Date("2026-08-25T12:00:00.000Z") });
-    const forced = await publishDueScheduledPosts({ now: new Date("2026-08-25T12:00:01.000Z"), force: true });
-    expect(forced).toEqual(["a"]);
-    expect(returningMock).toHaveBeenCalledTimes(2);
-  });
-
-  test("pasado el minuto, vuelve a barrer", async () => {
-    returningMock.mockResolvedValue([{ slug: "a" }]);
-    await publishDueScheduledPosts({ now: new Date("2026-08-25T12:00:00.000Z") });
-    await publishDueScheduledPosts({ now: new Date("2026-08-25T12:01:01.000Z") });
-    expect(returningMock).toHaveBeenCalledTimes(2);
+  test("admin list cannot delete empty drafts", async () => {
+    expect(await deleteAbandonedEmptyDrafts()).toBe(0);
   });
 });
 

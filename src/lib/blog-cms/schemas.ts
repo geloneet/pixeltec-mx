@@ -1,5 +1,7 @@
 import { z } from 'zod';
 import { AI_ARTICLE_TONES } from './ai-params';
+import {PostSourceSchema,InternalLinkSchema} from '@/lib/blog/schemas';
+import {EditorialSeoSchema,EditorialAiSchema,EditorialAiParamsSchema,EditorialFaqItemSchema} from '@/lib/blog/editorial/content-schema.mjs';
 
 /**
  * Validación en frontera del Blog (WO-2026-00088), espejo del `saveSchema` de
@@ -11,19 +13,19 @@ import { AI_ARTICLE_TONES } from './ai-params';
 export const BLOG_CMS_INTENTS = ['autosave', 'draft', 'publish', 'schedule'] as const;
 export type BlogCmsIntent = (typeof BLOG_CMS_INTENTS)[number];
 
-export const FaqItemSchema = z.object({
-  question: z.string().max(300),
-  answer: z.string().max(2000),
-});
+export const FaqItemSchema = EditorialFaqItemSchema;
 
 export const SaveBlogCmsPostSchema = z.object({
+  requestKey:z.string().uuid().optional(),
+  expectedVersion:z.string().regex(/^(0|[1-9][0-9]*)$/).optional(),
+  expectedDigest:z.string().regex(/^[a-f0-9]{64}$/).optional(),
   id: z.string().uuid(),
   title: z.string().max(300),
   body: z.string().max(500_000, 'El contenido es demasiado largo'),
   metaDescription: z.string().max(160),
-  seoTitle: z.string().max(70).optional(),
-  noindex: z.boolean().optional(),
-  nofollow: z.boolean().optional(),
+  seoTitle: EditorialSeoSchema.shape.metaTitle,
+  noindex: EditorialSeoSchema.shape.noindex,
+  nofollow: EditorialSeoSchema.shape.nofollow,
   slug: z.string().max(120),
   category: z.string().max(80).nullable(),
   newCategory: z.string().max(80).optional(),
@@ -33,6 +35,10 @@ export const SaveBlogCmsPostSchema = z.object({
   coverImageAlt: z.string().max(200).optional(),
   mapsEmbed: z.string().max(2000).optional(),
   schemaTypes: z.array(z.string().max(60)).max(10).optional(),
+  sources:z.array(PostSourceSchema.extend({title:z.string().max(300),url:z.string().max(2000)})).max(20).optional(),
+  internalLinks:z.array(InternalLinkSchema.extend({targetUrl:z.string().max(2000),anchor:z.string().max(120)})).max(20).optional(),
+  ai:EditorialAiSchema.required().optional(),
+  aiParams:EditorialAiParamsSchema.nullable().optional(),
   intent: z.enum(BLOG_CMS_INTENTS),
   scheduledAt: z.string().max(40).optional(),
 });
@@ -76,6 +82,7 @@ export const AiArticleResultSchema = z.object({
   metaDescription: z.string(),
   tags: z.array(z.string()).default([]),
   body: z.string().min(100),
+  ai:z.object({model:z.string(),generatedAt:z.string(),editedByHuman:z.boolean(),wordsAdded:z.number(),iterations:z.number()}).optional(),
 });
 export type AiArticleResult = z.infer<typeof AiArticleResultSchema>;
 

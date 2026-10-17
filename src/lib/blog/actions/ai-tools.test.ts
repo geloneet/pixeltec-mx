@@ -21,6 +21,8 @@ vi.mock('../pg', () => ({ resolvePostRow: resolvePostRowMock }));
 vi.mock('@/lib/ai/anthropic-egress', () => ({ anthropicCreate: anthropicCreateMock }));
 vi.mock('@/lib/db', () => ({ db: { update: dbUpdateMock, insert: dbInsertMock } }));
 
+vi.mock('../editorial/host',()=>({editorialSessionIdentity:'host-only',editorialService:{read:vi.fn(async()=>({id:'post-uuid',version:'1',content:{}}))}}));
+
 import { improveTitle, improveExcerpt, improveFragment, adjustTone } from './ai-tools';
 
 const POST_ROW = {

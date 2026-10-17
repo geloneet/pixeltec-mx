@@ -11,7 +11,6 @@ import { EMPTY_EDITORIAL, type BlogBriefDoc } from '../types';
 import type { ActionResult } from '../schemas';
 import { toPublicFailure } from '@/lib/errors/public-failure';
 import { logBlogActivity } from '../activity';
-import { snapshotPost } from '../versions';
 
 function setBriefStatus(briefRowId: string, patch: Record<string, unknown>) {
   return db
@@ -270,7 +269,11 @@ export async function regenerateDraft(postId: string): Promise<ActionResult<{ po
   const session = await requireUserSession();
   if (!session) return { ok: false, error: 'No autenticado' };
 
-  const row = await resolvePostRow(postId);
+  const {editorialService,editorialSessionIdentity}=await import('../editorial/host');
+  const revision=await editorialService.read(editorialSessionIdentity,postId).catch(()=>null);
+  if(!revision)return {ok:false,error:'No tienes acceso a esta revisión privada.'};
+  const baseRow=await resolvePostRow(postId);
+  const row=baseRow?{...baseRow,...revision.content}:null;
   if (!row) return { ok: false, error: 'Post no encontrado' };
 
   const briefSource = row.briefSource as Record<string, unknown>;
@@ -299,32 +302,7 @@ export async function regenerateDraft(postId: string): Promise<ActionResult<{ po
     // (el bug: sin snapshot previo se perdían cuerpo, fuentes y estrategia).
     // Fail-closed a propósito: si el snapshot no puede guardarse (p. ej. la
     // 0034 aún sin aplicar), NO se sobrescribe nada.
-    await db.transaction(async (tx) => {
-      await snapshotPost(tx, row, 'pre-regeneracion-ia', {
-        id: session.userId,
-        name: actorName,
-      });
-      await tx
-        .update(blogPosts)
-        .set({
-          body: generated.body,
-          title: generated.title,
-          excerpt: generated.excerpt,
-          wordCount,
-          readingTimeMin,
-          // B-PR6: se MANTIENE el status actual — antes esto forzaba
-          // status:'draft' y un artículo en needs-review volvía a borrador sin
-          // que nadie lo pidiera. El flujo editorial solo cambia por actos
-          // explícitos (request-review/approve/…).
-          ai: {
-            ...prevAi,
-            iterations: ((prevAi.iterations as number) ?? 1) + 1,
-            generatedAt: new Date().toISOString(),
-          },
-          updatedAt: new Date(),
-        })
-        .where(eq(blogPosts.id, row.id));
-    });
+    await editorialService.save(editorialSessionIdentity,{id:revision.id,requestKey:crypto.randomUUID(),expectedVersion:revision.version,patch:{body:generated.body,title:generated.title,excerpt:generated.excerpt,ai:{...prevAi,iterations:((prevAi.iterations as number)??1)+1,generatedAt:new Date().toISOString(),editedByHuman:false}}});
 
     await logBlogActivity({
       postId: row.id,

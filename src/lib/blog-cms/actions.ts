@@ -9,45 +9,33 @@
  * `blog_post_versions`, historial en `blog_activity`, revalidación de las
  * superficies públicas existentes.
  */
-import { eq } from 'drizzle-orm';
 import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/db';
-import { blogPosts } from '@/lib/db/schema';
 import { requireUserSession } from '@/lib/auth/session';
 import { requireAdmin } from '@/lib/auth-guards';
-import { getUserDisplayName, resolvePostRow } from '@/lib/blog/pg';
+import { getUserDisplayName,resolvePostRow } from '@/lib/blog/pg';
 import { logBlogActivity } from '@/lib/blog/activity';
-import { snapshotPost, restoreVersion, listVersions, type BlogPostVersionMeta } from '@/lib/blog/versions';
-import { computeWordCount, computeReadingTime, generateSlug } from '@/lib/blog/ai/generate-post';
-import { SLUG_RE } from '@/lib/blog/publication-gate';
-import { EMPTY_EDITORIAL, EMPTY_SEO, type BlogFaqItem, type PostEditorial } from '@/lib/blog/types';
+import { restoreVersion, listVersions, type BlogPostVersionMeta } from '@/lib/blog/versions';
+import { generateSlug } from '@/lib/blog/ai/generate-post';
 import type { ActionResult } from '@/lib/blog/schemas';
 import { toPublicFailure } from '@/lib/errors/public-failure';
 import {
   CreateCategorySchema,
   SaveBlogCmsPostSchema,
-  type SaveBlogCmsPostInput,
 } from './schemas';
-import { resolveSaveTransition } from './transitions';
 import { extractMapsEmbedUrl } from './maps-embed';
 import { sanitizeBlogSchemaTypes } from './schema-types';
 import {
   deleteBlogCategory,
-  deleteBlogPostIfEmpty,
-  uniqueBlogSlug,
   upsertBlogCategory,
 } from './queries';
 import { ADMIN_BLOG_PATH } from './paths';
+import {editorialService,editorialSessionIdentity} from '@/lib/blog/editorial/host';
 
 function revalidateBlogSurfaces(slugs: Array<string | null | undefined>) {
   revalidatePath('/blog');
   for (const s of slugs) if (s) revalidatePath(`/blog/${s}`);
   revalidatePath('/sitemap.xml');
   revalidatePath(ADMIN_BLOG_PATH);
-}
-
-function randomSuffix(): string {
-  return crypto.randomUUID().slice(0, 8);
 }
 
 function fail(err: unknown, code: string, message: string): ActionResult<never> {
@@ -60,40 +48,8 @@ function fail(err: unknown, code: string, message: string): ActionResult<never> 
 /** Crea un borrador vacío y devuelve su id (el editor se abre por redirect
  *  desde la UI). `modo: 'ia'` solo cambia el query string del destino. */
 export async function createBlogCmsDraft(): Promise<ActionResult<{ id: string }>> {
-  const session = await requireUserSession();
-  if (!session) return { ok: false, error: 'No autenticado' };
-  try {
-    const authorName = await getUserDisplayName(session.userId);
-    const slug = await uniqueBlogSlug(`borrador-${randomSuffix()}`);
-    const [inserted] = await db
-      .insert(blogPosts)
-      .values({
-        slug,
-        title: '',
-        excerpt: '',
-        body: '',
-        category: '',
-        tags: [],
-        coverImage: null,
-        author: { name: authorName, uid: session.userId },
-        status: 'draft',
-        briefSource: {},
-        ai: {},
-        seo: { ...EMPTY_SEO, noindex: false },
-        editorial: { ...EMPTY_EDITORIAL },
-        sources: [],
-        internalLinks: [],
-        faq: [],
-        wordCount: 0,
-        readingTimeMin: 1,
-      })
-      .returning({ id: blogPosts.id });
-    if (!inserted) return { ok: false, error: 'No se pudo crear el borrador' };
-    await logBlogActivity({ postId: inserted.id, type: 'creado', message: 'Entrada creada (Blog)', actorId: session.userId, actorName: authorName });
-    return { ok: true, data: { id: inserted.id } };
-  } catch (err) {
-    return fail(err, 'blog_cms_create_failed', 'No se pudo crear la entrada.');
-  }
+  try {const result=await editorialService.createDraft(editorialSessionIdentity,{requestKey:crypto.randomUUID(),patch:{slug:'borrador-'+crypto.randomUUID().slice(0,8)}});return {ok:true,data:{id:result.id}};}
+  catch(error){return {ok:false,error:'No se pudo crear el borrador privado.'};}
 }
 
 /** Descarta un borrador si sigue vacío (cerrar el wizard IA sin escribir). */
@@ -102,7 +58,7 @@ export async function discardEmptyBlogCmsDraft(postId: string): Promise<ActionRe
   if (!session) return { ok: false, error: 'No autenticado' };
   if (!/^[0-9a-f-]{36}$/i.test(postId)) return { ok: true, data: { deleted: false } };
   try {
-    const deleted = await deleteBlogPostIfEmpty(postId);
+    const deleted = await editorialService.discardEmpty(editorialSessionIdentity,postId);
     if (deleted) revalidatePath(ADMIN_BLOG_PATH);
     return { ok: true, data: { deleted } };
   } catch (err) {
@@ -113,156 +69,49 @@ export async function discardEmptyBlogCmsDraft(postId: string): Promise<ActionRe
 // ── Guardar (autosave / borrador / publicar / programar) ────────────────────
 
 export interface SaveBlogCmsResult {
-  slug: string;
-  status: string;
-  publishedAt: string | null;
-  scheduledAt: string | null;
-}
-
-/** Blockers de INTEGRIDAD (subconjunto del gate legacy que no depende del
- *  flujo editorial de revisión, ajeno a Encino). */
-function integrityBlockers(input: { title: string; body: string; slug: string; coverImage: string | null }): string[] {
-  const out: string[] = [];
-  if (!input.title.trim()) out.push('La entrada necesita un título para publicarse.');
-  if (!input.body.trim()) out.push('La entrada necesita contenido para publicarse.');
-  if (!SLUG_RE.test(input.slug)) out.push(`Slug inválido ("${input.slug}").`);
-  if (/^#\s/.test(input.body.trimStart())) out.push('El contenido empieza con un encabezado nivel 1 — usa H2/H3.');
-  if (input.coverImage && /placehold\.co|placeholder\.com|via\.placeholder/i.test(input.coverImage)) {
-    out.push('La portada es un placeholder externo.');
-  }
-  return out;
+  id:string;version:string;digest:string;slug:string;status:string;
+  publishedAt:string|null;scheduledAt:string|null;privateRevision:boolean;
 }
 
 export async function saveBlogCmsPost(raw: unknown): Promise<ActionResult<SaveBlogCmsResult>> {
-  const parsed = SaveBlogCmsPostSchema.safeParse(raw);
-  if (!parsed.success) return { ok: false, error: 'Datos inválidos. Revisa los campos.' };
-  const data: SaveBlogCmsPostInput = parsed.data;
-
-  // Publicar/programar cambian la visibilidad pública ⇒ admin. Autosave y
-  // borrador ⇒ cualquier sesión del equipo (mismo criterio que `updatePost`).
-  const needsAdmin = data.intent === 'publish' || data.intent === 'schedule';
-  const session = needsAdmin ? null : await requireUserSession();
-  const guard = needsAdmin ? await requireAdmin(undefined, { route: `blog-cms:${data.intent}` }) : null;
-  const actorId = needsAdmin ? (guard && guard.ok ? guard.uid : null) : session?.userId ?? null;
-  if (!actorId) return { ok: false, error: needsAdmin ? 'Solo un administrador puede publicar o programar.' : 'No autenticado' };
-
+  const parsed=SaveBlogCmsPostSchema.safeParse(raw);
+  if(!parsed.success)return {ok:false,error:'Datos inválidos. Revisa los campos.'};
+  const d=parsed.data;
+  if(!d.requestKey||d.expectedVersion==null)return {ok:false,error:'Actualiza el editor para guardar con control de versión.'};
   try {
-    const [existing] = await db.select().from(blogPosts).where(eq(blogPosts.id, data.id)).limit(1);
-    if (!existing) return { ok: false, error: 'Esta entrada ya no existe.' };
-
-    // Categoría: la nueva gana; se crea en el catálogo si no existe.
-    let category = data.category?.trim() ?? '';
-    const newCategory = data.newCategory?.trim();
-    if (newCategory) {
-      await upsertBlogCategory(newCategory, actorId, { slug: generateSlug(newCategory) });
-      category = newCategory;
+    const current=await editorialService.read(editorialSessionIdentity,d.id);
+    const seo={...current.content.seo,metaTitle:(d.seoTitle??'').trim(),metaDescription:d.metaDescription.trim(),noindex:d.noindex??false,nofollow:d.nofollow??false,ogImageAlt:d.coverImageAlt??'',schemaTypes:sanitizeBlogSchemaTypes(d.schemaTypes??current.content.seo.schemaTypes)};
+    const patch={title:d.title.trim(),excerpt:d.metaDescription.trim(),body:d.body,slug:generateSlug(d.slug)||generateSlug(d.title)||current.slug,category:d.newCategory?.trim()||d.category?.trim()||'',tags:[...new Set((d.tags??[]).map(t=>t.trim()).filter(Boolean))],faq:(d.faq??[]).filter(f=>f.question.trim()&&f.answer.trim()),coverImage:d.coverImage?.trim()||null,mapsEmbed:d.mapsEmbed?extractMapsEmbedUrl(d.mapsEmbed):null,seo,sources:d.sources??current.content.sources,internalLinks:d.internalLinks??current.content.internalLinks,ai:d.ai??current.content.ai,aiParams:d.aiParams??current.content.aiParams};
+    let result=await editorialService.save(editorialSessionIdentity,{id:d.id,requestKey:d.requestKey,expectedVersion:d.expectedVersion,patch});
+    if(d.intent==='publish'||d.intent==='schedule') {
+      if(!d.expectedDigest||d.expectedDigest!==result.digest)return {ok:false,data:result,error:'Guarda y revisa esta versión antes de publicar.'};
+      result=d.intent==='publish'
+        ?await editorialService.publish(editorialSessionIdentity,{id:d.id,requestKey:d.requestKey,expectedDigest:d.expectedDigest})
+        :await editorialService.schedule(editorialSessionIdentity,{id:d.id,requestKey:d.requestKey,expectedDigest:d.expectedDigest,slot:'cms:'+d.id+':'+d.expectedDigest,dueAt:d.scheduledAt});
     }
+    revalidatePath(`${ADMIN_BLOG_PATH}/${d.id}/editar`);
+    return {ok:true,data:result};
+  }catch(error){return {ok:false,error:editorialFailure(error)};}
+}
 
-    // Slug: el pedido, o el del título, o uno de sistema; único en servidor.
-    const baseSlug = generateSlug(data.slug) || generateSlug(data.title) || `entrada-${existing.id.slice(0, 8)}`;
-    const slug = baseSlug === existing.slug ? existing.slug : await uniqueBlogSlug(baseSlug, existing.id);
+function editorialFailure(error:unknown):string {
+  const code=error instanceof Error?error.message:'';
+  if(/STALE|BASE_CHANGED/.test(code))return 'La versión cambió. Recarga y compara tus cambios antes de volver a guardar.';
+  if(/REVIEW|PUBLICATION_GATE/.test(code))return 'Falta revisar esta versión, sus fuentes y afirmaciones antes de publicarla.';
+  if(/ACCESS_DENIED|NOT_FOUND/.test(code))return 'No tienes acceso a esta entrada.';
+  if(code==='SLUG_CONFLICT')return 'La URL ya está usada por otra entrada o una redirección histórica.';
+  if(code==='IDEMPOTENCY_CONFLICT')return 'El identificador de la operación ya se usó con otros datos.';
+  return 'No se pudo completar la operación editorial.';
+}
 
-    const transition = resolveSaveTransition(
-      { status: existing.status, publishedAt: existing.publishedAt, scheduledAt: existing.scheduledAt },
-      data.intent,
-      data.scheduledAt,
-      new Date(),
-    );
-    if (!transition.ok) return { ok: false, error: transition.error };
-
-    const title = data.title.trim();
-    const body = data.body;
-    const coverImage = data.coverImage?.trim() || null;
-    if (data.intent === 'publish' || data.intent === 'schedule') {
-      const blockers = integrityBlockers({ title, body, slug, coverImage });
-      if (blockers.length) return { ok: false, error: blockers.join(' · ') };
-    }
-
-    const tags = Array.from(new Set((data.tags ?? []).map((t) => t.trim()).filter(Boolean)));
-    const faq: BlogFaqItem[] = (data.faq ?? [])
-      .map((f) => ({ question: f.question.trim(), answer: f.answer.trim() }))
-      .filter((f) => f.question && f.answer);
-    const mapsEmbed = data.mapsEmbed ? extractMapsEmbedUrl(data.mapsEmbed) : null;
-    const metaDescription = data.metaDescription.trim();
-    const currentSeo = { ...EMPTY_SEO, ...(existing.seo as Record<string, unknown>) };
-    const seo = {
-      ...currentSeo,
-      metaTitle: (data.seoTitle ?? '').trim(),
-      metaDescription,
-      noindex: data.noindex ?? false,
-      nofollow: data.nofollow ?? false,
-      ogImageAlt: (data.coverImageAlt ?? '').trim(),
-      // FASE 11 (paridad Encino, tab «Snippets»): tipos adicionales saneados
-      // contra el catálogo — lo que no esté en él se descarta en silencio.
-      schemaTypes: sanitizeBlogSchemaTypes(data.schemaTypes ?? currentSeo.schemaTypes),
-    };
-    const wordCount = computeWordCount(body);
-    const readingTimeMin = computeReadingTime(wordCount);
-    const isPublishing = transition.next.status === 'published';
-    const editorial: PostEditorial = {
-      ...EMPTY_EDITORIAL,
-      ...(existing.editorial as Partial<PostEditorial>),
-      ...(isPublishing ? { reviewerId: actorId, reviewedAt: new Date().toISOString() } : {}),
-      ...(existing.status === 'published' && data.intent !== 'autosave' ? { lastReviewedAt: new Date().toISOString() } : {}),
-    };
-    const ai = { ...(existing.ai as Record<string, unknown>), editedByHuman: true };
-
-    await db
-      .update(blogPosts)
-      .set({
-        title,
-        slug,
-        body,
-        excerpt: metaDescription,
-        category,
-        tags,
-        faq,
-        coverImage,
-        mapsEmbed,
-        seo,
-        editorial,
-        ai,
-        wordCount,
-        readingTimeMin,
-        status: transition.next.status,
-        publishedAt: transition.next.publishedAt,
-        scheduledAt: transition.next.scheduledAt,
-        ...(isPublishing ? { approvedBy: actorId } : {}),
-        updatedAt: new Date(),
-      })
-      .where(eq(blogPosts.id, existing.id));
-
-    if (data.intent !== 'autosave') {
-      const actorName = await getUserDisplayName(actorId);
-      const [fresh] = await db.select().from(blogPosts).where(eq(blogPosts.id, existing.id)).limit(1);
-      if (fresh) {
-        try {
-          await snapshotPost(db, fresh, isPublishing ? 'publicacion' : 'manual', { id: actorId, name: actorName });
-        } catch (err) {
-          console.error('[blog-cms] snapshot falló (no bloquea):', err instanceof Error ? err.name : typeof err);
-        }
-      }
-      const type = isPublishing ? 'publicado' : 'editado';
-      const message =
-        data.intent === 'publish' ? `Publicado en /blog/${slug}` :
-        data.intent === 'schedule' ? `Programado para ${transition.next.scheduledAt?.toISOString()}` :
-        'Borrador guardado';
-      await logBlogActivity({ postId: existing.id, type, message, actorId, actorName, metadata: { intent: data.intent } });
-      revalidateBlogSurfaces([slug, existing.slug !== slug ? existing.slug : null]);
-    }
-
-    return {
-      ok: true,
-      data: {
-        slug,
-        status: transition.next.status,
-        publishedAt: transition.next.publishedAt?.toISOString() ?? null,
-        scheduledAt: transition.next.scheduledAt?.toISOString() ?? null,
-      },
-    };
-  } catch (err) {
-    return fail(err, 'blog_cms_save_failed', 'No se pudo guardar la entrada.');
-  }
+/** Explicit human attestation from the authenticated admin editor. Not an MCP
+ * tool and never invoked automatically by autosave, AI or publication. */
+export async function reviewBlogCmsRevision(raw:unknown):Promise<ActionResult<{digest:string;reviewed:boolean}>> {
+  const {z}=await import('zod');
+  const schema=z.object({id:z.string().uuid(),expectedDigest:z.string().regex(/^[a-f0-9]{64}$/),requestKey:z.string().uuid(),verifiedSourceIds:z.array(z.string().min(1)).max(20),verifiedLinks:z.array(z.string().min(1)).max(20),claimsVerified:z.literal(true)}).strict();
+  const parsed=schema.safeParse(raw);if(!parsed.success)return {ok:false,error:'Confirma la revisión de fuentes y afirmaciones.'};
+  try{return {ok:true,data:await editorialService.review(editorialSessionIdentity,parsed.data)};}
+  catch(error){return {ok:false,error:editorialFailure(error)};}
 }
 
 // ── Archivar / restaurar / eliminar ─────────────────────────────────────────
@@ -271,11 +120,8 @@ async function setStatusAsAdmin(postId: string, status: 'archived' | 'draft', ro
   const guard = await requireAdmin(undefined, { route });
   if (!guard.ok) return { ok: false, error: guard.error };
   try {
-    const row = await resolvePostRow(postId);
-    if (!row) return { ok: false, error: 'Entrada no encontrada' };
-    await db.update(blogPosts).set({ status, scheduledAt: null, updatedAt: new Date() }).where(eq(blogPosts.id, row.id));
-    await logBlogActivity({ postId: row.id, type, message, actorId: guard.uid, actorName: await getUserDisplayName(guard.uid) });
-    revalidateBlogSurfaces([row.slug]);
+    const result=await editorialService.setStatus(editorialSessionIdentity,{id:postId,status,requestKey:crypto.randomUUID()});
+    revalidateBlogSurfaces([result.slug]);
     return { ok: true };
   } catch (err) {
     return fail(err, 'blog_cms_status_failed', 'No se pudo cambiar el estado.');
@@ -294,17 +140,7 @@ export async function unarchiveBlogCmsPost(postId: string): Promise<ActionResult
 /** Eliminación DEFINITIVA (Encino no tiene papelera): revisiones, actividad,
  *  redirects y contador caen en cascada por FK. */
 export async function deleteBlogCmsPost(postId: string): Promise<ActionResult> {
-  const guard = await requireAdmin(undefined, { route: 'blog-cms:delete' });
-  if (!guard.ok) return { ok: false, error: guard.error };
-  try {
-    const row = await resolvePostRow(postId);
-    if (!row) return { ok: false, error: 'Entrada no encontrada' };
-    await db.delete(blogPosts).where(eq(blogPosts.id, row.id));
-    revalidateBlogSurfaces([row.slug]);
-    return { ok: true };
-  } catch (err) {
-    return fail(err, 'blog_cms_delete_failed', 'No se pudo eliminar la entrada.');
-  }
+  return {ok:false,error:'Conserva el historial editorial: archiva la entrada para retirarla del sitio.'};
 }
 
 // ── Revisiones ──────────────────────────────────────────────────────────────
@@ -313,9 +149,8 @@ export async function listBlogCmsRevisions(postId: string, limit = 10): Promise<
   const session = await requireUserSession();
   if (!session) return { ok: false, error: 'No autenticado' };
   try {
-    const row = await resolvePostRow(postId);
-    if (!row) return { ok: false, error: 'Entrada no encontrada' };
-    const all = await listVersions(row.id);
+    const owned=await editorialService.read(editorialSessionIdentity,postId);
+    const all = await listVersions(owned.id);
     return { ok: true, data: all.slice(0, limit) };
   } catch (err) {
     return fail(err, 'blog_cms_versions_failed', 'No se pudieron cargar las revisiones.');

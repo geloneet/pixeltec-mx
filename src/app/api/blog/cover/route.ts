@@ -1,12 +1,9 @@
 import { createHash } from 'crypto';
 import { NextRequest, NextResponse } from 'next/server';
-import { eq } from 'drizzle-orm';
-import { db } from '@/lib/db';
-import { blogPosts } from '@/lib/db/schema';
 import { requireAdmin } from '@/lib/auth-guards';
-import { getUserDisplayName, resolvePostRow } from '@/lib/blog/pg';
-import { logBlogActivity } from '@/lib/blog/activity';
-import { deleteObject, uploadObject } from '@/lib/r2/upload';
+import {editorialService,editorialSessionIdentity} from '@/lib/blog/editorial/host';
+import {isCommercialOriginAllowed} from '@/lib/commercial/origin';
+import { uploadObject } from '@/lib/r2/upload';
 
 /**
  * Subida de portada del blog a R2 (B-PR5). Mismo patrón que
@@ -50,18 +47,11 @@ function magicBytesMatch(buffer: Buffer, mime: string): boolean {
   return false;
 }
 
-/** Si la portada actual ya vive en R2 bajo blog/covers/, extrae su key para
- *  borrar el objeto anterior (una URL externa — Unsplash — no se toca). */
-function coverKeyFromUrl(url: string | null): string | null {
-  if (!url) return null;
-  const idx = url.indexOf('blog/covers/');
-  return idx >= 0 ? url.slice(idx) : null;
-}
-
 export async function POST(req: NextRequest) {
   const guard = await requireAdmin(undefined, { route: 'blog:cover-upload' });
   if (!guard.ok) return NextResponse.json({ error: guard.error }, { status: guard.status });
 
+  if(!isCommercialOriginAllowed(req))return NextResponse.json({error:'Origen no permitido.'},{status:403});
   const form = await req.formData();
   const file = form.get('file') as File | null;
   const postId = (form.get('postId') as string | null) ?? '';
@@ -85,30 +75,23 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const row = await resolvePostRow(postId);
-  if (!row) return NextResponse.json({ error: 'Post no encontrado' }, { status: 404 });
+  let row;
+  try{row=await editorialService.read(editorialSessionIdentity,postId);}
+  catch(error){const code=error instanceof Error?error.message:'';return NextResponse.json({error:'No se pudo verificar la entrada.'},{status:code==='EDITORIAL_NOT_FOUND'?404:code==='EDITORIAL_ACCESS_DENIED'?403:503});}
+
+
+  if(!row)return NextResponse.json({error:'Post no encontrado'},{status:404});
+  const fresh=await requireAdmin(undefined,{route:'blog:upload-commit'});
+  if(!fresh.ok||fresh.uid!==guard.uid)return NextResponse.json({error:'Permiso actualizado no disponible.'},{status:403});
 
   // Key con hash del contenido: re-subir la misma imagen es idempotente y una
   // imagen nueva invalida caches por cambio de URL.
-  const hash = createHash('sha256').update(buffer).digest('hex').slice(0, 8);
+  const hash = createHash('sha256').update(buffer).digest('hex');
   const key = `blog/covers/${row.id}-${hash}.${ext}`;
 
-  const previousKey = coverKeyFromUrl(row.coverImage);
-  if (previousKey && previousKey !== key) {
-    await deleteObject(previousKey); // best-effort: no lanza si no existe
-  }
-
-  const url = await uploadObject(key, buffer, file.type);
-
-  await db.update(blogPosts).set({ coverImage: url, updatedAt: new Date() }).where(eq(blogPosts.id, row.id));
-
-  await logBlogActivity({
-    postId: row.id,
-    type: 'editado',
-    message: 'Portada subida',
-    actorId: guard.uid,
-    actorName: await getUserDisplayName(guard.uid),
-  });
+  // Immutable asset proposal only. Adopting the URL is a private draft edit;
+  // publication and retirement of historical assets are separate operations.
+  const url=await uploadObject(key,buffer,file.type);
 
   return NextResponse.json({ ok: true, url });
 }

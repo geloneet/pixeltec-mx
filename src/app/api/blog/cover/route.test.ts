@@ -16,6 +16,7 @@ const { requireAdminMock, resolvePostRowMock, uploadObjectMock, deleteObjectMock
     logMock: vi.fn(async () => undefined),
   }));
 
+vi.mock('@/lib/blog/editorial/host',()=>({editorialSessionIdentity:'host-only',editorialService:{read:resolvePostRowMock}}));
 vi.mock('@/lib/auth-guards', () => ({ requireAdmin: requireAdminMock }));
 vi.mock('@/lib/blog/pg', () => ({
   resolvePostRow: resolvePostRowMock,
@@ -33,12 +34,13 @@ import { POST } from './route';
 const PNG_MAGIC = Uint8Array.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 1, 2, 3, 4]);
 const JPEG_MAGIC = Uint8Array.from([0xff, 0xd8, 0xff, 0xe0, 1, 2, 3, 4]);
 
-function makeReq(opts: { file?: File; postId?: string }): NextRequest {
+function makeReq(opts: { file?: File; postId?: string; origin?:string }): NextRequest {
   const form = new FormData();
   if (opts.postId !== undefined) form.set('postId', opts.postId);
   if (opts.file) form.set('file', opts.file);
   return new Request('http://localhost/api/blog/cover', {
     method: 'POST',
+    headers:{Origin:opts.origin??'https://pixeltec.mx'},
     body: form,
   }) as unknown as NextRequest;
 }
@@ -51,6 +53,20 @@ beforeEach(() => {
 });
 
 describe('POST /api/blog/cover', () => {
+  test('a foreign Origin cannot upload even with admin cookies',async()=>{
+    const res=await POST(makeReq({postId:'p1',origin:'https://foreign.invalid',file:new File([PNG_MAGIC],'a.png',{type:'image/png'})}));
+    expect(res.status).toBe(403);expect(uploadObjectMock).not.toHaveBeenCalled();
+  });
+  test('canonical owner denial prevents any upload',async()=>{
+    resolvePostRowMock.mockRejectedValueOnce(new Error('EDITORIAL_NOT_FOUND'));
+    const res=await POST(makeReq({postId:'other',file:new File([PNG_MAGIC],'a.png',{type:'image/png'})}));
+    expect(res.status).toBe(404);expect(uploadObjectMock).not.toHaveBeenCalled();expect(updateWhereMock).not.toHaveBeenCalled();
+  });
+  test('role revocation before R2 write stops the upload',async()=>{
+    requireAdminMock.mockResolvedValueOnce({ok:true,uid:'admin-uid'}).mockResolvedValueOnce({ok:false,status:403,error:'forbidden'});
+    const res=await POST(makeReq({postId:'p1',file:new File([PNG_MAGIC],'a.png',{type:'image/png'})}));
+    expect(res.status).toBe(403);expect(uploadObjectMock).not.toHaveBeenCalled();
+  });
   test('sin sesión admin → status del guard (401) sin tocar R2', async () => {
     requireAdminMock.mockResolvedValueOnce({ ok: false, error: 'Unauthorized', status: 401 });
     const res = await POST(makeReq({ postId: 'p1', file: new File([PNG_MAGIC], 'a.png', { type: 'image/png' }) }));
@@ -98,26 +114,27 @@ describe('POST /api/blog/cover', () => {
     expect(uploadObjectMock).not.toHaveBeenCalled();
   });
 
-  test('subida válida → sube a blog/covers/{id}-{hash}.png, actualiza y responde {ok,url}', async () => {
+  test('subida válida → sube a blog/covers/{id}-{hash}.png, no actualiza el artículo y responde {ok,url}', async () => {
     const res = await POST(makeReq({ postId: 'p1', file: new File([PNG_MAGIC], 'a.png', { type: 'image/png' }) }));
     expect(res.status).toBe(200);
     expect(await res.json()).toEqual({ ok: true, url: 'https://cdn.example.com/blog/covers/nueva.png' });
     const [key, , contentType] = uploadObjectMock.mock.calls[0] as unknown as [string, Buffer, string];
-    expect(key).toMatch(/^blog\/covers\/post-uuid-1-[0-9a-f]{8}\.png$/);
+    expect(key).toMatch(/^blog\/covers\/post-uuid-1-[0-9a-f]{64}\.png$/);
     expect(contentType).toBe('image/png');
-    expect(updateWhereMock).toHaveBeenCalledTimes(1);
-    expect(logMock).toHaveBeenCalledWith(expect.objectContaining({ type: 'editado', message: 'Portada subida' }));
+    expect(updateWhereMock).not.toHaveBeenCalled();
+    expect(logMock).not.toHaveBeenCalled();
     expect(deleteObjectMock).not.toHaveBeenCalled(); // sin portada anterior en R2
   });
 
-  test('portada anterior en blog/covers/ → borra la key vieja antes de subir', async () => {
+  test('portada anterior en blog/covers/ → conserva la key vieja al proponer la nueva', async () => {
     resolvePostRowMock.mockResolvedValueOnce({
       id: 'post-uuid-1',
       coverImage: 'https://cdn.example.com/blog/covers/post-uuid-1-deadbeef.jpg',
     });
     const res = await POST(makeReq({ postId: 'p1', file: new File([PNG_MAGIC], 'a.png', { type: 'image/png' }) }));
     expect(res.status).toBe(200);
-    expect(deleteObjectMock).toHaveBeenCalledWith('blog/covers/post-uuid-1-deadbeef.jpg');
+    expect(deleteObjectMock).not.toHaveBeenCalled();
+    expect(updateWhereMock).not.toHaveBeenCalled();
   });
 
   test('portada anterior externa (Unsplash) → NO se intenta borrar de R2', async () => {

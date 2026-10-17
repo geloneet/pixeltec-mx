@@ -32,11 +32,15 @@ import {
   numeric,
   pgEnum,
   pgTable,
+  pgSchema,
+  foreignKey,
+  check,
   primaryKey,
   real,
   text,
   timestamp,
   uniqueIndex,
+  unique,
   uuid,
   type AnyPgColumn,
 } from "drizzle-orm/pg-core";
@@ -2274,3 +2278,26 @@ export const commercialCommands = pgTable('commercial_commands', {
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// CMS/inventory-only release. The two editorial tables require the bounded
+// migration; no email capture, event feed, grants or scheduler are installed.
+export const safetySchema = pgSchema('mcp_safety_candidate');
+const safetyAudit = () => ({
+  createdBy: uuid('created_by').notNull().references(() => users.id),
+  updatedBy: uuid('updated_by').notNull().references(() => users.id),
+  createdAt: timestamp('created_at', {withTimezone:true}).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', {withTimezone:true}).notNull().defaultNow(),
+});
+export const editorialDrafts = safetySchema.table('editorial_drafts', {
+  id: uuid('id').primaryKey(), ownerId: uuid('owner_id').notNull().references(() => users.id),
+  targetPostId: uuid('target_post_id').references(() => blogPosts.id),
+  version: bigint('version',{mode:'bigint'}).notNull(), content: jsonb('content').notNull(), digest: text('digest').notNull(),
+  ...safetyAudit(),
+}, t => [unique('editorial_drafts_owner_id_key').on(t.ownerId,t.id),index('editorial_drafts_owner_post_idx').on(t.ownerId,t.targetPostId),check('editorial_drafts_version_check',sql`${t.version}>0`),check('editorial_drafts_digest_check',sql`length(${t.digest})=64`)]);
+export const editorialCommands = safetySchema.table('editorial_commands', {
+  id: uuid('id').primaryKey(),ownerId: uuid('owner_id').notNull().references(() => users.id),draftId: uuid('draft_id').notNull(),
+  kind: text('kind').notNull(),requestKey: uuid('request_key').notNull(),payloadHash: text('payload_hash').notNull(),
+  expectedVersion: bigint('expected_version',{mode:'bigint'}),expectedDigest:text('expected_digest'),payload:jsonb('payload').notNull(),proofRef:text('proof_ref'),slotKey:text('slot_key'),
+  dueAt:timestamp('due_at',{withTimezone:true}),nextAttemptAt:timestamp('next_attempt_at',{withTimezone:true}),state:text('state').notNull(),receipt:jsonb('receipt'),
+  cacheState:text('cache_state').notNull().default('pending'),cacheAttempts:integer('cache_attempts').notNull().default(0),lastErrorCode:text('last_error_code'),...safetyAudit(),
+},t=>[uniqueIndex('editorial_command_request_idx').on(t.ownerId,t.kind,t.requestKey),uniqueIndex('editorial_slot_unique').on(t.ownerId,t.slotKey).where(sql`${t.slotKey} is not null`),foreignKey({columns:[t.ownerId,t.draftId],foreignColumns:[editorialDrafts.ownerId,editorialDrafts.id]}),check('editorial_command_kind_check',sql`${t.kind} in ('draft','publish')`),check('editorial_command_state_check',sql`${t.state} in ('prepared','queued','done','blocked','uncertain')`),check('editorial_cache_state_check',sql`${t.cacheState} in ('pending','done')`)]);
